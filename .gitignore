@@ -1,7 +1,5 @@
 #intelliJ IDEA
-.idea/workspace.xml
-.idea/dictionaries
-.idea/tasks.xml
+.idea
 
 *.class
 
