@@ -1,3 +1,5 @@
+package model.bonus;
+
 public class BonusPescaCartaPolitica extends RealBonus {
     private int numeroCarte;
 

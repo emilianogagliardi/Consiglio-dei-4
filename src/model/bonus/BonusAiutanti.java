@@ -1,3 +1,5 @@
+package model.bonus;
+
 public class BonusAiutanti extends RealBonus {
     private int numeroAiutanti;
 

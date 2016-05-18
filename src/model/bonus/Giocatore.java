@@ -1,3 +1,4 @@
+package model.bonus;
 import eccezioni.AiutantiNonSufficientiException;
 import eccezioni.ImpossibileDecrementareMosseException;
 import eccezioni.MoneteNonSufficientiException;

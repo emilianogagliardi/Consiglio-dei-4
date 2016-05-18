@@ -1,3 +1,5 @@
+package model.bonus;
+
 public class BonusAvanzaPercorsoNobiltà extends RealBonus {
     private int numeroPosti;
 
