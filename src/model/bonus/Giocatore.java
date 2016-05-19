@@ -52,20 +52,17 @@ public class Giocatore {
     //gestione numero aiutanti
     public int getAiutanti(){return aiutanti;}
 
-    public void setAiutanti(int a) throws IllegalArgumentException{
-        if (a<0) throw new IllegalArgumentException("impossibile assegnare un valore negativo al numero di aiutanti di un giocatore");
-        this.aiutanti = a;
-    }
-
     public void guadagnaAiutanti(int a) throws IllegalArgumentException{
         if (a <= 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo o nullo a guadagnaAiutanti(int a)");
         aiutanti = aiutanti + a;
+        //TODO decremementare gli aiutanti nel pool dei disponibili
     }
 
     public void pagaAiutanti(int a) throws IllegalArgumentException, AiutantiNonSufficientiException {
         if (a <= 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo o nullo a pagaAiutanti(int a)");
         if (aiutanti - a < 0) throw new AiutantiNonSufficientiException();
         aiutanti = aiutanti - a;
+        //TODO incrementare gli aiutanti nel pool di aiutanti disponibili
     }
 
     //gestione percorso nobiltà
