@@ -1,3 +1,8 @@
+
+/*
+TODO BonusAiutanti deve avere un reference a Partita in modo da decrementare il numerodi aiutanti disponibili nel pool di aiutanti
+*/
+
 public class BonusAiutanti extends RealBonus {
     private int numeroAiutanti;
 
