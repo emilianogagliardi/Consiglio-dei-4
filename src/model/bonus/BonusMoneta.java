@@ -1,3 +1,5 @@
+package model.bonus;
+
 public class BonusMoneta extends RealBonus {
     private int numeroMonete;
 

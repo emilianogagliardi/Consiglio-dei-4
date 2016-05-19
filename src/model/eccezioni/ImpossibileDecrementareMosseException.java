@@ -1,4 +1,4 @@
-package eccezioni;
+package model.eccezioni;
 
 /**
  * Created by emilianogagliardi on 18/05/16.

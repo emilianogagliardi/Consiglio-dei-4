@@ -1,6 +1,5 @@
-package eccezioni;
+package model.eccezioni;
 
-import eccezioni.RisorseNonSufficientiException;
 
 /**
  * Created by emilianogagliardi on 18/05/16.

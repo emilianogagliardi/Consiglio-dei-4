@@ -1,3 +1,5 @@
+package model.bonus;
+
 public abstract class RealBonus extends Bonus {
     private RealBonus decoratedBonus;
 
