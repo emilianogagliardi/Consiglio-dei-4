@@ -1,14 +1,12 @@
 package model.carte;
+import model.bonus.Bonus;
+import model.bonus.BonusPuntiVittoria;
 
-/**
- * Created by riccardo on 18/05/16.
- */
 public class CartaBonusColoreCittà extends CartaConBonus {
-    private Bonus bonus;
     private ColoreCittà colore;
 
-    public CartaBonusColoreCittà(Bonus bonus, ColoreCittà colore) {
-        this.bonus = bonus;
+    public CartaBonusColoreCittà(BonusPuntiVittoria bonus, ColoreCittà colore) {
+        super(bonus);
         this.colore = colore;
     }
 

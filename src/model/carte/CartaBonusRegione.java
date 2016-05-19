@@ -1,12 +1,10 @@
 package model.carte;
+import model.bonus.Bonus;
+import model.bonus.BonusPuntiVittoria;
 
-/**
- * Created by riccardo on 18/05/16.
- */
 public class CartaBonusRegione extends CartaConBonus {
-    private Bonus bonus;
 
-    public CartaBonusRegione (Bonus bonus){
-        this.bonus = bonus;
+    public CartaBonusRegione (BonusPuntiVittoria bonus){
+        super(bonus);
     }
 }

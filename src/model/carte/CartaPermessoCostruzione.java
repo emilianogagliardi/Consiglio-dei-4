@@ -1,12 +1,14 @@
+package model.carte;
+
 import java.util.ArrayList;
-package Model.Carte;
-/**
- * Created by riccardo on 18/05/16.
- */
+import model.Città;
+import model.bonus.Bonus;
+
 public class CartaPermessoCostruzione extends CartaConBonus {
     ArrayList<Città> città = new ArrayList<>(1);
 
-    public CartaPermessoCostruzione (Città... città) {
+    public CartaPermessoCostruzione (Bonus bonus, Città... città) {
+        super(bonus);
         for (int i = 0; i < città.length; i++) {
             this.città.add(città[i]);
         }
