@@ -1,9 +1,11 @@
 package model.bonus;
 
-public class BonusMoneta extends RealBonus {
+import model.Giocatore;
+
+public class BonusMonete extends RealBonus {
     private int numeroMonete;
 
-    public BonusMoneta (int m, RealBonus decorated) throws IllegalArgumentException{
+    public BonusMonete (int m, Bonus decorated) throws IllegalArgumentException{
         super(decorated);
         if (m <= 0) throw new IllegalArgumentException("Non è possibile creare un bonus guadagna monete con un numero di monete negativo o nullo");
         numeroMonete = m;

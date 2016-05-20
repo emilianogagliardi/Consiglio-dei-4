@@ -1,9 +1,11 @@
 package model.bonus;
 
-public abstract class RealBonus extends Bonus {
-    private RealBonus decoratedBonus;
+import model.Giocatore;
 
-    public RealBonus (RealBonus decorated){
+public abstract class RealBonus extends Bonus {
+    private Bonus decoratedBonus;
+
+    public RealBonus (Bonus decorated){
         this.decoratedBonus = decorated;
     }
 

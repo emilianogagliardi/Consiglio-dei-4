@@ -1,9 +1,11 @@
 package model.bonus;
 
+import model.Giocatore;
+
 public class BonusPescaCartaPolitica extends RealBonus {
     private int numeroCarte;
 
-    public BonusPescaCartaPolitica(int n, RealBonus decorated) throws IllegalArgumentException{
+    public BonusPescaCartaPolitica(int n, Bonus decorated) throws IllegalArgumentException{
         super(decorated);
         if (n <= 0) throw new IllegalArgumentException("Non è possibile generare un bonus pesca carte politica con un numero nullo o negativo di carte");
         numeroCarte = n;

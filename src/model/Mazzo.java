@@ -24,6 +24,8 @@ public class Mazzo {
             int indiceCartaDaRimuovere = mazzo.size() - 1; //toglie le carte dalla cima del mazzo
             return mazzo.remove(indiceCartaDaRimuovere);
         }
+        //aggiunto per far compilare
+        return null;
     }
 
     public void mischia(){
