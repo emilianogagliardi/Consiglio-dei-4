@@ -1,4 +1,4 @@
-package model.bonus.testBonus;
+package model.Test;
 
 import model.Giocatore;
 import model.bonus.*;
@@ -53,5 +53,10 @@ public class TestBonusSingoli {
         bonusP.ottieni(giocatore);
         assertEquals(4, giocatore.getPuntiVittoria());
         bonusP = new BonusPuntiVittoria(-2, NullBonus.getInstance());
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void buonusErratoTest(){
+        RealBonus b = new BonusAiutanti(3, null);
     }
 }

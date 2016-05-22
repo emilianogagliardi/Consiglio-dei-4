@@ -1,4 +1,5 @@
 package model;
+import model.bonus.Bonus;
 import model.carte.*;
 import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.ImpossibileDecrementareMosseException;
@@ -99,4 +100,8 @@ public class Giocatore {
 
     //TODO gestione delle carte del player
     public void pescaCartePolitica(int numeroCarte){};
+
+    public void ottieniBonus(Bonus b) {
+        b.ottieni(this);
+    }
 }
