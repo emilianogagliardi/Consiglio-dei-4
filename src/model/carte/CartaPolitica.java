@@ -1,6 +1,6 @@
 package model.carte;
 
-public class CartaPolitica {
+public class CartaPolitica extends Carta {
     private ColoreCartaPolitica colore;
 
     public CartaPolitica(ColoreCartaPolitica colore){

@@ -9,8 +9,8 @@ public class CartaPermessoCostruzione extends CartaConBonus {
 
     public CartaPermessoCostruzione (Bonus bonus, Città... città) {
         super(bonus);
-        for (int i = 0; i < città.length; i++) {
-            this.città.add(città[i]);
+        for (Città elemento : città) {
+            this.città.add(elemento);
         }
     }
 
