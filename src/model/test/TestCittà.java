@@ -1,4 +1,4 @@
-package model.Test;
+package model.test;
 
 import model.Città;
 import model.NomeCittà;
@@ -7,8 +7,6 @@ import model.carte.ColoreCittà;
 import model.eccezioni.CittàAdiacenteSeStessaException;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -43,7 +41,7 @@ public class TestCittà {
         }
     }
 /*
-    @Test (expected = CittàAdiacenteSeStessaException.class)
+    @test (expected = CittàAdiacenteSeStessaException.class)
     public void aggiungiSeStessaTest() {
         Città città = new Città(NomeCittà.ARKON, ColoreCittà.FERRO, NullBonus.getInstance());
         try {
@@ -51,7 +49,7 @@ public class TestCittà {
         }catch(CittàAdiacenteSeStessaException e) {e.printStackTrace();}
     }
 
-    @Test
+    @test
     public void collegamentiCittàTest() {
         assertTrue(città1.getCittàAdiacenti().contains(città2));
         assertTrue(città2.getCittàAdiacenti().contains(città1));

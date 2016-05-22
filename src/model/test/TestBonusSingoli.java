@@ -1,4 +1,4 @@
-package model.Test;
+package model.test;
 
 import model.Giocatore;
 import model.bonus.*;
