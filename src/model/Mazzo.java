@@ -3,8 +3,6 @@ package model;
 import model.carte.Carta;
 
 import java.util.AbstractQueue;
-import java.util.Collection;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.LinkedBlockingQueue;
 import static java.util.Arrays.asList;
