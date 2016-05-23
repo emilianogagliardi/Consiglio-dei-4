@@ -1,13 +1,15 @@
 package model;
 
 import model.carte.Carta;
-import model.carte.NullCarta;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import static java.util.Arrays.asList;
 import static java.util.Collections.shuffle;
 
 public class Mazzo <T extends Carta> {
-    List<T> mazzo = new ArrayList<T>();
+    private Collection<T> mazzo = new LinkedBlockingQueue<T>(); //l'interfaccia LinkedBlockingQueue implementa BlockingQueue che estende Queue. Queue rappresenta una FIFO.
+    //BlockingQueue è un'interfaccia che rende bloccante la FIFO: è bloccato il recupero di un elemento fino a che la pila diventa non vuota.
 
     public void addCarta(T carta) {
         mazzo.add(carta);
@@ -18,22 +20,14 @@ public class Mazzo <T extends Carta> {
     }
 
     public T getCarta() {
-        if (mazzo.isEmpty()) {
-            return NullCarta.getInstance(); //TODO: Qual'è il problema?!?!?!?
-        }
-        else {
-            int indiceCartaDaRimuovere = mazzo.size() - 1; //toglie le carte dalla cima del mazzo
-            return mazzo.remove(indiceCartaDaRimuovere); //TODO: verificare se remove lancia un'eccezione se la lista è vuota
-        }
+        return mazzo.remove(mazzo.element());
     }
 
     public void mischia(){
-        shuffle(mazzo); //shuffle è un metodo static di Collections a cui si può passare in input solo un oggetto di tipo List
+        shuffle(asList(mazzo.toArray())); //shuffle è un metodo static di Collections a cui si può passare in input solo un oggetto di tipo List
     }
 
     public boolean isEmpty() {
         return mazzo.isEmpty();
     }
-
-
 }
