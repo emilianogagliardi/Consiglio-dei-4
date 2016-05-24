@@ -5,6 +5,6 @@ package model.eccezioni;
  */
 public class AiutantiNonSufficientiException extends RisorseNonSufficientiException {
     public AiutantiNonSufficientiException(){
-        super("Monete non sufficienti");
+        super("Aiutanti non sufficienti");
     }
 }

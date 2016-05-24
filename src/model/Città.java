@@ -19,7 +19,7 @@ public class Città {
         bonus = b;
     }
 
-    public Città (NomeCittà n, ColoreCittà c, Bonus b, Città... citAd) throws CittàAdiacenteSeStessaException{
+    public Città (NomeCittà n, ColoreCittà c, Bonus b, Città primaCittà, Città... citAd) throws CittàAdiacenteSeStessaException{
         this (n, c, b);
         this.addCittàAdiacente(citAd);
     }

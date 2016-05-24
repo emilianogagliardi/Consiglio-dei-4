@@ -9,5 +9,14 @@ public enum NomeCittà {
     BURGEN,
     DORFUL,
     ESTI,
-    //TODO completare nomi
+    FRAMEK,
+    INDUR,
+    GRADEN,
+    JUVELAR,
+    HELLAR,
+    KULTOS,
+    NARIS,
+    LYRAM,
+    OSIUM,
+    MERKATIM;
 }

@@ -17,14 +17,15 @@ public class Mazzo <T extends Carta> {
         mazzo.addAll(carte);
     }
 
-    public T getCarta() {
+    public T pescaCarta() {
         if (mazzo.isEmpty()) {
-            return NullCarta.getInstance(); //TODO: Qual'è il problema?!?!?!?
+            //return NullCarta.getInstance(); //TODO: Qual'è il problema?!?!?!?
         }
         else {
             int indiceCartaDaRimuovere = mazzo.size() - 1; //toglie le carte dalla cima del mazzo
             return mazzo.remove(indiceCartaDaRimuovere); //TODO: verificare se remove lancia un'eccezione se la lista è vuota
         }
+        return null; //aggiunto solo per la compilazione
     }
 
     public void mischia(){
@@ -34,6 +35,4 @@ public class Mazzo <T extends Carta> {
     public boolean isEmpty() {
         return mazzo.isEmpty();
     }
-
-
 }
