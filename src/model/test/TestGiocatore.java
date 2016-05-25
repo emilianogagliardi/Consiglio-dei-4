@@ -21,22 +21,16 @@ public class TestGiocatore {
     }
 
     /*
-        test di underflow
+        test valori negativi
      */
-    @Before
-    @Test (expected = MoneteNonSufficientiException.class)
-    public void underflowMoneteTest(){
-        try {
-            giocatore.pagaMonete(1);
-        }catch(MoneteNonSufficientiException e){e.printStackTrace();}
+    @Test(expected = IllegalArgumentException.class)
+    public void moneteNegativeTest() {
+        giocatore.guadagnaMonete(-5);
     }
 
-    @Before
-    @Test (expected = AiutantiNonSufficientiException.class)
-    public void underflowAiutantiTest(){
-        try {
-            giocatore.pagaAiutanti(1);
-        }catch(AiutantiNonSufficientiException e) {e.printStackTrace();}
+    @Test(expected = IllegalArgumentException.class)
+    public void aiutantiNegativiTest(){
+        giocatore.guadagnaAiutanti(-2);
     }
 
     /*
