@@ -4,10 +4,10 @@ package model;
 /**
  * Created by emilianogagliardi on 26/05/16.
  */
-public class Consiglere {
+public class Consigliere {
     private ColoreConsigliere colore;
 
-    public Consiglere (ColoreConsigliere colore) {
+    public Consigliere (ColoreConsigliere colore) {
         this.colore = colore;
     }
 
@@ -17,8 +17,8 @@ public class Consiglere {
 
     @Override
     public boolean equals (Object o) {
-        if (o instanceof Consiglere){
-            Consiglere c = (Consiglere) o;
+        if (o instanceof Consigliere){
+            Consigliere c = (Consigliere) o;
             if (c.getColore() == colore)
                 return true;
         }
