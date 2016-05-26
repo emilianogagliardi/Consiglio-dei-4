@@ -36,7 +36,7 @@ public class Regione {
 
     public CartaPermessoCostruzione getCartaPermessoCostruzione2(){
         return cartaPermessoCostruzione2;
-    }
+}
 
     public void addCittà (Città città) {
         this.città.add(città);
@@ -48,6 +48,10 @@ public class Regione {
 
     public void addCartaPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione){
         mazzoCartePermessoCostruzione.addCarta(cartaPermessoCostruzione);
+    }
+
+    public void scambiaCarte(){
+        //TODO
     }
 
 }
