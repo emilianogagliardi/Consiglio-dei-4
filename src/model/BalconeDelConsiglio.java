@@ -3,6 +3,7 @@ package model;
 
 import model.carte.CartaPolitica;
 import model.eccezioni.NumeroCartePoliticaNonValidoException;
+import model.eccezioni.NumeroConsiglieriNonValidoException;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -13,8 +14,15 @@ public class BalconeDelConsiglio {
     private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(4); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 
-    public BalconeDelConsiglio(Consigliere... consiglieri) throws IllegalStateException, NullPointerException {
+    public BalconeDelConsiglio(Consigliere... consiglieri) throws IllegalStateException, NullPointerException, NumeroConsiglieriNonValidoException {
+        if (consiglieri.length != 4) {
+            throw new NumeroConsiglieriNonValidoException();
+        }
         balcone.addAll(asList(consiglieri));
+    }
+
+    public Queue<Consigliere> getConsiglieri(){
+        return balcone;
     }
 
     public void addConsigliere(Consigliere consigliere) throws IllegalStateException, NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
@@ -23,22 +31,25 @@ public class BalconeDelConsiglio {
         balcone.add(consigliere);
     }
 
-    public ArrayList<String> getColoriConsiglieri(){
+    public ArrayList<String> getColoriConsiglieri() {
         ArrayList<String> colori = new ArrayList<>();
         for (Consigliere consigliere : balcone) {
-            colori.add(consigliere.)
+            colori.add(consigliere.getColore().toString());
         }
+        return colori;
     }
 
-    public void soddisfaConsiglio(CartaPolitica... cartePolitica) throws NumeroCartePoliticaNonValidoException {
+    public boolean soddisfaConsiglio(CartaPolitica... cartePolitica) throws NumeroCartePoliticaNonValidoException {
         if (cartePolitica.length <= 0 || cartePolitica.length > 4) {
             throw new NumeroCartePoliticaNonValidoException();
         } else {
-            //metto i colori delle carte politica e dei consiglieri in arrays e poi si usa il metodo containsAll di Collection. Quindi c'è da overridare il metodo equals
-            //delle enum ColoreCartaPolitica e ColoreConsigliere. Il colore JOLLY è uguale a qualsiasi colore
+            //metto i colori delle carte politica e dei consiglieri in arraylist e poi uso il metodo containsAll di Collection per verificare se i colori delle carte politica
+            //sono contenuti nei colori dei consigieri del baclone scelto
             ArrayList<String> coloriCartePolitica = new ArrayList<>();
-            ArrayList<String> colori
-
+            for (CartaPolitica cartaPolitica : cartePolitica) {
+                coloriCartePolitica.add(cartaPolitica.getColore().toString());
+            }
+            return this.getColoriConsiglieri().containsAll(coloriCartePolitica);
         }
     }
 }

@@ -7,6 +7,7 @@ import model.carte.CartaPermessoCostruzione;
 import java.util.Collection;
 import java.util.HashSet;
 
+
 public class Regione {
     private BalconeDelConsiglio balconeDelConsiglio;
     private CartaBonusRegione cartaBonusRegione;
@@ -50,8 +51,14 @@ public class Regione {
         mazzoCartePermessoCostruzione.addCarta(cartaPermessoCostruzione);
     }
 
-    public void scambiaCarte(){
-        //TODO
+    public void cambiaCartePermessoCostruzione(){
+        cartaPermessoCostruzione1.setVisibile(false);
+        mazzoCartePermessoCostruzione.addCarta(cartaPermessoCostruzione1);
+        cartaPermessoCostruzione2.setVisibile(false);
+        mazzoCartePermessoCostruzione.addCarta(cartaPermessoCostruzione2);
+        cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.getCarta();
+        cartaPermessoCostruzione1.setVisibile(true);
+        cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.getCarta();
+        cartaPermessoCostruzione2.setVisibile(true);
     }
-
 }
