@@ -1,11 +1,10 @@
+import model.ColoreCittà;
 import model.Mazzo;
 import model.bonus.BonusPuntiVittoria;
 import model.bonus.NullBonus;
 import model.carte.*;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 
 public class MazzoTest {

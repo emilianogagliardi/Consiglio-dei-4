@@ -1,5 +1,5 @@
 package model.carte;
-import model.bonus.Bonus;
+import model.ColoreCittà;
 import model.bonus.BonusPuntiVittoria;
 
 public class CartaBonusColoreCittà extends CartaConBonus {

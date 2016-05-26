@@ -1,10 +1,13 @@
 package model.test;
 
 import model.Città;
+import model.Emporio;
+import model.Giocatore;
 import model.NomeCittà;
 import model.bonus.NullBonus;
-import model.carte.ColoreCittà;
+import model.ColoreCittà;
 import model.eccezioni.CittàAdiacenteSeStessaException;
+import model.eccezioni.EmporioGiàEsistenteException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,5 +63,25 @@ public class TestCittà {
         assertFalse(città4.getCittàAdiacenti().contains(città3));
         assertFalse(città1.getCittàAdiacenti().contains(città4));
         assertFalse(città2.getCittàAdiacenti().contains(città4));
+    }
+
+    @Test
+    public void costruisciEmporiTest() throws EmporioGiàEsistenteException{
+        Giocatore g1 = new Giocatore (0, 0, 0, 0);
+        Giocatore g2 = new Giocatore (1, 0, 0, 0);
+        Giocatore g3 = new Giocatore (2, 0, 0, 0);
+        città1.costruisciEmporio(new Emporio(g1.getId()));
+        città1.costruisciEmporio(new Emporio(g2.getId()));
+        città1.costruisciEmporio(new Emporio(g3.getId()));
+        assertTrue(città1.giàCostruito(g1));
+        assertTrue(città1.giàCostruito(g2));
+        assertTrue(città1.giàCostruito(g3));
+    }
+
+    @Test (expected = EmporioGiàEsistenteException.class)
+    public void costruisciDueVolteTest() throws EmporioGiàEsistenteException{
+        Giocatore g = new Giocatore(0, 0, 0, 0);
+        città1.costruisciEmporio(new Emporio(g.getId()));
+        città1.costruisciEmporio(new Emporio(g.getId()));
     }
 }

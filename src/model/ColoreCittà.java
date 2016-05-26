@@ -1,4 +1,4 @@
-package model.carte;
+package model;
 
 
 public enum ColoreCittà {

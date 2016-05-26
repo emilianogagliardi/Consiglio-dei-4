@@ -1,7 +1,5 @@
 package model;
 
-import model.carte.ColoreCittà;
-
 /**
  * Created by emilianogagliardi on 24/05/16.
  */
@@ -9,7 +7,6 @@ public class Costanti {
     //caratteristiche della partita
     public static final int NUM_REGIONI = 3;
     public static final int NUM_CITTA = 15;
-    public static final int NUM_CITTA_REGIONE = 5;
     public static final int NUM_CITTA_PER_REGIONE = NUM_CITTA/NUM_REGIONI;
     public static final int NUM_CARTE_POLITICA = 90;
     public static final int NUM_CARTE_PREMIO_RE = 5;

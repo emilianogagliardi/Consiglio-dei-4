@@ -4,7 +4,7 @@ import model.Città;
 import model.NomeCittà;
 import model.Re;
 import model.bonus.NullBonus;
-import model.carte.ColoreCittà;
+import model.ColoreCittà;
 import model.eccezioni.ReNonInizializzatoException;
 import org.junit.Before;
 import org.junit.Test;

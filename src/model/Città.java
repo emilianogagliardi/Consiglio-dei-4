@@ -2,9 +2,10 @@ package model;
 
 
 import model.bonus.Bonus;
-import model.carte.ColoreCittà;
 import model.eccezioni.CittàAdiacenteSeStessaException;
+import model.eccezioni.EmporioGiàEsistenteException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,12 +14,14 @@ public class Città {
     private Set<Città> cittàAdiacenti;
     private ColoreCittà colore;
     private NomeCittà nome;
+    private ArrayList<Emporio> empori;
 
     public Città (NomeCittà n, ColoreCittà c, Bonus b){
         nome = n;
         colore = c;
         bonus = b;
         cittàAdiacenti = new HashSet<Città>();
+        empori = new ArrayList<Emporio>();
     }
 
     @Override
@@ -41,6 +44,16 @@ public class Città {
             if (!c.getCittàAdiacenti().contains(this))
                 c.addCittàAdiacenti(this); //aggiunge se stessa come adiacente alla città appena aggiunta (set elimina duplicati)
         }
+    }
+
+    public void costruisciEmporio (Emporio e) throws EmporioGiàEsistenteException{
+        if (empori.contains(e)) throw new EmporioGiàEsistenteException();
+        empori.add(e);
+    }
+
+    public boolean giàCostruito (Giocatore g){
+        if (empori.contains(new Emporio(g.getId()))) return true;
+        return false;
     }
 
     //getter
