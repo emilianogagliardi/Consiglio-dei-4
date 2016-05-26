@@ -1,7 +1,5 @@
 package model;
 
-import model.carte.ColoreCittà;
-
 /**
  * Created by emilianogagliardi on 24/05/16.
  */
