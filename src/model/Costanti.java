@@ -11,11 +11,12 @@ public class Costanti {
     public static final int NUM_CARTE_POLITICA = 90;
     public static final int NUM_CARTE_PREMIO_RE = 5;
     public static final int NUM_CARTE_BONUS_REGIONE = NUM_REGIONI;
-    public static final int NUM_CARTE_BONUS_COLORE_CITTà = 5;
     public static final int NUM_AIUTANTI = 30;
     public static final int NUM_CONSIGLIERI = 24;
+    public static final int NUM_CONSIGLIERI_RISERVA = 8;
     public static final NomeCittà CITTA_RE = NomeCittà.JUVELAR;
     public static final int MAX_GIOCATORI = 4;
+    public static final int NUM_CARTE_BONUS_COLORE_CITTA = 4;
     //caratteristiche del giocatore
     public static final int MAX_MONETE = 30;
     public static final int MAX_POS_NOBILTA = 20;
