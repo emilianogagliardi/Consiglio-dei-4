@@ -22,42 +22,43 @@ public class TestCittà {
 
     public TestCittà(){
         città1 = new Città(NomeCittà.ARKON, ColoreCittà.ARGENTO, NullBonus.getInstance());
-        try {
-            città2 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), città1);
-            città3 = new Città(NomeCittà.CASTRUM, ColoreCittà.ARGENTO, NullBonus.getInstance(), città1, città2);
-            città4 = new Città(NomeCittà.ESTI, ColoreCittà.BRONZO, NullBonus.getInstance(), città3);
-            città1.addCittàAdiacente(città2);
-        }catch (CittàAdiacenteSeStessaException e){
-            e.printStackTrace();
-        }
+        città2 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance());
+        città3 = new Città(NomeCittà.CASTRUM, ColoreCittà.ARGENTO, NullBonus.getInstance());
+        città4 = new Città(NomeCittà.ESTI, ColoreCittà.BRONZO, NullBonus.getInstance());
+    }
+
+    @Before
+    @Test
+    public void aggiungiNullaTest() {
+        città1.addCittàAdiacenti();
+        assertTrue(città1.getCittàAdiacenti().isEmpty());
     }
 
     @Test
-    public void prova(){
-        try {
-            città2 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), città1);
-        } catch (CittàAdiacenteSeStessaException e) {
-            e.printStackTrace();
-        }
-    }
-/*
-    @test (expected = CittàAdiacenteSeStessaException.class)
-    public void aggiungiSeStessaTest() {
-        Città città = new Città(NomeCittà.ARKON, ColoreCittà.FERRO, NullBonus.getInstance());
-        try {
-            città.addCittàAdiacente(città);
-        }catch(CittàAdiacenteSeStessaException e) {e.printStackTrace();}
+    public void equalsTest() {
+        Città c1 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance());
+        Città c2 = new Città(NomeCittà.BURGEN, ColoreCittà.FERRO, NullBonus.getInstance());
+        Città c3 = new Città(NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance());
+        assertFalse(c1.equals(c3));
+        assertTrue(c1.equals(c2));
     }
 
-    @test
+    @Test (expected = CittàAdiacenteSeStessaException.class)
+    public void aggiungiSeStessaTest() {
+        Città città = new Città(NomeCittà.ARKON, ColoreCittà.FERRO, NullBonus.getInstance());
+        città.addCittàAdiacenti(città);
+    }
+
+    @Test
     public void collegamentiCittàTest() {
+        città1.addCittàAdiacenti(città2);
         assertTrue(città1.getCittàAdiacenti().contains(città2));
         assertTrue(città2.getCittàAdiacenti().contains(città1));
+        città3.addCittàAdiacenti(città1, città2);
         assertTrue(città3.getCittàAdiacenti().contains(città1) && città3.getCittàAdiacenti().contains(città2));
-        assertTrue(città4.getCittàAdiacenti().contains(città3));
-        assertFalse(città1.getCittàAdiacenti().contains(città3));
+        assertTrue(città1.getCittàAdiacenti().contains(città3) && città2.getCittàAdiacenti().contains(città3));
+        assertFalse(città4.getCittàAdiacenti().contains(città3));
         assertFalse(città1.getCittàAdiacenti().contains(città4));
         assertFalse(città2.getCittàAdiacenti().contains(città4));
     }
-    */
 }

@@ -4,6 +4,7 @@ import model.carte.*;
 import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.ImpossibileDecrementareMosseException;
 import model.eccezioni.MoneteNonSufficientiException;
+import model.Costanti;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class Giocatore {
         guadagnaMonete(monete);
         guadagnaAiutanti(aiutanti);
         avanzaPercorsoNobiltà(posizionePercorsoNobiltà);
-        emporiDisponibili = 10;
+        emporiDisponibili = Costanti.NUM_EMPORI_GIOCATORE;
         //TODO carte in mano, pesca 6 carte politica.
     }
 
@@ -35,13 +36,16 @@ public class Giocatore {
 
     public void guadagnaMonete(int m) throws IllegalArgumentException{
         if(m < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a guadagnaMonete(int m)");
-        monete = monete + m;
-        //TODO gestione overflow
+        monete = (monete + m);
+        if (monete > Costanti.MAX_MONETE) {
+            monete = Costanti.MAX_MONETE;
+        }
     }
 
     public void pagaMonete(int m) throws IllegalArgumentException, MoneteNonSufficientiException {
         if(m < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a pagaMonete(int m)");
         if(monete - m < 0) throw new MoneteNonSufficientiException();
+        monete = monete - m;
     }
 
     //gestione numero aiutanti
@@ -66,7 +70,9 @@ public class Giocatore {
     public void avanzaPercorsoNobiltà(int n) throws IllegalArgumentException{
         if (n < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a avanzaPercorsoNobiltà(int n)");
         posizionePercorsoNobiltà = posizionePercorsoNobiltà + n;
-        //TODO gestione overflow
+        if (posizionePercorsoNobiltà > Costanti.MAX_POS_NOBILTA) {
+            posizionePercorsoNobiltà = Costanti.MAX_POS_NOBILTA;
+        }
     }
 
     //gestione punti vittoria
@@ -75,7 +81,9 @@ public class Giocatore {
     public void guadagnaPuntiVittoria(int p) throws IllegalArgumentException{
         if (p < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a guadagnaPuntiVittoria(int p)");
         puntiVittoria = puntiVittoria + p;
-        //TODO gestione overflow
+        if (puntiVittoria > Costanti.MAX_PUNTI_VITTORIA) {
+            puntiVittoria = Costanti.MAX_PUNTI_VITTORIA;
+        }
     }
 
     //gestione numero di azioni principali
@@ -98,10 +106,12 @@ public class Giocatore {
         azioniVelociDisponibili--;
     }
 
-    //TODO gestione delle carte del player
-    public void pescaCartePolitica(int numeroCarte){};
 
     public void ottieniBonus(Bonus b) {
         b.ottieni(this);
+    }
+
+    //TODO gestione delle carte del player
+    public void pescaCartePolitica(int numeroCarte){
     }
 }
