@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Created by emilianogagliardi on 24/05/16.
- */
 public class Costanti {
     //caratteristiche della partita
     public static final int NUM_REGIONI = 3;

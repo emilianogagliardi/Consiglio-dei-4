@@ -1,9 +1,5 @@
 package model;
 
-
-/**
- * Created by emilianogagliardi on 26/05/16.
- */
 public class Consigliere {
     private ColoreConsigliere colore;
 

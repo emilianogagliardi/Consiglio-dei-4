@@ -8,9 +8,6 @@ import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
 import static org.junit.Assert.assertEquals;
 
 
-/**
- * Created by emilianogagliardi on 20/05/16.
- */
 public class TestBonusComposti {
     private Bonus b;
     private Giocatore g;

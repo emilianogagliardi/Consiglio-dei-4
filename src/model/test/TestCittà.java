@@ -14,9 +14,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by emilianogagliardi on 22/05/16.
- */
 public class TestCittà {
     private Città città1;
     private Città città2;
