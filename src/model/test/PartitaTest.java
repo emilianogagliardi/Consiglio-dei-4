@@ -65,7 +65,6 @@ public class PartitaTest {
         partita1.setMazzoCartePolitica(mazzoCartePolitica1);
         partita1.setCartePoliticaScartate(new Mazzo<CartaPolitica>());
         //partita1.setMazzoCartePremioRe();
-        System.out.println(partita1.getBalconeDelConsiglioRe().addConsigliere(new Consigliere(ColoreConsigliere.VIOLA)).getColore().toString());
     }
 
 }

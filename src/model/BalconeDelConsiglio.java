@@ -33,10 +33,10 @@ public class BalconeDelConsiglio {
         return consigliereCaduto;
     }
 
-    public ArrayList<String> getColoriConsiglieri() {
-        ArrayList<String> colori = new ArrayList<>();
+    public ArrayList<ColoreConsigliere> getColoriConsiglieri() {
+        ArrayList<ColoreConsigliere> colori = new ArrayList<>();
         for (Consigliere consigliere : balcone) {
-            colori.add(consigliere.getColore().toString());
+            colori.add(consigliere.getColore());
         }
         return colori;
     }
@@ -51,7 +51,11 @@ public class BalconeDelConsiglio {
             for (CartaPolitica cartaPolitica : cartePolitica) {
                 coloriCartePolitica.add(cartaPolitica.getColore().toString());
             }
-            return this.getColoriConsiglieri().containsAll(coloriCartePolitica);
+            ArrayList<ColoreConsigliere> coloriConsiglieri = this.getColoriConsiglieri();
+            ArrayList<String> stringheColoriConsiglieri = new ArrayList<>();
+            for(ColoreConsigliere colore : coloriConsiglieri)
+                stringheColoriConsiglieri.add(colore.toString());
+            return stringheColoriConsiglieri.containsAll(coloriCartePolitica);
         }
     }
 }
