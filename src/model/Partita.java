@@ -9,9 +9,7 @@ import model.eccezioni.*;
 
 import java.util.*;
 
-import static model.Costanti.NUM_CARTE_BONUS_COLORE_CITTA;
-import static model.Costanti.NUM_CONSIGLIERI_RISERVA;
-import static model.Costanti.NUM_REGIONI;
+import static model.Costanti.*;
 
 public class Partita {
     private Re re;
@@ -23,7 +21,22 @@ public class Partita {
     private Mazzo<CartaPremioDelRe> mazzoCartePremioRe;
     private Collection<CartaBonusColoreCittà> carteBonusColoreCittà;
     private Collection<Consigliere> riservaConsiglieri;
-    private List<Giocatore> giocatori;
+    private List<Giocatore> giocatori = new ArrayList<>(MAX_GIOCATORI);
+    private int riservaAiutanti = NUM_AIUTANTI;
+
+
+    public void riceviAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
+        if ((this.riservaAiutanti - numAiutanti) < 0)
+           throw new IllegalArgumentException("Non ci sono abbastanza aiutanti in riserva");
+        this.riservaAiutanti -= numAiutanti;
+    }
+
+    public void aggiungiAiutanti(int numAiutanti) throws IllegalArgumentException { //aggiunge aiutanti alla riserva. Lancia un'eccezione se si cerca di superare il numero
+        //massimo consentito
+        if((this.riservaAiutanti + numAiutanti) > NUM_AIUTANTI)
+            throw new IllegalArgumentException("Numero massimo di aiutanti in riserva superato");
+        this.riservaAiutanti += numAiutanti;
+    }
 
     public void setRe(Città cittàRe) throws ReNonInizializzatoException{
         Re.init(cittàRe);
@@ -83,9 +96,12 @@ public class Partita {
         }
     }
 
-    public void addGiocatore(Giocatore giocatore) throws IllegalArgumentException {
+    public void addGiocatore(Giocatore giocatore) throws IllegalArgumentException, NumeroMassimoGiocatoriRaggiuntoException {
         if(giocatore == null)
             throw new IllegalArgumentException("giocatore is null");
+        if(giocatori.size() == MAX_GIOCATORI) {
+            throw new NumeroMassimoGiocatoriRaggiuntoException();
+        }
         this.giocatori.add(giocatore);
     }
 
