@@ -48,12 +48,9 @@ public class TestBalcone {
         balcone.addConsigliere(new Consigliere(ColoreConsigliere.ROSA));
         ArrayList<ColoreConsigliere> c = new ArrayList<>();
         c.add(ColoreConsigliere.ROSA);
-        /*c.add(ColoreConsigliere.NERO);
+        c.add(ColoreConsigliere.NERO);
         c.add(ColoreConsigliere.BIANCO);
-        c.add(ColoreConsigliere.AZZURRO);*/
-        c.add(ColoreConsigliere.ARANCIONE);
         c.add(ColoreConsigliere.AZZURRO);
-        c.add(ColoreConsigliere.BIANCO);
         for (int i = 0; i < 4; i++){
             assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
         }

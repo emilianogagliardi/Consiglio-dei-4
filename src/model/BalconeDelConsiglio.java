@@ -16,9 +16,7 @@ public class BalconeDelConsiglio {
         if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
         }
-        List<Consigliere> listaConsiglieri = asList(consiglieri);
-        Collections.reverse(listaConsiglieri);
-        balcone.addAll(listaConsiglieri);
+        balcone.addAll(asList(consiglieri));
     }
 
     public Queue<Consigliere> getConsiglieri(){

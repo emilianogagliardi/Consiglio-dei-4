@@ -60,7 +60,10 @@ public class PartitaTest {
     public void setMethods() throws Exception{
         partita1.addGiocatore(new Giocatore(idCounter++, 10, 1));
         partita1.addGiocatore(new Giocatore(idCounter++, 11, 2));
-        partita1.setBalconeDelConsiglioRe(new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.NERO)));
+        partita1.setBalconeDelConsiglioRe(new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.AZZURRO),
+                                                                    new Consigliere(ColoreConsigliere.BIANCO),
+                                                                    new Consigliere(ColoreConsigliere.BIANCO),
+                                                                    new Consigliere(ColoreConsigliere.NERO)));
         partita1.setCarteBonusColoreCittà(carteBonusColoreCittà1);
         partita1.setMazzoCartePolitica(mazzoCartePolitica1);
         partita1.setCartePoliticaScartate(new Mazzo<CartaPolitica>());
