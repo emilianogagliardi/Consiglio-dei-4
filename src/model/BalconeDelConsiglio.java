@@ -38,6 +38,7 @@ public class BalconeDelConsiglio {
         for (Consigliere consigliere : balcone) {
             colori.add(consigliere.getColore());
         }
+        Collections.reverse(colori);
         return colori;
     }
 
