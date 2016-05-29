@@ -14,9 +14,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by riccardo on 29/05/16.
- */
 public class PartitaTest {
     private Partita partita1;
     private Partita partita2;

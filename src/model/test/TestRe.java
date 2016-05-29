@@ -10,9 +10,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by emilianogagliardi on 25/05/16.
- */
 public class TestRe {
     private Re re;
     private Città città1;

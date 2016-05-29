@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by emilianogagliardi on 20/05/16.
- */
 public class TestBonusSingoli {
     private Giocatore giocatore;
     private BonusAiutanti bonusA;
