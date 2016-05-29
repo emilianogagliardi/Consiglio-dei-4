@@ -4,6 +4,7 @@ package model;
 import model.carte.CartaPolitica;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import static java.util.Arrays.asList;
@@ -24,10 +25,12 @@ public class BalconeDelConsiglio {
         return balcone;
     }
 
-    public void addConsigliere(Consigliere consigliere) throws IllegalStateException, NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
-        //nella coda per aggiungere un nuovo elemento
-        balcone.remove(balcone.element());
+    public Consigliere addConsigliere(Consigliere consigliere) throws IllegalStateException, NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
+        //nella coda per aggiungere un nuovo elemento; NullPointerException se consigliere è null. Viene ritornato il consigliere "caduto" dal balcone
+        Consigliere consigliereCaduto = balcone.element();
+        balcone.remove(consigliereCaduto);
         balcone.add(consigliere);
+        return consigliereCaduto;
     }
 
     public ArrayList<String> getColoriConsiglieri() {

@@ -15,7 +15,7 @@ public class Regione {
     private CartaBonusRegione cartaBonusRegione;
     private CartaPermessoCostruzione cartaPermessoCostruzione1;
     private CartaPermessoCostruzione cartaPermessoCostruzione2;
-    private Collection<Città> città = new HashSet<Città>(NUM_CITTA_PER_REGIONE); //HashSet è un'implementazione dell'interfaccia Set, una Collection che non permette duplicati. 5 è la capacità iniziale
+    private Collection<Città> città = new HashSet<Città>(NUM_CITTA_PER_REGIONE); //HashSet è un'implementazione dell'interfaccia Set, una Collection che non permette duplicati. NUM_CITTA_PER_REGIONE è la capacità iniziale
     private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione;
 
     public Regione(Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione, BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione){
@@ -23,10 +23,10 @@ public class Regione {
         this.cartaBonusRegione = cartaBonusRegione;
         this.mazzoCartePermessoCostruzione = mazzoCartePermessoCostruzione;
         this.mazzoCartePermessoCostruzione.mischia();
-        this.cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.getCarta();
-        this.cartaPermessoCostruzione1.setVisibile(true);
-        this.cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.getCarta();
-        this.cartaPermessoCostruzione2.setVisibile(true);
+        cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.getCarta();
+        cartaPermessoCostruzione1.setVisibile(true);
+        cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.getCarta();
+        cartaPermessoCostruzione2.setVisibile(true);
     }
 
     public BalconeDelConsiglio getBalconeDelConsiglio(){

@@ -47,6 +47,10 @@ public class Partita {
             this.balconeDelConsiglioRe = balconeDelConsiglioRe;
     }
 
+    public BalconeDelConsiglio getBalconeDelConsiglioRe(){
+        return balconeDelConsiglioRe;
+    }
+
     public void setRegioni(Collection<Regione> regioni) throws IllegalArgumentException {
         if (regioni.size() != NUM_REGIONI){
             throw new IllegalArgumentException("Il numero di regioni deve essere " + NUM_REGIONI);

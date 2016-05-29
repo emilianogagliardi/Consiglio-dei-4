@@ -8,9 +8,9 @@ import model.bonus.Bonus;
 
 public class CartaPermessoCostruzione extends CartaConBonus {
     private ArrayList<Città> città = new ArrayList<>(1);
-    //TODO: bisogna fare in modo che una carta permesso sia ricondotta ad una regione. E che sia possibile assegnare solo citàà di una detrminata regione
 
-    public CartaPermessoCostruzione (Bonus bonus, Città... città) throws IllegalArgumentException{
+
+    public CartaPermessoCostruzione (Bonus bonus, Città... città) throws IllegalArgumentException{ //le città devono appartenere alla regione cui appartiene il mazzo di carte permesso
         super(bonus);
         if (città == null) throw new IllegalArgumentException("non è possibile creare carte permesso senza città");
         for (Città elemento : città) {
