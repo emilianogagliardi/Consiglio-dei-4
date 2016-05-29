@@ -1,3 +1,5 @@
+package model.test;
+
 import model.ColoreCittà;
 import model.Mazzo;
 import model.bonus.BonusPuntiVittoria;
@@ -16,14 +18,14 @@ public class MazzoTest {
 
     @Before
     public void setUp() throws Exception {
-        cartaBonusColoreCittà1 = new CartaBonusColoreCittà(new BonusPuntiVittoria(1, NullBonus.getInstance()), ColoreCittà.ORO);
-        cartaBonusColoreCittà2 = new CartaBonusColoreCittà(new BonusPuntiVittoria(100000000, NullBonus.getInstance()), ColoreCittà.ORO);
+        cartaBonusColoreCittà1 = new CartaBonusColoreCittà(1, ColoreCittà.ORO);
+        cartaBonusColoreCittà2 = new CartaBonusColoreCittà(100000000, ColoreCittà.ORO);
         mazzoCartaBonusColoreCittà = new Mazzo<>();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void creaCartaNonValida(){
-        CartaBonusColoreCittà cartaBonusColoreCittàNonValida = new CartaBonusColoreCittà(new BonusPuntiVittoria(0,NullBonus.getInstance()), ColoreCittà.BRONZO);
+        CartaBonusColoreCittà cartaBonusColoreCittàNonValida = new CartaBonusColoreCittà(0, ColoreCittà.BRONZO);
     }
 
     @Test
