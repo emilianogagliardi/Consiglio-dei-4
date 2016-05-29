@@ -7,13 +7,15 @@ import model.carte.CartaPermessoCostruzione;
 import java.util.Collection;
 import java.util.HashSet;
 
+import static model.Costanti.NUM_CITTA_PER_REGIONE;
+
 
 public class Regione {
     private BalconeDelConsiglio balconeDelConsiglio;
     private CartaBonusRegione cartaBonusRegione;
     private CartaPermessoCostruzione cartaPermessoCostruzione1;
     private CartaPermessoCostruzione cartaPermessoCostruzione2;
-    private Collection<Città> città = new HashSet<Città>(Costanti.NUM_CITTA_PER_REGIONE); //HashSet è un'implementazione dell'interfaccia Set, una Collection che non permette duplicati. 5 è la capacità iniziale
+    private Collection<Città> città = new HashSet<Città>(NUM_CITTA_PER_REGIONE); //HashSet è un'implementazione dell'interfaccia Set, una Collection che non permette duplicati. 5 è la capacità iniziale
     private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione = new Mazzo<>();
 
     public Regione(BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione, CartaPermessoCostruzione cartaPermessoCostruzione1, CartaPermessoCostruzione cartaPermessoCostruzione2){

@@ -9,6 +9,8 @@ import model.eccezioni.*;
 
 import java.util.*;
 
+import static model.Costanti.NUM_CARTE_BONUS_COLORE_CITTA;
+import static model.Costanti.NUM_CONSIGLIERI_RISERVA;
 import static model.Costanti.NUM_REGIONI;
 
 public class Partita {
@@ -20,7 +22,8 @@ public class Partita {
     private Mazzo<CartaPolitica> mazzoCartePolitica;
     private Mazzo<CartaPremioDelRe> mazzoCartePremioRe;
     private Collection<CartaBonusColoreCittà> carteBonusColoreCittà;
-    private Collection<Consiglere> riservaConsiglieri;
+    private Collection<Consigliere> riservaConsiglieri;
+    private List<Giocatore> giocatori;
 
     public void setRe(Città cittàRe) throws ReNonInizializzatoException{
         Re.init(cittàRe);
@@ -32,15 +35,15 @@ public class Partita {
             this.balconeDelConsiglioRe = balconeDelConsiglioRe;
     }
 
-    public void setRegioni(Collection<Regione> regioni) throws NumeroRegioniNonValidoException{
-        if (regioni.size() != Costanti.NUM_REGIONI){
-            throw new NumeroRegioniNonValidoException();
+    public void setRegioni(Collection<Regione> regioni) throws IllegalArgumentException {
+        if (regioni.size() != NUM_REGIONI){
+            throw new IllegalArgumentException("Il numero di regioni deve essere " + NUM_REGIONI);
         }
         else if(this.regioni == null) {
             this.regioni = regioni;
         }
 
-}
+    }
 
     public void setPercorsoDellaNobiltà(List<Bonus> percorsoDellaNobiltà){
         if(this.percorsoDellaNobiltà == null) {
@@ -63,23 +66,30 @@ public class Partita {
             this.mazzoCartePremioRe = mazzoCartePremioRe;
     }
 
-    public void setCarteBonusColoreCittà(Collection<CartaBonusColoreCittà> carteBonusColoreCittà) throws NumeroCarteBonusColoreCittàNonValidoException  {
-        if(carteBonusColoreCittà.size() != Costanti.NUM_CARTE_BONUS_COLORE_CITTA){
-            throw new NumeroCarteBonusColoreCittàNonValidoException();
+    public void setCarteBonusColoreCittà(Collection<CartaBonusColoreCittà> carteBonusColoreCittà) throws IllegalArgumentException  {
+        if(carteBonusColoreCittà.size() != NUM_CARTE_BONUS_COLORE_CITTA){
+            throw new IllegalArgumentException("Il numero di carte bonus colore città deve essere " + NUM_CARTE_BONUS_COLORE_CITTA);
         }
         else if(this.carteBonusColoreCittà == null)
             this.carteBonusColoreCittà = carteBonusColoreCittà;
     }
 
-    public void setRiservaConsiglieri(Collection<Consiglere> riservaConsiglieri) throws NumeroConsiglieriRiservaNonValidoException{
-        if(riservaConsiglieri.size() != 8) {
-            throw new NumeroConsiglieriRiservaNonValidoException();
+    public void setRiservaConsiglieri(Collection<Consigliere> riservaConsiglieri) throws IllegalArgumentException {
+        if(riservaConsiglieri.size() != NUM_CONSIGLIERI_RISERVA) {
+            throw new IllegalArgumentException("Il numero di consiglieri deve essere " + NUM_CONSIGLIERI_RISERVA);
         }
         else if (this.riservaConsiglieri == null){
             this.riservaConsiglieri = riservaConsiglieri;
         }
     }
 
+    public void addGiocatore(Giocatore giocatore) throws IllegalArgumentException {
+        if(giocatore == null)
+            throw new IllegalArgumentException("giocatore is null");
+        this.giocatori.add(giocatore);
+    }
 
-
+    public List<Giocatore> getGiocatori(){
+        return giocatori;
+    }
 }

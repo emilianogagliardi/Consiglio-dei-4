@@ -2,21 +2,20 @@ package model;
 
 
 import model.carte.CartaPolitica;
-import model.eccezioni.NumeroCartePoliticaNonValidoException;
-import model.eccezioni.NumeroConsiglieriNonValidoException;
 
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import static java.util.Arrays.asList;
+import static model.Costanti.NUM_CONSIGLIERI_BALCONE;
 
 public class BalconeDelConsiglio {
-    private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(4); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
+    private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 
-    public BalconeDelConsiglio(Consigliere... consiglieri) throws IllegalStateException, NullPointerException, NumeroConsiglieriNonValidoException {
-        if (consiglieri.length != 4) {
-            throw new NumeroConsiglieriNonValidoException();
+    public BalconeDelConsiglio(Consigliere... consiglieri) throws IllegalStateException, NullPointerException, IllegalArgumentException {
+        if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
+            throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
         }
         balcone.addAll(asList(consiglieri));
     }
@@ -39,9 +38,9 @@ public class BalconeDelConsiglio {
         return colori;
     }
 
-    public boolean soddisfaConsiglio(CartaPolitica... cartePolitica) throws NumeroCartePoliticaNonValidoException {
-        if (cartePolitica.length <= 0 || cartePolitica.length > 4) {
-            throw new NumeroCartePoliticaNonValidoException();
+    public boolean soddisfaConsiglio(CartaPolitica... cartePolitica) throws IllegalArgumentException {
+        if (cartePolitica.length <= 0 || cartePolitica.length > NUM_CONSIGLIERI_BALCONE) {
+            throw new IllegalArgumentException("Il numero di carte politica scartate è negativo o nullo oppure maggiore di " + NUM_CONSIGLIERI_BALCONE);
         } else {
             //metto i colori delle carte politica e dei consiglieri in arraylist e poi uso il metodo containsAll di Collection per verificare se i colori delle carte politica
             //sono contenuti nei colori dei consigieri del baclone scelto
