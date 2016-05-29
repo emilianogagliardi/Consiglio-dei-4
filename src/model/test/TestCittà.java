@@ -67,9 +67,9 @@ public class TestCittà {
 
     @Test
     public void costruisciEmporiTest() throws EmporioGiàEsistenteException{
-        Giocatore g1 = new Giocatore (0, 0, 0, 0);
-        Giocatore g2 = new Giocatore (1, 0, 0, 0);
-        Giocatore g3 = new Giocatore (2, 0, 0, 0);
+        Giocatore g1 = new Giocatore (0, 0, 0);
+        Giocatore g2 = new Giocatore (1, 0, 0);
+        Giocatore g3 = new Giocatore (2, 0, 0);
         città1.costruisciEmporio(new Emporio(g1.getId()));
         città1.costruisciEmporio(new Emporio(g2.getId()));
         città1.costruisciEmporio(new Emporio(g3.getId()));
@@ -80,7 +80,7 @@ public class TestCittà {
 
     @Test (expected = EmporioGiàEsistenteException.class)
     public void costruisciDueVolteTest() throws EmporioGiàEsistenteException{
-        Giocatore g = new Giocatore(0, 0, 0, 0);
+        Giocatore g = new Giocatore(0, 0, 0);
         città1.costruisciEmporio(new Emporio(g.getId()));
         città1.costruisciEmporio(new Emporio(g.getId()));
     }

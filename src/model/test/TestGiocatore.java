@@ -23,7 +23,7 @@ public class TestGiocatore {
     private Giocatore giocatore;
 
     public TestGiocatore() {
-        giocatore = new Giocatore(0, 0, 0, 0);
+        giocatore = new Giocatore(0, 0, 0);
     }
 
     /*
@@ -31,13 +31,13 @@ public class TestGiocatore {
      */
     @Test (expected = MoneteNonSufficientiException.class)
     public void underflowMoneteTest() throws MoneteNonSufficientiException{
-        Giocatore giocatore1 = new Giocatore(0,0,0,0);
+        Giocatore giocatore1 = new Giocatore(0,0,0);
         giocatore1.pagaMonete(1);
     }
 
     @Test (expected = AiutantiNonSufficientiException.class)
     public void underflowAiutantiTest() throws AiutantiNonSufficientiException{
-        Giocatore giocatore1 = new Giocatore(0,0,0,0);
+        Giocatore giocatore1 = new Giocatore(0,0,0);
         giocatore.pagaAiutanti(1);
     }
 
@@ -102,7 +102,7 @@ public class TestGiocatore {
 
     @Test
     public void scartaCartePoliticaTest() {
-        Giocatore g1 = new Giocatore(0,0,0,0);
+        Giocatore g1 = new Giocatore(0,0,0);
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
@@ -122,13 +122,13 @@ public class TestGiocatore {
 
     @Test (expected = IllegalArgumentException.class)
     public void scartaCartaNonEsistente() {
-        Giocatore gi = new Giocatore(0,0,0,0);
+        Giocatore gi = new Giocatore(0,0,0);
         gi.scartaCartePolitica(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
     }
 
     @Test
     public void copriCartePermessoCostruzioneTest() {
-        Giocatore g1 = new Giocatore(0,0,0,0);
+        Giocatore g1 = new Giocatore(0,0,0);
         CartaPermessoCostruzione c1 = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance()));
         CartaPermessoCostruzione c2 = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance()));
         CartaPermessoCostruzione c3 = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.INDUR, ColoreCittà.BRONZO, NullBonus.getInstance()));
@@ -158,7 +158,7 @@ public class TestGiocatore {
 
     @Test (expected = IllegalArgumentException.class)
     public void copriCartePermessoCostruzioneNonEsistentiTest() {
-        Giocatore g1 = new Giocatore(0,0,0,0);
+        Giocatore g1 = new Giocatore(0,0,0);
         CartaPermessoCostruzione c = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance()));
         g1.copriCartaPermessoCostruzione(c);
     }

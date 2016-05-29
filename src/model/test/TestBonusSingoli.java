@@ -26,7 +26,7 @@ public class TestBonusSingoli {
 
     @Before
     public void setUp(){
-        giocatore = new Giocatore(1, 0, 0, 0);
+        giocatore = new Giocatore(1, 0, 0);
     }
 
     @Test (expected = IllegalArgumentException.class)

@@ -5,8 +5,4 @@ import java.util.Objects;
 
 public enum ColoreCartaPolitica {
     JOLLY, VIOLA, AZZURRO, NERO, ROSA, ARANCIONE, BIANCO;
-    @Override
-    public boolean equals(Object o){
-
-    }
 }

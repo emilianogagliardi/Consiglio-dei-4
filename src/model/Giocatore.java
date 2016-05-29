@@ -26,11 +26,10 @@ public class Giocatore {
     private int azioniPrincipaliDisponibili;
     private int azioniVelociDisponibili;
 
-    public Giocatore (int id, int monete, int aiutanti, int posizionePercorsoNobiltà){
+    public Giocatore (int id, int monete, int aiutanti){
         idGiocatore = id;
         guadagnaMonete(monete);
         guadagnaAiutanti(aiutanti);
-        avanzaPercorsoNobiltà(posizionePercorsoNobiltà);
         emporiDisponibili = Costanti.NUM_EMPORI_GIOCATORE;
         manoCartePolitica = new ArrayList<CartaPolitica>();
         manoCarteBonusRegione = new ArrayList<CartaBonusRegione>();

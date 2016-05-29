@@ -21,7 +21,7 @@ public class TestBonusComposti {
 
     public TestBonusComposti() {
         b = NullBonus.getInstance();
-        g = new Giocatore(0,0,0,0);
+        g = new Giocatore(0,0,0);
     }
 
     @Before
