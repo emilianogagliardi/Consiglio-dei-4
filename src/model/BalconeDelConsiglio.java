@@ -3,9 +3,7 @@ package model;
 
 import model.carte.CartaPolitica;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import static java.util.Arrays.asList;
 import static model.Costanti.NUM_CONSIGLIERI_BALCONE;
@@ -18,7 +16,9 @@ public class BalconeDelConsiglio {
         if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
         }
-        balcone.addAll(asList(consiglieri));
+        List<Consigliere> listaConsiglieri = asList(consiglieri);
+        Collections.reverse(listaConsiglieri);
+        balcone.addAll(listaConsiglieri);
     }
 
     public Queue<Consigliere> getConsiglieri(){

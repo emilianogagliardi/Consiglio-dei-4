@@ -1,4 +1,4 @@
-package model.test;
+
 
 import model.ColoreCittà;
 import model.Mazzo;
