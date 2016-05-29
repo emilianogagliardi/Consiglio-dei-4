@@ -16,13 +16,17 @@ public class Regione {
     private CartaPermessoCostruzione cartaPermessoCostruzione1;
     private CartaPermessoCostruzione cartaPermessoCostruzione2;
     private Collection<Città> città = new HashSet<Città>(NUM_CITTA_PER_REGIONE); //HashSet è un'implementazione dell'interfaccia Set, una Collection che non permette duplicati. 5 è la capacità iniziale
-    private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione = new Mazzo<>();
+    private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione;
 
-    public Regione(BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione, CartaPermessoCostruzione cartaPermessoCostruzione1, CartaPermessoCostruzione cartaPermessoCostruzione2){
+    public Regione(Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione, BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione){
         this.balconeDelConsiglio = balcone;
         this.cartaBonusRegione = cartaBonusRegione;
-        this.cartaPermessoCostruzione1 = cartaPermessoCostruzione1;
-        this.cartaPermessoCostruzione2 = cartaPermessoCostruzione2;
+        this.mazzoCartePermessoCostruzione = mazzoCartePermessoCostruzione;
+        this.mazzoCartePermessoCostruzione.mischia();
+        this.cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.getCarta();
+        this.cartaPermessoCostruzione1.setVisibile(true);
+        this.cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.getCarta();
+        this.cartaPermessoCostruzione2.setVisibile(true);
     }
 
     public BalconeDelConsiglio getBalconeDelConsiglio(){
@@ -30,15 +34,22 @@ public class Regione {
     }
 
     public CartaBonusRegione getCartaBonusRegione(){
+        cartaBonusRegione = null;
         return cartaBonusRegione;
     }
 
     public CartaPermessoCostruzione getCartaPermessoCostruzione1(){
-        return cartaPermessoCostruzione1;
+        CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione1;
+        cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.getCarta();
+        cartaPermessoCostruzione1.setVisibile(true);
+        return cartaDaRitornare;
     }
 
     public CartaPermessoCostruzione getCartaPermessoCostruzione2(){
-        return cartaPermessoCostruzione2;
+        CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione2;
+        cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.getCarta();
+        cartaPermessoCostruzione2.setVisibile(true);
+        return cartaDaRitornare;
 }
 
     public void addCittà (Città città) {
@@ -49,9 +60,6 @@ public class Regione {
         return città;
     }
 
-    public void addCartaPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione){
-        mazzoCartePermessoCostruzione.addCarta(cartaPermessoCostruzione);
-    }
 
     public void cambiaCartePermessoCostruzione(){
         cartaPermessoCostruzione1.setVisibile(false);
