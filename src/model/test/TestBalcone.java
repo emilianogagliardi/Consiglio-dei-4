@@ -47,10 +47,18 @@ public class TestBalcone {
                                             new Consigliere(ColoreConsigliere.NERO));
         balcone.addConsigliere(new Consigliere(ColoreConsigliere.ROSA));
         ArrayList<ColoreConsigliere> c = new ArrayList<>();
+        /*
+        I colori seguenti sono inseriti in ordine invertito
         c.add(ColoreConsigliere.ROSA);
         c.add(ColoreConsigliere.NERO);
         c.add(ColoreConsigliere.BIANCO);
+        c.add(ColoreConsigliere.AZZURRO);*/
+
+        //I colori seguenti sono inseriti in ordine corretto
         c.add(ColoreConsigliere.AZZURRO);
+        c.add(ColoreConsigliere.BIANCO);
+        c.add(ColoreConsigliere.NERO);
+        c.add(ColoreConsigliere.ROSA);
         for (int i = 0; i < 4; i++){
             assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
         }
