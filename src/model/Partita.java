@@ -38,9 +38,8 @@ public class Partita {
         this.riservaAiutanti += numAiutanti;
     }
 
-    public void setRe(Città cittàRe) throws ReNonInizializzatoException{
-        Re.init(cittàRe);
-        re = Re.getInstance();
+    public void setRe(Re re) {
+        this.re = re;
     }
 
     public void setBalconeDelConsiglioRe(BalconeDelConsiglio balconeDelConsiglioRe){
