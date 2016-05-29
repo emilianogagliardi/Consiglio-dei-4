@@ -84,9 +84,9 @@ public class TestGiocatore {
     @Test
     public void pescaCartaTest(){
         CartaPolitica cp = new CartaPolitica(ColoreCartaPolitica.ARANCIONE);
-        CartaBonusRegione cbr = new CartaBonusRegione(new BonusPuntiVittoria(2, NullBonus.getInstance()));
-        CartaBonusColoreCittà cbcc = new CartaBonusColoreCittà(new BonusPuntiVittoria(1, NullBonus.getInstance()), ColoreCittà.FERRO);
-        CartaPremioDelRe cpr = new CartaPremioDelRe(new BonusPuntiVittoria(2, NullBonus.getInstance()));
+        CartaBonusRegione cbr = new CartaBonusRegione(2);
+        CartaBonusColoreCittà cbcc = new CartaBonusColoreCittà(1, ColoreCittà.FERRO);
+        CartaPremioDelRe cpr = new CartaPremioDelRe(2);
         CartaPermessoCostruzione cpc = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance()));
         giocatore.addCarta(cp);
         assertTrue(giocatore.getManoCartePolitica().contains(cp));
