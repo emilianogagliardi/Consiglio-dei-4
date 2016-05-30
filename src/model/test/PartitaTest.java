@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> ba99ad7600471505591f2835aedcf4de058aa0d0
-
 import model.*;
 import model.bonus.BonusPuntiVittoria;
 import model.bonus.NullBonus;
