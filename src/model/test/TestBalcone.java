@@ -4,6 +4,7 @@ import model.BalconeDelConsiglio;
 import model.ColoreConsigliere;
 import model.Consigliere;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -13,14 +14,22 @@ import static org.junit.Assert.assertEquals;
 public class TestBalcone {
     private BalconeDelConsiglio balcone;
 
+    @Before
     @Test(expected = IllegalArgumentException.class)
     public void balconeVuotoTest () {
         balcone = new BalconeDelConsiglio();
     }
 
+    @Before
     @Test(expected = IllegalArgumentException.class)
     public void balconeQuasiPienoTest () {
         balcone = new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.ARANCIONE), new Consigliere(ColoreConsigliere.AZZURRO));
+    }
+
+    @Before
+    @Test(expected = NullPointerException.class)
+    public void nullBalconeTest() {
+        balcone = new BalconeDelConsiglio(null);
     }
 
     @Test
@@ -35,7 +44,7 @@ public class TestBalcone {
         c.add(ColoreConsigliere.AZZURRO);
         c.add(ColoreConsigliere.ARANCIONE);
         for (int i = 0; i < 4; i++){
-            assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
+            assertEquals(c.get(i).toString(), balcone.getColoriConsiglieri().get(i));
         }
     }
 
@@ -52,7 +61,7 @@ public class TestBalcone {
         c.add(ColoreConsigliere.BIANCO);
         c.add(ColoreConsigliere.AZZURRO);
         for (int i = 0; i < 4; i++){
-            assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
+            assertEquals(c.get(i).toString(), balcone.getColoriConsiglieri().get(i));
         }
         balcone.addConsigliere(new Consigliere(ColoreConsigliere.VIOLA));
         c = new ArrayList<>();
@@ -61,7 +70,7 @@ public class TestBalcone {
         c.add(ColoreConsigliere.NERO);
         c.add(ColoreConsigliere.BIANCO);
         for (int i = 0; i < 4; i++){
-            assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
+            assertEquals(c.get(i).toString(), balcone.getColoriConsiglieri().get(i).toString());
         }
         balcone.addConsigliere(new Consigliere(ColoreConsigliere.ARANCIONE));
         c = new ArrayList<>();
@@ -70,7 +79,7 @@ public class TestBalcone {
         c.add(ColoreConsigliere.ROSA);
         c.add(ColoreConsigliere.NERO);
         for (int i = 0; i < 4; i++){
-            assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
+            assertEquals(c.get(i).toString(), balcone.getColoriConsiglieri().get(i).toString());
         }
     }
 
