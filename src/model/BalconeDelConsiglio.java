@@ -16,9 +16,7 @@ public class BalconeDelConsiglio {
         if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
         }
-        List<Consigliere> listaConsiglieri = asList(consiglieri);
-        Collections.reverse(listaConsiglieri);
-        balcone.addAll(listaConsiglieri);
+        balcone.addAll(asList(consiglieri));
     }
 
     public Queue<Consigliere> getConsiglieri(){
@@ -33,10 +31,10 @@ public class BalconeDelConsiglio {
         return consigliereCaduto;
     }
 
-    public ArrayList<String> getColoriConsiglieri() {
-        ArrayList<String> colori = new ArrayList<>();
+    public ArrayList<ColoreConsigliere> getColoriConsiglieri() {
+        ArrayList<ColoreConsigliere> colori = new ArrayList<>();
         for (Consigliere consigliere : balcone) {
-            colori.add(consigliere.getColore().toString());
+            colori.add(consigliere.getColore());
         }
         return colori;
     }
@@ -51,7 +49,11 @@ public class BalconeDelConsiglio {
             for (CartaPolitica cartaPolitica : cartePolitica) {
                 coloriCartePolitica.add(cartaPolitica.getColore().toString());
             }
-            return this.getColoriConsiglieri().containsAll(coloriCartePolitica);
+            ArrayList<ColoreConsigliere> coloriConsiglieri = this.getColoriConsiglieri();
+            ArrayList<String> stringheColoriConsiglieri = new ArrayList<>();
+            for(ColoreConsigliere colore : coloriConsiglieri)
+                stringheColoriConsiglieri.add(colore.toString());
+            return stringheColoriConsiglieri.containsAll(coloriCartePolitica);
         }
     }
 }
