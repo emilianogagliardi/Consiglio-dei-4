@@ -1,6 +1,5 @@
 package model;
 
-
 import model.carte.CartaPolitica;
 
 import java.util.*;
@@ -12,7 +11,7 @@ public class BalconeDelConsiglio {
     private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 
-    public BalconeDelConsiglio(Consigliere... consiglieri) throws IllegalStateException, NullPointerException, IllegalArgumentException {
+    public BalconeDelConsiglio(Consigliere... consiglieri) throws NullPointerException, IllegalArgumentException {
         if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
         }
@@ -23,7 +22,7 @@ public class BalconeDelConsiglio {
         return balcone;
     }
 
-    public Consigliere addConsigliere(Consigliere consigliere) throws IllegalStateException, NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
+    public Consigliere addConsigliere(Consigliere consigliere) throws NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
         //nella coda per aggiungere un nuovo elemento; NullPointerException se consigliere è null. Viene ritornato il consigliere "caduto" dal balcone
         Consigliere consigliereCaduto = balcone.element();
         balcone.remove(consigliereCaduto);
