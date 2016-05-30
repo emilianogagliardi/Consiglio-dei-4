@@ -1,8 +1,8 @@
 
-
 import model.BalconeDelConsiglio;
 import model.ColoreConsigliere;
 import model.Consigliere;
+
 import org.junit.Test;
 
 import java.util.ArrayList;

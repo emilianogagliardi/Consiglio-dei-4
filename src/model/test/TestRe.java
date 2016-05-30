@@ -1,4 +1,4 @@
-package model.test;
+
 
 import model.Città;
 import model.NomeCittà;

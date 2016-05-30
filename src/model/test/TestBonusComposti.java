@@ -1,4 +1,3 @@
-package model.test;
 
 import model.Giocatore;
 import model.bonus.*;
