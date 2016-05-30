@@ -19,12 +19,13 @@ import java.util.concurrent.Executors;
 
 //TODO sincronizzazione????
 
-public class AttesaConnessioni {
+public class InstauraConnessioni {
     private HashMap<String, String> giocatori = new HashMap<>();
     private ExecutorService executors = Executors.newCachedThreadPool();
 
-    private void startServer() {
+    public void startServer() {
         ServerSocket serverSocket = null;
+        ThreadTimeout timeout = new ThreadTimeout(this);
         try {
             serverSocket = new ServerSocket(CostantiSistema.PORT);
         }catch (IOException e) {
@@ -44,13 +45,16 @@ public class AttesaConnessioni {
                 }
                 giocatori.put(nickname, comunicazione);
                 if (giocatori.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
-                    executors.submit(new ThreadTimeout(this));
+                    timeout.start();
                 }else if (giocatori.size() == CostantiSistema.NUM_GOCATORI_MAX) {
-                    ThreadTimeout t = new ThreadTimeout(this);
-                    //TODO flusha la mappa
+                    fineGiocatoriAccettati();
+                    timeout.interrupt(); //killa il thread di timeout
                 }
             }catch (IOException e){
                 System.out.println("impossibile creare socket da server socket");
+            }catch (NullPointerException e) {
+                System.out.println("server socket è null, impossibile eseguire accept");
+                break;
             }
         }
     }
@@ -61,7 +65,7 @@ public class AttesaConnessioni {
     }
 
     private void flushaMappa() {
-        giocatori = new HashMap<String, String>();
+        giocatori = new HashMap<>();
     }
 
     private void creaEAvviaPartita() {
@@ -72,7 +76,7 @@ public class AttesaConnessioni {
     }
 
     public static void main(String[] args) {
-        AttesaConnessioni a = new AttesaConnessioni();
+        InstauraConnessioni a = new InstauraConnessioni();
         a.startServer();
     }
 }

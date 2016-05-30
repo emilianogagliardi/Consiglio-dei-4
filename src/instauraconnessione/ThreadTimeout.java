@@ -6,20 +6,23 @@ package instauraconnessione;
  * che comporterà l'inizializzazione e lo start della partita.
  */
 
-public class ThreadTimeout implements Runnable{
-    AttesaConnessioni attesaConnessioni;
+public class ThreadTimeout extends Thread{
+    InstauraConnessioni attesaConnessioni;
 
-    public ThreadTimeout(AttesaConnessioni a){
+    public ThreadTimeout(InstauraConnessioni a){
         attesaConnessioni = a;
     }
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(CostantiSistema.TIMEOUT*1000);
-        }catch (InterruptedException e) {
-            System.out.println("errore nel timeout");
+        while (!this.isInterrupted()) {
+            try {
+                Thread.sleep(500); //controlla se è interrotto o no ogni mezzo secondo
+            } catch (InterruptedException e) {
+                System.out.println("errore nel timeout");
+            }
         }
-        attesaConnessioni.fineGiocatoriAccettati();
+        if(!this.isInterrupted())
+            attesaConnessioni.fineGiocatoriAccettati();
     }
 }
