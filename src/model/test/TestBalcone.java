@@ -1,4 +1,4 @@
-package model.test;
+
 
 import model.BalconeDelConsiglio;
 import model.ColoreConsigliere;
