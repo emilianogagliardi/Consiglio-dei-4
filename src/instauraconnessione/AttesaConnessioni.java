@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 
 public class AttesaConnessioni {
     private HashMap<String, String> giocatori = new HashMap<>();
-    private ExecutorService handlerPartita = Executors.newCachedThreadPool();
+    private ExecutorService executors = Executors.newCachedThreadPool();
 
     private void startServer() {
         ServerSocket serverSocket = null;
@@ -43,8 +43,8 @@ public class AttesaConnessioni {
                     out.println("true"); //conferma connessione accettata
                 }
                 giocatori.put(nickname, comunicazione);
-                if (giocatori.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) {
-                    //TODO start thread conteggio timeout
+                if (giocatori.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
+                    executors.submit(new ThreadTimeout(this));
                 }else if (giocatori.size() == CostantiSistema.NUM_GOCATORI_MAX) {
                     ThreadTimeout t = new ThreadTimeout(this);
                     //TODO flusha la mappa
@@ -68,7 +68,7 @@ public class AttesaConnessioni {
         Partita nuovaPartita = new Partita();
         //TODO costruisci il model
         //TODO costruisci le proxyview
-        handlerPartita.submit(new HandlerPartita(nuovaPartita));//anche parametro InterfacciaView
+        executors.submit(new HandlerPartita(nuovaPartita));//anche parametro InterfacciaView
     }
 
     public static void main(String[] args) {
