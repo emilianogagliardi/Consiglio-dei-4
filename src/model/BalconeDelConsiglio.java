@@ -45,15 +45,42 @@ public class BalconeDelConsiglio {
         } else {
             //metto i colori delle carte politica e dei consiglieri in arraylist e poi uso il metodo containsAll di Collection per verificare se i colori delle carte politica
             //sono contenuti nei colori dei consigieri del baclone scelto
-            ArrayList<String> coloriCartePolitica = new ArrayList<>();
-            for (CartaPolitica cartaPolitica : cartePolitica) {
-                coloriCartePolitica.add(cartaPolitica.getColore().toString());
+            HashMap<Colore, Integer> mappaColoriBalcone = new HashMap<>();
+            Integer contatore = 1;
+            for(ColoreConsigliere coloreConsigliere : this.getColoriConsiglieri()) {//getColoriConsiglieri restituisce un ArrayList di colori consigliere
+                if(mappaColoriBalcone.containsKey(coloreConsigliere.toColore())){
+                    contatore++;
+                }
+                else contatore = 1;
+                mappaColoriBalcone.put(coloreConsigliere.toColore(), contatore);
             }
-            ArrayList<ColoreConsigliere> coloriConsiglieri = this.getColoriConsiglieri();
-            ArrayList<String> stringheColoriConsiglieri = new ArrayList<>();
-            for(ColoreConsigliere colore : coloriConsiglieri)
-                stringheColoriConsiglieri.add(colore.toString());
-            return stringheColoriConsiglieri.containsAll(coloriCartePolitica);
+            HashMap<Colore, Integer> mappaColoriCartePolitica = new HashMap<>();
+            contatore = 1;
+            for (CartaPolitica cartaPolitica : cartePolitica){
+                if (!cartaPolitica.getColore().toColore().equals(Colore.JOLLY)) {
+                    if (mappaColoriCartePolitica.containsKey(cartaPolitica.getColore().toColore())){
+                        contatore++;
+                    }
+                    else contatore = 1;
+                    mappaColoriCartePolitica.put(cartaPolitica.getColore().toColore(), contatore);
+                }
+            }
+            for(Map.Entry<Colore, Integer> entry : mappaColoriBalcone.entrySet()) {
+                Colore keyBalcone = entry.getKey();
+                Integer valueBalcone = entry.getValue();
+                try {
+                    if (valueBalcone - mappaColoriCartePolitica.get(keyBalcone) < 0)
+                        return false;
+                    else mappaColoriCartePolitica.put(keyBalcone, 0);
+                } catch (NullPointerException exc){
+                    //do nothing
+                }
+            }
+            for(Map.Entry<Colore, Integer> entry : mappaColoriCartePolitica.entrySet()) {
+                if (entry.getValue() != 0)
+                    return false;
+            }
+            return true;
         }
     }
 }

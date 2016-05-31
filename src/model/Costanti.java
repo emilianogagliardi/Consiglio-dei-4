@@ -9,7 +9,7 @@ public class Costanti {
     public static final int NUM_CARTE_PREMIO_RE = 5;
     public static final int NUM_CARTE_BONUS_REGIONE = NUM_REGIONI;
     public static final int NUM_CARTE_PERMESSO = 45;
-    public static final int NUM_CARTE_PERMESSO_REGIONE = NUM_CARTE_BONUS_REGIONE/NUM_REGIONI;
+    public static final int NUM_CARTE_PERMESSO_REGIONE = NUM_CARTE_PERMESSO/NUM_REGIONI;
     public static final int NUM_AIUTANTI = 30;
     public static final int NUM_CONSIGLIERI = 24;
     public static final int NUM_CONSIGLIERI_RISERVA = 8;
