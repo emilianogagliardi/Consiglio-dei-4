@@ -76,7 +76,7 @@ public class Server {
         Partita nuovaPartita = new Partita();
         //TODO costruisci il model
         //TODO costruisci le proxyview
-        executors.submit(new Controller(nuovaPartita));//anche parametro InterfacciaView
+        executors.submit(new Controller(nuovaPartita));//anche parametro proxyview.InterfacciaView
     }
 
     public static void main(String[] args) {

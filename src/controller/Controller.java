@@ -6,9 +6,9 @@ import model.Partita;
 
 public class Controller implements Runnable{
     private Partita model;
-    //private collezione di InterfacciaView views;
+    //private collezione di proxyview.InterfacciaView views;
 
-    public Controller(Partita p) { //InterfacciaView views
+    public Controller(Partita p) { //proxyview.InterfacciaView views
         model = p;
         //assegna views
     }
