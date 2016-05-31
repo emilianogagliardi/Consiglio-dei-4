@@ -1,5 +1,3 @@
-
-
 import model.ColoreCittà;
 import model.Mazzo;
 import model.bonus.BonusPuntiVittoria;

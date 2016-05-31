@@ -1,5 +1,3 @@
-
-
 import model.Città;
 import model.NomeCittà;
 import model.Re;
@@ -32,14 +30,10 @@ public class TestRe {
     @Test
     public void spostaReTest() {
         assertEquals(re.getCittà(), città1);
-        re.sposta(città2);
+        re.setPosizione(città2);
         assertEquals(re.getCittà(), città2);
-        re.sposta(città3);
+        re.setPosizione(città3);
         assertEquals(re.getCittà(),città3);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void spostaCittàNonAdiacenteTest() throws IllegalArgumentException{
-        re.sposta(città3);
-    }
 }

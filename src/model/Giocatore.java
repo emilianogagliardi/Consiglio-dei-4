@@ -48,12 +48,14 @@ public class Giocatore {
         if (monete > Costanti.MAX_MONETE) {
             monete = Costanti.MAX_MONETE;
         }
+        //TODO: foreach view(view.updateMonete(idGiocatore, this.getMonete()))
     }
 
     public void pagaMonete(int m) throws IllegalArgumentException, MoneteNonSufficientiException {
         if(m < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a pagaMonete(int m)");
         if(monete - m < 0) throw new MoneteNonSufficientiException();
         monete = monete - m;
+        //TODO: updateMonete()
     }
 
     //gestione numero aiutanti
@@ -62,12 +64,14 @@ public class Giocatore {
     public void guadagnaAiutanti(int a) throws IllegalArgumentException{
         if (a < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a guadagnaAiutanti(int a)");
         aiutanti = aiutanti + a;
+        //TODO: updateAiutanti()
     }
 
     public void pagaAiutanti(int a) throws IllegalArgumentException, AiutantiNonSufficientiException {
         if (a < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a pagaAiutanti(int a)");
         if (aiutanti - a < 0) throw new AiutantiNonSufficientiException();
         aiutanti = aiutanti - a;
+        //TODO: updateAiutanti()
     }
 
     //gestione percorso nobiltà
@@ -79,6 +83,7 @@ public class Giocatore {
         if (posizionePercorsoNobiltà > Costanti.MAX_POS_NOBILTA) {
             posizionePercorsoNobiltà = Costanti.MAX_POS_NOBILTA;
         }
+        //TODO: updatePercorsoNobiltà()
     }
 
     //gestione punti vittoria
@@ -120,18 +125,24 @@ public class Giocatore {
     public void addCarta(Carta c) throws IllegalArgumentException{
         if (c instanceof CartaPolitica){
             manoCartePolitica.add((CartaPolitica) c);
+            //TODO: se giocatore corrente: updateCartePoliticaProprie; altrimenti: foreach view(updateCartePoliticaAvversari)
+
         }
         else if(c instanceof CartaBonusColoreCittà) {
             manoCarteBonusColoreCittà.add((CartaBonusColoreCittà) c);
+            //TODO: updateCarteBonusColoreCittàGiocatore()
         }
         else if (c instanceof CartaPermessoCostruzione) {
             manoCartePermessoCostruzione.add((CartaPermessoCostruzione) c);
+            //TODO: foreach view(updateCartePermessoGiocatore(idGiocatore, Array manoCartePermessoCostruzione))
         }
         else if (c instanceof CartaBonusRegione) {
             manoCarteBonusRegione.add((CartaBonusRegione) c);
+            //TODO: updateCarteBonusRegioneGiocatore()
         }
         else if (c instanceof CartaPremioDelRe) {
             manoCartePremioDelRe.add((CartaPremioDelRe) c);
+            //TODO: updateCarteBonusReGiocatore()
         }
         else throw new IllegalArgumentException();
     }
@@ -147,6 +158,7 @@ public class Giocatore {
                 }
             }
         }
+        //TODO: se giocatore corrente: updateCartePoliticaProprie; altrimenti: foreach view(updateCartePoliticaAvversari)
     }
 
     public void copriCartaPermessoCostruzione(CartaPermessoCostruzione c)throws IllegalArgumentException{
@@ -158,6 +170,7 @@ public class Giocatore {
                 break;
             }
         }
+        //TODO: updateCartePermessoGiocatore()
     }
 
     public int getId() {

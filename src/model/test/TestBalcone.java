@@ -1,17 +1,16 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> ba99ad7600471505591f2835aedcf4de058aa0d0
-
 import model.BalconeDelConsiglio;
 import model.ColoreConsigliere;
 import model.Consigliere;
 
+import model.carte.CartaPolitica;
+import model.carte.ColoreCartaPolitica;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestBalcone {
     private BalconeDelConsiglio balcone;
@@ -89,6 +88,18 @@ public class TestBalcone {
                                             new Consigliere(ColoreConsigliere.BIANCO),
                                             new Consigliere(ColoreConsigliere.NERO),
                                             new Consigliere(ColoreConsigliere.NERO));
+    }
+
+    @Test
+    public void soddisfaBalconeTest(){
+        balcone = new BalconeDelConsiglio(  new Consigliere(ColoreConsigliere.ARANCIONE),
+                                        new Consigliere(ColoreConsigliere.AZZURRO),
+                                        new Consigliere(ColoreConsigliere.BIANCO),
+                                         new Consigliere(ColoreConsigliere.NERO));
+        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.NERO), new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
+        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.VIOLA)));
+        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.AZZURRO), new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
+        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY)));
     }
 
 }

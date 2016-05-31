@@ -27,6 +27,7 @@ public class BalconeDelConsiglio {
         Consigliere consigliereCaduto = balcone.element();
         balcone.remove(consigliereCaduto);
         balcone.add(consigliere);
+        //TODO: view.updateBalcone(4 String)
         return consigliereCaduto;
     }
 
