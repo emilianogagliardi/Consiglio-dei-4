@@ -15,6 +15,7 @@ public class PartitaTest {
     private Mazzo<CartaPremioDelRe> mazzoCartaPremioRe1 =  new Mazzo<>();
     List<Bonus> percorsoDellaNobiltà1 = new ArrayList<>(Costanti.MAX_POS_NOBILTA);
     HashSet<Regione> regioni1 = new HashSet<>(Costanti.NUM_REGIONI);
+    Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCosta1 = new Mazzo<>();
 
     @Before
     public void setUp() throws Exception {
@@ -67,7 +68,10 @@ public class PartitaTest {
             }
             else percorsoDellaNobiltà1.add(NullBonus.getInstance());
         }
-        //regioni1.add(new Regione());
+        for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
+            mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance())));
+        }
+        regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)), new CartaBonusRegione(6)));
 
         partita2 = new Partita();
     }

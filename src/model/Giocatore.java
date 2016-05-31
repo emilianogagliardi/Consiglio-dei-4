@@ -159,21 +159,7 @@ public class Giocatore {
         //TODO: se giocatore corrente: updateCartePoliticaProprie; altrimenti: foreach view(updateCartePoliticaAvversari)
     }
 
-<<<<<<< HEAD
-=======
-    public void copriCartaPermessoCostruzione(CartaPermessoCostruzione c)throws IllegalArgumentException{
-        if (!manoCartePermessoCostruzione.contains(c)) throw new IllegalArgumentException("carta permesso non presente nella mano del giocatore, impossibile coprirla");
-        for (CartaPermessoCostruzione cp : manoCartePermessoCostruzione) {
-            if (cp.equals(c)) {
-                manoCartePermessoCostruzione.remove(cp);
-                cartePermessoCostruzioneCoperte.add(cp);
-                break;
-            }
-        }
-        //TODO: updateCartePermessoGiocatore()
-    }
 
->>>>>>> master
     public int getId() {
         return idGiocatore;
     }
