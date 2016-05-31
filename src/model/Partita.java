@@ -1,10 +1,7 @@
 package model;
 
 import model.bonus.Bonus;
-import model.carte.Carta;
-import model.carte.CartaBonusColoreCittà;
-import model.carte.CartaPolitica;
-import model.carte.CartaPremioDelRe;
+import model.carte.*;
 import model.eccezioni.*;
 
 import java.util.*;
@@ -14,13 +11,13 @@ import static model.Costanti.*;
 public class Partita {
     private Re re;
     private BalconeDelConsiglio balconeDelConsiglioRe;
-    private Collection<Regione> regioni;
+    private HashSet<Regione> regioni;
     private List<Bonus> percorsoDellaNobiltà;
     private Mazzo<CartaPolitica> cartePoliticaScartate;
     private Mazzo<CartaPolitica> mazzoCartePolitica;
     private Mazzo<CartaPremioDelRe> mazzoCartePremioRe;
-    private Collection<CartaBonusColoreCittà> carteBonusColoreCittà;
-    private Collection<Consigliere> riservaConsiglieri;
+    private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà;
+    private ArrayList<Consigliere> riservaConsiglieri;
     private List<Giocatore> giocatori = new ArrayList<>(MAX_GIOCATORI);
     private int riservaAiutanti = NUM_AIUTANTI;
 
@@ -29,6 +26,7 @@ public class Partita {
         if ((this.riservaAiutanti - numAiutanti) < 0)
            throw new IllegalArgumentException("Non ci sono abbastanza aiutanti in riserva");
         this.riservaAiutanti -= numAiutanti;
+        //TODO: updateRiservaAiutanti
     }
 
     public void aggiungiAiutanti(int numAiutanti) throws IllegalArgumentException { //aggiunge aiutanti alla riserva. Lancia un'eccezione se si cerca di superare il numero
@@ -36,10 +34,12 @@ public class Partita {
         if((this.riservaAiutanti + numAiutanti) > NUM_AIUTANTI)
             throw new IllegalArgumentException("Numero massimo di aiutanti in riserva superato");
         this.riservaAiutanti += numAiutanti;
+        //TODO: updateRiservaAiutanti
     }
 
     public void setRe(Re re) {
-        this.re = re;
+        if(this.re == null)
+            this.re = re;
     }
 
     public void setBalconeDelConsiglioRe(BalconeDelConsiglio balconeDelConsiglioRe){
@@ -51,7 +51,7 @@ public class Partita {
         return balconeDelConsiglioRe;
     }
 
-    public void setRegioni(Collection<Regione> regioni) throws IllegalArgumentException {
+    public void setRegioni(HashSet<Regione> regioni) throws IllegalArgumentException {
         if (regioni.size() != NUM_REGIONI){
             throw new IllegalArgumentException("Il numero di regioni deve essere " + NUM_REGIONI);
         }
@@ -82,7 +82,12 @@ public class Partita {
             this.mazzoCartePremioRe = mazzoCartePremioRe;
     }
 
-    public void setCarteBonusColoreCittà(Collection<CartaBonusColoreCittà> carteBonusColoreCittà) throws IllegalArgumentException  {
+    public CartaPremioDelRe ottieniCartaPremioRe(){
+        return mazzoCartePremioRe.ottieniCarta();
+        //TODO: updateCartePremioReTabellone()
+    }
+
+    public void setCarteBonusColoreCittà(HashSet<CartaBonusColoreCittà> carteBonusColoreCittà) throws IllegalArgumentException  {
         if(carteBonusColoreCittà.size() != NUM_CARTE_BONUS_COLORE_CITTA){
             throw new IllegalArgumentException("Il numero di carte bonus colore città deve essere " + NUM_CARTE_BONUS_COLORE_CITTA);
         }
@@ -90,13 +95,34 @@ public class Partita {
             this.carteBonusColoreCittà = carteBonusColoreCittà;
     }
 
-    public void setRiservaConsiglieri(Collection<Consigliere> riservaConsiglieri) throws IllegalArgumentException {
+    public CartaBonusColoreCittà getCartaBonusColoreCittà(ColoreCittà coloreCittà) throws NoSuchElementException{
+        for(CartaBonusColoreCittà carta : carteBonusColoreCittà)
+            if(carta.getColore().equals(coloreCittà))
+                return carta;
+        throw new NoSuchElementException("Non è disponibile una carta bonus colore città del colore voluto");
+        //TODO: updateCarteBonusColoreCittàTabellone()
+    }
+
+    public void setRiservaConsiglieri(ArrayList<Consigliere> riservaConsiglieri) throws IllegalArgumentException {
         if(riservaConsiglieri.size() != NUM_CONSIGLIERI_RISERVA) {
             throw new IllegalArgumentException("Il numero di consiglieri deve essere " + NUM_CONSIGLIERI_RISERVA);
         }
         else if (this.riservaConsiglieri == null){
             this.riservaConsiglieri = riservaConsiglieri;
         }
+    }
+
+    public Consigliere interagisciConRiservaConsiglieri(ColoreConsigliere coloreConsigliereDaRestituire, Consigliere consigliereDaInserire) throws NoSuchElementException{
+        Consigliere consigliereDaRestituire;
+        for(Consigliere consigliere : riservaConsiglieri)
+            if(consigliere.getColore().equals(coloreConsigliereDaRestituire)){
+                riservaConsiglieri.add(consigliereDaInserire);
+                consigliereDaRestituire = consigliere;
+                riservaConsiglieri.remove(consigliere);
+                //TODO:updateRiservaConsigliere()
+                return consigliereDaRestituire;
+            }
+         throw new NoSuchElementException("Non esiste in riserva un consigliere del colore indicato");
     }
 
     public void addGiocatore(Giocatore giocatore) throws IllegalArgumentException, NumeroMassimoGiocatoriRaggiuntoException {

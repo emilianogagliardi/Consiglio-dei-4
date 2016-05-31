@@ -49,6 +49,7 @@ public class Città {
     public void costruisciEmporio (Emporio e) throws EmporioGiàEsistenteException{
         if (empori.contains(e)) throw new EmporioGiàEsistenteException();
         empori.add(e);
+        //TODO: updateEmporiCittà()
     }
 
     public boolean giàCostruito (Giocatore g){

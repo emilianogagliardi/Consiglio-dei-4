@@ -21,14 +21,4 @@ public class CartaPermessoCostruzione extends CartaConBonus {
     public ArrayList<Città> getCittà(){
         return città;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof CartaPermessoCostruzione) {
-            CartaPermessoCostruzione c = (CartaPermessoCostruzione) o;
-            if (c.getCittà().containsAll(this.getCittà()) && this.getCittà().containsAll(c.getCittà())) //TODO: due carte permesso sono uguali solo se hanno le stesse città? Non si tiene conto dei bonus...
-                return true;
-        }
-        return false;
-    }
 }

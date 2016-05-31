@@ -19,7 +19,7 @@ public class Mazzo <T extends Carta> {
         mazzo.addAll(carte);
     }
 
-    public T getCarta() throws NoSuchElementException { //NoSuchElementException viene lanciata quando non ci sono carte nel mazzo
+    public T ottieniCarta() throws NoSuchElementException { //NoSuchElementException viene lanciata quando non ci sono carte nel mazzo
         T cartaDaRestituire = mazzo.element();
         mazzo.remove(cartaDaRestituire);
         return cartaDaRestituire;

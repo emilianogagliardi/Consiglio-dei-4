@@ -9,8 +9,8 @@ public class Re {
 
     public Città getCittà(){return città;}
 
-    public void sposta(Città c) throws IllegalArgumentException{
-        if (!città.getCittàAdiacenti().contains(c)) throw new IllegalArgumentException("Impossibile spostare re in città non adiacente");
-        else città = c;
+    public void setPosizione(Città città) {
+        this.città = città;
+        //TODO: updatePosizioneRe()
     }
 }
