@@ -1,5 +1,4 @@
-package instauraconnessione;
-
+import controller.Controller;
 import model.Partita;
 
 import java.io.IOException;
@@ -10,6 +9,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * L'instaurazione delle connessioni viene fatta tramite socket. Quando un client si connette comunica immediatamente
@@ -19,13 +20,15 @@ import java.util.concurrent.Executors;
 
 //TODO sincronizzazione????
 
-public class InstauraConnessioni {
-    private HashMap<String, String> giocatori = new HashMap<>();
+public class Server {
+    private HashMap<Integer, String> giocatori = new HashMap<>();
+    private int idCorrente = 0;
     private ExecutorService executors = Executors.newCachedThreadPool();
 
     public void startServer() {
         ServerSocket serverSocket = null;
-        ThreadTimeout timeout = new ThreadTimeout(this);
+        ScheduledExecutorService timeoutExecutor = Executors.newSingleThreadScheduledExecutor();
+        Thread timeoutThread = new ThreadTimeout(this);
         try {
             serverSocket = new ServerSocket(CostantiSistema.PORT);
         }catch (IOException e) {
@@ -35,20 +38,20 @@ public class InstauraConnessioni {
             try{
                 Socket socket = serverSocket.accept();
                 Scanner in = new Scanner(socket.getInputStream());
-                String nickname = in.nextLine();
-                String comunicazione = in.nextLine();
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
+                String comunicazione = in.nextLine();
                 if (!comunicazione.equals("socket") || !comunicazione.equals("RMI")){
                     out.println("false"); //rifiuta la connessione se comunicazione non è valida
                 }else{
                     out.println("true"); //conferma connessione accettata
                 }
-                giocatori.put(nickname, comunicazione);
+                giocatori.put(idCorrente, comunicazione);
+                idCorrente++;
                 if (giocatori.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
-                    timeout.start();
+                    timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT, TimeUnit.SECONDS);
                 }else if (giocatori.size() == CostantiSistema.NUM_GOCATORI_MAX) {
                     fineGiocatoriAccettati();
-                    timeout.interrupt(); //killa il thread di timeout
+                    timeoutThread.interrupt(); //killa il thread di timeout
                 }
             }catch (IOException e){
                 System.out.println("impossibile creare socket da server socket");
@@ -60,8 +63,9 @@ public class InstauraConnessioni {
     }
 
     public void fineGiocatoriAccettati(){
-        flushaMappa();
         creaEAvviaPartita();
+        flushaMappa();
+        idCorrente = 0;
     }
 
     private void flushaMappa() {
@@ -72,11 +76,11 @@ public class InstauraConnessioni {
         Partita nuovaPartita = new Partita();
         //TODO costruisci il model
         //TODO costruisci le proxyview
-        executors.submit(new HandlerPartita(nuovaPartita));//anche parametro InterfacciaView
+        executors.submit(new Controller(nuovaPartita));//anche parametro InterfacciaView
     }
 
     public static void main(String[] args) {
-        InstauraConnessioni a = new InstauraConnessioni();
+        Server a = new Server();
         a.startServer();
     }
 }

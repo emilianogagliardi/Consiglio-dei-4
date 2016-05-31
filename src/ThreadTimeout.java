@@ -1,4 +1,3 @@
-package instauraconnessione;
 
 /**
  * Thread timeout viene fatto partire dall'accettore di connessioni, prendendo come parametro
@@ -7,21 +6,14 @@ package instauraconnessione;
  */
 
 public class ThreadTimeout extends Thread{
-    InstauraConnessioni attesaConnessioni;
+    Server attesaConnessioni;
 
-    public ThreadTimeout(InstauraConnessioni a){
+    public ThreadTimeout(Server a){
         attesaConnessioni = a;
     }
 
     @Override
     public void run() {
-        while (!this.isInterrupted()) {
-            try {
-                Thread.sleep(500); //controlla se è interrotto o no ogni mezzo secondo
-            } catch (InterruptedException e) {
-                System.out.println("errore nel timeout");
-            }
-        }
         if(!this.isInterrupted())
             attesaConnessioni.fineGiocatoriAccettati();
     }

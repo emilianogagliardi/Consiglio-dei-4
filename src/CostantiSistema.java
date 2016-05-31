@@ -1,5 +1,3 @@
-package instauraconnessione;
-
 public class CostantiSistema {
     public static final int PORT = 3000;
     public static final int NUM_GIOCATORI_TIMEOUT = 2;

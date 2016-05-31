@@ -123,46 +123,9 @@ public class TestGiocatore {
         gi.scartaCartePolitica(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
     }
 
-    @Test
-    public void copriCartePermessoCostruzioneTest() {
-        Giocatore g1 = new Giocatore(0,0,0);
-        CartaPermessoCostruzione c1 = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance()));
-        CartaPermessoCostruzione c2 = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance()));
-        CartaPermessoCostruzione c3 = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.INDUR, ColoreCittà.BRONZO, NullBonus.getInstance()));
-        g1.addCarta(c1);
-        g1.addCarta(c2);
-        g1.addCarta(c3);
-        g1.copriCartaPermessoCostruzione(c1);
-        assertTrue(g1.getCartePermessoCostruzioneCoperte().contains(c1));
-        assertTrue(g1.getCartePermessoCostruzioneCoperte().size() == 1);
-        assertTrue (g1.getManoCartePermessoCostruzione().size() == 2);
-        ArrayList<CartaPermessoCostruzione> a = new ArrayList<>(); //carte ancora in mano in questo punto
-        a.add(c2);
-        a.add(c3);
-        assertTrue(g1.getManoCartePermessoCostruzione().containsAll(a));
-        assertTrue(a.containsAll(g1.getManoCartePermessoCostruzione()));
-        g1.copriCartaPermessoCostruzione(c3);
-        ArrayList<CartaPermessoCostruzione> a2 = new ArrayList<>(); //carte già coperte
-        a2.add(c1);
-        a2.add(c3);
-        assertTrue(g1.getCartePermessoCostruzioneCoperte().containsAll(a2));
-        assertTrue(a2.containsAll(g1.getCartePermessoCostruzioneCoperte()));
-        assertTrue(g1.getManoCartePermessoCostruzione().contains(c2));
-        assertTrue(g1.getManoCartePermessoCostruzione().size() == 1);
-        g1.copriCartaPermessoCostruzione(c2);
-        assertTrue(g1.getManoCartePermessoCostruzione().isEmpty());
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void copriCartePermessoCostruzioneNonEsistentiTest() {
-        Giocatore g1 = new Giocatore(0,0,0);
-        CartaPermessoCostruzione c = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance()));
-        g1.copriCartaPermessoCostruzione(c);
-    }
-
     /*
         test overflow
-     */
+    */
 
     @After
     @Test

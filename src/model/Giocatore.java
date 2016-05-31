@@ -22,7 +22,6 @@ public class Giocatore {
     private List<CartaBonusRegione> manoCarteBonusRegione;
     private List<CartaBonusColoreCittà> manoCarteBonusColoreCittà;
     private List<CartaPermessoCostruzione> manoCartePermessoCostruzione;
-    private List<CartaPermessoCostruzione> cartePermessoCostruzioneCoperte;
     private int azioniPrincipaliDisponibili;
     private int azioniVelociDisponibili;
 
@@ -34,9 +33,8 @@ public class Giocatore {
         manoCartePolitica = new ArrayList<CartaPolitica>();
         manoCarteBonusRegione = new ArrayList<CartaBonusRegione>();
         manoCartePremioDelRe = new ArrayList<CartaPremioDelRe>();
-        manoCartePermessoCostruzione = new ArrayList<CartaPermessoCostruzione>();
+        manoCartePermessoCostruzione = new ArrayList<CartaPermessoCostruzione>(); //è utilizzabile se isVisible
         manoCarteBonusColoreCittà = new ArrayList<CartaBonusColoreCittà>();
-        cartePermessoCostruzioneCoperte = new ArrayList<CartaPermessoCostruzione>();
     }
 
     //gestione delle monete
@@ -149,17 +147,6 @@ public class Giocatore {
         }
     }
 
-    public void copriCartaPermessoCostruzione(CartaPermessoCostruzione c)throws IllegalArgumentException{
-        if (!manoCartePermessoCostruzione.contains(c)) throw new IllegalArgumentException("carta permesso non presente nella mano del giocatore, impossibile coprirla");
-        for (CartaPermessoCostruzione cp : manoCartePermessoCostruzione) {
-            if (cp.equals(c)) {
-                manoCartePermessoCostruzione.remove(cp);
-                cartePermessoCostruzioneCoperte.add(cp);
-                break;
-            }
-        }
-    }
-
     public int getId() {
         return idGiocatore;
     }
@@ -186,9 +173,5 @@ public class Giocatore {
 
     public List<CartaBonusColoreCittà> getManoCarteBonusColoreCittà() {
         return manoCarteBonusColoreCittà;
-    }
-
-    public List<CartaPermessoCostruzione> getCartePermessoCostruzioneCoperte() {
-        return cartePermessoCostruzioneCoperte;
     }
 }
