@@ -1,16 +1,17 @@
 package controller;
 
 import model.Partita;
+import proxyview.InterfacciaView;
 
-//TODO rinominare come controller e posizionare bene nei package?
+import java.util.HashMap;
 
 public class Controller implements Runnable{
     private Partita model;
-    //private collezione di InterfacciaView views;
+    private HashMap<Integer, InterfacciaView> views;
 
-    public Controller(Partita p) { //InterfacciaView views
+    public Controller(Partita p, HashMap<Integer, InterfacciaView> v) {
         model = p;
-        //assegna views
+        views = v;
     }
 
     @Override

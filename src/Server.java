@@ -18,8 +18,11 @@ import java.util.concurrent.TimeUnit;
  * stringa "RMI")
  */
 
-//TODO sincronizzazione????
-
+/*TODO bisogna passare ad avviaPartita i socket
+    avvia partita non può fare operazioni bloccanti, perchè terrebbe il server in stop,
+    è necessario comunicare con un client per fargli scegliere la mappa, quindi sarà necessario
+    che questa operazione avvenga in un nuovo thread. è opportuno che sia il controller a generare la partita??
+*/
 public class Server {
     private HashMap<Integer, String> giocatori = new HashMap<>();
     private int idCorrente = 0;
@@ -63,7 +66,7 @@ public class Server {
     }
 
     public void fineGiocatoriAccettati(){
-        creaEAvviaPartita();
+        AvviaPartita();
         flushaMappa();
         idCorrente = 0;
     }
@@ -72,11 +75,8 @@ public class Server {
         giocatori = new HashMap<>();
     }
 
-    private void creaEAvviaPartita() {
-        Partita nuovaPartita = new Partita();
-        //TODO costruisci il model
-        //TODO costruisci le proxyview
-        executors.submit(new Controller(nuovaPartita));//anche parametro InterfacciaView
+    private void AvviaPartita() {
+        //executors.submit(new Controller());//anche parametro proxyview.InterfacciaView
     }
 
     public static void main(String[] args) {
