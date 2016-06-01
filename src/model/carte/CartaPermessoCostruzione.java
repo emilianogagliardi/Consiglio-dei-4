@@ -1,14 +1,14 @@
 package model.carte;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 import model.Città;
 import model.bonus.Bonus;
 
-public class CartaPermessoCostruzione extends CartaConBonus {
+public class CartaPermessoCostruzione extends CartaConBonus{
     private ArrayList<Città> città = new ArrayList<>(1);
-
 
     public CartaPermessoCostruzione (Bonus bonus, Città... città) throws IllegalArgumentException{ //le città devono appartenere alla regione cui appartiene il mazzo di carte permesso
         super(bonus);

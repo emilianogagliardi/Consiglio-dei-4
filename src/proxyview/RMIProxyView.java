@@ -5,10 +5,8 @@ import model.carte.CartaPermessoCostruzione;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by emilianogagliardi on 31/05/16.
- */
 public class RMIProxyView implements InterfacciaView{
+
     @Override
     public void updateBalcone(String balcone, String colore1, String colore2, String colore3, String colore4) {
 
