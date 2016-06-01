@@ -10,7 +10,7 @@ public class CartaBonusColoreCittà extends CartaConBonus {
 
     public CartaBonusColoreCittà(int puntiVittoria, ColoreCittà colore) {
         super(new BonusPuntiVittoria(puntiVittoria, NullBonus.getInstance()));
-        this.colore = colore;
+        this.colore = Objects.requireNonNull(colore);
     }
 
     public ColoreCittà getColore(){

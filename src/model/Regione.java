@@ -6,6 +6,7 @@ import model.carte.CartaPermessoCostruzione;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 import static model.Costanti.NUM_CITTA_PER_REGIONE;
 
@@ -20,10 +21,10 @@ public class Regione {
     private NomeRegione nomeRegione;
 
     public Regione(NomeRegione nomeRegione, Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione, BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione){
-        this.nomeRegione = nomeRegione;
-        this.balconeDelConsiglio = balcone;
-        this.cartaBonusRegione = cartaBonusRegione;
-        this.mazzoCartePermessoCostruzione = mazzoCartePermessoCostruzione;
+        this.nomeRegione = Objects.requireNonNull(nomeRegione);
+        this.balconeDelConsiglio = Objects.requireNonNull(balcone);
+        this.cartaBonusRegione = Objects.requireNonNull(cartaBonusRegione);
+        this.mazzoCartePermessoCostruzione = Objects.requireNonNull(mazzoCartePermessoCostruzione);
         this.mazzoCartePermessoCostruzione.mischia();
         cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione1.setVisibile(true);
