@@ -2,10 +2,28 @@ package proxyview;
 
 import model.carte.CartaPermessoCostruzione;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SocketProxyView implements InterfacciaView {
+    private int idGiocatore;
+    private Socket socket;
+
+    public SocketProxyView(int idGiocatore, Socket socket){
+        this.idGiocatore = idGiocatore;
+        this.socket = socket;
+    }
+
+    @Override
+    public int getIdGiocatore(){
+        return idGiocatore;
+    }
+
+    @Override
+    public void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) {
+
+    }
 
     @Override
     public void updateBalcone(String balcone, String colore1, String colore2, String colore3, String colore4) {
@@ -23,7 +41,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCartePoliticaProprie(String... carte) {
+    public void updateCartePoliticaProprie(ArrayList<String> carte) {
 
     }
 
@@ -48,7 +66,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateRiservaConsiglieri(String... colori) {
+    public void updateRiservaConsiglieri(ArrayList<String> coloriConsiglieri) {
 
     }
 
@@ -58,7 +76,12 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateEmporiCittà(String nomeCittà, int... idGiocatori) {
+    public void updateEmporiCittà(String nomeCittà, ArrayList<Integer> idGiocatori) {
+
+    }
+
+    @Override
+    public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) {
 
     }
 
@@ -73,7 +96,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCarteBonusReGiocatore(int idGiocatore, int... puntiVittoria) {
+    public void updateCarteBonusReGiocatore(int idGiocatore, ArrayList<Integer> puntiPerCarta) {
 
     }
 

@@ -3,12 +3,13 @@ package model;
 import model.bonus.Bonus;
 import model.carte.*;
 import model.eccezioni.*;
+import proxyview.InterfacciaView;
 
 import java.util.*;
 
 import static model.Costanti.*;
 
-public class Partita {
+public class Partita extends Observed{
     private Re re;
     private BalconeDelConsiglio balconeDelConsiglioRe;
     private HashSet<Regione> regioni;
@@ -21,12 +22,16 @@ public class Partita {
     private List<Giocatore> giocatori = new ArrayList<>(MAX_GIOCATORI);
     private int riservaAiutanti = NUM_AIUTANTI;
 
+    public Partita(ArrayList<InterfacciaView> views){
+        super(views);
+    }
 
     public void riceviAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
         if ((this.riservaAiutanti - numAiutanti) < 0)
            throw new IllegalArgumentException("Non ci sono abbastanza aiutanti in riserva");
         this.riservaAiutanti -= numAiutanti;
-        //TODO: updateRiservaAiutanti
+        //update views
+        updateViewRiservaAiutanti();
     }
 
     public void aggiungiAiutanti(int numAiutanti) throws IllegalArgumentException { //aggiunge aiutanti alla riserva. Lancia un'eccezione se si cerca di superare il numero
@@ -34,7 +39,8 @@ public class Partita {
         if((this.riservaAiutanti + numAiutanti) > NUM_AIUTANTI)
             throw new IllegalArgumentException("Numero massimo di aiutanti in riserva superato");
         this.riservaAiutanti += numAiutanti;
-        //TODO: updateRiservaAiutanti
+        //update views
+        updateViewRiservaAiutanti();
     }
 
     public void setRe(Re re) {
@@ -119,7 +125,8 @@ public class Partita {
                 riservaConsiglieri.add(consigliereDaInserire);
                 consigliereDaRestituire = consigliere;
                 riservaConsiglieri.remove(consigliere);
-                //TODO:updateRiservaConsigliere()
+                //update views
+                updateViewRiservaConsiglieri();
                 return consigliereDaRestituire;
             }
          throw new NoSuchElementException("Non esiste in riserva un consigliere del colore indicato");
@@ -136,5 +143,16 @@ public class Partita {
 
     public List<Giocatore> getGiocatori(){
         return giocatori;
+    }
+
+    //update view
+    private void updateViewRiservaAiutanti(){
+        super.notifyViews((InterfacciaView v) -> v.updateRiservaAiutanti(riservaAiutanti));
+    }
+
+    private void updateViewRiservaConsiglieri(){
+        ArrayList<String> coloriConsiglieri = new ArrayList<>();
+        riservaConsiglieri.stream().forEach((Consigliere c) -> coloriConsiglieri.add(c.getColore().toString()));
+        super.notifyViews((InterfacciaView v) -> v.updateRiservaConsiglieri(coloriConsiglieri));
     }
 }

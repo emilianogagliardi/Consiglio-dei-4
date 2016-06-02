@@ -3,6 +3,7 @@ import model.bonus.*;
 import model.carte.*;
 import org.junit.Before;
 import org.junit.Test;
+import proxyview.InterfacciaView;
 
 import java.util.*;
 
@@ -21,7 +22,7 @@ public class PartitaTest {
 
     @Before
     public void setUp() throws Exception {
-        partita1 = new Partita();
+        partita1 = new Partita(new ArrayList<InterfacciaView>());
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(5, ColoreCittà.ARGENTO));
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(10, ColoreCittà.BRONZO));
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(15, ColoreCittà.FERRO));
@@ -87,24 +88,26 @@ public class PartitaTest {
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance())));
         }
-        regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)), new CartaBonusRegione(6)));
+        regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(NomeRegione.COSTA, new ArrayList<InterfacciaView>(), new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)), new CartaBonusRegione(6)));
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance())));
         }
-        regioni1.add(new Regione(NomeRegione.COLLINA, mazzoCartePermessoCostruzioneCollina1, new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.ARANCIONE), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)), new CartaBonusRegione(3)));
+        regioni1.add(new Regione(NomeRegione.COLLINA, mazzoCartePermessoCostruzioneCollina1, new BalconeDelConsiglio(NomeRegione.COLLINA, new ArrayList<InterfacciaView>(), new Consigliere(ColoreConsigliere.ARANCIONE), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)), new CartaBonusRegione(3)));
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneMontagna1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(10, NullBonus.getInstance())));
         }
-        regioni1.add(new Regione(NomeRegione.MONTAGNA, mazzoCartePermessoCostruzioneMontagna1, new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.NERO), new Consigliere(ColoreConsigliere.ROSA), new Consigliere(ColoreConsigliere.NERO), new Consigliere(ColoreConsigliere.NERO)), new CartaBonusRegione(1)));
+        regioni1.add(new Regione(NomeRegione.MONTAGNA, mazzoCartePermessoCostruzioneMontagna1, new BalconeDelConsiglio(NomeRegione.MONTAGNA, new ArrayList<InterfacciaView>(), new Consigliere(ColoreConsigliere.NERO), new Consigliere(ColoreConsigliere.ROSA), new Consigliere(ColoreConsigliere.NERO), new Consigliere(ColoreConsigliere.NERO)), new CartaBonusRegione(1)));
 
-        partita2 = new Partita();
+        partita2 = new Partita(new ArrayList<InterfacciaView>());
     }
 
     @Test
     public void setMethods() throws Exception{
-        partita1.addGiocatore(new Giocatore(idCounter++, 10, 1));
-        partita1.addGiocatore(new Giocatore(idCounter++, 11, 2));
-        partita1.setBalconeDelConsiglioRe(new BalconeDelConsiglio(new Consigliere(ColoreConsigliere.AZZURRO),
+        partita1.addGiocatore(new Giocatore(idCounter++, 10, 1, new ArrayList<InterfacciaView>()));
+        partita1.addGiocatore(new Giocatore(idCounter++, 11, 2, new ArrayList<InterfacciaView>()));
+        partita1.setBalconeDelConsiglioRe(new BalconeDelConsiglio(  NomeRegione.COSTA,
+                                                                    new ArrayList<InterfacciaView>(),
+                                                                    new Consigliere(ColoreConsigliere.AZZURRO),
                                                                     new Consigliere(ColoreConsigliere.BIANCO),
                                                                     new Consigliere(ColoreConsigliere.BIANCO),
                                                                     new Consigliere(ColoreConsigliere.NERO)));

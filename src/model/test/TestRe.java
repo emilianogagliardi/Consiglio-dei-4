@@ -5,6 +5,9 @@ import model.bonus.NullBonus;
 import model.ColoreCittà;
 import org.junit.Before;
 import org.junit.Test;
+import proxyview.InterfacciaView;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,10 +18,10 @@ public class TestRe {
     private Città città3;
 
     public TestRe () {
-        città1 = new Città(NomeCittà.INDUR, ColoreCittà.BRONZO, NullBonus.getInstance());
-        città2 = new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance());
-        città3 = new Città(NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance());
-        re = new Re(città1);
+        città1 = new Città(NomeCittà.INDUR, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città2 = new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città3 = new Città(NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        re = new Re(città1, new ArrayList<InterfacciaView>());
     }
 
     @Before

@@ -6,6 +6,7 @@ import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.MoneteNonSufficientiException;
 import org.junit.After;
 import org.junit.Test;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class TestGiocatore {
     private Giocatore giocatore;
 
     public TestGiocatore() {
-        giocatore = new Giocatore(0, 0, 0);
+        giocatore = new Giocatore(0, 0, 0, new ArrayList<InterfacciaView>());
     }
 
     /*
@@ -26,13 +27,13 @@ public class TestGiocatore {
      */
     @Test (expected = MoneteNonSufficientiException.class)
     public void underflowMoneteTest() throws MoneteNonSufficientiException{
-        Giocatore giocatore1 = new Giocatore(0,0,0);
+        Giocatore giocatore1 = new Giocatore(0,0,0, new ArrayList<InterfacciaView>());
         giocatore1.pagaMonete(1);
     }
 
     @Test (expected = AiutantiNonSufficientiException.class)
     public void underflowAiutantiTest() throws AiutantiNonSufficientiException{
-        Giocatore giocatore1 = new Giocatore(0,0,0);
+        Giocatore giocatore1 = new Giocatore(0,0,0, new ArrayList<InterfacciaView>());
         giocatore.pagaAiutanti(1);
     }
 
@@ -82,7 +83,7 @@ public class TestGiocatore {
         CartaBonusRegione cbr = new CartaBonusRegione(2);
         CartaBonusColoreCittà cbcc = new CartaBonusColoreCittà(1, ColoreCittà.FERRO);
         CartaPremioDelRe cpr = new CartaPremioDelRe(2);
-        CartaPermessoCostruzione cpc = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance()));
+        CartaPermessoCostruzione cpc = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>()));
         giocatore.addCarta(cp);
         assertTrue(giocatore.getManoCartePolitica().contains(cp));
         giocatore.addCarta(cbr);
@@ -97,7 +98,7 @@ public class TestGiocatore {
 
     @Test
     public void scartaCartePoliticaTest() {
-        Giocatore g1 = new Giocatore(0,0,0);
+        Giocatore g1 = new Giocatore(0,0,0, new ArrayList<InterfacciaView>());
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
@@ -117,7 +118,7 @@ public class TestGiocatore {
 
     @Test (expected = IllegalArgumentException.class)
     public void scartaCartaNonEsistente() {
-        Giocatore gi = new Giocatore(0,0,0);
+        Giocatore gi = new Giocatore(0,0,0, new ArrayList<InterfacciaView>());
         gi.scartaCartePolitica(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
     }
 

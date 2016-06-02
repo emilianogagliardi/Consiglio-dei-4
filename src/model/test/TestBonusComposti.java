@@ -2,6 +2,10 @@ import model.Giocatore;
 import model.bonus.*;
 import org.junit.Before;
 import org.junit.Test;
+import proxyview.InterfacciaView;
+
+import java.util.ArrayList;
+
 import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +20,7 @@ public class TestBonusComposti {
 
     public TestBonusComposti() {
         b = NullBonus.getInstance();
-        g = new Giocatore(0,0,0);
+        g = new Giocatore(0,0,0, new ArrayList<InterfacciaView>());
     }
 
     @Before

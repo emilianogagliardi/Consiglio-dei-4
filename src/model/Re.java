@@ -1,11 +1,15 @@
 package model;
 
+import proxyview.InterfacciaView;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class Re {
+public class Re extends Observed{
     private Città città;
 
-    public Re (Città città) {
+    public Re (Città città, ArrayList<InterfacciaView> views) {
+        super(views);
         this.città = Objects.requireNonNull(città);
     }
 
@@ -13,6 +17,10 @@ public class Re {
 
     public void setPosizione(Città città) {
         this.città = città;
-        //TODO: updatePosizioneRe()
+        updateViewPosizione();
+    }
+
+    private void updateViewPosizione(){
+        super.notifyViews((InterfacciaView v) -> v.updatePosizioneRe(città.getNome().toString()));
     }
 }

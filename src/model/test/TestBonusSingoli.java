@@ -5,6 +5,7 @@ import model.carte.CartaPolitica;
 import model.carte.ColoreCartaPolitica;
 import org.junit.Before;
 import org.junit.Test;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class TestBonusSingoli {
 
     @Before
     public void setUp(){
-        giocatore = new Giocatore(1, 0, 0);
+        giocatore = new Giocatore(1, 0, 0, new ArrayList<InterfacciaView>());
     }
 
     @Test (expected = IllegalArgumentException.class)

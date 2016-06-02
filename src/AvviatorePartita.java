@@ -6,6 +6,7 @@ import proxyview.RMIProxyView;
 import proxyview.SocketProxyView;
 
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,13 +23,13 @@ public class AvviatorePartita implements Runnable {
 
     @Override
     public void run() {
-        HashMap<Integer, InterfacciaView> views = new HashMap<>();
+        /*HashMap<Integer, InterfacciaView> views = new HashMap<>();
         //crea la mappa di proxy view
-        modiComunicazione.forEach((k, s) -> {
-            if (s.equals("RMI")) views.put(k, new RMIProxyView());
-            else views.put(k, new SocketProxyView());
+        modiComunicazione.forEach((idGiocatore, modoComunicazione) -> {
+            if (modoComunicazione.equals("RMI")) views.put(idGiocatore, new RMIProxyView(idGiocatore));
+            else views.put(idGiocatore, new SocketProxyView(idGiocatore, sockets.get(idGiocatore)));
         });
         Partita partita = new Partita();
-        executors.submit(new Controller(partita, views));
+        executors.submit(new Controller(partita, views));*/
     }
 }

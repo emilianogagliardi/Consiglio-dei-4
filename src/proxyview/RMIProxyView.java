@@ -6,6 +6,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RMIProxyView implements InterfacciaView{
+    private int idGiocatore;
+
+    public RMIProxyView(int idGiocatore){
+        this.idGiocatore = idGiocatore;
+    }
+
+    @Override
+    public int getIdGiocatore(){
+        return idGiocatore;
+    }
+
+    @Override
+    public void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) {
+
+    }
 
     @Override
     public void updateBalcone(String balcone, String colore1, String colore2, String colore3, String colore4) {
@@ -23,7 +38,7 @@ public class RMIProxyView implements InterfacciaView{
     }
 
     @Override
-    public void updateCartePoliticaProprie(String... carte) {
+    public void updateCartePoliticaProprie(ArrayList<String> carte) {
 
     }
 
@@ -48,7 +63,7 @@ public class RMIProxyView implements InterfacciaView{
     }
 
     @Override
-    public void updateRiservaConsiglieri(String... colori) {
+    public void updateRiservaConsiglieri(ArrayList<String> coloriConsiglieri) {
 
     }
 
@@ -58,7 +73,12 @@ public class RMIProxyView implements InterfacciaView{
     }
 
     @Override
-    public void updateEmporiCittà(String nomeCittà, int... idGiocatori) {
+    public void updateEmporiCittà(String nomeCittà, ArrayList<Integer> idGiocatori) {
+
+    }
+
+    @Override
+    public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) {
 
     }
 
@@ -73,7 +93,7 @@ public class RMIProxyView implements InterfacciaView{
     }
 
     @Override
-    public void updateCarteBonusReGiocatore(int idGiocatore, int... puntiVittoria) {
+    public void updateCarteBonusReGiocatore(int idGiocatore, ArrayList<Integer> puntiPerCarta) {
 
     }
 
@@ -96,4 +116,6 @@ public class RMIProxyView implements InterfacciaView{
     public void updatePosizioneRe(String città) {
 
     }
+
+
 }

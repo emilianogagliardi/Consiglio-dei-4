@@ -10,6 +10,9 @@ import model.eccezioni.CittàAdiacenteSeStessaException;
 import model.eccezioni.EmporioGiàEsistenteException;
 import org.junit.Before;
 import org.junit.Test;
+import proxyview.InterfacciaView;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -21,10 +24,10 @@ public class TestCittà {
     private Città città4;
 
     public TestCittà(){
-        città1 = new Città(NomeCittà.ARKON, ColoreCittà.ARGENTO, NullBonus.getInstance());
-        città2 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance());
-        città3 = new Città(NomeCittà.CASTRUM, ColoreCittà.ARGENTO, NullBonus.getInstance());
-        città4 = new Città(NomeCittà.ESTI, ColoreCittà.BRONZO, NullBonus.getInstance());
+        città1 = new Città(NomeCittà.ARKON, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città2 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città3 = new Città(NomeCittà.CASTRUM, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città4 = new Città(NomeCittà.ESTI, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
     }
 
     @Before
@@ -36,16 +39,16 @@ public class TestCittà {
 
     @Test
     public void equalsTest() {
-        Città c1 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance());
-        Città c2 = new Città(NomeCittà.BURGEN, ColoreCittà.FERRO, NullBonus.getInstance());
-        Città c3 = new Città(NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance());
+        Città c1 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        Città c2 = new Città(NomeCittà.BURGEN, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        Città c3 = new Città(NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
         assertFalse(c1.equals(c3));
         assertTrue(c1.equals(c2));
     }
 
     @Test (expected = CittàAdiacenteSeStessaException.class)
     public void aggiungiSeStessaTest() {
-        Città città = new Città(NomeCittà.ARKON, ColoreCittà.FERRO, NullBonus.getInstance());
+        Città città = new Città(NomeCittà.ARKON, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
         città.addCittàAdiacenti(città);
     }
 
@@ -64,9 +67,9 @@ public class TestCittà {
 
     @Test
     public void costruisciEmporiTest() throws EmporioGiàEsistenteException{
-        Giocatore g1 = new Giocatore (0, 0, 0);
-        Giocatore g2 = new Giocatore (1, 0, 0);
-        Giocatore g3 = new Giocatore (2, 0, 0);
+        Giocatore g1 = new Giocatore (0, 0, 0, new ArrayList<InterfacciaView>());
+        Giocatore g2 = new Giocatore (1, 0, 0, new ArrayList<InterfacciaView>());
+        Giocatore g3 = new Giocatore (2, 0, 0, new ArrayList<InterfacciaView>());
         città1.costruisciEmporio(new Emporio(g1.getId()));
         città1.costruisciEmporio(new Emporio(g2.getId()));
         città1.costruisciEmporio(new Emporio(g3.getId()));
@@ -77,7 +80,7 @@ public class TestCittà {
 
     @Test (expected = EmporioGiàEsistenteException.class)
     public void costruisciDueVolteTest() throws EmporioGiàEsistenteException{
-        Giocatore g = new Giocatore(0, 0, 0);
+        Giocatore g = new Giocatore(0, 0, 0, new ArrayList<InterfacciaView>());
         città1.costruisciEmporio(new Emporio(g.getId()));
         città1.costruisciEmporio(new Emporio(g.getId()));
     }

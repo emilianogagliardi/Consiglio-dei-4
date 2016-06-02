@@ -5,12 +5,13 @@ import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.ImpossibileDecrementareMosseException;
 import model.eccezioni.MoneteNonSufficientiException;
 import model.Costanti;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Giocatore {
+public class Giocatore extends Observed{
     private int idGiocatore;
     private int puntiVittoria;
     private int monete;
@@ -25,7 +26,8 @@ public class Giocatore {
     private int azioniPrincipaliDisponibili;
     private int azioniVelociDisponibili;
 
-    public Giocatore (int id, int monete, int aiutanti){
+    public Giocatore (int id, int monete, int aiutanti, ArrayList<InterfacciaView> views){
+        super (views);
         idGiocatore = id;
         guadagnaMonete(monete);
         guadagnaAiutanti(aiutanti);
@@ -35,6 +37,13 @@ public class Giocatore {
         manoCartePremioDelRe = new ArrayList<CartaPremioDelRe>();
         manoCartePermessoCostruzione = new ArrayList<CartaPermessoCostruzione>(); //è utilizzabile se isVisible
         manoCarteBonusColoreCittà = new ArrayList<CartaBonusColoreCittà>();
+        updateViewMonete();
+        updateViewAiutanti();
+        updateViewPuntiVittoria();
+        updateViewPercorsoNobiltà();
+        updateViewEmporiDisponibili();
+        updateViewCartePolitica();
+        //TODO update varie carte bonus
     }
 
     //gestione delle monete
@@ -46,14 +55,14 @@ public class Giocatore {
         if (monete > Costanti.MAX_MONETE) {
             monete = Costanti.MAX_MONETE;
         }
-        //TODO: foreach view(view.updateMonete(idGiocatore, this.getMonete()))
+        updateViewMonete();
     }
 
     public void pagaMonete(int m) throws IllegalArgumentException, MoneteNonSufficientiException {
         if(m < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a pagaMonete(int m)");
         if(monete - m < 0) throw new MoneteNonSufficientiException();
         monete = monete - m;
-        //TODO: updateMonete()
+        updateViewMonete();
     }
 
     //gestione numero aiutanti
@@ -62,14 +71,14 @@ public class Giocatore {
     public void guadagnaAiutanti(int a) throws IllegalArgumentException{
         if (a < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a guadagnaAiutanti(int a)");
         aiutanti = aiutanti + a;
-        //TODO: updateAiutanti()
+        updateViewAiutanti();
     }
 
     public void pagaAiutanti(int a) throws IllegalArgumentException, AiutantiNonSufficientiException {
         if (a < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a pagaAiutanti(int a)");
         if (aiutanti - a < 0) throw new AiutantiNonSufficientiException();
         aiutanti = aiutanti - a;
-        //TODO: updateAiutanti()
+        updateViewAiutanti();
     }
 
     //gestione percorso nobiltà
@@ -81,7 +90,7 @@ public class Giocatore {
         if (posizionePercorsoNobiltà > Costanti.MAX_POS_NOBILTA) {
             posizionePercorsoNobiltà = Costanti.MAX_POS_NOBILTA;
         }
-        //TODO: updatePercorsoNobiltà()
+        updateViewPercorsoNobiltà();
     }
 
     //gestione punti vittoria
@@ -93,6 +102,7 @@ public class Giocatore {
         if (puntiVittoria > Costanti.MAX_PUNTI_VITTORIA) {
             puntiVittoria = Costanti.MAX_PUNTI_VITTORIA;
         }
+        updateViewPuntiVittoria();
     }
 
     //gestione numero di azioni principali
@@ -123,8 +133,7 @@ public class Giocatore {
     public void addCarta(Carta c) throws IllegalArgumentException{
         if (c instanceof CartaPolitica){
             manoCartePolitica.add((CartaPolitica) c);
-            //TODO: se giocatore corrente: updateCartePoliticaProprie; altrimenti: foreach view(updateCartePoliticaAvversari)
-
+            updateViewCartePolitica();
         }
         else if(c instanceof CartaBonusColoreCittà) {
             manoCarteBonusColoreCittà.add((CartaBonusColoreCittà) c);
@@ -156,7 +165,7 @@ public class Giocatore {
                 }
             }
         }
-        //TODO: se giocatore corrente: updateCartePoliticaProprie; altrimenti: foreach view(updateCartePoliticaAvversari)
+        updateViewCartePolitica();
     }
 
 
@@ -187,4 +196,42 @@ public class Giocatore {
     public List<CartaBonusColoreCittà> getManoCarteBonusColoreCittà() {
         return manoCarteBonusColoreCittà;
     }
+
+
+    //update view
+    private void updateViewMonete(){
+        super.notifyViews((InterfacciaView v) -> v.updateMonete(getId(), getMonete()));
+    }
+
+    private void updateViewAiutanti(){
+        super.notifyViews((InterfacciaView v) -> v.updateAiutanti(getId(), getAiutanti()));
+    }
+
+    private void updateViewCartePolitica(){
+        super.notifyViews((InterfacciaView v) -> {
+            ArrayList<String> colori = new ArrayList<>();
+            manoCartePolitica.stream().forEach((CartaPolitica c) -> colori.add(c.getColore().toString()));
+            if (v.getIdGiocatore() == getId())  v.updateCartePoliticaProprie(colori);
+            else v.updateCartePoliticaAvversari(getId(), getManoCartePolitica().size());
+        });
+    }
+
+    private void updateViewEmporiDisponibili(){
+        super.notifyViews((InterfacciaView v) -> v.updateEmporiDisponibiliGiocatore(getId(), getEmporiDisponibili()));
+    }
+
+    private void updateViewPuntiVittoria(){
+        super.notifyViews((InterfacciaView v) -> v.updatePuntiVittoriaGiocatore(getId(), getPuntiVittoria()));
+    }
+
+    private void updateViewPercorsoNobiltà(){
+        super.notifyViews((InterfacciaView v) -> v.updatePercorsoNobiltà(getId(), getPosizionePercorsoNobiltà()));
+    }
+    /*
+    private void updateViewCarteBonusRegioneGiocatore(){
+        ArrayList<Integer> puntiPerCarta = new ArrayList<>();
+        manoCarteBonusRegione.stream().forEach((CartaBonusRegione c) -> puntiPerCarta.add(c.)); //costruisce arrayList con punti delle carte
+        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusReGiocatore(getId(), ));
+    }
+    */
 }
