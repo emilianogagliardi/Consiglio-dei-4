@@ -14,7 +14,6 @@ public class Costanti {
     public static final int NUM_CONSIGLIERI = 24;
     public static final int NUM_CONSIGLIERI_RISERVA = 8;
     public static final int NUM_CONSIGLIERI_BALCONE = 4;
-    public static final NomeCittà CITTA_RE = NomeCittà.JUVELAR;
     public static final int MAX_GIOCATORI = 4;
     public static final int NUM_CARTE_BONUS_COLORE_CITTA = 4;
     //caratteristiche del giocatore

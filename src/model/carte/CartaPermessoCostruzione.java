@@ -2,6 +2,7 @@ package model.carte;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 import model.Città;
@@ -12,7 +13,7 @@ public class CartaPermessoCostruzione extends CartaConBonus{
 
     public CartaPermessoCostruzione (Bonus bonus, Città... città) throws IllegalArgumentException{ //le città devono appartenere alla regione cui appartiene il mazzo di carte permesso
         super(bonus);
-        if (città == null) throw new IllegalArgumentException("non è possibile creare carte permesso senza città");
+        if (città == null) throw new IllegalArgumentException("Non è possibile creare carte permesso senza città");
         for (Città elemento : città) {
             this.città.add(elemento);
         }

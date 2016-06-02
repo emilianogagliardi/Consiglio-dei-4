@@ -1,11 +1,13 @@
 package model.carte;
 
 
+import java.util.Objects;
+
 public class CartaPolitica extends Carta {
     private ColoreCartaPolitica colore;
 
     public CartaPolitica(ColoreCartaPolitica colore){
-        this.colore = colore;
+        this.colore = Objects.requireNonNull(colore);
     }
     public ColoreCartaPolitica getColore(){
         return colore;

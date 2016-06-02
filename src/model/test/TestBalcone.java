@@ -99,7 +99,15 @@ public class TestBalcone {
         assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.NERO), new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
         assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.VIOLA)));
         assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.AZZURRO), new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
-        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY)));
+        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY), new CartaPolitica(ColoreCartaPolitica.VIOLA)));
+        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.JOLLY)));
+        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.NERO)));
+        balcone = new BalconeDelConsiglio(  new Consigliere(ColoreConsigliere.ARANCIONE),
+                new Consigliere(ColoreConsigliere.AZZURRO),
+                new Consigliere(ColoreConsigliere.BIANCO),
+                new Consigliere(ColoreConsigliere.ARANCIONE));
+        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.ARANCIONE), new CartaPolitica(ColoreCartaPolitica.ARANCIONE)));
+        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.ARANCIONE), new CartaPolitica(ColoreCartaPolitica.ARANCIONE), new CartaPolitica(ColoreCartaPolitica.ARANCIONE)));
     }
 
 }

@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Objects;
+
 public class Consigliere {
     private ColoreConsigliere colore;
 
     public Consigliere (ColoreConsigliere colore) {
-        this.colore = colore;
+        this.colore = Objects.requireNonNull(colore);
     }
 
     public ColoreConsigliere getColore(){

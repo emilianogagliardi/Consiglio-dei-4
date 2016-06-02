@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Objects;
+
 public class Re {
     private Città città;
 
     public Re (Città città) {
-        this.città = città;
+        this.città = Objects.requireNonNull(città);
     }
 
     public Città getCittà(){return città;}
