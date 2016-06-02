@@ -51,8 +51,8 @@ public class Server {
                 if (giocatori.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
                     timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT, TimeUnit.SECONDS);
                 }else if (giocatori.size() == CostantiSistema.NUM_GOCATORI_MAX) {
-                    fineGiocatoriAccettati();
                     timeoutThread.interrupt(); //killa il thread di timeout
+                    fineGiocatoriAccettati();
                 }
             }catch (IOException e){
                 System.out.println("impossibile creare socket da server socket");
@@ -65,11 +65,11 @@ public class Server {
 
     public void fineGiocatoriAccettati(){
         AvviaPartita();
-        flushaMappa();
+        creaNuovaMappaGiocatori();
         idCorrente = 0;
     }
 
-    private void flushaMappa() {
+    private void creaNuovaMappaGiocatori() {
         giocatori = new HashMap<>();
     }
 
@@ -78,7 +78,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server a = new Server();
-        a.startServer();
+        Server server = new Server();
+        server.startServer();
     }
 }

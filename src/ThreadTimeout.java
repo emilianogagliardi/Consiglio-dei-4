@@ -6,15 +6,15 @@
  */
 
 public class ThreadTimeout extends Thread{
-    Server attesaConnessioni;
+    Server server;
 
-    public ThreadTimeout(Server a){
-        attesaConnessioni = a;
+    public ThreadTimeout(Server server){
+        this.server = server;
     }
 
     @Override
     public void run() {
         if(!this.isInterrupted())
-            attesaConnessioni.fineGiocatoriAccettati();
+            server.fineGiocatoriAccettati();
     }
 }

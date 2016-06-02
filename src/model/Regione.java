@@ -20,8 +20,10 @@ public class Regione {
     private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione;
     private NomeRegione nomeRegione;
 
-    public Regione(NomeRegione nomeRegione, Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione, BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione){
+    public Regione(NomeRegione nomeRegione, Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione, BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione) throws IllegalArgumentException {
         this.nomeRegione = Objects.requireNonNull(nomeRegione);
+        if (!nomeRegione.equals(balconeDelConsiglio.getRegione()))
+            throw new IllegalArgumentException("Il balcone non appartiene a questa regione");
         this.balconeDelConsiglio = Objects.requireNonNull(balcone);
         this.cartaBonusRegione = Objects.requireNonNull(cartaBonusRegione);
         this.mazzoCartePermessoCostruzione = Objects.requireNonNull(mazzoCartePermessoCostruzione);

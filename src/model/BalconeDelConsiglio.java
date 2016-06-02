@@ -23,6 +23,10 @@ public class BalconeDelConsiglio extends Observable {
         updateView();
     }
 
+    public NomeRegione getRegione(){
+        return regione;
+    }
+
     public Consigliere addConsigliere(Consigliere consigliere) throws NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
         //nella coda per aggiungere un nuovo elemento; NullPointerException se consigliere è null. Viene ritornato il consigliere "caduto" dal balcone
         Consigliere consigliereCaduto = balcone.element();
