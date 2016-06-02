@@ -7,7 +7,7 @@ public class Emporio {
     public Emporio(int id) {
         idGiocatore = id;
     }
-
+    public int getIdGiocatore() { return idGiocatore;}
     @Override
     public boolean equals(Object o){
         if (o instanceof Emporio) {

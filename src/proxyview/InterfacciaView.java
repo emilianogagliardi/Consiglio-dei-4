@@ -16,7 +16,7 @@ public interface InterfacciaView {
     void updateRiservaAiutanti(int numAiutanti);
     void updateRiservaConsiglieri(String... colori);
     void updatePercorsoNobiltà(int idGiocatore, int posizione);
-    void updateEmporiCittà(String nomeCittà, int... idGiocatori);
+    void updateEmporiCittà(String nomeCittà, ArrayList<Integer> idGiocatori);
     void updateCarteBonusColoreCittàGiocatore(int idGiocatore, String colore);
     void updateCarteBonusColoreCittàTabellone(String... colori);
     void updateCarteBonusReGiocatore(int idGiocatore, int... puntiVittoria);

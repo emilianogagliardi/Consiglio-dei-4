@@ -1,21 +1,26 @@
 package model;
 
 import model.carte.CartaPolitica;
+import proxyview.InterfacciaView;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import static java.util.Arrays.asList;
 import static model.Costanti.NUM_CONSIGLIERI_BALCONE;
 
-public class BalconeDelConsiglio {
+public class BalconeDelConsiglio extends Observed{
+    private NomeRegione regione;
     private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 
-    public BalconeDelConsiglio(Consigliere... consiglieri) throws NullPointerException, IllegalArgumentException {
+    public BalconeDelConsiglio(NomeRegione regione, ArrayList<InterfacciaView> views, Consigliere... consiglieri) throws NullPointerException, IllegalArgumentException {
+        super(views);
+        this.regione = regione;
         if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
         }
         balcone.addAll(asList(consiglieri));
+        updateView();
     }
 
     public Queue<Consigliere> getConsiglieri(){
@@ -27,7 +32,7 @@ public class BalconeDelConsiglio {
         Consigliere consigliereCaduto = balcone.element();
         balcone.remove(consigliereCaduto);
         balcone.add(consigliere);
-        //TODO: view.updateBalcone(4 String)
+        updateView();
         return consigliereCaduto;
     }
 
@@ -82,5 +87,13 @@ public class BalconeDelConsiglio {
             }
             return true;
         }
+    }
+
+    private void updateView(){
+        super.notifyViews((InterfacciaView v) -> v.updateBalcone(   regione.toString(),
+                                                                    getColoriConsiglieri().get(0).toString(),
+                                                                    getColoriConsiglieri().get(0).toString(),
+                                                                    getColoriConsiglieri().get(0).toString(),
+                                                                    getColoriConsiglieri().get(0).toString()));
     }
 }

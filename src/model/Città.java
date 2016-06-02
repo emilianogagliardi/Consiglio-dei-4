@@ -4,19 +4,21 @@ package model;
 import model.bonus.Bonus;
 import model.eccezioni.CittàAdiacenteSeStessaException;
 import model.eccezioni.EmporioGiàEsistenteException;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Città {
+public class Città extends Observed{
     private Bonus bonus;
     private Set<Città> cittàAdiacenti;
     private ColoreCittà colore;
     private NomeCittà nome;
     private ArrayList<Emporio> empori;
 
-    public Città (NomeCittà n, ColoreCittà c, Bonus b){
+    public Città (NomeCittà n, ColoreCittà c, Bonus b, ArrayList<InterfacciaView> views){
+        super (views);
         nome = n;
         colore = c;
         bonus = b;
@@ -49,7 +51,7 @@ public class Città {
     public void costruisciEmporio (Emporio e) throws EmporioGiàEsistenteException{
         if (empori.contains(e)) throw new EmporioGiàEsistenteException();
         empori.add(e);
-        //TODO: updateEmporiCittà()
+        updateView();
     }
 
     public boolean giàCostruito (Giocatore g){
@@ -65,4 +67,10 @@ public class Città {
     public Set<Città> getCittàAdiacenti(){return cittàAdiacenti;}
 
     public Bonus getBonus() {return bonus;}
+
+    private void updateView(){
+        ArrayList<Integer> ids = new ArrayList<>();
+        empori.stream().forEach((Emporio e) -> ids.add(e.getIdGiocatore()));
+        super.notifyViews((InterfacciaView v) -> v.updateEmporiCittà(nome.toString(), ids));
+    }
 }

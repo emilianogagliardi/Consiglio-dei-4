@@ -1,5 +1,3 @@
-import controller.Controller;
-import model.Partita;
 
 import java.io.IOException;
 import java.io.PrintWriter;
