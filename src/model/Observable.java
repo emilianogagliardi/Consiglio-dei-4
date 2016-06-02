@@ -4,18 +4,18 @@ import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 
-public abstract class Observed {
+public abstract class Observable {
     private ArrayList<InterfacciaView> views;
 
-    public Observed(ArrayList<InterfacciaView> v) {
-        views = v;
+    public Observable(ArrayList<InterfacciaView> views) {
+        this.views = views;
     }
 
     protected ArrayList<InterfacciaView> getViews(){return views;}
 
     //it is a lambda expression
     //it take a lambda expression
-    protected void notifyViews(ViewUpdater u) {
-        getViews().forEach((InterfacciaView v) -> u.updater(v));
+    protected void notifyViews(ViewUpdater updater) {
+        getViews().forEach((InterfacciaView view) -> updater.update(view));
     }
 }

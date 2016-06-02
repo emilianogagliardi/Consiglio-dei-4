@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Città extends Observed{
+public class Città extends Observable {
     private Bonus bonus;
     private Set<Città> cittàAdiacenti;
     private ColoreCittà colore;

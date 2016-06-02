@@ -9,7 +9,7 @@ import java.util.*;
 
 import static model.Costanti.*;
 
-public class Partita extends Observed{
+public class Partita extends Observable {
     private Re re;
     private BalconeDelConsiglio balconeDelConsiglioRe;
     private HashSet<Regione> regioni;
@@ -147,12 +147,12 @@ public class Partita extends Observed{
 
     //update view
     private void updateViewRiservaAiutanti(){
-        super.notifyViews((InterfacciaView v) -> v.updateRiservaAiutanti(riservaAiutanti));
+        super.notifyViews((InterfacciaView view) -> view.updateRiservaAiutanti(riservaAiutanti));
     }
 
     private void updateViewRiservaConsiglieri(){
         ArrayList<String> coloriConsiglieri = new ArrayList<>();
-        riservaConsiglieri.stream().forEach((Consigliere c) -> coloriConsiglieri.add(c.getColore().toString()));
-        super.notifyViews((InterfacciaView v) -> v.updateRiservaConsiglieri(coloriConsiglieri));
+        riservaConsiglieri.forEach((Consigliere consigliere) -> coloriConsiglieri.add(consigliere.getColore().toString()));
+        super.notifyViews((InterfacciaView view) -> view.updateRiservaConsiglieri(coloriConsiglieri));
     }
 }

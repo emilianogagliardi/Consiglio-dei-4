@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static java.util.Arrays.asList;
 import static model.Costanti.NUM_CONSIGLIERI_BALCONE;
 
-public class BalconeDelConsiglio extends Observed{
+public class BalconeDelConsiglio extends Observable {
     private NomeRegione regione;
     private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
@@ -90,10 +90,10 @@ public class BalconeDelConsiglio extends Observed{
     }
 
     private void updateView(){
-        super.notifyViews((InterfacciaView v) -> v.updateBalcone(   regione.toString(),
+        super.notifyViews((InterfacciaView view) -> view.updateBalcone(   regione.toString(),
                                                                     getColoriConsiglieri().get(0).toString(),
-                                                                    getColoriConsiglieri().get(0).toString(),
-                                                                    getColoriConsiglieri().get(0).toString(),
-                                                                    getColoriConsiglieri().get(0).toString()));
+                                                                    getColoriConsiglieri().get(1).toString(),
+                                                                    getColoriConsiglieri().get(2).toString(),
+                                                                    getColoriConsiglieri().get(3).toString()));
     }
 }

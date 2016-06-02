@@ -26,7 +26,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateBalcone(String balcone, String colore1, String colore2, String colore3, String colore4) {
+    public void updateBalcone(String regione, String colore1, String colore2, String colore3, String colore4) {
 
     }
 

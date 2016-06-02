@@ -4,14 +4,13 @@ import model.carte.*;
 import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.ImpossibileDecrementareMosseException;
 import model.eccezioni.MoneteNonSufficientiException;
-import model.Costanti;
 import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Giocatore extends Observed{
+public class Giocatore extends Observable {
     private int idGiocatore;
     private int puntiVittoria;
     private int monete;

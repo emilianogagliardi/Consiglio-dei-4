@@ -5,7 +5,7 @@ import proxyview.InterfacciaView;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Re extends Observed{
+public class Re extends Observable {
     private Città città;
 
     public Re (Città città, ArrayList<InterfacciaView> views) {

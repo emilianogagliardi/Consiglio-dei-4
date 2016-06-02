@@ -12,7 +12,7 @@ public abstract class CartaConBonus extends Carta {
         this.bonus = Objects.requireNonNull(bonus);
     }
 
-    Bonus getBonus() {
+    Bonus ottieniBonus() {
         bonusDaRitornare = bonus;
         this.bonus = NullBonus.getInstance();
         return bonusDaRitornare;

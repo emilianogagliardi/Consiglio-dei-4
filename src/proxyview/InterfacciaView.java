@@ -8,7 +8,7 @@ import java.util.HashMap;
 public interface InterfacciaView {
     int getIdGiocatore();
     void updatePuntiVittoriaGiocatore(int idGiocatore, int punti);
-    void updateBalcone (String balcone, String colore1, String colore2, String colore3, String colore4);
+    void updateBalcone (String regione, String colore1, String colore2, String colore3, String colore4);
     void updateMonete (int idGiocatore, int idMonete);
     void updateCartePoliticaAvversari (int idGiocatore, int numCarte);
     void updateCartePoliticaProprie (ArrayList<String> carte);
