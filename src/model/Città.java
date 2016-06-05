@@ -36,16 +36,9 @@ public class Città extends Observable {
         return false;
     }
 
-    public void addCittàAdiacenti (Città... città) throws CittàAdiacenteSeStessaException{
-        for (Città c : città) {
-            if (c.equals(this)) throw new CittàAdiacenteSeStessaException();
-        }
-        //se non è presente la città stessa allora aggiungi le città adiacenti
-        for (Città c : città) {
-            cittàAdiacenti.add(c);
-            if (!c.getCittàAdiacenti().contains(this))
-                c.addCittàAdiacenti(this); //aggiunge se stessa come adiacente alla città appena aggiunta (set elimina duplicati)
-        }
+    public void addCittàAdiacenti (Città città) throws CittàAdiacenteSeStessaException, NullPointerException{
+        if (città.equals(this)) throw new CittàAdiacenteSeStessaException();
+        else cittàAdiacenti.add(città);
     }
 
     public void costruisciEmporio (Emporio e) throws EmporioGiàEsistenteException{

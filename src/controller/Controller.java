@@ -3,13 +3,14 @@ package controller;
 import model.Partita;
 import proxyview.InterfacciaView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Controller implements Runnable{
     private Partita model;
-    private HashMap<Integer, InterfacciaView> views;
+    private ArrayList<InterfacciaView> views;
 
-    public Controller(Partita p, HashMap<Integer, InterfacciaView> v) {
+    public Controller(Partita p, ArrayList<InterfacciaView> v) {
         model = p;
         views = v;
     }

@@ -38,6 +38,8 @@ public class Regione {
         return balconeDelConsiglio;
     }
 
+    public NomeRegione getNome() { return nomeRegione; }
+
     public CartaBonusRegione ottieniCartaBonusRegione(){
         CartaBonusRegione cartaBonusRegioneDaRitornare = this.cartaBonusRegione;
         this.cartaBonusRegione = null;
@@ -68,7 +70,6 @@ public class Regione {
     public Collection<Città> getCittà(){
         return città;
     }
-
 
     public void cambiaCartePermessoCostruzione(){
         cartaPermessoCostruzione1.setVisibile(false);

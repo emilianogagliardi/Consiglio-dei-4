@@ -30,13 +30,6 @@ public class TestCittà {
         città4 = new Città(NomeCittà.ESTI, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
     }
 
-    @Before
-    @Test
-    public void aggiungiNullaTest() {
-        città1.addCittàAdiacenti();
-        assertTrue(città1.getCittàAdiacenti().isEmpty());
-    }
-
     @Test
     public void equalsTest() {
         Città c1 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
@@ -57,7 +50,8 @@ public class TestCittà {
         città1.addCittàAdiacenti(città2);
         assertTrue(città1.getCittàAdiacenti().contains(città2));
         assertTrue(città2.getCittàAdiacenti().contains(città1));
-        città3.addCittàAdiacenti(città1, città2);
+        città3.addCittàAdiacenti(città1);
+        città3.addCittàAdiacenti(città2);
         assertTrue(città3.getCittàAdiacenti().contains(città1) && città3.getCittàAdiacenti().contains(città2));
         assertTrue(città1.getCittàAdiacenti().contains(città3) && città2.getCittàAdiacenti().contains(città3));
         assertFalse(città4.getCittàAdiacenti().contains(città3));
