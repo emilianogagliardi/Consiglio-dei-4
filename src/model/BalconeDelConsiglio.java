@@ -9,22 +9,22 @@ import static java.util.Arrays.asList;
 import static model.Costanti.NUM_CONSIGLIERI_BALCONE;
 
 public class BalconeDelConsiglio extends Observable {
-    private NomeRegione regione;
+    private IdBalcone IdBalcone;
     private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 
-    public BalconeDelConsiglio(NomeRegione regione, ArrayList<InterfacciaView> views, Consigliere... consiglieri) throws NullPointerException, IllegalArgumentException {
-        super(views);
-        this.regione = regione;
-        if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
-            throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
+    public BalconeDelConsiglio(IdBalcone IdBalcone, ArrayList<InterfacciaView> views, Consigliere... consiglieri) throws NullPointerException, IllegalArgumentException {
+            super(views);
+            this.IdBalcone = IdBalcone;
+            if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
+                throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
+            }
+            balcone.addAll(asList(consiglieri));
+            updateView();
         }
-        balcone.addAll(asList(consiglieri));
-        updateView();
-    }
 
-    public NomeRegione getRegione(){
-        return regione;
+    public IdBalcone getIdBalcone(){
+        return IdBalcone;
     }
 
     public Consigliere addConsigliere(Consigliere consigliere) throws NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
@@ -94,7 +94,7 @@ public class BalconeDelConsiglio extends Observable {
     }
 
     private void updateView(){
-        super.notifyViews((InterfacciaView view) -> view.updateBalcone(   regione.toString(),
+        super.notifyViews((InterfacciaView view) -> view.updateBalcone(   IdBalcone.toString(),
                                                                     getColoriConsiglieri().get(0).toString(),
                                                                     getColoriConsiglieri().get(1).toString(),
                                                                     getColoriConsiglieri().get(2).toString(),

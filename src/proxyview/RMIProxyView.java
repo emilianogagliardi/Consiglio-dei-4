@@ -127,5 +127,10 @@ public class RMIProxyView implements InterfacciaView{
 
     }
 
+    @Override
+    public void eseguiTurno() {
+
+    }
+
 
 }
