@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public interface InterfacciaView {
     int getIdGiocatore();
+    int scegliMappa();
+    void erroreDiConnessione();
     void updatePuntiVittoriaGiocatore(int idGiocatore, int punti);
     void updateBalcone (String regione, String colore1, String colore2, String colore3, String colore4);
     void updateMonete (int idGiocatore, int idMonete);

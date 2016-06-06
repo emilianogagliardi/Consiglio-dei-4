@@ -21,6 +21,16 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
+    public int scegliMappa() {
+        return 0;
+    }
+
+    @Override
+    public void erroreDiConnessione() {
+
+    }
+
+    @Override
     public void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) {
 
     }
