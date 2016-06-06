@@ -27,4 +27,6 @@ public interface InterfacciaView {
     void updateCarteBonusRegioneGiocatore(int idGiocatore, HashMap<String, Integer> carte);
     void updateCarteBonusRegioneTabellone(HashMap<String, Integer> carte);
     void updatePosizioneRe(String città);
+    void eseguiTurno();
+
 }

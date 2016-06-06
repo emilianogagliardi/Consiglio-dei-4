@@ -22,8 +22,6 @@ public class Giocatore extends Observable {
     private List<CartaBonusRegione> manoCarteBonusRegione;
     private List<CartaBonusColoreCittà> manoCarteBonusColoreCittà;
     private List<CartaPermessoCostruzione> manoCartePermessoCostruzione;
-    private int azioniPrincipaliDisponibili;
-    private int azioniVelociDisponibili;
 
     public Giocatore (int id, int monete, int aiutanti, ArrayList<InterfacciaView> views){
         super (views);
@@ -104,30 +102,6 @@ public class Giocatore extends Observable {
         updateViewPuntiVittoria();
     }
 
-    //gestione numero di azioni principali
-    public int getAzioniPrincipaliDisponibili(){return azioniPrincipaliDisponibili;}
-
-    public void incrementaAzioniPrincipaliDisponibili(){
-        azioniPrincipaliDisponibili++;
-    }
-
-    public void decrementaAzioniPrincipaliDisponibili() throws ImpossibileDecrementareMosseException {
-        if (azioniPrincipaliDisponibili == 0) throw new ImpossibileDecrementareMosseException();
-        azioniPrincipaliDisponibili--;
-    }
-
-    //gestione numero di azioni veloci
-    public int getAzioniVelociDisponibili(){return azioniVelociDisponibili;}
-
-    public void decrementaAzioniVelociDisponibili() throws ImpossibileDecrementareMosseException{
-        if (azioniVelociDisponibili == 0) throw new ImpossibileDecrementareMosseException();
-        azioniVelociDisponibili--;
-    }
-
-
-    public void ottieniBonus(Bonus b) {
-        b.ottieni(this);
-    }
 
     public void addCarta(Carta c) throws IllegalArgumentException{
         if (c instanceof CartaPolitica){

@@ -11,8 +11,7 @@ public class BonusPuntiVittoria extends RealBonus {
         puntiVittoria = p;
     }
 
-    public void ottieni(Giocatore giocatore) {
-        giocatore.guadagnaPuntiVittoria(puntiVittoria);
-        ottieniDecoratedBonus(giocatore);
+    public int getPuntiVittoria() {
+        return puntiVittoria;
     }
 }

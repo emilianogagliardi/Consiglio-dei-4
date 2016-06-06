@@ -11,9 +11,7 @@ public class BonusMonete extends RealBonus {
         numeroMonete = m;
     }
 
-    public void ottieni(Giocatore giocatore) {
-        giocatore.guadagnaMonete(numeroMonete);
-        super.ottieniDecoratedBonus(giocatore);
+    public int getNumeroMonete() {
+        return numeroMonete;
     }
-
 }
