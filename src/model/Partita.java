@@ -19,11 +19,13 @@ public class Partita extends Observable {
     private Mazzo<CartaPremioDelRe> mazzoCartePremioRe;
     private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà;
     private ArrayList<Consigliere> riservaConsiglieri;
-    private List<Giocatore> giocatori = new ArrayList<>(MAX_GIOCATORI);
-    private int riservaAiutanti = NUM_AIUTANTI;
+    private List<Giocatore> giocatori;
+    private int riservaAiutanti;
 
     public Partita(ArrayList<InterfacciaView> views){
         super(views);
+        cartePoliticaScartate = new Mazzo<>();
+        giocatori = new ArrayList<>(MAX_GIOCATORI);
     }
 
     public void riceviAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
@@ -73,9 +75,8 @@ public class Partita extends Observable {
         }
     }
 
-    public void setCartePoliticaScartate(Mazzo<CartaPolitica> cartePoliticaScartate){
-        if(this.cartePoliticaScartate == null)
-            this.cartePoliticaScartate = cartePoliticaScartate;
+    public void addCartePoliticaScartate(ArrayList<CartaPolitica> nuoveCarteScartate){
+        nuoveCarteScartate.forEach((CartaPolitica carta) -> cartePoliticaScartate.addCarta(carta));
     }
 
     public void setMazzoCartePolitica(Mazzo<CartaPolitica> mazzoCartePolitica){
@@ -121,6 +122,8 @@ public class Partita extends Observable {
             this.riservaConsiglieri = riservaConsiglieri;
         }
     }
+
+    public ArrayList<Consigliere> getRiservaConsiglieri() {return riservaConsiglieri;}
 
     public Consigliere interagisciConRiservaConsiglieri(ColoreConsigliere coloreConsigliereDaRestituire, Consigliere consigliereDaInserire) throws NoSuchElementException{
         Consigliere consigliereDaRestituire;

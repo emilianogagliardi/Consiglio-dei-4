@@ -12,6 +12,8 @@ public abstract class CartaConBonus extends Carta {
         this.bonus = Objects.requireNonNull(bonus);
     }
 
+    public CartaConBonus(){} //necessario per a serializzazione di Carta permesso costruzione
+
     Bonus ottieniBonus() {
         bonusDaRitornare = bonus;
         this.bonus = NullBonus.getInstance();
