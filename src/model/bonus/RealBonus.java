@@ -10,8 +10,8 @@ public abstract class RealBonus extends Bonus {
         this.decoratedBonus = decorated;
     }
 
-    public void ottieniDecoratedBonus(Giocatore giocatore){
-        decoratedBonus.ottieni(giocatore);
+    public Bonus getDecoratedBonus(){
+        return decoratedBonus;
     }
 
 }

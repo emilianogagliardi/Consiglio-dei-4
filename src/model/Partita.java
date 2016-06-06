@@ -83,6 +83,10 @@ public class Partita extends Observable {
             this.mazzoCartePolitica = mazzoCartePolitica;
     }
 
+    public CartaPolitica ottieniCartaPolitica(){
+        return mazzoCartePolitica.ottieniCarta();
+    }
+
     public void setMazzoCartePremioRe(Mazzo<CartaPremioDelRe> mazzoCartePremioRe){
         if(this.mazzoCartePremioRe == null)
             this.mazzoCartePremioRe = mazzoCartePremioRe;

@@ -77,7 +77,7 @@ public class PartitaTest {
                         percorsoDellaNobiltà1.add(new BonusAvanzaPercorsoNobiltà(3, new BonusAiutanti(3, NullBonus.getInstance())));
                         break;
                     case 3:
-                        percorsoDellaNobiltà1.add(new BonusMonete(5, new BonusPescaCartaPolitica(2, mazzoCartePolitica1, NullBonus.getInstance())));
+                        percorsoDellaNobiltà1.add(new BonusMonete(5, new BonusPescaCartaPolitica(2, NullBonus.getInstance())));
                         break;
                     default:
                         break;

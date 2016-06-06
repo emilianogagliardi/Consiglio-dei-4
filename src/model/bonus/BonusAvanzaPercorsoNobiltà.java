@@ -11,8 +11,9 @@ public class BonusAvanzaPercorsoNobiltà extends RealBonus {
         numeroPosti = n;
     }
 
-    public void ottieni(Giocatore giocatore) {
-        giocatore.avanzaPercorsoNobiltà(numeroPosti);
-        super.ottieniDecoratedBonus(giocatore);
+    public int getNumeroPosti() {
+        return numeroPosti;
     }
+
+
 }

@@ -15,8 +15,4 @@ public class NullBonus extends Bonus {
         }
         return instance;
     }
-
-    public void ottieni(Giocatore giocatore) {
-        //do nothing
-    }
 }

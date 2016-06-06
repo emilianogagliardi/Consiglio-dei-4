@@ -10,8 +10,6 @@ public class BonusAiutanti extends RealBonus {
         if (a <= 0) throw new IllegalArgumentException("Non è possibile creare un bonus aiutanti con un numero negativo o nullo di aiutanti");
         numeroAiutanti = a;
     }
-    public void ottieni(Giocatore giocatore) {
-        giocatore.guadagnaAiutanti(numeroAiutanti);
-        super.ottieniDecoratedBonus(giocatore);
-    }
+
+    public int getNumeroAiutanti(){ return numeroAiutanti;}
 }
