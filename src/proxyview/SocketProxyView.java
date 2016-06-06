@@ -119,4 +119,9 @@ public class SocketProxyView implements InterfacciaView {
     public void updatePosizioneRe(String città) {
 
     }
+
+    @Override
+    public void eseguiTurno() {
+
+    }
 }
