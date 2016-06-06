@@ -13,13 +13,13 @@ public class BalconeDelConsiglio extends Observable {
     private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 
-    public BalconeDelConsiglio(IdBalcone IdBalcone, ArrayList<InterfacciaView> views, Consigliere... consiglieri) throws NullPointerException, IllegalArgumentException {
+    public BalconeDelConsiglio(IdBalcone IdBalcone, ArrayList<InterfacciaView> views, ArrayList<Consigliere> consiglieri) throws NullPointerException, IllegalArgumentException {
             super(views);
             this.IdBalcone = IdBalcone;
-            if (consiglieri.length != NUM_CONSIGLIERI_BALCONE) {
+            if (consiglieri.size() != NUM_CONSIGLIERI_BALCONE) {
                 throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
             }
-            balcone.addAll(asList(consiglieri));
+            balcone.addAll(consiglieri);
             updateView();
         }
 
