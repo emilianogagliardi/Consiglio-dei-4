@@ -1,3 +1,5 @@
+package server;
+
 public class CostantiSistema {
     public static final int SOCKET_PORT = 3000;
     public static final int RMI_PORT = 3001;

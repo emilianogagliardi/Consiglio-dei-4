@@ -1,6 +1,6 @@
 package model;
 
-import proxyview.InterfacciaView;
+import proxyView.InterfacciaView;
 
 @FunctionalInterface
 public interface ViewUpdater {

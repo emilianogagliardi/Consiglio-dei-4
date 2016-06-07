@@ -1,9 +1,18 @@
+package server;
 
 import controller.Controller;
 import model.*;
 import model.bonus.*;
+<<<<<<< HEAD:src/AvviatorePartita.java
 import model.carte.*;
 import proxyview.InterfacciaView;
+=======
+import model.carte.CartaBonusRegione;
+import model.carte.CartaPermessoCostruzione;
+import proxyView.InterfacciaView;
+import proxyView.RMIProxyView;
+import proxyView.SocketProxyView;
+>>>>>>> 49ed980a4b646110199dc74b98dd91251d947e73:src/server/AvviatorePartita.java
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
