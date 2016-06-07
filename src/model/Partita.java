@@ -28,6 +28,14 @@ public class Partita extends Observable {
         giocatori = new ArrayList<>(MAX_GIOCATORI);
     }
 
+    public Regione getRegione(NomeRegione nomeRegione) throws NoSuchElementException{
+        for(Regione regione : regioni){
+            if(regione.getNome().equals(nomeRegione))
+                return regione;
+        }
+        throw new NoSuchElementException("Non esiste una regione con il nome indicato");
+    }
+
     public void riceviAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
         if ((this.riservaAiutanti - numAiutanti) < 0)
            throw new IllegalArgumentException("Non ci sono abbastanza aiutanti in riserva");
@@ -125,11 +133,10 @@ public class Partita extends Observable {
 
     public ArrayList<Consigliere> getRiservaConsiglieri() {return riservaConsiglieri;}
 
-    public Consigliere interagisciConRiservaConsiglieri(ColoreConsigliere coloreConsigliereDaRestituire, Consigliere consigliereDaInserire) throws NoSuchElementException{
+    public Consigliere ottieniConsigliereDaRiserva(ColoreConsigliere coloreConsigliereDaRestituire) throws NoSuchElementException{
         Consigliere consigliereDaRestituire;
         for(Consigliere consigliere : riservaConsiglieri)
             if(consigliere.getColore().equals(coloreConsigliereDaRestituire)){
-                riservaConsiglieri.add(consigliereDaInserire);
                 consigliereDaRestituire = consigliere;
                 riservaConsiglieri.remove(consigliere);
                 //update views
@@ -137,6 +144,11 @@ public class Partita extends Observable {
                 return consigliereDaRestituire;
             }
          throw new NoSuchElementException("Non esiste in riserva un consigliere del colore indicato");
+    }
+
+    public void addConsigliereARiserva(Consigliere consigliere){
+        riservaConsiglieri.add(consigliere);
+        updateViewRiservaConsiglieri();
     }
 
     public void addGiocatore(Giocatore giocatore) throws IllegalArgumentException, NumeroMassimoGiocatoriRaggiuntoException {

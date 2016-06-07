@@ -1,19 +1,22 @@
 package controller;
 
-import model.Giocatore;
-import model.Partita;
+import model.*;
 import model.bonus.*;
 import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
-public class Controller implements Runnable{
+public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
     private ArrayList<InterfacciaView> views;
     private boolean threadSospeso = true;
-    int idGiocatoreCorrente = 0;
-    Giocatore giocatoreCorrente = partita.getGiocatori().get(idGiocatoreCorrente);
+    private int idGiocatoreCorrente = 0;
+    private Giocatore giocatoreCorrente = partita.getGiocatori().get(idGiocatoreCorrente);
+    private boolean azionePrincipaleEseguita = false;
+    private boolean azioneVeloceEseguita = false;
+    private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) {
@@ -23,17 +26,22 @@ public class Controller implements Runnable{
 
     @Override
     public void run() {
+        //creo una mappaBalconi come struttura di supporto
+        mappaBalconi.put(IdBalcone.COSTA, partita.getRegione(NomeRegione.valueOf(IdBalcone.COSTA.toString())).getBalconeDelConsiglio());
+        mappaBalconi.put(IdBalcone.COLLINA, partita.getRegione(NomeRegione.valueOf(IdBalcone.COLLINA.toString())).getBalconeDelConsiglio());
+        mappaBalconi.put(IdBalcone.MONTAGNA, partita.getRegione(NomeRegione.valueOf(IdBalcone.MONTAGNA.toString())).getBalconeDelConsiglio());
+        mappaBalconi.put(IdBalcone.RE, partita.getBalconeDelConsiglioRe());
 
-
+        //inizio il ciclo dei turni
         while(!partitaTerminata()){
-            //inizializzo il numero di azioni veloci e principali disponibili
-            //TODO: gestione azioni principali e veloci
-
-            //il controller da il consenso al giocatore di iniziare il turno
-            views.get(giocatoreCorrente.getId()).eseguiTurno();
+            azionePrincipaleEseguita = false;
+            azioneVeloceEseguita = false;
 
             //il giocatore pesca una carta politica
             giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
+
+            //il controller da il consenso al giocatore di iniziare il turno
+            views.get(giocatoreCorrente.getId()).eseguiTurno();
 
             //il controller aspetta che il giocatore abbia finito il turno
             try {
@@ -68,12 +76,14 @@ public class Controller implements Runnable{
         return false;
     }
 
+    @Override
     public boolean fineTurno(){ //verifica che il giocatore possa finire il turno
         //verifica azioni
         return true;
     }
 
-    public void ottieniBonus(Bonus bonus){
+    @Override
+    public void ottieniBonus(Bonus bonus) throws IllegalArgumentException {
         while (!(bonus instanceof NullBonus)){
             if(bonus instanceof BonusAiutanti) {
                 giocatoreCorrente.guadagnaAiutanti(((BonusAiutanti) bonus).getNumeroAiutanti());
@@ -81,9 +91,53 @@ public class Controller implements Runnable{
             else if (bonus instanceof BonusAvanzaPercorsoNobiltà){
                 giocatoreCorrente.avanzaPercorsoNobiltà(((BonusAvanzaPercorsoNobiltà) bonus).getNumeroPosti());
             }
-            if (bonus instanceof RealBonus){
-                bonus = ((RealBonus) bonus).getDecoratedBonus();
+            else if(bonus instanceof BonusMonete){
+                giocatoreCorrente.guadagnaMonete(((BonusMonete) bonus).getNumeroMonete());
             }
+            else if(bonus instanceof BonusPescaCartaPolitica){
+                for (int i = 0; i < ((BonusPescaCartaPolitica) bonus).getNumeroCarte(); i++)
+                    giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
+            }
+            else if(bonus instanceof BonusPuntiVittoria){
+                giocatoreCorrente.guadagnaPuntiVittoria(((BonusPuntiVittoria) bonus).getPuntiVittoria());
+            }
+            else if(bonus instanceof BonusRipetiAzionePrincipale){
+                NomeAzionePrincipale azionePrincipale = ((BonusRipetiAzionePrincipale) bonus).getAzionePrincipale();
+                switch (azionePrincipale){ //TODO: chiamare i metodi appropriati
+                    case ELEGGERE_CONSIGLIERE:
+                        break;
+                    case ACQUISTARE_TESSERA_PERMESSO_COSTRUZIONE:
+                        break;
+                    case COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO:
+                        break;
+                    case COSTRUIRE_EMPORIO_CON_AIUTO_RE:
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Azione principale non prevista");
+                }
+            }
+            else throw new IllegalArgumentException("Bonus non previsto"); //non si dovrebbe mai arrivare in questo branch else, se succede significa che è stato passato in ingresso un Bonus non previsto
+            bonus = ((RealBonus) bonus).getDecoratedBonus();
         }
     }
+
+    @Override
+    public boolean eleggereConsigliere(String coloreConsigliere, String nomeBalcone) {
+        Consigliere consigliereDaInserireInBalcone, consigliereDaInserireInRiserva;
+        BalconeDelConsiglio balcone;
+        try{
+            consigliereDaInserireInBalcone = partita.ottieniConsigliereDaRiserva(ColoreConsigliere.valueOf(coloreConsigliere));
+        } catch (NoSuchElementException exc){
+            return false;
+        }
+        balcone = mappaBalconi.get(IdBalcone.valueOf(nomeBalcone));
+        if(balcone == null)
+            return false;
+        consigliereDaInserireInRiserva = balcone.addConsigliere(consigliereDaInserireInBalcone);
+        partita.addConsigliereARiserva(consigliereDaInserireInRiserva);
+        return true;
+    }
 }
+
+
+
