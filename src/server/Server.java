@@ -1,3 +1,4 @@
+package server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -74,7 +75,7 @@ public class Server {
     }
 
     private void AvviaPartita() {
-        //executors.submit(new Controller());//anche parametro proxyview.InterfacciaView
+        //executors.submit(new Controller());//anche parametro proxyView.InterfacciaView
     }
 
     public static void main(String[] args) {

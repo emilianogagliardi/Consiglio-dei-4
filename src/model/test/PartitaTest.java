@@ -3,7 +3,7 @@ import model.bonus.*;
 import model.carte.*;
 import org.junit.Before;
 import org.junit.Test;
-import proxyview.InterfacciaView;
+import proxyView.InterfacciaView;
 
 import java.util.*;
 

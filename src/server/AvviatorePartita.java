@@ -1,12 +1,13 @@
+package server;
 
 import controller.Controller;
 import model.*;
 import model.bonus.*;
 import model.carte.CartaBonusRegione;
 import model.carte.CartaPermessoCostruzione;
-import proxyview.InterfacciaView;
-import proxyview.RMIProxyView;
-import proxyview.SocketProxyView;
+import proxyView.InterfacciaView;
+import proxyView.RMIProxyView;
+import proxyView.SocketProxyView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

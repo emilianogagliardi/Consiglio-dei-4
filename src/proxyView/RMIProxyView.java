@@ -1,18 +1,15 @@
-package proxyview;
+package proxyView;
 
 import model.carte.CartaPermessoCostruzione;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SocketProxyView implements InterfacciaView {
+public class RMIProxyView implements InterfacciaView{
     private int idGiocatore;
-    private Socket socket;
 
-    public SocketProxyView(int idGiocatore, Socket socket){
+    public RMIProxyView(int idGiocatore){
         this.idGiocatore = idGiocatore;
-        this.socket = socket;
     }
 
     @Override
@@ -134,4 +131,6 @@ public class SocketProxyView implements InterfacciaView {
     public void eseguiTurno() {
 
     }
+
+
 }

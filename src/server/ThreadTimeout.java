@@ -1,3 +1,4 @@
+package server;
 
 /**
  * Thread timeout viene fatto partire dall'accettore di connessioni, prendendo come parametro
