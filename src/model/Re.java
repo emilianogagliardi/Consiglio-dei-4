@@ -1,6 +1,6 @@
 package model;
 
-import proxyView.InterfacciaView;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.Objects;

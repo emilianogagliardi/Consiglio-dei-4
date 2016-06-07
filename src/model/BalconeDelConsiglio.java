@@ -5,7 +5,7 @@ import proxyview.InterfacciaView;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
-import static java.util.Arrays.asList;
+
 import static model.Costanti.NUM_CONSIGLIERI_BALCONE;
 
 public class BalconeDelConsiglio extends Observable {

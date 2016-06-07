@@ -2,7 +2,7 @@ package model;
 import model.carte.*;
 import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.MoneteNonSufficientiException;
-import proxyView.InterfacciaView;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.Arrays;

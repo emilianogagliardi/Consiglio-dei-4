@@ -71,15 +71,10 @@ public class Server {
         }
     }
 
-<<<<<<< HEAD:src/Server.java
-    public void fineGiocatoriAccettati(){
+    public void fineGiocatoriAccettati() {
         idCorrente = 0;
         AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
         new Thread(avviatorePartita).start();
-=======
-    private void AvviaPartita() {
-        //executors.submit(new Controller());//anche parametro proxyView.InterfacciaView
->>>>>>> 49ed980a4b646110199dc74b98dd91251d947e73:src/server/Server.java
     }
 
     public static void main(String[] args) {

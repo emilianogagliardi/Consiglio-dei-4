@@ -5,7 +5,7 @@ import model.carte.CartaPolitica;
 import model.carte.ColoreCartaPolitica;
 import org.junit.Before;
 import org.junit.Test;
-import proxyView.InterfacciaView;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 

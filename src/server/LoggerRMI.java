@@ -1,3 +1,5 @@
+package server;
+
 import proxyview.InterfacciaView;
 
 import java.rmi.RemoteException;

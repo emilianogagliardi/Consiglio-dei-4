@@ -5,7 +5,7 @@ import model.bonus.NullBonus;
 import model.ColoreCittà;
 import org.junit.Before;
 import org.junit.Test;
-import proxyView.InterfacciaView;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 

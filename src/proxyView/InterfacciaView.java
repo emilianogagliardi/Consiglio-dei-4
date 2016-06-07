@@ -1,4 +1,4 @@
-package proxyView;
+package proxyview;
 
 import model.carte.CartaPermessoCostruzione;
 
