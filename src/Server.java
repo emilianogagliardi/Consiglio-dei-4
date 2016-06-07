@@ -1,59 +1,53 @@
 
+import proxyview.InterfacciaView;
+import proxyview.SocketProxyView;
+
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * L'instaurazione delle connessioni viene fatta tramite socket. Quando un client si connette comunica immediatamente
- * il suo nickname e in che modo vorrà comunicare, se tramite socket (inviando la stringa "socket") o RMI (inviando la
- * stringa "RMI")
- */
-
-/*TODO bisogna passare ad avviaPartita i socket
-    avvia partita non può fare operazioni bloccanti, perchè terrebbe il server in stop,
-    è necessario comunicare con un client per fargli scegliere la mappa, quindi sarà necessario
-    che questa operazione avvenga in un nuovo thread. è opportuno che sia il controller a generare la partita??
-*/
 public class Server {
-    private HashMap<Integer, String> giocatori = new HashMap<>();
-    private int idCorrente = 0;
-    private ExecutorService executors = Executors.newCachedThreadPool();
+    private ArrayList<InterfacciaView> proxyViews;
+    private int idCorrente;
+    private ScheduledExecutorService timeoutExecutor;
+    private Thread timeoutThread;
+
+    public Server() {
+        proxyViews = new ArrayList<>();
+        idCorrente = 0;
+        timeoutExecutor = Executors.newSingleThreadScheduledExecutor();
+    }
 
     public void startServer() {
+        try{
+            LoggerRMI loggerRMI = new LoggerRMI(this);
+            Registry registry = LocateRegistry.createRegistry(CostantiSistema.RMI_PORT);
+            registry.bind(CostantiSistema.NOME_LOGGER_REG, loggerRMI);
+        }catch (RemoteException e) {
+            System.out.println("Impossibile creare e registrare loggerRMI");
+            e.printStackTrace();
+        }catch (AlreadyBoundException e) {
+            System.out.println("impossibile fare bind di logger RMI");
+            e.printStackTrace();
+        }
         ServerSocket serverSocket = null;
-        ScheduledExecutorService timeoutExecutor = Executors.newSingleThreadScheduledExecutor();
-        Thread timeoutThread = new ThreadTimeout(this);
         try {
-            serverSocket = new ServerSocket(CostantiSistema.PORT);
+            serverSocket = new ServerSocket(CostantiSistema.SOCKET_PORT);
         }catch (IOException e) {
             System.out.println("Impossibile inizializzare server socket");
         }
         while (true) {
             try{
                 Socket socket = serverSocket.accept();
-                Scanner in = new Scanner(socket.getInputStream());
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                String comunicazione = in.nextLine();
-                if (!comunicazione.equals("socket") || !comunicazione.equals("RMI")){
-                    out.println("false"); //rifiuta la connessione se comunicazione non è valida
-                }else{
-                    out.println("true"); //conferma connessione accettata
-                }
-                giocatori.put(idCorrente, comunicazione);
-                idCorrente++;
-                if (giocatori.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
-                    timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT, TimeUnit.SECONDS);
-                }else if (giocatori.size() == CostantiSistema.NUM_GOCATORI_MAX) {
-                    timeoutThread.interrupt(); //killa il thread di timeout
-                    fineGiocatoriAccettati();
-                }
+                addView(new SocketProxyView(socket));
             }catch (IOException e){
                 System.out.println("impossibile creare socket da server socket");
             }catch (NullPointerException e) {
@@ -63,18 +57,23 @@ public class Server {
         }
     }
 
+    public synchronized void addView(InterfacciaView view){
+        view.setIdGiocatore(idCorrente);
+        proxyViews.add(view);
+        idCorrente++;
+        if (proxyViews.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
+            timeoutThread = new ThreadTimeout(this);
+            timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT, TimeUnit.SECONDS);
+        }else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
+            timeoutThread.interrupt(); //killa il thread di timeout
+            fineGiocatoriAccettati();
+        }
+    }
+
     public void fineGiocatoriAccettati(){
-        AvviaPartita();
-        creaNuovaMappaGiocatori();
         idCorrente = 0;
-    }
-
-    private void creaNuovaMappaGiocatori() {
-        giocatori = new HashMap<>();
-    }
-
-    private void AvviaPartita() {
-        //executors.submit(new Controller());//anche parametro proxyview.InterfacciaView
+        AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
+        new Thread(avviatorePartita).start();
     }
 
     public static void main(String[] args) {

@@ -10,9 +10,13 @@ public class SocketProxyView implements InterfacciaView {
     private int idGiocatore;
     private Socket socket;
 
-    public SocketProxyView(int idGiocatore, Socket socket){
-        this.idGiocatore = idGiocatore;
+    public SocketProxyView(Socket socket){
         this.socket = socket;
+    }
+
+    @Override
+    public void setIdGiocatore(int idGiocatore) {
+        this.idGiocatore = idGiocatore;
     }
 
     @Override
