@@ -107,8 +107,14 @@ public class Partita extends Observable {
     }
 
     public CartaPremioDelRe ottieniCartaPremioRe(){
-        return mazzoCartePremioRe.ottieniCarta();
+        CartaPremioDelRe cartaPremioDelRe;
+        try {
+            cartaPremioDelRe = mazzoCartePremioRe.ottieniCarta();
+        } catch (NoSuchElementException exc){
+            cartaPremioDelRe = null;
+        }
         //TODO: updateCartePremioReTabellone()
+        return cartaPremioDelRe;
     }
 
     public void setCarteBonusColoreCittà(HashSet<CartaBonusColoreCittà> carteBonusColoreCittà) throws IllegalArgumentException  {
