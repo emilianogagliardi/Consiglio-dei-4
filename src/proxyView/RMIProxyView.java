@@ -13,6 +13,11 @@ public class RMIProxyView implements InterfacciaView{
     }
 
     @Override
+    public void setIdGiocatore(int idGiocatore) {
+
+    }
+
+    @Override
     public int getIdGiocatore(){
         return idGiocatore;
     }

@@ -1,12 +1,16 @@
 package model;
 
+import model.carte.ColoreCartaPolitica;
+
 public class Costanti {
     //caratteristiche della partita
     public static final int NUM_REGIONI = 3;
     public static final int NUM_CITTA = 15;
     public static final int NUM_CITTA_PER_REGIONE = NUM_CITTA/NUM_REGIONI;
     public static final int NUM_CARTE_POLITICA = 90;
+    public final static int NUM_CARTE_POLITICA_PER_COLORE = NUM_CARTE_POLITICA / ColoreCartaPolitica.values().length;
     public static final int NUM_CARTE_PREMIO_RE = 5;
+    public static final int[] PUNTI_CARTA_PREMIO_RE = {25, 18, 12, 7, 3};
     public static final int NUM_CARTE_BONUS_REGIONE = NUM_REGIONI;
     public static final int NUM_CARTE_PERMESSO = 45;
     public static final int NUM_CARTE_PERMESSO_REGIONE = NUM_CARTE_PERMESSO/NUM_REGIONI; //il funzionamento è garantito solo per valori >= 15
@@ -23,10 +27,17 @@ public class Costanti {
     public static final int MIN_VALORE_SOTTOBONUS = 1;
     public static final int PUNTI_VITTORIA_BONUS_REGIONE = 10;
     public static final String CITTÀ_RE = "JUVELAR";
+    public static final double PERCENTUALE_BONUS_PERCORSO_NOBILTA = 0.3;
+    public static final int PUNTI_BONUS_COLORE_CITTA_ORO = 20;
+    public static final int PUNTI_BONUS_COLORE_CITTA_ARGENTO = 12;
+    public static final int PUNTI_BONUS_COLORE_CITTA_BRONZO = 8;
+    public static final int PUNTI_BONUS_COLORE_CITTA_FERRO = 5;
     //caratteristiche del giocatore
     public static final int MAX_MONETE = 30;
     public static final int MAX_POS_NOBILTA = 20;
     public static final int NUM_EMPORI_GIOCATORE = 10;
-    public static final int NUM_CARTE_POLITICA_INIZIALI = 6;
     public static final int MAX_PUNTI_VITTORIA = 99;
+    public static final int NUM_CARTE_POLITICA_INIZIALI_GIOCATORE = 6;
+    public final static int[] MONETE_INIZIALI_GIOCATORI = {10, 11, 12, 13};
+    public final static int[] AIUTANTI_INIZIALI_GIIOCATORI = {1, 2, 3, 4};
 }

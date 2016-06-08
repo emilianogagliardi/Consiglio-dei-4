@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface InterfacciaView {
+    void setIdGiocatore(int idGiocatore);
     int getIdGiocatore();
     int scegliMappa();
     void erroreDiConnessione();

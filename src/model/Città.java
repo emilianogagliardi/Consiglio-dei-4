@@ -4,7 +4,7 @@ package model;
 import model.bonus.Bonus;
 import model.eccezioni.CittàAdiacenteSeStessaException;
 import model.eccezioni.EmporioGiàEsistenteException;
-import proxyView.InterfacciaView;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.HashSet;

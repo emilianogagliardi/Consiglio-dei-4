@@ -9,7 +9,7 @@ import model.ColoreCittà;
 import model.eccezioni.CittàAdiacenteSeStessaException;
 import model.eccezioni.EmporioGiàEsistenteException;
 import org.junit.Test;
-import proxyView.InterfacciaView;
+import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 

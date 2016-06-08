@@ -3,45 +3,36 @@ package server;
 import controller.Controller;
 import model.*;
 import model.bonus.*;
+<<<<<<< HEAD:src/AvviatorePartita.java
+import model.carte.*;
+import proxyview.InterfacciaView;
+=======
 import model.carte.CartaBonusRegione;
 import model.carte.CartaPermessoCostruzione;
-import proxyView.InterfacciaView;
-import proxyView.RMIProxyView;
-import proxyView.SocketProxyView;
+>>>>>>> 49ed980a4b646110199dc74b98dd91251d947e73:src/server/AvviatorePartita.java
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AvviatorePartita implements Runnable {
-    private HashMap<Integer, Socket> sockets;
-    private HashMap<Integer, String> modiComunicazione;
+    private ArrayList<InterfacciaView> proxyViews;
     private static ExecutorService executors = Executors.newCachedThreadPool();
 
-    public AvviatorePartita(HashMap<Integer, Socket> sockets, HashMap<Integer, String> modiComunicazione) {
-        this.modiComunicazione = modiComunicazione;
-        this.sockets = sockets;
+    public AvviatorePartita(ArrayList<InterfacciaView> proxyViews) {
+        this.proxyViews = proxyViews;
     }
 
     @Override
     public void run() {
-        ArrayList<InterfacciaView> proxyViews = creaProxyViews();
         Partita nuovaPartita = creaPartita(proxyViews);
-        executors.submit(new Controller(nuovaPartita, proxyViews));
-    }
-
-    private ArrayList<InterfacciaView> creaProxyViews (){
-        ArrayList <InterfacciaView> proxyViews = new ArrayList<>(2);
-        modiComunicazione.forEach((idGiocatore, modoComunicazione) -> {
-            if (modoComunicazione.equals("RMI")) proxyViews.add(new RMIProxyView(idGiocatore));
-            else proxyViews.add(new SocketProxyView(idGiocatore, sockets.get(idGiocatore)));
-        });
-        return proxyViews;
+        if (!Thread.currentThread().isInterrupted()) {
+            executors.submit(new Controller(nuovaPartita, proxyViews));
+        }
     }
 
     private Partita creaPartita(ArrayList<InterfacciaView> proxyViews){
@@ -54,11 +45,12 @@ public class AvviatorePartita implements Runnable {
         partita.setRegioni(creaRegioni(fileMappa, tutteLeCittà, partita.getRiservaConsiglieri(), proxyViews));
         partita.setBalconeDelConsiglioRe(creaBalcone(IdBalcone.RE, partita.getRiservaConsiglieri(), proxyViews));
         partita.setRe(creaRe(tutteLeCittà, proxyViews));
-        //TODO precorso nobiltà
-        //TODO mazzo carte politica
-        //TODO mazzo carte premio re
-        //TODO mazzo carte bonus colore città
-        //TODO giocatori
+        partita.setPercorsoDellaNobiltà(creaPercorsoNobiltà());
+        partita.setMazzoCartePolitica(creaMazzoCartePolitica());
+        partita.setMazzoCartePremioRe(creaMazzoCartePremioRe());
+        partita.setCarteBonusColoreCittà(creaMazzoBonusColoreCittà());
+        ArrayList<Giocatore> giocatori = creaGiocatori(proxyViews);
+        giocatori.forEach((Giocatore giocatore) -> partita.addGiocatore(giocatore));
         return partita;
     }
 
@@ -71,7 +63,7 @@ public class AvviatorePartita implements Runnable {
         }catch(FileNotFoundException e) {
             System.out.println("impossibile trovare il file di configurazione della mappa");
             proxyViews.forEach((InterfacciaView view) -> view.erroreDiConnessione());
-            //TODO kill this thread
+            Thread.currentThread().interrupt();
         }
         finally {
             return null; //solo se lanciata l'eccezione
@@ -102,10 +94,10 @@ public class AvviatorePartita implements Runnable {
         }catch (IOException e){
             System.out.println("impossibile trovare file di configurazione mappa");
             proxyViews.forEach((InterfacciaView view) -> view.erroreDiConnessione());
-            //TODO kill this thread
+            Thread.currentThread().interrupt();
         }
         finally {
-            return null; //solo se è stat lanciata l'accezione
+            return null; //solo se è stata lanciata l'accezione
         }
     }
 
@@ -123,7 +115,7 @@ public class AvviatorePartita implements Runnable {
         }catch (IOException e) {
             System.out.println("impossibile trovare file di configurazione mappa");
             proxyViews.forEach((InterfacciaView view) -> view.erroreDiConnessione());
-            //TODO kill this thread
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -221,7 +213,7 @@ public class AvviatorePartita implements Runnable {
         }catch(IOException e) {
             System.out.println("imposssibile trovare file di configurazione mappa");
             views.forEach((InterfacciaView view) -> view.erroreDiConnessione());
-            //TODO kill this thread
+            Thread.currentThread().interrupt();
         }
         finally {
             return null; //solo se lanciata eccezione
@@ -237,7 +229,63 @@ public class AvviatorePartita implements Runnable {
         }
         //se la città re non è stata trovata
         proxyViews.forEach((InterfacciaView view) -> view.erroreDiConnessione());
-        //TODO kill this thread
+        Thread.currentThread().interrupt();
         return null;
+    }
+
+    private List<Bonus> creaPercorsoNobiltà () {
+        List<Bonus> percorso = new ArrayList<>(Costanti.MAX_POS_NOBILTA);
+        Random random = new Random();
+        for(int i = 0; i < Costanti.MAX_POS_NOBILTA; i++){
+            if(random.nextDouble() < Costanti.PERCENTUALE_BONUS_PERCORSO_NOBILTA){
+                percorso.add(creaBonus());
+            }
+            else percorso.add(NullBonus.getInstance());
+        }
+        return percorso;
+    }
+
+    private Mazzo<CartaPolitica> creaMazzoCartePolitica () {
+        Mazzo<CartaPolitica> mazzo = new Mazzo<>();
+        Arrays.stream(ColoreCartaPolitica.values()).forEach((ColoreCartaPolitica colore) ->{
+            for (int i = 0; i < Costanti.NUM_CARTE_POLITICA_PER_COLORE; i++) {
+                mazzo.addCarta(new CartaPolitica(colore));
+            }
+        });
+        mazzo.mischia();
+        return mazzo;
+    }
+
+    private Mazzo<CartaPremioDelRe> creaMazzoCartePremioRe() {
+        Mazzo<CartaPremioDelRe> mazzo = new Mazzo<>();
+        for (int i = 0; i < Costanti.NUM_CARTE_PREMIO_RE; i++) {
+            CartaPremioDelRe carta = new CartaPremioDelRe(Costanti.PUNTI_CARTA_PREMIO_RE[i]);
+            carta.setVisibile(true);
+        }
+        return mazzo;
+    }
+
+    private HashSet<CartaBonusColoreCittà> creaMazzoBonusColoreCittà () {
+        HashMap<ColoreCittà, Integer> puntiColoreMap = new HashMap<>();
+        puntiColoreMap.put(ColoreCittà.ORO, Costanti.PUNTI_BONUS_COLORE_CITTA_ORO);
+        puntiColoreMap.put(ColoreCittà.ARGENTO, Costanti.PUNTI_BONUS_COLORE_CITTA_ARGENTO);
+        puntiColoreMap.put(ColoreCittà.BRONZO, Costanti.PUNTI_BONUS_COLORE_CITTA_BRONZO);
+        puntiColoreMap.put(ColoreCittà.FERRO, Costanti.PUNTI_BONUS_COLORE_CITTA_FERRO);
+        HashSet<CartaBonusColoreCittà> carte = new HashSet<>();
+        Arrays.stream(ColoreCittà.values()).forEach((ColoreCittà colore) -> {
+            CartaBonusColoreCittà carta = new CartaBonusColoreCittà(puntiColoreMap.get(colore), colore);
+            carte.add(carta);
+        });
+        return carte;
+    }
+
+    private ArrayList<Giocatore> creaGiocatori(ArrayList<InterfacciaView> proxyViews) {
+        ArrayList<Giocatore> giocatori = new ArrayList<>();
+        for (int i = 0; i < proxyViews.size(); i++) {
+            InterfacciaView viewCorrente = proxyViews.get(i);
+            int idGiocatore = viewCorrente.getIdGiocatore();
+            giocatori.add (new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews));
+        }
+        return giocatori;
     }
 }

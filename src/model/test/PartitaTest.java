@@ -3,7 +3,7 @@ import model.bonus.*;
 import model.carte.*;
 import org.junit.Before;
 import org.junit.Test;
-import proxyView.InterfacciaView;
+import proxyview.InterfacciaView;
 
 import java.util.*;
 
@@ -64,27 +64,27 @@ public class PartitaTest {
         mazzoCartaPremioRe1.addCarta(new CartaPremioDelRe(25));
         mazzoCartaPremioRe1.addCarta(new CartaPremioDelRe(30));
         Random random = new Random();
-        for(int i = 0; i < Costanti.MAX_POS_NOBILTA; i++){
-            if(random.nextDouble() < 0.3){
-                switch (random.nextInt(4)){
-                    case 0:
-                        percorsoDellaNobiltà1.add(new BonusPuntiVittoria(10, NullBonus.getInstance()));
-                        break;
-                    case 1:
-                        percorsoDellaNobiltà1.add(new BonusAiutanti(1, NullBonus.getInstance()));
-                        break;
-                    case 2:
-                        percorsoDellaNobiltà1.add(new BonusAvanzaPercorsoNobiltà(3, new BonusAiutanti(3, NullBonus.getInstance())));
-                        break;
-                    case 3:
-                        percorsoDellaNobiltà1.add(new BonusMonete(5, new BonusPescaCartaPolitica(2, NullBonus.getInstance())));
-                        break;
-                    default:
-                        break;
+            for(int i = 0; i < Costanti.MAX_POS_NOBILTA; i++){
+                if(random.nextDouble() < 0.3){
+                    switch (random.nextInt(4)){
+                        case 0:
+                            percorsoDellaNobiltà1.add(new BonusPuntiVittoria(10, NullBonus.getInstance()));
+                            break;
+                        case 1:
+                            percorsoDellaNobiltà1.add(new BonusAiutanti(1, NullBonus.getInstance()));
+                            break;
+                        case 2:
+                            percorsoDellaNobiltà1.add(new BonusAvanzaPercorsoNobiltà(3, new BonusAiutanti(3, NullBonus.getInstance())));
+                            break;
+                        case 3:
+                            percorsoDellaNobiltà1.add(new BonusMonete(5, new BonusPescaCartaPolitica(2, NullBonus.getInstance())));
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                else percorsoDellaNobiltà1.add(NullBonus.getInstance());
             }
-            else percorsoDellaNobiltà1.add(NullBonus.getInstance());
-        }
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<Città>()));
         }
