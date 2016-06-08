@@ -1,7 +1,5 @@
 package model.bonus;
 
-import model.Giocatore;
-
 public class BonusAiutanti extends RealBonus {
     private int numeroAiutanti;
 

@@ -1,4 +1,5 @@
 package model;
+import model.bonus.*;
 import model.carte.*;
 import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.MoneteNonSufficientiException;
@@ -6,6 +7,7 @@ import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Giocatore extends Observable {
@@ -38,7 +40,10 @@ public class Giocatore extends Observable {
         updateViewPercorsoNobiltà();
         updateViewEmporiDisponibili();
         updateViewCartePolitica();
-        //TODO update varie carte bonus
+        updateViewCarteBonusRegione();
+        updateViewCarteBonusColoreCittà();
+        updateViewCartePremioRe();
+        //TODO update carte permesso costruzione
     }
 
     //gestione delle monete
@@ -108,7 +113,7 @@ public class Giocatore extends Observable {
         }
         else if(c instanceof CartaBonusColoreCittà) {
             manoCarteBonusColoreCittà.add((CartaBonusColoreCittà) c);
-            //TODO: updateCarteBonusColoreCittàGiocatore()
+            updateViewCarteBonusColoreCittà();
         }
         else if (c instanceof CartaPermessoCostruzione) {
             manoCartePermessoCostruzione.add((CartaPermessoCostruzione) c);
@@ -116,11 +121,11 @@ public class Giocatore extends Observable {
         }
         else if (c instanceof CartaBonusRegione) {
             manoCarteBonusRegione.add((CartaBonusRegione) c);
-            //TODO: updateCarteBonusRegioneGiocatore()
+            updateViewCarteBonusRegione();
         }
         else if (c instanceof CartaPremioDelRe) {
             manoCartePremioDelRe.add((CartaPremioDelRe) c);
-            //TODO: updateCarteBonusReGiocatore()
+            updateViewCartePremioRe();
         }
         else throw new IllegalArgumentException();
     }
@@ -198,11 +203,59 @@ public class Giocatore extends Observable {
     private void updateViewPercorsoNobiltà(){
         super.notifyViews((InterfacciaView v) -> v.updatePercorsoNobiltà(getId(), getPosizionePercorsoNobiltà()));
     }
-    /*
-    private void updateViewCarteBonusRegioneGiocatore(){
-        ArrayList<Integer> puntiPerCarta = new ArrayList<>();
-        manoCarteBonusRegione.stream().forEach((CartaBonusRegione c) -> puntiPerCarta.add(c.)); //costruisce arrayList con punti delle carte
-        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusReGiocatore(getId(), ));
+
+    private void updateViewCarteBonusRegione() {
+        HashMap<String, Integer> mapCarte = new HashMap<>();
+        manoCarteBonusRegione.forEach((CartaBonusRegione carta) -> {
+            Bonus bonus = carta.ottieniBonus();
+            int punti;
+            try{
+                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
+                punti = bonusPuntiVittoria.getPuntiVittoria();
+            }catch (ClassCastException e) {
+                System.out.println("la carta bonus regione non ha bonus punti vittoria, impossibile eseguire cast");
+                punti = 0;
+            }
+            mapCarte.put(carta.getNomeRegione().toString(), punti);
+        });
+        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusRegioneGiocatore(getId(), mapCarte));
     }
-    */
+
+    private void updateViewCarteBonusColoreCittà (){
+        HashMap<String, Integer> mapCarte = new HashMap<>();
+        manoCarteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
+            Bonus bonus = carta.ottieniBonus();
+            int punti;
+            try{
+                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
+                punti = bonusPuntiVittoria.getPuntiVittoria();
+            }catch (ClassCastException e) {
+                System.out.println("la carta bonus colore città non ha bonus punti vittoria, impossibile eseguire cast");
+                punti = 0;
+            }
+            mapCarte.put(carta.getColore().toString(), punti);
+        });
+        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusColoreCittàGiocatore(getId(), mapCarte));
+    }
+
+    private void updateViewCartePremioRe(){
+        HashMap<String, Integer> mapCarte = new HashMap<>();
+        manoCartePremioDelRe.forEach((CartaPremioDelRe carta) -> {
+            Bonus bonus = carta.ottieniBonus();
+            int punti;
+            try{
+                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
+                punti = bonusPuntiVittoria.getPuntiVittoria();
+            }catch (ClassCastException e) {
+                System.out.println("la carta premio del re non ha bonus punti vittoria, impossibile eseguire cast");
+                punti = 0;
+            }
+            mapCarte.put(((Integer)carta.getNumeroOrdine()).toString(), punti);
+        });
+       super.notifyViews((InterfacciaView v) -> v.updateCarteBonusReGiocatore(getId(), mapCarte));
+    }
+
+    private void updateViewCartePermessoCostruzione() {
+        
+    }
 }

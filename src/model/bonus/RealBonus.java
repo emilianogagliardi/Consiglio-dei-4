@@ -1,7 +1,5 @@
 package model.bonus;
 
-import model.Giocatore;
-
 public abstract class RealBonus extends Bonus {
     private Bonus decoratedBonus;
 

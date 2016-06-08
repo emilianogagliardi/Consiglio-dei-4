@@ -1,7 +1,5 @@
 package model.bonus;
 
-import model.Giocatore;
-
 public class NullBonus extends Bonus {
     private static NullBonus instance;
 

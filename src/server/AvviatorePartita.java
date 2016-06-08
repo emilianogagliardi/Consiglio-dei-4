@@ -3,13 +3,10 @@ package server;
 import controller.Controller;
 import model.*;
 import model.bonus.*;
-<<<<<<< HEAD:src/AvviatorePartita.java
 import model.carte.*;
 import proxyview.InterfacciaView;
-=======
 import model.carte.CartaBonusRegione;
 import model.carte.CartaPermessoCostruzione;
->>>>>>> 49ed980a4b646110199dc74b98dd91251d947e73:src/server/AvviatorePartita.java
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -126,7 +123,7 @@ public class AvviatorePartita implements Runnable {
             cittàRegione.addAll(cittàInRegioniDaFile(fileMappa, nomeRegione, tutteLeCittà, proxyViews)); //cittàRegione contiene solo le città apparteneti alla regione corrente
             Mazzo<CartaPermessoCostruzione> mazzoCartePermesso = creaMazzoCartePermesso(cittàRegione);
             mazzoCartePermesso.mischia();
-            CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(Costanti.PUNTI_VITTORIA_BONUS_REGIONE);
+            CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(nomeRegione, Costanti.PUNTI_VITTORIA_BONUS_REGIONE);
             BalconeDelConsiglio balcone = creaBalcone(IdBalcone.valueOf(nomeRegione.toString()), riservaConsiglieri, proxyViews);
             regioni.add(new Regione(nomeRegione, mazzoCartePermesso, balcone, cartaBonusRegione, proxyViews));
         });
