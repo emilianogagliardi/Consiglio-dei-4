@@ -3,6 +3,8 @@ package model.carte;
 public abstract class Carta {
     private boolean visibile = true; //una carta con visibile = true significa che è scoperta
 
+    public Carta(){} //per la serializzazione di carta permesso
+
     public boolean getVisibile() {
         return visibile;
     }

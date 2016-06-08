@@ -5,7 +5,7 @@ import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.MoneteNonSufficientiException;
 import org.junit.After;
 import org.junit.Test;
-import proxyview.InterfacciaView;
+import proxyView.InterfacciaView;
 
 import java.util.ArrayList;
 import java.util.List;

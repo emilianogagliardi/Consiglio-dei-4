@@ -1,5 +1,6 @@
 package model.bonus;
 
-public abstract class Bonus {
+import java.io.Serializable;
 
+public abstract class Bonus implements Serializable{
 }
