@@ -19,7 +19,8 @@ public class Mazzo <T extends Carta> {
         mazzo.addAll(carte);
     }
 
-    public T ottieniCarta() throws NoSuchElementException { //NoSuchElementException viene lanciata quando non ci sono carte nel mazzo
+    public T ottieniCarta() throws NoSuchElementException { //NoSuchElementException viene lanciata quando non ci sono carte nel mazzo. ottieniCarta() restituisce e rimuove la carta
+        //in cima la mazzo
         T cartaDaRestituire = getCarta();
         mazzo.remove(cartaDaRestituire);
         return cartaDaRestituire;
@@ -33,7 +34,7 @@ public class Mazzo <T extends Carta> {
         return mazzo.isEmpty();
     }
 
-    public T getCarta() throws NoSuchElementException{
+    public T getCarta() throws NoSuchElementException{ //il metodo getCarta() restituisce ma non rimuove la carta in cima al mazzo
         return mazzo.element();
     }
 }

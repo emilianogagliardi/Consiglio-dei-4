@@ -124,12 +124,18 @@ public class Partita extends Observable {
             this.carteBonusColoreCittà = carteBonusColoreCittà;
     }
 
-    public CartaBonusColoreCittà getCartaBonusColoreCittà(ColoreCittà coloreCittà) throws NoSuchElementException{
+    public HashSet<CartaBonusColoreCittà> getCarteBonusColoreCittà(){
+        return carteBonusColoreCittà;
+    }
+
+    public CartaBonusColoreCittà ottieniCartaBonusColoreCittà(ColoreCittà coloreCittà) throws NoSuchElementException{
+        CartaBonusColoreCittà cartaBonusColoreCittàDaRestituire;
         for(CartaBonusColoreCittà carta : carteBonusColoreCittà)
-            if(carta.getColore().equals(coloreCittà))
+            if (carta.getColore().equals(coloreCittà)) {
+                carteBonusColoreCittà.remove(carta);
                 return carta;
+            }
         throw new NoSuchElementException("Non è disponibile una carta bonus colore città del colore voluto");
-        //TODO: updateCarteBonusColoreCittàTabellone()
     }
 
     public void setRiservaConsiglieri(ArrayList<Consigliere> riservaConsiglieri) throws IllegalArgumentException {
