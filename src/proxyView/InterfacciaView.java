@@ -28,7 +28,7 @@ public interface InterfacciaView {
     void updateCarteBonusReGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte);
     void updateCarteBonusReTabellone(int puntiVIttoriaPrimaCarta); //solo la prima carta in vista del mazzo
     void updateCarteBonusRegioneGiocatore(int idGiocatore, HashMap<String, Integer> carte);
-    void updateCarteBonusRegioneTabellone(HashMap<String, Integer> carte);
+    void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta);
     void updatePosizioneRe(String città);
     void eseguiTurno();
 

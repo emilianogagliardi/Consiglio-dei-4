@@ -1,6 +1,7 @@
 package model;
 
 
+import model.bonus.BonusPuntiVittoria;
 import model.carte.CartaBonusRegione;
 import model.carte.CartaPermessoCostruzione;
 import proxyView.InterfacciaView;
@@ -32,6 +33,8 @@ public class Regione extends Observable{
         cartaPermessoCostruzione1.setVisibile(true);
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione2.setVisibile(true);
+        updateViewCartePermessoCostruzione();
+        updateViewCarteBonusRegione();
     }
 
     public BalconeDelConsiglio getBalconeDelConsiglio(){
@@ -43,7 +46,7 @@ public class Regione extends Observable{
     public CartaBonusRegione ottieniCartaBonusRegione(){
         CartaBonusRegione cartaBonusRegioneDaRitornare = this.cartaBonusRegione;
         this.cartaBonusRegione = null;
-        //TODO: updateCartaBonusRegione()
+        updateViewCarteBonusRegione();
         return cartaBonusRegioneDaRitornare;
     }
 
@@ -51,7 +54,7 @@ public class Regione extends Observable{
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione1;
         cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione1.setVisibile(true);
-        //TODO: foreach view(updateCartePermessoRegione(String regione, CartaPermessoCostruzione cartaPermessoCostruzione1, CartaPermessoCostruzione cartaPermessoCostruzione2))
+        updateViewCartePermessoCostruzione();
         return cartaDaRitornare;
     }
 
@@ -59,7 +62,7 @@ public class Regione extends Observable{
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione2;
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione2.setVisibile(true);
-        //TODO: foreach view(updateCartePermessoRegione(String regione, CartaPermessoCostruzione cartaPermessoCostruzione1, CartaPermessoCostruzione cartaPermessoCostruzione2))
+        updateViewCartePermessoCostruzione();
         return cartaDaRitornare;
 }
 
@@ -80,6 +83,29 @@ public class Regione extends Observable{
         cartaPermessoCostruzione1.setVisibile(true);
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione2.setVisibile(true);
-        //TODO: updateCartePermessoRegione()
+        updateViewCartePermessoCostruzione();
+    }
+
+    //update view
+    private void updateViewCarteBonusRegione() {
+        int puntiCarta = 0;
+        if (cartaBonusRegione != null) {
+            try {
+                BonusPuntiVittoria bonus = (BonusPuntiVittoria) cartaBonusRegione.ottieniBonus();
+                puntiCarta = bonus.getPuntiVittoria();
+            }catch(ClassCastException e){
+                System.out.println("la carta bonus regione non ha un bonus punti vittoria");
+                puntiCarta = 0; // errore
+            }
+        }
+        else {
+            puntiCarta = -1; //-1 indica l'assenza della carta
+        }
+        int finalPuntiCarta = puntiCarta; //per utilizzarla nella lambda expression
+        super.notifyViews((InterfacciaView view) -> view.updateCarteBonusRegioneTabellone(getNome().toString(), finalPuntiCarta));
+    }
+
+    private void updateViewCartePermessoCostruzione() {
+        super.notifyViews((InterfacciaView view) -> view.updateCartePermessoRegione(getNome().toString(), cartaPermessoCostruzione1, cartaPermessoCostruzione2));
     }
 }
