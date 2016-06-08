@@ -50,6 +50,7 @@ public class TestBonusComposti {
         }
     }
 
+    /*
     @Test
     public void bonusGenericoTest(){
         b.ottieni(g);
@@ -58,4 +59,5 @@ public class TestBonusComposti {
         assertEquals(n_puntiVittoria, g.getPuntiVittoria());
         assertEquals(n_politica, g.getPosizionePercorsoNobiltà());
     }
+    */
 }

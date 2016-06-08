@@ -1,11 +1,12 @@
 package model;
 
-import model.carte.CartaPolitica;
-import proxyview.InterfacciaView;
+import model.carte.ColoreCartaPolitica;
+import proxyView.InterfacciaView;
+import server.Utility;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
-import static java.util.Arrays.asList;
+
 import static model.Costanti.NUM_CONSIGLIERI_BALCONE;
 
 public class BalconeDelConsiglio extends Observable {
@@ -36,60 +37,28 @@ public class BalconeDelConsiglio extends Observable {
         return consigliereCaduto;
     }
 
-    public ArrayList<ColoreConsigliere> getColoriConsiglieri() {
-        ArrayList<ColoreConsigliere> colori = new ArrayList<>();
+    public ArrayList<Colore> getColoriConsiglieri() {
+        ArrayList<Colore> colori = new ArrayList<>();
         for (Consigliere consigliere : balcone) {
-            colori.add(consigliere.getColore());
+            colori.add(consigliere.getColore().toColore());
         }
         return colori;
     }
 
-    public boolean soddisfaConsiglio(CartaPolitica... cartePolitica) throws IllegalArgumentException {
-        if (cartePolitica.length <= 0 || cartePolitica.length > NUM_CONSIGLIERI_BALCONE) {
+    public boolean soddisfaConsiglio(ArrayList<ColoreCartaPolitica> coloriCartePolitica) throws IllegalArgumentException {
+        if (coloriCartePolitica.size() <= 0 || coloriCartePolitica.size() > NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di carte politica scartate è negativo o nullo oppure maggiore di " + NUM_CONSIGLIERI_BALCONE);
         } else {
             //metto i colori del balcone e delle carte politica in HashMap con chiave il colore e valore il numero di volte che appare il colore nella collezione
-            HashMap<Colore, Integer> mappaColoriBalcone = new HashMap<>();
-            Integer contatore = 1;
-            for(ColoreConsigliere coloreConsigliere : this.getColoriConsiglieri()) { //getColoriConsiglieri restituisce un ArrayList di colori consigliere
-                if(mappaColoriBalcone.containsKey(coloreConsigliere.toColore())){
-                    contatore++;
-                }
-                else contatore = 1;
-                mappaColoriBalcone.put(coloreConsigliere.toColore(), contatore);
-            }
-            HashMap<Colore, Integer> mappaColoriCartePolitica = new HashMap<>();
-            contatore = 1;
-            for (CartaPolitica cartaPolitica : cartePolitica){
-                if (!cartaPolitica.getColore().toColore().equals(Colore.JOLLY)) {
-                    if (mappaColoriCartePolitica.containsKey(cartaPolitica.getColore().toColore())){
-                        contatore++;
-                    }
-                    else contatore = 1;
-                    mappaColoriCartePolitica.put(cartaPolitica.getColore().toColore(), contatore);
-                }
-            }
-            for(Map.Entry<Colore, Integer> entry : mappaColoriBalcone.entrySet()) {
-                Colore keyBalcone = entry.getKey();
-                Integer valueBalcone = entry.getValue();
-                try {
-                    if (valueBalcone - mappaColoriCartePolitica.get(keyBalcone) < 0) {
-                        //per ogni colore di consigliere faccio la differenza tra il numero di consiglieri di quel colore e il numero di carte politica dello stesso colore
-                        //se la differenza è negativa significa che non si può soddisfare il consiglio perchè non ci sono abbastanza consiglieri di quel colore
-                        return false;
-                    }
-                    else mappaColoriCartePolitica.put(keyBalcone, 0); //se è possibile soddisfare il consiglio con le carte di questo particolare colore
-                    // azzero il valore corrispondente alla chiave rappresentata dal colore suddetto
-                } catch (NullPointerException exc){ //viene lanciata una NullPointerException se nel balcone è presente un colore che non c'è nelle carte politica. Poco male!
-                    //do nothing
-                }
-            }
-            for(Map.Entry<Colore, Integer> entry : mappaColoriCartePolitica.entrySet()) { //controllo se tutti i valori sono stati azzerati, altrimenti significa che
-                //esistono carte politica di un colore non presente nel balcone
-                if (entry.getValue() != 0)
-                    return false;
-            }
-            return true;
+            HashMap<Colore, Integer> mappaColoriBalcone;
+            mappaColoriBalcone = Utility.arrayListToHashMap(this.getColoriConsiglieri());
+            HashMap<Colore, Integer> mappaColoriCartePolitica;
+            ArrayList<Colore> coloriCartePoliticaSenzaJolly = new ArrayList<>();
+            for(ColoreCartaPolitica colore : coloriCartePolitica)
+                if(!colore.toColore().equals(Colore.JOLLY))            //le carte color JOLLY non rientrano nella verifica
+                    coloriCartePoliticaSenzaJolly.add(colore.toColore());
+            mappaColoriCartePolitica = Utility.arrayListToHashMap(coloriCartePoliticaSenzaJolly);
+            return Utility.hashMapContainsAllWithDuplicates(mappaColoriBalcone, mappaColoriCartePolitica);
         }
     }
 

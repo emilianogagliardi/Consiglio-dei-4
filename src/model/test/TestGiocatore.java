@@ -1,3 +1,4 @@
+import jdk.nashorn.internal.scripts.JO;
 import model.*;
 import model.bonus.NullBonus;
 import model.carte.*;
@@ -82,7 +83,9 @@ public class TestGiocatore {
         CartaBonusRegione cbr = new CartaBonusRegione(2);
         CartaBonusColoreCittà cbcc = new CartaBonusColoreCittà(1, ColoreCittà.FERRO);
         CartaPremioDelRe cpr = new CartaPremioDelRe(2);
-        CartaPermessoCostruzione cpc = new CartaPermessoCostruzione(NullBonus.getInstance(), new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>()));
+        ArrayList<Città> città = new ArrayList<>();
+        città.add(new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>()));
+        CartaPermessoCostruzione cpc = new CartaPermessoCostruzione(NullBonus.getInstance(),città);
         giocatore.addCarta(cp);
         assertTrue(giocatore.getManoCartePolitica().contains(cp));
         giocatore.addCarta(cbr);
@@ -104,10 +107,12 @@ public class TestGiocatore {
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.AZZURRO));
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
         g1.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
-        g1.scartaCartePolitica( new CartaPolitica(ColoreCartaPolitica.ARANCIONE),
-                                new CartaPolitica(ColoreCartaPolitica.JOLLY),
-                                new CartaPolitica(ColoreCartaPolitica.ARANCIONE),
-                                new CartaPolitica(ColoreCartaPolitica.AZZURRO));
+        ArrayList<ColoreCartaPolitica> colori = new ArrayList<>();
+        colori.add(ColoreCartaPolitica.ARANCIONE);
+        colori.add(ColoreCartaPolitica.JOLLY);
+        colori.add(ColoreCartaPolitica.ARANCIONE);
+        colori.add(ColoreCartaPolitica.AZZURRO);
+        g1.scartaCartePolitica(colori);
         List<CartaPolitica> mano = g1.getManoCartePolitica();
         assertFalse(mano.contains(new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
         assertTrue(mano.contains(new CartaPolitica(ColoreCartaPolitica.ARANCIONE)));
@@ -118,7 +123,9 @@ public class TestGiocatore {
     @Test (expected = IllegalArgumentException.class)
     public void scartaCartaNonEsistente() {
         Giocatore gi = new Giocatore(0,0,0, new ArrayList<InterfacciaView>());
-        gi.scartaCartePolitica(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
+        ArrayList<ColoreCartaPolitica> colori = new ArrayList<>();
+        colori.add(ColoreCartaPolitica.ARANCIONE);
+        gi.scartaCartePolitica(colori);
     }
 
     /*

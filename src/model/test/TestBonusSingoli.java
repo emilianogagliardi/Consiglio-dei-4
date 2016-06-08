@@ -25,6 +25,7 @@ public class TestBonusSingoli {
         giocatore = new Giocatore(1, 0, 0, new ArrayList<InterfacciaView>());
     }
 
+    /*
     @Test (expected = IllegalArgumentException.class)
     public void bonusAiutantiTest(){
         bonusA = new BonusAiutanti(3, NullBonus.getInstance());
@@ -71,6 +72,7 @@ public class TestBonusSingoli {
         c_aggiunte.add(new CartaPolitica(ColoreCartaPolitica.AZZURRO));
         assertTrue(giocatore.getManoCartePolitica().containsAll(c_aggiunte));
     }
+    */
 
     @Test (expected = IllegalArgumentException.class)
     public void buonusErratoTest(){

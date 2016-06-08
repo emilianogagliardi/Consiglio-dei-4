@@ -1,14 +1,14 @@
-import model.BalconeDelConsiglio;
-import model.ColoreConsigliere;
-import model.Consigliere;
+import model.*;
 
-import model.NomeRegione;
 import model.carte.CartaPolitica;
 import model.carte.ColoreCartaPolitica;
 import org.junit.Test;
+import org.omg.CORBA.ARG_IN;
 import proxyView.InterfacciaView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,35 +19,36 @@ public class TestBalcone {
 
     @Test(expected = IllegalArgumentException.class)
     public void balconeVuotoTest () {
-        balcone = new BalconeDelConsiglio(NomeRegione.MONTAGNA, new ArrayList<InterfacciaView>());
+        balcone = new BalconeDelConsiglio(IdBalcone.MONTAGNA, new ArrayList<InterfacciaView>(), new ArrayList<Consigliere>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void balconeQuasiPienoTest () {
-        balcone = new BalconeDelConsiglio(  NomeRegione.MONTAGNA,
-                                            new ArrayList<InterfacciaView>(),
-                                            new Consigliere(ColoreConsigliere.ARANCIONE),
-                                            new Consigliere(ColoreConsigliere.AZZURRO));
+        ArrayList<Consigliere> consiglieri = new ArrayList<Consigliere>();
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
+        balcone = new BalconeDelConsiglio(  IdBalcone.MONTAGNA,
+                                            new ArrayList<InterfacciaView>(), consiglieri);
     }
 
     @Test(expected = NullPointerException.class)
     public void balconeNullTest () {
-        balcone = new BalconeDelConsiglio(NomeRegione.COSTA, new ArrayList<InterfacciaView>(), null);
+        balcone = new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), null);
     }
 
     @Test
     public void inserisciConsiglieriTest() {
-        balcone = new BalconeDelConsiglio(  NomeRegione.COLLINA,
-                                            new ArrayList<InterfacciaView>(),
-                                            new Consigliere(ColoreConsigliere.ARANCIONE),
-                                            new Consigliere(ColoreConsigliere.AZZURRO),
-                                            new Consigliere(ColoreConsigliere.BIANCO),
-                                            new Consigliere(ColoreConsigliere.NERO));
-        ArrayList<ColoreConsigliere> c = new ArrayList<>();
-        c.add(ColoreConsigliere.ARANCIONE);
-        c.add(ColoreConsigliere.AZZURRO);
-        c.add(ColoreConsigliere.BIANCO);
-        c.add(ColoreConsigliere.NERO);
+        ArrayList<Consigliere> consiglieri = new ArrayList<>();
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.NERO));
+        balcone = new BalconeDelConsiglio(IdBalcone.COLLINA, new ArrayList<InterfacciaView>(), consiglieri);
+        ArrayList<Colore> c = new ArrayList<>();
+        c.add(ColoreConsigliere.ARANCIONE.toColore());
+        c.add(ColoreConsigliere.AZZURRO.toColore());
+        c.add(ColoreConsigliere.BIANCO.toColore());
+        c.add(ColoreConsigliere.NERO.toColore());
         for (int i = 0; i < 4; i++){
             assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
         }
@@ -55,36 +56,36 @@ public class TestBalcone {
 
     @Test
     public void shiftConsiglieriTest(){
-        balcone = new BalconeDelConsiglio(  NomeRegione.COSTA,
-                                            new ArrayList<InterfacciaView>(),
-                                            new Consigliere(ColoreConsigliere.ARANCIONE),
-                                            new Consigliere(ColoreConsigliere.AZZURRO),
-                                            new Consigliere(ColoreConsigliere.BIANCO),
-                                            new Consigliere(ColoreConsigliere.NERO));
+        ArrayList<Consigliere> consiglieri = new ArrayList<>();
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.NERO));
+        balcone = new BalconeDelConsiglio(  IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri);
         balcone.addConsigliere(new Consigliere(ColoreConsigliere.ROSA));
-        ArrayList<ColoreConsigliere> c = new ArrayList<>();
-        c.add(ColoreConsigliere.AZZURRO);
-        c.add(ColoreConsigliere.BIANCO);
-        c.add(ColoreConsigliere.NERO);
-        c.add(ColoreConsigliere.ROSA);
+        ArrayList<Colore> c = new ArrayList<>();
+        c.add(ColoreConsigliere.AZZURRO.toColore());
+        c.add(ColoreConsigliere.BIANCO.toColore());
+        c.add(ColoreConsigliere.NERO.toColore());
+        c.add(ColoreConsigliere.ROSA.toColore());
         for (int i = 0; i < 4; i++){
             assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
         }
         balcone.addConsigliere(new Consigliere(ColoreConsigliere.VIOLA));
         c = new ArrayList<>();
-        c.add(ColoreConsigliere.BIANCO);
-        c.add(ColoreConsigliere.NERO);
-        c.add(ColoreConsigliere.ROSA);
-        c.add(ColoreConsigliere.VIOLA);
+        c.add(ColoreConsigliere.BIANCO.toColore());
+        c.add(ColoreConsigliere.NERO.toColore());
+        c.add(ColoreConsigliere.ROSA.toColore());
+        c.add(ColoreConsigliere.VIOLA.toColore());
         for (int i = 0; i < 4; i++){
             assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
         }
         balcone.addConsigliere(new Consigliere(ColoreConsigliere.ARANCIONE));
         c = new ArrayList<>();
-        c.add(ColoreConsigliere.NERO);
-        c.add(ColoreConsigliere.ROSA);
-        c.add(ColoreConsigliere.VIOLA);
-        c.add(ColoreConsigliere.ARANCIONE);
+        c.add(ColoreConsigliere.NERO.toColore());
+        c.add(ColoreConsigliere.ROSA.toColore());
+        c.add(ColoreConsigliere.VIOLA.toColore());
+        c.add(ColoreConsigliere.ARANCIONE.toColore());
         for (int i = 0; i < 4; i++){
             assertEquals(c.get(i), balcone.getColoriConsiglieri().get(i));
         }
@@ -92,37 +93,63 @@ public class TestBalcone {
 
     @Test (expected = IllegalArgumentException.class)
     public void overflowTest () {
-        balcone = new BalconeDelConsiglio(  NomeRegione.COLLINA,
-                                            new ArrayList<InterfacciaView>(),
-                                            new Consigliere(ColoreConsigliere.ARANCIONE),
-                                            new Consigliere(ColoreConsigliere.AZZURRO),
-                                            new Consigliere(ColoreConsigliere.BIANCO),
-                                            new Consigliere(ColoreConsigliere.NERO),
-                                            new Consigliere(ColoreConsigliere.NERO));
+        ArrayList<Consigliere> consiglieri = new ArrayList<>();
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.NERO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.NERO));
+        balcone = new BalconeDelConsiglio(IdBalcone.COLLINA, new ArrayList<InterfacciaView>(), consiglieri);
     }
 
     @Test
     public void soddisfaBalconeTest(){
-        balcone = new BalconeDelConsiglio(  NomeRegione.COLLINA,
-                                            new ArrayList<InterfacciaView>(),
-                                            new Consigliere(ColoreConsigliere.ARANCIONE),
-                                            new Consigliere(ColoreConsigliere.AZZURRO),
-                                            new Consigliere(ColoreConsigliere.BIANCO),
-                                            new Consigliere(ColoreConsigliere.NERO));
-        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.NERO), new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
-        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.VIOLA)));
-        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.AZZURRO), new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
-        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY), new CartaPolitica(ColoreCartaPolitica.VIOLA)));
-        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.JOLLY)));
-        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.JOLLY),new CartaPolitica(ColoreCartaPolitica.NERO)));
-        balcone = new BalconeDelConsiglio(  NomeRegione.COLLINA,
-                                            new ArrayList<InterfacciaView>(),
-                                            new Consigliere(ColoreConsigliere.ARANCIONE),
-                                            new Consigliere(ColoreConsigliere.AZZURRO),
-                                            new Consigliere(ColoreConsigliere.BIANCO),
-                                            new Consigliere(ColoreConsigliere.ARANCIONE));
-        assertTrue(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.ARANCIONE), new CartaPolitica(ColoreCartaPolitica.ARANCIONE)));
-        assertFalse(balcone.soddisfaConsiglio(new CartaPolitica(ColoreCartaPolitica.ARANCIONE), new CartaPolitica(ColoreCartaPolitica.ARANCIONE), new CartaPolitica(ColoreCartaPolitica.ARANCIONE)));
+        ArrayList<Consigliere> consiglieri = new ArrayList<>();
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.NERO));
+        balcone = new BalconeDelConsiglio(IdBalcone.COLLINA, new ArrayList<InterfacciaView>(), consiglieri);
+        ArrayList<ColoreCartaPolitica> coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.NERO);
+        coloriCartePolitica.add(ColoreCartaPolitica.AZZURRO);
+        assertTrue(balcone.soddisfaConsiglio(coloriCartePolitica));
+        coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.VIOLA);
+        assertFalse(balcone.soddisfaConsiglio(coloriCartePolitica));
+        coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.AZZURRO);
+        coloriCartePolitica.add(ColoreCartaPolitica.AZZURRO);
+        assertFalse(balcone.soddisfaConsiglio(coloriCartePolitica));
+        coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.JOLLY);
+        coloriCartePolitica.add(ColoreCartaPolitica.VIOLA);
+        assertFalse(balcone.soddisfaConsiglio(coloriCartePolitica));
+        coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.JOLLY);
+        coloriCartePolitica.add(ColoreCartaPolitica.JOLLY);
+        coloriCartePolitica.add(ColoreCartaPolitica.JOLLY);
+        coloriCartePolitica.add(ColoreCartaPolitica.JOLLY);
+        assertTrue(balcone.soddisfaConsiglio(coloriCartePolitica));
+        coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.JOLLY);
+        coloriCartePolitica.add(ColoreCartaPolitica.NERO);
+        assertTrue(balcone.soddisfaConsiglio(coloriCartePolitica));
+        consiglieri = new ArrayList<>();
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        balcone = new BalconeDelConsiglio( IdBalcone.COLLINA, new ArrayList<InterfacciaView>(), consiglieri);
+        coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.ARANCIONE);
+        coloriCartePolitica.add(ColoreCartaPolitica.ARANCIONE);
+        assertTrue(balcone.soddisfaConsiglio(coloriCartePolitica));
+        coloriCartePolitica = new ArrayList<>();
+        coloriCartePolitica.add(ColoreCartaPolitica.ARANCIONE);
+        coloriCartePolitica.add(ColoreCartaPolitica.ARANCIONE);
+        coloriCartePolitica.add(ColoreCartaPolitica.ARANCIONE);
+        assertFalse(balcone.soddisfaConsiglio(coloriCartePolitica));
     }
 
 }

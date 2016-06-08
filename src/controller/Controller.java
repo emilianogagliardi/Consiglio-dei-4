@@ -2,7 +2,10 @@ package controller;
 
 import model.*;
 import model.bonus.*;
-import proxyview.InterfacciaView;
+import model.carte.CartaPolitica;
+import model.carte.ColoreCartaPolitica;
+import proxyView.InterfacciaView;
+import server.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +17,7 @@ public class Controller implements Runnable, InterfacciaController{
     private boolean threadSospeso = true;
     private int idGiocatoreCorrente = 0;
     private Giocatore giocatoreCorrente = partita.getGiocatori().get(idGiocatoreCorrente);
-    private boolean azionePrincipaleEseguita = false;
+    private int azioniPrincipaliDisponibili = 0;
     private boolean azioneVeloceEseguita = false;
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
 
@@ -34,7 +37,7 @@ public class Controller implements Runnable, InterfacciaController{
 
         //inizio il ciclo dei turni
         while(!partitaTerminata()){
-            azionePrincipaleEseguita = false;
+            azioniPrincipaliDisponibili = 1;
             azioneVeloceEseguita = false;
 
             //il giocatore pesca una carta politica
@@ -102,19 +105,7 @@ public class Controller implements Runnable, InterfacciaController{
                 giocatoreCorrente.guadagnaPuntiVittoria(((BonusPuntiVittoria) bonus).getPuntiVittoria());
             }
             else if(bonus instanceof BonusRipetiAzionePrincipale){
-                NomeAzionePrincipale azionePrincipale = ((BonusRipetiAzionePrincipale) bonus).getAzionePrincipale();
-                switch (azionePrincipale){ //TODO: chiamare i metodi appropriati
-                    case ELEGGERE_CONSIGLIERE:
-                        break;
-                    case ACQUISTARE_TESSERA_PERMESSO_COSTRUZIONE:
-                        break;
-                    case COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO:
-                        break;
-                    case COSTRUIRE_EMPORIO_CON_AIUTO_RE:
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Azione principale non prevista");
-                }
+                azioniPrincipaliDisponibili++;
             }
             else throw new IllegalArgumentException("Bonus non previsto"); //non si dovrebbe mai arrivare in questo branch else, se succede significa che è stato passato in ingresso un Bonus non previsto
             bonus = ((RealBonus) bonus).getDecoratedBonus();
@@ -137,6 +128,35 @@ public class Controller implements Runnable, InterfacciaController{
         partita.addConsigliereARiserva(consigliereDaInserireInRiserva);
         return true;
     }
+
+
+    @Override
+    public boolean acquistareTesseraPermessoCostruzione(String nomeBalcone, ArrayList<String> nomiColoriCartePolitica, String nomeRegione, int carta) {
+        BalconeDelConsiglio balconeDelConsiglio = mappaBalconi.get(IdBalcone.valueOf(nomeBalcone));
+        //creo una manoCartePolitica come struttura di supporto
+        ArrayList<ColoreCartaPolitica> coloriCartePolitica = new ArrayList<>();
+        for(String nomeColoreCartaPolitica : nomiColoriCartePolitica)
+            coloriCartePolitica.add(ColoreCartaPolitica.valueOf(nomeColoreCartaPolitica));
+        if(balconeDelConsiglio.soddisfaConsiglio(coloriCartePolitica)){
+            return prendiCartePoliticaGiocatore(giocatoreCorrente, coloriCartePolitica);
+        }
+        return false;
+    }
+
+    private boolean prendiCartePoliticaGiocatore(Giocatore giocatore, ArrayList<ColoreCartaPolitica> coloriCartePolitica){
+        ArrayList<Colore> arrayListManoColoriCartePolitica = new ArrayList<>();
+        for(CartaPolitica cartaPolitica : giocatore.getManoCartePolitica())
+            arrayListManoColoriCartePolitica.add(cartaPolitica.getColore().toColore());
+        HashMap<Colore, Integer> mappaColoriManoCartePoliticaGiocatore = Utility.arrayListToHashMap(arrayListManoColoriCartePolitica);
+        HashMap<Colore, Integer> mappaColoriCartePolitica = Utility.arrayListToHashMap(ColoreCartaPolitica.toColore(coloriCartePolitica));
+        if(Utility.hashMapContainsAllWithDuplicates(mappaColoriManoCartePoliticaGiocatore, mappaColoriCartePolitica)){
+            partita.addCartePoliticaScartate(giocatore.scartaCartePolitica(coloriCartePolitica));
+            return true;
+        }
+        return false;
+    }
+
+
 }
 
 
