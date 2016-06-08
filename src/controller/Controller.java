@@ -2,9 +2,13 @@ package controller;
 
 import model.*;
 import model.bonus.*;
+import model.carte.CartaPermessoCostruzione;
 import model.carte.CartaPolitica;
 import model.carte.ColoreCartaPolitica;
+import model.eccezioni.EmporioGiàEsistenteException;
+import model.eccezioni.MoneteNonSufficientiException;
 import proxyView.InterfacciaView;
+import server.CostantiSistema;
 import server.Utility;
 
 import java.util.ArrayList;
@@ -14,7 +18,6 @@ import java.util.NoSuchElementException;
 public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
     private ArrayList<InterfacciaView> views;
-    private boolean threadSospeso = true;
     private int idGiocatoreCorrente = 0;
     private Giocatore giocatoreCorrente = partita.getGiocatori().get(idGiocatoreCorrente);
     private int azioniPrincipaliDisponibili = 0;
@@ -48,14 +51,14 @@ public class Controller implements Runnable, InterfacciaController{
 
             //il controller aspetta che il giocatore abbia finito il turno
             try {
-                while(threadSospeso)
-                    wait();
+                wait(CostantiSistema.TIMEOUT_TURNO);
+                //TODO: view.fineTuno();
+
+                //si passa al giocatore successivo
+                giocatoreCorrente = prossimoGiocatore(giocatoreCorrente);
             } catch (InterruptedException exc) {
                 //do nothing
             }
-
-            //si passa al giocatore successivo
-            giocatoreCorrente = prossimoGiocatore(giocatoreCorrente);
         }
 
 
@@ -80,13 +83,12 @@ public class Controller implements Runnable, InterfacciaController{
     }
 
     @Override
-    public boolean fineTurno(){ //verifica che il giocatore possa finire il turno
-        //verifica azioni
-        return true;
+    public void passaTurno(){ //verifica che il giocatore possa finire il turno
+        //TODO: verifica azioni
+        notify();
     }
 
-    @Override
-    public void ottieniBonus(Bonus bonus) throws IllegalArgumentException {
+    private void assegnaBonus(Bonus bonus) throws IllegalArgumentException {
         while (!(bonus instanceof NullBonus)){
             if(bonus instanceof BonusAiutanti) {
                 giocatoreCorrente.guadagnaAiutanti(((BonusAiutanti) bonus).getNumeroAiutanti());
@@ -114,6 +116,8 @@ public class Controller implements Runnable, InterfacciaController{
 
     @Override
     public boolean eleggereConsigliere(String nomeBalcone, String coloreConsigliere) {
+        if(!azionePrincipaleDisponibile())
+            return false;
         Consigliere consigliereDaInserireInBalcone, consigliereDaInserireInRiserva;
         BalconeDelConsiglio balcone;
         try{
@@ -126,21 +130,112 @@ public class Controller implements Runnable, InterfacciaController{
             return false;
         consigliereDaInserireInRiserva = balcone.addConsigliere(consigliereDaInserireInBalcone);
         partita.addConsigliereARiserva(consigliereDaInserireInRiserva);
+        giocatoreCorrente.guadagnaMonete(Costanti.MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE);
+        decrementaAzioniPrincipaliDisponibili();
         return true;
     }
 
 
     @Override
-    public boolean acquistareTesseraPermessoCostruzione(String nomeBalcone, ArrayList<String> nomiColoriCartePolitica, String nomeRegione, int carta) {
+    public boolean acquistareTesseraPermessoCostruzione(String nomeBalcone, ArrayList<String> nomiColoriCartePolitica, int numeroCarta) {
+        if(!azionePrincipaleDisponibile())
+            return false;
         BalconeDelConsiglio balconeDelConsiglio = mappaBalconi.get(IdBalcone.valueOf(nomeBalcone));
         //creo una manoCartePolitica come struttura di supporto
         ArrayList<ColoreCartaPolitica> coloriCartePolitica = new ArrayList<>();
         for(String nomeColoreCartaPolitica : nomiColoriCartePolitica)
             coloriCartePolitica.add(ColoreCartaPolitica.valueOf(nomeColoreCartaPolitica));
         if(balconeDelConsiglio.soddisfaConsiglio(coloriCartePolitica)){
-            return prendiCartePoliticaGiocatore(giocatoreCorrente, coloriCartePolitica);
+            if (prendiCartePoliticaGiocatore(giocatoreCorrente, coloriCartePolitica)) {
+                try {
+                    giocatoreCorrente.pagaMonete(moneteDaPagareSoddisfaConsiglio(coloriCartePolitica));
+                } catch (MoneteNonSufficientiException exc) {
+                    return false;
+                }
+                CartaPermessoCostruzione cartaPermessoCostruzione;
+                switch (numeroCarta) {
+                    case 1:
+                        cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione1();
+                        break;
+                    case 2:
+                        cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione2();
+                        break;
+                    default:
+                        return false;
+                }
+                assegnaBonus(cartaPermessoCostruzione.getBonus());
+                decrementaAzioniPrincipaliDisponibili();
+                return true;
+            } else {
+                return false;
+            }
         }
         return false;
+    }
+
+    @Override
+    public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String nomeCittà) {
+        if(!(azionePrincipaleDisponibile() && cartaPermessoCostruzione.isVisibile()))
+            return false;
+        if(!cartaPermessoCostruzione.getCittà().contains(NomeCittà.valueOf(nomeCittà)))
+            return false;
+        //TODO: verificare che il giocatore abbia la carta permesso costruzione passata in input
+        for(Regione regione : partita.getRegioni()){
+            if (regione.getNomiCittà().contains(NomeCittà.valueOf(nomeCittà))) {
+                if (!giocatoreCorrente.decrementaEmporiDisponibili()) {
+                    return false;
+                } else {
+                    try {
+                        regione.getCittàSingola(NomeCittà.valueOf(nomeCittà)).costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
+                        //TODO: metter la carta permesso del giocatore a visibile = false
+                        //TODO: verificare se al giocatore spetta una carta bonus colore
+                        return true;
+                    } catch (EmporioGiàEsistenteException exc) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private int moneteDaPagareSoddisfaConsiglio(ArrayList<ColoreCartaPolitica> coloriCartePolitica){
+        int numeroCarteJolly = 0;
+        int monete;
+        for (ColoreCartaPolitica coloreCartaPolitica : coloriCartePolitica)
+            if(coloreCartaPolitica.equals(ColoreCartaPolitica.JOLLY))
+                numeroCarteJolly++;
+        switch (coloriCartePolitica.size()) {
+            case 1:
+                monete = Costanti.MONETE_1_CARTA_POLITICA;
+                break;
+            case 2:
+                monete = Costanti.MONETE_2_CARTE_POLITICA;
+                break;
+            case 3:
+                monete = Costanti.MONETE_3_CARTE_POLITICA;
+                break;
+            default:
+                monete = 0;
+                break;
+        }
+        return monete + numeroCarteJolly * Costanti.MONETE_PER_CARTA_JOLLY;
+
+    }
+
+    private boolean decrementaAzioniPrincipaliDisponibili() {
+        if ((azioniPrincipaliDisponibili - 1) >= 0) {
+            azioniPrincipaliDisponibili--;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean azionePrincipaleDisponibile(){
+        if (azioniPrincipaliDisponibili > 0)
+            return true;
+        else return false;
     }
 
     private boolean prendiCartePoliticaGiocatore(Giocatore giocatore, ArrayList<ColoreCartaPolitica> coloriCartePolitica){
@@ -150,15 +245,13 @@ public class Controller implements Runnable, InterfacciaController{
         HashMap<Colore, Integer> mappaColoriManoCartePoliticaGiocatore = Utility.arrayListToHashMap(arrayListManoColoriCartePolitica);
         HashMap<Colore, Integer> mappaColoriCartePolitica = Utility.arrayListToHashMap(ColoreCartaPolitica.toColore(coloriCartePolitica));
         if(Utility.hashMapContainsAllWithDuplicates(mappaColoriManoCartePoliticaGiocatore, mappaColoriCartePolitica)){
-            partita.addCartePoliticaScartate(giocatore.scartaCartePolitica(coloriCartePolitica));
+            ArrayList<CartaPolitica> cartePoliticaScartate = giocatore.scartaCartePolitica(coloriCartePolitica);
+            cartePoliticaScartate.forEach((cartaPolitica) -> cartaPolitica.setVisibile(false));
+            partita.addCartePoliticaScartate(cartePoliticaScartate);
             return true;
         }
         return false;
     }
-
-
-
-
 }
 
 

@@ -153,6 +153,15 @@ public class Giocatore extends Observable {
         return emporiDisponibili;
     }
 
+    public boolean decrementaEmporiDisponibili(){
+        if (emporiDisponibili - 1 < 0) {
+            return false;
+        } else {
+            --emporiDisponibili;
+            return true;
+        }
+    }
+
     public List<CartaPolitica> getManoCartePolitica() {
         return manoCartePolitica;
     }
@@ -207,7 +216,7 @@ public class Giocatore extends Observable {
     private void updateViewCarteBonusRegione() {
         HashMap<String, Integer> mapCarte = new HashMap<>();
         manoCarteBonusRegione.forEach((CartaBonusRegione carta) -> {
-            Bonus bonus = carta.ottieniBonus();
+            Bonus bonus = carta.getBonus();
             int punti;
             try{
                 BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
@@ -224,7 +233,7 @@ public class Giocatore extends Observable {
     private void updateViewCarteBonusColoreCittà (){
         HashMap<String, Integer> mapCarte = new HashMap<>();
         manoCarteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
-            Bonus bonus = carta.ottieniBonus();
+            Bonus bonus = carta.getBonus();
             int punti;
             try{
                 BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
@@ -241,7 +250,7 @@ public class Giocatore extends Observable {
     private void updateViewCartePremioRe(){
         HashMap<String, Integer> mapCarte = new HashMap<>();
         manoCartePremioDelRe.forEach((CartaPremioDelRe carta) -> {
-            Bonus bonus = carta.ottieniBonus();
+            Bonus bonus = carta.getBonus();
             int punti;
             try{
                 BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;

@@ -32,6 +32,13 @@ public class Costanti {
     public static final int PUNTI_BONUS_COLORE_CITTA_ARGENTO = 12;
     public static final int PUNTI_BONUS_COLORE_CITTA_BRONZO = 8;
     public static final int PUNTI_BONUS_COLORE_CITTA_FERRO = 5;
+    //monete che si guadagnano nella mossa eleggereConsigliere
+    public static final int MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE = 4;
+    //monete da pagare nella mossa acquistarePermessoCostruzione per soddisfare un consiglio
+    public static final int MONETE_1_CARTA_POLITICA = 10;
+    public static final int MONETE_2_CARTE_POLITICA = 7;
+    public static final int MONETE_3_CARTE_POLITICA = 4;
+    public static final int MONETE_PER_CARTA_JOLLY = 1;
     //caratteristiche del giocatore
     public static final int MAX_MONETE = 30;
     public static final int MAX_POS_NOBILTA = 20;
