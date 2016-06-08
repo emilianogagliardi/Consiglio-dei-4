@@ -49,16 +49,24 @@ public class Regione extends Observable{
 
     public CartaPermessoCostruzione ottieniCartaPermessoCostruzione1(){
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione1;
-        cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.ottieniCarta();
-        cartaPermessoCostruzione1.setVisibile(true);
+        try {
+            cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.ottieniCarta();
+            cartaPermessoCostruzione1.setVisibile(true);
+        } catch (NoSuchElementException exc){
+            cartaPermessoCostruzione1 = null;
+        }
         //TODO: foreach view(updateCartePermessoRegione(String regione, CartaPermessoCostruzione cartaPermessoCostruzione1, CartaPermessoCostruzione cartaPermessoCostruzione2))
         return cartaDaRitornare;
     }
 
     public CartaPermessoCostruzione ottieniCartaPermessoCostruzione2(){
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione2;
-        cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
-        cartaPermessoCostruzione2.setVisibile(true);
+        try {
+            cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
+            cartaPermessoCostruzione2.setVisibile(true);
+        } catch (NoSuchElementException exc) {
+            cartaPermessoCostruzione2 = null;
+        }
         //TODO: foreach view(updateCartePermessoRegione(String regione, CartaPermessoCostruzione cartaPermessoCostruzione1, CartaPermessoCostruzione cartaPermessoCostruzione2))
         return cartaDaRitornare;
 }
