@@ -1,6 +1,6 @@
 package server;
 
-import proxyview.InterfacciaView;
+import proxyView.InterfacciaView;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

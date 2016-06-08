@@ -113,7 +113,7 @@ public class Controller implements Runnable, InterfacciaController{
     }
 
     @Override
-    public boolean eleggereConsigliere(String coloreConsigliere, String nomeBalcone) {
+    public boolean eleggereConsigliere(String nomeBalcone, String coloreConsigliere) {
         Consigliere consigliereDaInserireInBalcone, consigliereDaInserireInRiserva;
         BalconeDelConsiglio balcone;
         try{
@@ -155,6 +155,8 @@ public class Controller implements Runnable, InterfacciaController{
         }
         return false;
     }
+
+
 
 
 }

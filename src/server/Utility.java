@@ -24,7 +24,9 @@ public class Utility {
         for(Map.Entry<K, Integer> entry : hashMapContained.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
-            if(!(hashMapContainer.containsKey(key) && (hashMapContainer.get(key) - value) >= 0))
+            if(!(hashMapContainer.containsKey(key) && (hashMapContainer.get(key) - value) >= 0)) //se una chiave di hashMapContained non è contenuta in hashMapContainer
+            //oppure il valore di una certa chiave di hashMapContained corrispondente a una chiave di hashMapContainer è strettamente maggiore del valore di
+            //hashMapContainer viene ritornato false
                 return false;
         }
         return true;

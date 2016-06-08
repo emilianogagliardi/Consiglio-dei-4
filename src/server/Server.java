@@ -1,7 +1,7 @@
 package server;
 
-import proxyview.InterfacciaView;
-import proxyview.SocketProxyView;
+import proxyView.InterfacciaView;
+import proxyView.SocketProxyView;
 
 import java.io.IOException;
 import java.net.ServerSocket;

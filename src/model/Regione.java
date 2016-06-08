@@ -3,7 +3,7 @@ package model;
 
 import model.carte.CartaBonusRegione;
 import model.carte.CartaPermessoCostruzione;
-import proxyview.InterfacciaView;
+import proxyView.InterfacciaView;
 
 import java.util.*;
 
