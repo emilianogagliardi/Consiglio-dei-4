@@ -10,6 +10,8 @@ import java.util.*;
 
 import static model.Costanti.*;
 
+//TODO posizionare gli update in modo corretto
+
 public class Partita extends Observable {
     private Re re;
     private BalconeDelConsiglio balconeDelConsiglioRe;
@@ -104,6 +106,7 @@ public class Partita extends Observable {
     public void setMazzoCartePremioRe(Mazzo<CartaPremioDelRe> mazzoCartePremioRe){
         if(this.mazzoCartePremioRe == null)
             this.mazzoCartePremioRe = mazzoCartePremioRe;
+        updateViewCartePremioRe();
     }
 
     public CartaPremioDelRe ottieniCartaPremioRe(){
@@ -113,7 +116,7 @@ public class Partita extends Observable {
         } catch (NoSuchElementException exc){
             cartaPremioDelRe = null;
         }
-        //TODO: updateCartePremioReTabellone()
+        updateViewCartePremioRe();
         return cartaPremioDelRe;
     }
 
@@ -140,6 +143,7 @@ public class Partita extends Observable {
         else if (this.riservaConsiglieri == null){
             this.riservaConsiglieri = riservaConsiglieri;
         }
+        updateViewRiservaConsiglieri();
     }
 
     public ArrayList<Consigliere> getRiservaConsiglieri() {return riservaConsiglieri;}
@@ -203,7 +207,17 @@ public class Partita extends Observable {
         super.notifyViews((InterfacciaView v) -> v.updateCarteBonusColoreCittàTabellone(mapCarte));
     }
 
-    private void updateCartePremioRe(){ //deve essere mostrata solo la carta in vima al mazzo
-        
+    private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in vima al mazzo
+        CartaPremioDelRe cartaDaMostrare = mazzoCartePremioRe.getCarta();
+        int punti = 0;
+        try {
+            BonusPuntiVittoria bonusPunti = (BonusPuntiVittoria) cartaDaMostrare.getBonus();
+            punti = bonusPunti.getPuntiVittoria();
+        }catch (ClassCastException e) {
+            System.out.println("la carta premio del re non ha bonus punti vittoria, impossibile eseguire cast");
+            punti = 0; //errore
+        }
+        int finalPunti = punti; // solo per utilizzare in lambda expression
+        super.notifyViews((InterfacciaView view) -> view.updateCarteBonusReTabellone(finalPunti));
     }
 }
