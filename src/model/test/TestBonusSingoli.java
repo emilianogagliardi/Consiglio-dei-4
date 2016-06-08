@@ -2,7 +2,7 @@ import model.Giocatore;
 import model.bonus.*;
 import org.junit.Before;
 import org.junit.Test;
-import proxyview.InterfacciaView;
+import proxyView.InterfacciaView;
 
 import java.util.ArrayList;
 

@@ -42,7 +42,7 @@ public class Giocatore extends Observable {
         updateViewCarteBonusRegione();
         updateViewCarteBonusColoreCittà();
         updateViewCartePremioRe();
-        //TODO update carte permesso costruzione
+        updateViewCartePermessoCostruzione();
     }
 
     //gestione delle monete
@@ -116,7 +116,7 @@ public class Giocatore extends Observable {
         }
         else if (c instanceof CartaPermessoCostruzione) {
             manoCartePermessoCostruzione.add((CartaPermessoCostruzione) c);
-            //TODO: foreach view(updateCartePermessoGiocatore(idGiocatore, Array manoCartePermessoCostruzione))
+            updateViewCartePermessoCostruzione();
         }
         else if (c instanceof CartaBonusRegione) {
             manoCarteBonusRegione.add((CartaBonusRegione) c);
@@ -265,6 +265,6 @@ public class Giocatore extends Observable {
     }
 
     private void updateViewCartePermessoCostruzione() {
-        
+        super.notifyViews((InterfacciaView v) -> v.updateCartePermessoGiocatore(getId(), manoCartePermessoCostruzione));
     }
 }

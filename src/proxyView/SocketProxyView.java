@@ -2,9 +2,9 @@ package proxyView;
 
 import model.carte.CartaPermessoCostruzione;
 
-import java.net.Socket;
-import java.util.ArrayList;
+import java.net.Socket;;
 import java.util.HashMap;
+import java.util.List;
 
 public class SocketProxyView implements InterfacciaView {
     private int idGiocatore;
@@ -55,7 +55,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCartePoliticaProprie(ArrayList<String> carte) {
+    public void updateCartePoliticaProprie(List<String> carte) {
 
     }
 
@@ -65,7 +65,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCartePermessoGiocatore(int idGiocatore, ArrayList<CartaPermessoCostruzione> mano) {
+    public void updateCartePermessoGiocatore(int idGiocatore, List<CartaPermessoCostruzione> mano) {
 
     }
 
@@ -80,7 +80,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateRiservaConsiglieri(ArrayList<String> coloriConsiglieri) {
+    public void updateRiservaConsiglieri(List<String> coloriConsiglieri) {
 
     }
 
@@ -90,7 +90,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateEmporiCittà(String nomeCittà, ArrayList<Integer> idGiocatori) {
+    public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) {
 
     }
 
@@ -105,7 +105,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCarteBonusColoreCittàTabellone(String... colori) {
+    public void updateCarteBonusColoreCittàTabellone(List<String> colori) {
 
     }
 
