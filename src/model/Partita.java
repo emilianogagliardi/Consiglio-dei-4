@@ -1,6 +1,7 @@
 package model;
 
 import model.bonus.Bonus;
+import model.bonus.BonusPuntiVittoria;
 import model.carte.*;
 import model.eccezioni.*;
 import proxyView.InterfacciaView;
@@ -8,6 +9,8 @@ import proxyView.InterfacciaView;
 import java.util.*;
 
 import static model.Costanti.*;
+
+//TODO posizionare gli update in modo corretto
 
 public class Partita extends Observable {
     private Re re;
@@ -103,6 +106,7 @@ public class Partita extends Observable {
     public void setMazzoCartePremioRe(Mazzo<CartaPremioDelRe> mazzoCartePremioRe){
         if(this.mazzoCartePremioRe == null)
             this.mazzoCartePremioRe = mazzoCartePremioRe;
+        updateViewCartePremioRe();
     }
 
     public CartaPremioDelRe ottieniCartaPremioRe(){
@@ -112,7 +116,7 @@ public class Partita extends Observable {
         } catch (NoSuchElementException exc){
             cartaPremioDelRe = null;
         }
-        //TODO: updateCartePremioReTabellone()
+        updateViewCartePremioRe();
         return cartaPremioDelRe;
     }
 
@@ -145,6 +149,7 @@ public class Partita extends Observable {
         else if (this.riservaConsiglieri == null){
             this.riservaConsiglieri = riservaConsiglieri;
         }
+        updateViewRiservaConsiglieri();
     }
 
     public ArrayList<Consigliere> getRiservaConsiglieri() {return riservaConsiglieri;}
@@ -189,5 +194,36 @@ public class Partita extends Observable {
         ArrayList<String> coloriConsiglieri = new ArrayList<>();
         riservaConsiglieri.forEach((Consigliere consigliere) -> coloriConsiglieri.add(consigliere.getColore().toString()));
         super.notifyViews((InterfacciaView view) -> view.updateRiservaConsiglieri(coloriConsiglieri));
+    }
+
+    private void updateViewCarteBonusColoreCittà (){
+        HashMap<String, Integer> mapCarte = new HashMap<>();
+        carteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
+            Bonus bonus = carta.getBonus();
+            int punti;
+            try{
+                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
+                punti = bonusPuntiVittoria.getPuntiVittoria();
+            }catch (ClassCastException e) {
+                System.out.println("la carta bonus colore città non ha bonus punti vittoria, impossibile eseguire cast");
+                punti = 0;
+            }
+            mapCarte.put(carta.getColore().toString(), punti);
+        });
+        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusColoreCittàTabellone(mapCarte));
+    }
+
+    private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in vima al mazzo
+        CartaPremioDelRe cartaDaMostrare = mazzoCartePremioRe.getCarta();
+        int punti = 0;
+        try {
+            BonusPuntiVittoria bonusPunti = (BonusPuntiVittoria) cartaDaMostrare.getBonus();
+            punti = bonusPunti.getPuntiVittoria();
+        }catch (ClassCastException e) {
+            System.out.println("la carta premio del re non ha bonus punti vittoria, impossibile eseguire cast");
+            punti = 0; //errore
+        }
+        int finalPunti = punti; // solo per utilizzare in lambda expression
+        super.notifyViews((InterfacciaView view) -> view.updateCarteBonusReTabellone(finalPunti));
     }
 }

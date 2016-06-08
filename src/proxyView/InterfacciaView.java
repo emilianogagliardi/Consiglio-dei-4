@@ -24,7 +24,7 @@ public interface InterfacciaView {
     void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori);
     void updateEmporiDisponibiliGiocatore (int idGiocatore, int num);
     void updateCarteBonusColoreCittàGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte);
-    void updateCarteBonusColoreCittàTabellone(List<String> colori);
+    void updateCarteBonusColoreCittàTabellone(HashMap<String, Integer> coloriEPunti);
     void updateCarteBonusReGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte);
     void updateCarteBonusReTabellone(int puntiVIttoriaPrimaCarta); //solo la prima carta in vista del mazzo
     void updateCarteBonusRegioneGiocatore(int idGiocatore, HashMap<String, Integer> carte);
