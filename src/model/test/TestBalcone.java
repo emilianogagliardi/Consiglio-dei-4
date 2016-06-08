@@ -1,15 +1,11 @@
 import model.*;
 
-import model.carte.CartaPolitica;
 import model.carte.ColoreCartaPolitica;
 import org.junit.Test;
-import org.omg.CORBA.ARG_IN;
-import proxyView.InterfacciaView;;
+import proxyview.InterfacciaView;;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

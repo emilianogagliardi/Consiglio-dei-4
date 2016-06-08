@@ -5,7 +5,6 @@ import model.*;
 import model.bonus.*;
 import model.carte.*;
 import proxyView.InterfacciaView;
-
 import model.carte.CartaBonusRegione;
 import model.carte.CartaPermessoCostruzione;
 
@@ -124,7 +123,7 @@ public class AvviatorePartita implements Runnable {
             cittàRegione.addAll(cittàInRegioniDaFile(fileMappa, nomeRegione, tutteLeCittà, proxyViews)); //cittàRegione contiene solo le città apparteneti alla regione corrente
             Mazzo<CartaPermessoCostruzione> mazzoCartePermesso = creaMazzoCartePermesso(cittàRegione);
             mazzoCartePermesso.mischia();
-            CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(Costanti.PUNTI_VITTORIA_BONUS_REGIONE);
+            CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(nomeRegione, Costanti.PUNTI_VITTORIA_BONUS_REGIONE);
             BalconeDelConsiglio balcone = creaBalcone(IdBalcone.valueOf(nomeRegione.toString()), riservaConsiglieri, proxyViews);
             regioni.add(new Regione(nomeRegione, mazzoCartePermesso, balcone, cartaBonusRegione, proxyViews));
         });

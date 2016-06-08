@@ -1,8 +1,5 @@
 import model.Giocatore;
-import model.Mazzo;
 import model.bonus.*;
-import model.carte.CartaPolitica;
-import model.carte.ColoreCartaPolitica;
 import org.junit.Before;
 import org.junit.Test;
 import proxyview.InterfacciaView;

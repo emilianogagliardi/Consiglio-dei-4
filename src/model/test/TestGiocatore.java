@@ -1,4 +1,3 @@
-import jdk.nashorn.internal.scripts.JO;
 import model.*;
 import model.bonus.NullBonus;
 import model.carte.*;
@@ -80,7 +79,7 @@ public class TestGiocatore {
     @Test
     public void pescaCartaTest(){
         CartaPolitica cp = new CartaPolitica(ColoreCartaPolitica.ARANCIONE);
-        CartaBonusRegione cbr = new CartaBonusRegione(2);
+        CartaBonusRegione cbr = new CartaBonusRegione(NomeRegione.COSTA, 2);
         CartaBonusColoreCittà cbcc = new CartaBonusColoreCittà(1, ColoreCittà.FERRO);
         CartaPremioDelRe cpr = new CartaPremioDelRe(2);
         ArrayList<Città> città = new ArrayList<>();

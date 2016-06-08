@@ -100,7 +100,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCarteBonusColoreCittàGiocatore(int idGiocatore, String colore) {
+    public void updateCarteBonusColoreCittàGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) {
 
     }
 
@@ -110,7 +110,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCarteBonusReGiocatore(int idGiocatore, ArrayList<Integer> puntiPerCarta) {
+    public void updateCarteBonusReGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) {
 
     }
 

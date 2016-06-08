@@ -10,5 +10,5 @@ public interface InterfacciaController {
     void ottieniBonus(Bonus bonus);
     boolean eleggereConsigliere(String balcone, String coloreConsigliere);
     boolean acquistareTesseraPermessoCostruzione(String balcone, ArrayList<String> cartePolitica, String nomeRegione, int carta);
-  
+
 }
