@@ -6,7 +6,6 @@ import model.eccezioni.MoneteNonSufficientiException;
 import proxyview.InterfacciaView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -130,18 +129,19 @@ public class Giocatore extends Observable {
         else throw new IllegalArgumentException();
     }
 
-    public void scartaCartePolitica(CartaPolitica... carte) throws IllegalArgumentException{
-        List<CartaPolitica> carteDaScartare = Arrays.asList(carte);
-        if (!manoCartePolitica.containsAll(carteDaScartare)) throw new IllegalArgumentException();
-        for (CartaPolitica c_scarta : carteDaScartare) {
-            for (CartaPolitica c_mano : manoCartePolitica) {
-                if (c_scarta.equals(c_mano)) {
-                    manoCartePolitica.remove(c_mano);
+    public ArrayList<CartaPolitica> scartaCartePolitica(ArrayList<ColoreCartaPolitica> colori){
+        ArrayList<CartaPolitica> carteScartate = new ArrayList<>();
+        for (ColoreCartaPolitica colore : colori) {
+            for (CartaPolitica carta : manoCartePolitica) {
+                if (colore.equals(carta.getColore())) {
+                    carteScartate.add(carta);
+                    manoCartePolitica.remove(carta);
                     break;
                 }
             }
         }
         updateViewCartePolitica();
+        return carteScartate;
     }
 
 
