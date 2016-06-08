@@ -1,6 +1,7 @@
 package model;
 
 import model.bonus.Bonus;
+import model.bonus.BonusPuntiVittoria;
 import model.carte.*;
 import model.eccezioni.*;
 import proxyView.InterfacciaView;
@@ -177,5 +178,26 @@ public class Partita extends Observable {
         ArrayList<String> coloriConsiglieri = new ArrayList<>();
         riservaConsiglieri.forEach((Consigliere consigliere) -> coloriConsiglieri.add(consigliere.getColore().toString()));
         super.notifyViews((InterfacciaView view) -> view.updateRiservaConsiglieri(coloriConsiglieri));
+    }
+
+    private void updateViewCarteBonusColoreCittà (){
+        HashMap<String, Integer> mapCarte = new HashMap<>();
+        carteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
+            Bonus bonus = carta.getBonus();
+            int punti;
+            try{
+                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
+                punti = bonusPuntiVittoria.getPuntiVittoria();
+            }catch (ClassCastException e) {
+                System.out.println("la carta bonus colore città non ha bonus punti vittoria, impossibile eseguire cast");
+                punti = 0;
+            }
+            mapCarte.put(carta.getColore().toString(), punti);
+        });
+        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusColoreCittàTabellone(mapCarte));
+    }
+
+    private void updateCartePremioRe(){ //deve essere mostrata solo la carta in vima al mazzo
+        
     }
 }
