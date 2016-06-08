@@ -6,9 +6,9 @@ import model.carte.CartaPermessoCostruzione;
 import java.util.ArrayList;
 
 public interface InterfacciaController {
-    boolean fineTurno();
-    void ottieniBonus(Bonus bonus);
+    void passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
     boolean eleggereConsigliere(String balcone, String coloreConsigliere);
-    boolean acquistareTesseraPermessoCostruzione(String balcone, ArrayList<String> cartePolitica, String nomeRegione, int carta);
+    boolean acquistareTesseraPermessoCostruzione(String balcone, ArrayList<String> cartePolitica, int carta); //carta indica quale delle due carte permesso costruzione di regione ha scelto il giocatore (1 o 2)
+    boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String città);
 
 }

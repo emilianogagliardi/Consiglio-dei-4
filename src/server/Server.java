@@ -64,7 +64,7 @@ public class Server {
         idCorrente++;
         if (proxyViews.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
             timeoutThread = new ThreadTimeout(this);
-            timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT, TimeUnit.SECONDS);
+            timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT_2_GIOCATORI, TimeUnit.SECONDS);
         }else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
             timeoutThread.interrupt(); //killa il thread di timeout
             fineGiocatoriAccettati();

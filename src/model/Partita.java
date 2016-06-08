@@ -36,6 +36,10 @@ public class Partita extends Observable {
         throw new NoSuchElementException("Non esiste una regione con il nome indicato");
     }
 
+    public HashSet<Regione> getRegioni() {
+        return regioni;
+    }
+
     public void riceviAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
         if ((this.riservaAiutanti - numAiutanti) < 0)
            throw new IllegalArgumentException("Non ci sono abbastanza aiutanti in riserva");

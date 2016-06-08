@@ -47,7 +47,7 @@ public class Regione extends Observable{
         return cartaBonusRegioneDaRitornare;
     }
 
-    public CartaPermessoCostruzione getCartaPermessoCostruzione1(){
+    public CartaPermessoCostruzione ottieniCartaPermessoCostruzione1(){
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione1;
         cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione1.setVisibile(true);
@@ -55,7 +55,7 @@ public class Regione extends Observable{
         return cartaDaRitornare;
     }
 
-    public CartaPermessoCostruzione getCartaPermessoCostruzione2(){
+    public CartaPermessoCostruzione ottieniCartaPermessoCostruzione2(){
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione2;
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione2.setVisibile(true);
@@ -67,8 +67,19 @@ public class Regione extends Observable{
         this.città.add(città);
     }
 
-    public Collection<Città> getCittà(){
-        return città;
+    public Città getCittàSingola(NomeCittà nomeCittà) throws IllegalArgumentException {
+        for(Città cittàSingola : città)
+            if (cittàSingola.getNome().equals(nomeCittà)) {
+                return cittàSingola;
+            }
+        throw new IllegalArgumentException("Non esiste una città con questo nome!");
+    }
+
+    public ArrayList<NomeCittà> getNomiCittà(){
+        ArrayList<NomeCittà> nomiCittà = new ArrayList<>();
+        for(Città cittàSingola : this.città)
+            nomiCittà.add(cittàSingola.getNome());
+        return nomiCittà;
     }
 
     public void cambiaCartePermessoCostruzione(){
