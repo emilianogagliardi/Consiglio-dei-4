@@ -39,6 +39,8 @@ public class Costanti {
     public static final int MONETE_2_CARTE_POLITICA = 7;
     public static final int MONETE_3_CARTE_POLITICA = 4;
     public static final int MONETE_PER_CARTA_JOLLY = 1;
+    //numero aiutanti da pagare per emporio già costruito in una città da altri giocatori
+    public static final int NUMERO_AIUTANTI_PAGARE_EMPORIO = 1;
     //caratteristiche del giocatore
     public static final int MAX_MONETE = 30;
     public static final int MAX_POS_NOBILTA = 20;
