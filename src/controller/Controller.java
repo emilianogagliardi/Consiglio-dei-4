@@ -5,6 +5,7 @@ import model.bonus.*;
 import model.carte.CartaPermessoCostruzione;
 import model.carte.CartaPolitica;
 import model.carte.ColoreCartaPolitica;
+import model.eccezioni.AiutantiNonSufficientiException;
 import model.eccezioni.EmporioGiàEsistenteException;
 import model.eccezioni.MoneteNonSufficientiException;
 import proxyView.InterfacciaView;
@@ -174,25 +175,24 @@ public class Controller implements Runnable, InterfacciaController{
     }
 
     @Override
-    public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String nomeCittà) {
-        if(!(azionePrincipaleDisponibile() && cartaPermessoCostruzione.isVisibile()))
+    public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà) {
+        NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
+        //il giocatore deve avere azioni principali disponibili; la carta permesso costruzione non deve essere coperta; la città passat in input deve essere presenta sulla carta
+        //permesso; la carta permesso passata in input deve effettivamente appartenere alla mano carte permesso del giocatore
+        if(!(azionePrincipaleDisponibile() && cartaPermessoCostruzione.isVisibile() && cartaPermessoCostruzione.getCittà().contains(nomeCittà)
+                && giocatoreCorrente.getManoCartePermessoCostruzione().contains(cartaPermessoCostruzione)))
             return false;
-        if(!cartaPermessoCostruzione.getCittà().contains(NomeCittà.valueOf(nomeCittà)))
-            return false;
-        //TODO: verificare che il giocatore abbia la carta permesso costruzione passata in input
         for(Regione regione : partita.getRegioni()){
-            if (regione.getNomiCittà().contains(NomeCittà.valueOf(nomeCittà))) {
+            if (regione.getNomiCittà().contains(nomeCittà)) {
                 if (!giocatoreCorrente.decrementaEmporiDisponibili()) {
                     return false;
                 } else {
-                    try {
-                        regione.getCittàSingola(NomeCittà.valueOf(nomeCittà)).costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
-                        //TODO: metter la carta permesso del giocatore a visibile = false
-                        //TODO: verificare se al giocatore spetta una carta bonus colore
+                    if (costruisciEmporio(nomeCittà, regione)) {
+                        giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
+                        cartaPermessoCostruzione.setVisibile(false);
+                        giocatoreCorrente.addCarta(cartaPermessoCostruzione);
                         return true;
-                    } catch (EmporioGiàEsistenteException exc) {
-                        return false;
-                    }
+                    } else return false;
                 }
             }
         }
@@ -251,6 +251,27 @@ public class Controller implements Runnable, InterfacciaController{
             return true;
         }
         return false;
+    }
+
+    private boolean costruisciEmporio(NomeCittà nomeCittà, Regione regione){
+        Città città = regione.getCittàSingola(nomeCittà);
+        try {
+            città.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
+            if(città.giàCostruito(giocatoreCorrente))
+                return false;
+            try {
+                giocatoreCorrente.pagaAiutanti(Costanti.NUMERO_AIUTANTI_PAGARE_EMPORIO * città.getNumeroEmporiCostruiti());
+                assegnaBonus(città.getBonus());
+                //TODO: utilizzare un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
+                //TODO: verificare se al giocatore spetta una carta bonus colore
+                return true;
+            } catch (AiutantiNonSufficientiException exc){
+                return false;
+            }
+        } catch (EmporioGiàEsistenteException exc) {
+            return false;
+        }
+
     }
 }
 

@@ -16,6 +16,10 @@ public class Città extends Observable {
     private ColoreCittà colore;
     private NomeCittà nome;
     private ArrayList<Emporio> empori;
+    //attributi per gli algoritmi sui grafi
+    private boolean flag; //il flag è true quando il nodo è stato scoperto e poi è stato tolto dalla coda dei nodi scoperti perchè scoperti tutti i suoi nodi adiacenti
+    private Integer distanza; //distanza del nodo dalla sorgente (dipende su dal nodo sul quale è stato chiamato l'algoritmo)
+    private Città predecessore; //è il predecessore di questo nodo nell'albero dei cammini minimi che viene creato dall'algoritmo BFS (la radice ha predecessore  null)
 
     public Città (NomeCittà n, ColoreCittà c, Bonus b, ArrayList<InterfacciaView> views){
         super (views);
@@ -24,6 +28,29 @@ public class Città extends Observable {
         bonus = b;
         cittàAdiacenti = new HashSet<Città>();
         empori = new ArrayList<Emporio>();
+        flag = false;
+        distanza = Integer.MAX_VALUE;
+        predecessore = null;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public boolean getFlag() {
+        return flag;
+    }
+
+    public void setDistanza(Integer distanza) {
+        this.distanza = distanza;
+    }
+
+    public Integer getDistanza() {
+        return distanza;
+    }
+
+    public void setPredecessore(Città predecessore) {
+        this.predecessore = predecessore;
     }
 
     @Override
@@ -45,6 +72,10 @@ public class Città extends Observable {
         if (empori.contains(e)) throw new EmporioGiàEsistenteException();
         empori.add(e);
         updateView();
+    }
+
+    public int getNumeroEmporiCostruiti(){
+        return empori.size();
     }
 
     public boolean giàCostruito (Giocatore g){
