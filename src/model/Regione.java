@@ -26,6 +26,8 @@ public class Regione extends Observable{
         if (!nomeRegione.equals(balconeDelConsiglio.getIdBalcone()))
             throw new IllegalArgumentException("Il balcone non appartiene a questa regione");
         this.balconeDelConsiglio = Objects.requireNonNull(balcone);
+        if (!nomeRegione.equals(cartaBonusRegione.getNomeRegione()))
+            throw new IllegalArgumentException("La coarta non appartiene a questa regione");
         this.cartaBonusRegione = Objects.requireNonNull(cartaBonusRegione);
         this.mazzoCartePermessoCostruzione = Objects.requireNonNull(mazzoCartePermessoCostruzione);
         this.mazzoCartePermessoCostruzione.mischia();
