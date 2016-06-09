@@ -10,8 +10,6 @@ import java.util.*;
 
 import static model.Costanti.*;
 
-//TODO posizionare gli update in modo corretto
-
 public class Partita extends Observable {
     private Re re;
     private BalconeDelConsiglio balconeDelConsiglioRe;
@@ -126,6 +124,7 @@ public class Partita extends Observable {
         }
         else if(this.carteBonusColoreCittà == null)
             this.carteBonusColoreCittà = carteBonusColoreCittà;
+        updateViewCarteBonusColoreCittà();
     }
 
     public CartaBonusColoreCittà getCartaBonusColoreCittà(ColoreCittà coloreCittà) throws NoSuchElementException{
@@ -133,7 +132,6 @@ public class Partita extends Observable {
             if(carta.getColore().equals(coloreCittà))
                 return carta;
         throw new NoSuchElementException("Non è disponibile una carta bonus colore città del colore voluto");
-        //TODO: updateCarteBonusColoreCittàTabellone()
     }
 
     public void setRiservaConsiglieri(ArrayList<Consigliere> riservaConsiglieri) throws IllegalArgumentException {

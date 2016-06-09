@@ -90,7 +90,7 @@ public class AvviatorePartita implements Runnable {
             return cittàs;
         }catch (IOException e){
             System.out.println("impossibile trovare file di configurazione mappa");
-            proxyViews.forEach((InterfacciaView view) -> view.erroreDiConnessione());
+            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
             Thread.currentThread().interrupt();
         }
         finally {
@@ -111,7 +111,7 @@ public class AvviatorePartita implements Runnable {
             });
         }catch (IOException e) {
             System.out.println("impossibile trovare file di configurazione mappa");
-            proxyViews.forEach((InterfacciaView view) -> view.erroreDiConnessione());
+            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
             Thread.currentThread().interrupt();
         }
     }
@@ -125,7 +125,9 @@ public class AvviatorePartita implements Runnable {
             mazzoCartePermesso.mischia();
             CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(nomeRegione, Costanti.PUNTI_VITTORIA_BONUS_REGIONE);
             BalconeDelConsiglio balcone = creaBalcone(IdBalcone.valueOf(nomeRegione.toString()), riservaConsiglieri, proxyViews);
-            regioni.add(new Regione(nomeRegione, mazzoCartePermesso, balcone, cartaBonusRegione, proxyViews));
+            Regione regione = new Regione(nomeRegione, mazzoCartePermesso, balcone, cartaBonusRegione, proxyViews);
+            cittàRegione.forEach(città -> regione.addCittà(città));
+            regioni.add(regione);
         });
         return regioni;
     }
@@ -145,7 +147,7 @@ public class AvviatorePartita implements Runnable {
             ArrayList<Città> cittàCarta = new ArrayList<>(2);
             int numCittàCarta = 2 + rand.nextInt(2); //numCittàCarta può valere 2 oppure 3
             ArrayList<Città> cittàPossibili = new ArrayList<>();
-            cittàs.forEach((Città c) -> cittàPossibili.add(c)); //città possibili contiene le città che possono essere assegnate alla carta corrente
+            cittàs.forEach(cittàPossibili::add); //città possibili contiene le città che possono essere assegnate alla carta corrente
             for (int j = 0; j < numCittàCarta; j++) {
                 int posizioneCittàDaAggiungere = rand.nextInt(cittàPossibili.size());
                 cittàCarta.add(cittàPossibili.get(posizioneCittàDaAggiungere));
