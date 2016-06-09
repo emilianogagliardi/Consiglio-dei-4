@@ -15,6 +15,8 @@ import server.Utility;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
@@ -24,11 +26,17 @@ public class Controller implements Runnable, InterfacciaController{
     private int azioniPrincipaliDisponibili = 0;
     private boolean azioneVeloceEseguita = false;
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
+    GrafoCittà grafoCittà;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) {
         this.partita = partita;
         this.views = views;
+        ArrayList<Città> cittàPartita = new ArrayList<>();
+        for (Regione regione : partita.getRegioni())
+            for (Città città : regione.getCittà())
+                cittàPartita.add(città);
+        grafoCittà = new GrafoCittà(cittàPartita);
     }
 
     @Override
@@ -253,16 +261,26 @@ public class Controller implements Runnable, InterfacciaController{
         return false;
     }
 
-    private boolean costruisciEmporio(NomeCittà nomeCittà, Regione regione){
-        Città città = regione.getCittàSingola(nomeCittà);
+    private boolean costruisciEmporio(NomeCittà nomeCittàCostruzione, Regione regione){
+        Città cittàCostruzione = regione.getCittàSingola(nomeCittàCostruzione);
+        ArrayList<Città> cittàCollegateRitornate;
         try {
-            città.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
-            if(città.giàCostruito(giocatoreCorrente))
+            cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
+            if(cittàCostruzione.giàCostruito(giocatoreCorrente))
                 return false;
             try {
-                giocatoreCorrente.pagaAiutanti(Costanti.NUMERO_AIUTANTI_PAGARE_EMPORIO * città.getNumeroEmporiCostruiti());
-                assegnaBonus(città.getBonus());
-                //TODO: utilizzare un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
+                giocatoreCorrente.pagaAiutanti(Costanti.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti());
+                assegnaBonus(cittàCostruzione.getBonus());
+                //ora utilizzo un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
+                cittàCollegateRitornate = grafoCittà.bfs(cittàCostruzione, (cittàAdiacente, cittàCollegate) -> {
+                    if (cittàAdiacente.giàCostruito(giocatoreCorrente)) {
+                        cittàCollegate.add(cittàAdiacente);
+                    } else {
+                        cittàAdiacente.setFlag(true); //stoppo l'esplorazione attraverso questa città
+                    }
+                });
+                for (Città città : cittàCollegateRitornate)
+                        assegnaBonus(città.getBonus());
                 //TODO: verificare se al giocatore spetta una carta bonus colore
                 return true;
             } catch (AiutantiNonSufficientiException exc){

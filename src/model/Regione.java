@@ -92,6 +92,10 @@ public class Regione extends Observable{
         throw new IllegalArgumentException("Non esiste una città con questo nome!");
     }
 
+    public Collection<Città> getCittà(){
+        return città;
+    }
+
     public ArrayList<NomeCittà> getNomiCittà(){
         ArrayList<NomeCittà> nomiCittà = new ArrayList<>();
         for(Città cittàSingola : this.città)

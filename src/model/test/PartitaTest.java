@@ -6,6 +6,7 @@ import org.junit.Test;
 import proxyView.InterfacciaView;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class PartitaTest {
     private Partita partita1;
@@ -88,17 +89,20 @@ public class PartitaTest {
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<Città>()));
         }
-        /* TODO: finire di sistemare il test!
-        regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)), new CartaBonusRegione(6)));
+        ArrayList<Consigliere> consiglieri = new ArrayList<>();
+        consiglieri.addAll(Arrays.asList(new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)));
+        regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COSTA, 6), new ArrayList<InterfacciaView>()));
+        ArrayList<Città> cittàCartePermessoCostruzione = new ArrayList<>();
+        cittàCartePermessoCostruzione.add(new Città(NomeCittà.INDUR, ColoreCittà.ARGENTO, new BonusPuntiVittoria(6, NullBonus.getInstance()), new ArrayList<InterfacciaView>()));
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
-            mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance())));
+            mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
-        regioni1.add(new Regione(NomeRegione.COLLINA, mazzoCartePermessoCostruzioneCollina1, new BalconeDelConsiglio(NomeRegione.COLLINA, new ArrayList<InterfacciaView>(), new Consigliere(ColoreConsigliere.ARANCIONE), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)), new CartaBonusRegione(3)));
+        regioni1.add(new Regione(NomeRegione.COLLINA, mazzoCartePermessoCostruzioneCollina1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.MONTAGNA, 6),new ArrayList<InterfacciaView>()));
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
-            mazzoCartePermessoCostruzioneMontagna1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(10, NullBonus.getInstance())));
+            mazzoCartePermessoCostruzioneMontagna1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(10, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
-        regioni1.add(new Regione(NomeRegione.MONTAGNA, mazzoCartePermessoCostruzioneMontagna1, new BalconeDelConsiglio(NomeRegione.MONTAGNA, new ArrayList<InterfacciaView>(), new Consigliere(ColoreConsigliere.NERO), new Consigliere(ColoreConsigliere.ROSA), new Consigliere(ColoreConsigliere.NERO), new Consigliere(ColoreConsigliere.NERO)), new CartaBonusRegione(1)));
-        */
+        regioni1.add(new Regione(NomeRegione.MONTAGNA, mazzoCartePermessoCostruzioneMontagna1, new BalconeDelConsiglio(IdBalcone.MONTAGNA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.MONTAGNA, 1), new  ArrayList<InterfacciaView>()));
+
         partita2 = new Partita(new ArrayList<InterfacciaView>());
     }
 
