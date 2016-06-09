@@ -97,7 +97,7 @@ public class PartitaTest {
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
-        regioni1.add(new Regione(NomeRegione.COLLINA, mazzoCartePermessoCostruzioneCollina1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.MONTAGNA, 6),new ArrayList<InterfacciaView>()));
+        regioni1.add(new Regione(NomeRegione.COLLINA, mazzoCartePermessoCostruzioneCollina1, new BalconeDelConsiglio(IdBalcone.COLLINA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COLLINA, 6),new ArrayList<InterfacciaView>()));
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneMontagna1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(10, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }

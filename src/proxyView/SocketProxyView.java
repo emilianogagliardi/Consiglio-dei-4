@@ -105,7 +105,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCarteBonusColoreCittàTabellone(List<String> colori) {
+    public void updateCarteBonusColoreCittàTabellone(HashMap<String, Integer> coloriEPunti) {
 
     }
 
@@ -125,7 +125,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateCarteBonusRegioneTabellone(HashMap<String, Integer> carte) {
+    public void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta) {
 
     }
 

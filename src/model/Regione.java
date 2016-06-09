@@ -23,11 +23,11 @@ public class Regione extends Observable{
     public Regione(NomeRegione nomeRegione, Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione, BalconeDelConsiglio balcone, CartaBonusRegione cartaBonusRegione, ArrayList<InterfacciaView> views) throws IllegalArgumentException {
         super(views);
         this.nomeRegione = Objects.requireNonNull(nomeRegione);
-        if (!nomeRegione.equals(balconeDelConsiglio.getIdBalcone()))
+        if (!nomeRegione.equals(balcone.getIdBalcone().toNomeRegione()))
             throw new IllegalArgumentException("Il balcone non appartiene a questa regione");
         this.balconeDelConsiglio = Objects.requireNonNull(balcone);
         if (!nomeRegione.equals(cartaBonusRegione.getNomeRegione()))
-            throw new IllegalArgumentException("La coarta non appartiene a questa regione");
+            throw new IllegalArgumentException("La carta non appartiene a questa regione");
         this.cartaBonusRegione = Objects.requireNonNull(cartaBonusRegione);
         this.mazzoCartePermessoCostruzione = Objects.requireNonNull(mazzoCartePermessoCostruzione);
         this.mazzoCartePermessoCostruzione.mischia();
