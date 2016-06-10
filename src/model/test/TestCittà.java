@@ -1,11 +1,7 @@
 
 
-import model.Città;
-import model.Emporio;
-import model.Giocatore;
-import model.NomeCittà;
+import model.*;
 import model.bonus.NullBonus;
-import model.ColoreCittà;
 import model.eccezioni.CittàAdiacenteSeStessaException;
 import model.eccezioni.EmporioGiàEsistenteException;
 import org.junit.Test;
@@ -23,24 +19,24 @@ public class TestCittà {
     private Città città4;
 
     public TestCittà(){
-        città1 = new Città(NomeCittà.ARKON, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
-        città2 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
-        città3 = new Città(NomeCittà.CASTRUM, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
-        città4 = new Città(NomeCittà.ESTI, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città1 = new Città(NomeRegione.COLLINA, NomeCittà.ARKON, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città2 = new Città(NomeRegione.MONTAGNA, NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città3 = new Città(NomeRegione.COSTA, NomeCittà.CASTRUM, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città4 = new Città(NomeRegione.COSTA, NomeCittà.ESTI, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
     }
 
     @Test
     public void equalsTest() {
-        Città c1 = new Città(NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
-        Città c2 = new Città(NomeCittà.BURGEN, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
-        Città c3 = new Città(NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        Città c1 = new Città(NomeRegione.MONTAGNA, NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        Città c2 = new Città(NomeRegione.COLLINA, NomeCittà.BURGEN, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        Città c3 = new Città(NomeRegione.MONTAGNA, NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
         assertFalse(c1.equals(c3));
         assertTrue(c1.equals(c2));
     }
 
     @Test (expected = CittàAdiacenteSeStessaException.class)
     public void aggiungiSeStessaTest() {
-        Città città = new Città(NomeCittà.ARKON, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        Città città = new Città(NomeRegione.COLLINA, NomeCittà.ARKON, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
         città.addCittàAdiacenti(città);
     }
 

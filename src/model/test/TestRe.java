@@ -1,8 +1,5 @@
-import model.Città;
-import model.NomeCittà;
-import model.Re;
+import model.*;
 import model.bonus.NullBonus;
-import model.ColoreCittà;
 import org.junit.Before;
 import org.junit.Test;
 import proxyView.InterfacciaView;
@@ -18,9 +15,9 @@ public class TestRe {
     private Città città3;
 
     public TestRe () {
-        città1 = new Città(NomeCittà.INDUR, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
-        città2 = new Città(NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
-        città3 = new Città(NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città1 = new Città(NomeRegione.COLLINA, NomeCittà.INDUR, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città2 = new Città(NomeRegione.COLLINA, NomeCittà.BURGEN, ColoreCittà.ARGENTO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
+        città3 = new Città(NomeRegione.MONTAGNA, NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
         re = new Re(città1, new ArrayList<InterfacciaView>());
     }
 

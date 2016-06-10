@@ -190,21 +190,16 @@ public class Controller implements Runnable, InterfacciaController{
         if(!(azionePrincipaleDisponibile() && cartaPermessoCostruzione.isVisibile() && cartaPermessoCostruzione.getCittà().contains(nomeCittà)
                 && giocatoreCorrente.getManoCartePermessoCostruzione().contains(cartaPermessoCostruzione)))
             return false;
-        for(Regione regione : partita.getRegioni()){
-            if (regione.getNomiCittà().contains(nomeCittà)) {
-                if (!giocatoreCorrente.decrementaEmporiDisponibili()) {
-                    return false;
-                } else {
-                    if (costruisciEmporio(nomeCittà, regione)) {
-                        giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
-                        cartaPermessoCostruzione.setVisibile(false);
-                        giocatoreCorrente.addCarta(cartaPermessoCostruzione);
-                        return true;
-                    } else return false;
-                }
-            }
+        if (!giocatoreCorrente.decrementaEmporiDisponibili()) {
+            return false;
+        } else {
+            if (costruisciEmporio(nomeCittà, getRegioneDaCittà(nomeCittà))) {
+                giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
+                cartaPermessoCostruzione.setVisibile(false);
+                giocatoreCorrente.addCarta(cartaPermessoCostruzione);
+                return true;
+            } else return false;
         }
-        return false;
     }
 
     private int moneteDaPagareSoddisfaConsiglio(ArrayList<ColoreCartaPolitica> coloriCartePolitica){
@@ -281,7 +276,26 @@ public class Controller implements Runnable, InterfacciaController{
                 });
                 for (Città città : cittàCollegateRitornate)
                         assegnaBonus(città.getBonus());
-                //TODO: verificare se al giocatore spetta una carta bonus colore
+                //verifico se il giocatore ha costruito empori in tutte le città dello stesso colore
+                if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
+                    if (cittàAdiacente.getColore().equals(cittàCostruzione))
+                        if (!cittàAdiacente.giàCostruito(giocatoreCorrente))
+                            return false;
+                    return valoreDaRitornare;
+                })) { //corpo dell'if
+                    assegnaBonus(partita.ottieniCartaBonusColoreCittà(cittàCostruzione.getColore()).getBonus());
+                }
+                //verifico se il giocatore ha costruito empori in tutte le città della stessa regione
+                if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
+                    if (cittàAdiacente.getNomeRegione().equals(cittàCostruzione.getNomeRegione())) {
+                        if (!cittàAdiacente.giàCostruito(giocatoreCorrente)) {
+                            return false;
+                        }
+                    }
+                    return valoreDaRitornare;
+                })) { //corpo dell'if
+                    assegnaBonus(regione.ottieniCartaBonusRegione().getBonus());
+                }
                 return true;
             } catch (AiutantiNonSufficientiException exc){
                 return false;
@@ -290,6 +304,15 @@ public class Controller implements Runnable, InterfacciaController{
             return false;
         }
 
+    }
+
+    private Regione getRegioneDaCittà(NomeCittà nomeCittà) throws IllegalArgumentException{
+        for (Regione regione : partita.getRegioni()) {
+            if (regione.getNomiCittà().contains(nomeCittà)) {
+                return regione;
+            }
+        }
+        throw new IllegalArgumentException("Non esiste una città con questo nome");
     }
 }
 

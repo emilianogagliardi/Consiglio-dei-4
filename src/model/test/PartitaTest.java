@@ -21,8 +21,7 @@ public class PartitaTest {
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCollina1 = new Mazzo<>();
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneMontagna1 = new Mazzo<>();
 
-    @Before
-    public void setUp() throws Exception {
+    public PartitaTest(){
         partita1 = new Partita(new ArrayList<InterfacciaView>());
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(5, ColoreCittà.ARGENTO));
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(10, ColoreCittà.BRONZO));
@@ -30,8 +29,8 @@ public class PartitaTest {
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(20, ColoreCittà.ORO));
         int cheColore = 0;
         for (int i = 0; i < 90; i++){
-           if ((i % 13) == 12)
-               cheColore++;
+            if ((i % 13) == 12)
+                cheColore++;
             switch(cheColore){
                 case 0:
                     mazzoCartePolitica1.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
@@ -65,27 +64,27 @@ public class PartitaTest {
         mazzoCartaPremioRe1.addCarta(new CartaPremioDelRe(25));
         mazzoCartaPremioRe1.addCarta(new CartaPremioDelRe(30));
         Random random = new Random();
-            for(int i = 0; i < Costanti.MAX_POS_NOBILTA; i++){
-                if(random.nextDouble() < 0.3){
-                    switch (random.nextInt(4)){
-                        case 0:
-                            percorsoDellaNobiltà1.add(new BonusPuntiVittoria(10, NullBonus.getInstance()));
-                            break;
-                        case 1:
-                            percorsoDellaNobiltà1.add(new BonusAiutanti(1, NullBonus.getInstance()));
-                            break;
-                        case 2:
-                            percorsoDellaNobiltà1.add(new BonusAvanzaPercorsoNobiltà(3, new BonusAiutanti(3, NullBonus.getInstance())));
-                            break;
-                        case 3:
-                            percorsoDellaNobiltà1.add(new BonusMonete(5, new BonusPescaCartaPolitica(2, NullBonus.getInstance())));
-                            break;
-                        default:
-                            break;
-                    }
+        for(int i = 0; i < Costanti.MAX_POS_NOBILTA; i++){
+            if(random.nextDouble() < 0.3){
+                switch (random.nextInt(4)){
+                    case 0:
+                        percorsoDellaNobiltà1.add(new BonusPuntiVittoria(10, NullBonus.getInstance()));
+                        break;
+                    case 1:
+                        percorsoDellaNobiltà1.add(new BonusAiutanti(1, NullBonus.getInstance()));
+                        break;
+                    case 2:
+                        percorsoDellaNobiltà1.add(new BonusAvanzaPercorsoNobiltà(3, new BonusAiutanti(3, NullBonus.getInstance())));
+                        break;
+                    case 3:
+                        percorsoDellaNobiltà1.add(new BonusMonete(5, new BonusPescaCartaPolitica(2, NullBonus.getInstance())));
+                        break;
+                    default:
+                        break;
                 }
-                else percorsoDellaNobiltà1.add(NullBonus.getInstance());
             }
+            else percorsoDellaNobiltà1.add(NullBonus.getInstance());
+        }
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<Città>()));
         }
@@ -93,7 +92,7 @@ public class PartitaTest {
         consiglieri.addAll(Arrays.asList(new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)));
         regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COSTA, 6), new ArrayList<InterfacciaView>()));
         ArrayList<Città> cittàCartePermessoCostruzione = new ArrayList<>();
-        cittàCartePermessoCostruzione.add(new Città(NomeCittà.INDUR, ColoreCittà.ARGENTO, new BonusPuntiVittoria(6, NullBonus.getInstance()), new ArrayList<InterfacciaView>()));
+        cittàCartePermessoCostruzione.add(new Città(NomeRegione.COLLINA, NomeCittà.INDUR, ColoreCittà.ARGENTO, new BonusPuntiVittoria(6, NullBonus.getInstance()), new ArrayList<InterfacciaView>()));
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
@@ -102,15 +101,9 @@ public class PartitaTest {
             mazzoCartePermessoCostruzioneMontagna1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(10, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
         regioni1.add(new Regione(NomeRegione.MONTAGNA, mazzoCartePermessoCostruzioneMontagna1, new BalconeDelConsiglio(IdBalcone.MONTAGNA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.MONTAGNA, 1), new  ArrayList<InterfacciaView>()));
-
-        partita2 = new Partita(new ArrayList<InterfacciaView>());
-    }
-
-    @Test
-    public void setMethods() throws Exception{
         partita1.addGiocatore(new Giocatore(idCounter++, 10, 1, new ArrayList<InterfacciaView>()));
         partita1.addGiocatore(new Giocatore(idCounter++, 11, 2, new ArrayList<InterfacciaView>()));
-        ArrayList<Consigliere> consiglieri = new ArrayList<>();
+        consiglieri = new ArrayList<>();
         consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
         consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
         consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
@@ -121,6 +114,16 @@ public class PartitaTest {
         partita1.setMazzoCartePremioRe(mazzoCartaPremioRe1);
         partita1.setPercorsoDellaNobiltà(percorsoDellaNobiltà1);
         partita1.setRegioni(regioni1);
+        partita1.setRe(new Re(new Città(NomeRegione.COLLINA, NomeCittà.INDUR, ColoreCittà.ARGENTO, new BonusRipetiAzionePrincipale(NullBonus.getInstance()),new ArrayList<InterfacciaView>()), new ArrayList<InterfacciaView>()));
+        ArrayList<Consigliere> riservaConsiglieri = new ArrayList<>();
+        for (int i = 0; i < Costanti.NUM_CONSIGLIERI_RISERVA; i++){ //non stiamo preservando il numero o i colori dei consiglieri
+            riservaConsiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
+        }
+        partita1.setRiservaConsiglieri(riservaConsiglieri);
+    }
+
+    public Partita getPartita1(){
+        return partita1;
     }
 
 }

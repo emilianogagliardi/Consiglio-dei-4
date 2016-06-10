@@ -82,7 +82,9 @@ public class Regione extends Observable{
         return cartaDaRitornare;
 }
 
-    public void addCittà (Città città) {
+    public void addCittà (Città città) throws IllegalArgumentException{
+        if (!città.getNomeRegione().equals(this.getNome()))
+            throw new IllegalArgumentException("La città non appartiene a questa regione");
         this.città.add(città);
     }
 
