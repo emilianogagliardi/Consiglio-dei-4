@@ -76,16 +76,22 @@ public class AvviatorePartita implements Runnable {
         return consiglieri;
     }
 
-    //crea un insieme contenente tutte le città, leggendo da file i colori
+    //crea un insieme contenente tutte le città, leggendo da file i colori e le regioni
     private HashSet<Città> creaCittàDaFile(InputStream is, ArrayList<InterfacciaView> proxyViews){
         HashSet<Città> cittàs = new HashSet<>();
         Properties pro = new Properties();
         try {
             pro.load(is);
+            HashMap<NomeCittà, NomeRegione> nomeCittàRegione= new HashMap<>(); //hashmap necessaria per assegnare nomi regioni alle città all'atto della loro creazione
+            //popola la hashmap nomiCittàRegione con (NomeCittà, NomeRegione) leggendo da file NOMEREGIONE=NOMECITTA1,NOMECITTA2,NOMECITTA3
+            Arrays.stream(NomeRegione.values()).forEach((NomeRegione nomeRegione) -> {
+                String città = pro.getProperty(nomeRegione.toString());
+                Arrays.stream(città.split(",")).forEach((String stringaNomeCittà) -> nomeCittàRegione.put(NomeCittà.valueOf(stringaNomeCittà), nomeRegione));
+            });
             Arrays.stream(NomeCittà.values()).forEach((NomeCittà nomeCittà) -> {
                 String coloreStringa = pro.getProperty(nomeCittà.toString() + ".colore");
                 ColoreCittà colore = ColoreCittà.valueOf(coloreStringa);
-                cittàs.add(new Città(nomeCittà, colore, creaBonus(), proxyViews));
+                cittàs.add(new Città(nomeCittàRegione.get(nomeCittà), nomeCittà, colore, creaBonus(), proxyViews));
             });
             return cittàs;
         }catch (IOException e){
