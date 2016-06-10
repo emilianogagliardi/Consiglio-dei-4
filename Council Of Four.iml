@@ -8,6 +8,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/instauraconnessione/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/controller/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/server/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/mappe" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

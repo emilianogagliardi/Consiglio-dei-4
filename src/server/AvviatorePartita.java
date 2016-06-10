@@ -55,15 +55,13 @@ public class AvviatorePartita implements Runnable {
         int idMappa = proxyViews.get(0).scegliMappa(); //il primo giocatore loggato sceglie la mappa
         String nomeFile = "mappa"+idMappa;
         try {
-            FileInputStream is = new FileInputStream(nomeFile);
+            FileInputStream is = new FileInputStream("./resources/mappe/"+nomeFile);
             return is;
         }catch(FileNotFoundException e) {
             System.out.println("impossibile trovare il file di configurazione della mappa");
             proxyViews.forEach((InterfacciaView view) -> view.erroreDiConnessione());
             Thread.currentThread().interrupt();
-        }
-        finally {
-            return null; //solo se lanciata l'eccezione
+            return null;
         }
     }
 
@@ -73,7 +71,7 @@ public class AvviatorePartita implements Runnable {
             for (int i = 0; i < Costanti.NUM_CONSIGLIERI_PER_COLORE; i++)
                 consiglieri.add(new Consigliere(colore));
         });
-        return consiglieri;
+        return consiglieri; //TODO: mischiare i consiglieri prima di restituirli
     }
 
     //crea un insieme contenente tutte le città, leggendo da file i colori e le regioni
@@ -98,9 +96,7 @@ public class AvviatorePartita implements Runnable {
             System.out.println("impossibile trovare file di configurazione mappa");
             proxyViews.forEach(InterfacciaView::erroreDiConnessione);
             Thread.currentThread().interrupt();
-        }
-        finally {
-            return null; //solo se è stata lanciata l'accezione
+            return null;
         }
     }
 
@@ -219,9 +215,7 @@ public class AvviatorePartita implements Runnable {
             System.out.println("imposssibile trovare file di configurazione mappa");
             views.forEach((InterfacciaView view) -> view.erroreDiConnessione());
             Thread.currentThread().interrupt();
-        }
-        finally {
-            return null; //solo se lanciata eccezione
+            return null;
         }
     }
 

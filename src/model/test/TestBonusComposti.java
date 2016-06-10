@@ -49,7 +49,7 @@ public class TestBonusComposti {
         }
     }
 
-    /*
+    /* TODO: Questo metodo è commentato perchè i bonus non hanno più il metodo ottieni e quindi il test è inutilizzabile
     @Test
     public void bonusGenericoTest(){
         b.ottieni(g);

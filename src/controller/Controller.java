@@ -22,7 +22,7 @@ public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
     private ArrayList<InterfacciaView> views;
     private int idGiocatoreCorrente = 0;
-    private Giocatore giocatoreCorrente = partita.getGiocatori().get(idGiocatoreCorrente);
+    private Giocatore giocatoreCorrente;
     private int azioniPrincipaliDisponibili = 0;
     private boolean azioneVeloceEseguita = false;
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
@@ -32,6 +32,8 @@ public class Controller implements Runnable, InterfacciaController{
     public Controller(Partita partita, ArrayList<InterfacciaView> views) {
         this.partita = partita;
         this.views = views;
+        this.giocatoreCorrente = partita.getGiocatori().get(0);
+        //creazione del grafo delle città che vuole in input la lista di tutte le città
         ArrayList<Città> cittàPartita = new ArrayList<>();
         for (Regione regione : partita.getRegioni())
             for (Città città : regione.getCittà())

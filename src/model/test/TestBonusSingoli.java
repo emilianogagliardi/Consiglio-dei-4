@@ -15,14 +15,14 @@ public class TestBonusSingoli {
     private BonusMonete bonusM;
     private BonusAvanzaPercorsoNobiltà bonusN;
     private BonusPuntiVittoria bonusP;
-    //TODO testi bonus pesca carta politica
+    //TODO test bonus pesca carta politica
 
     @Before
     public void setUp(){
         giocatore = new Giocatore(1, 0, 0, new ArrayList<InterfacciaView>());
     }
 
-    /*
+    /* TODO: Tutti questi metodi sono commentati perchè i bonus non hanno più il metodo ottieni e quindi i test sono inutilizzabili
     @Test (expected = IllegalArgumentException.class)
     public void bonusAiutantiTest(){
         bonusA = new BonusAiutanti(3, NullBonus.getInstance());

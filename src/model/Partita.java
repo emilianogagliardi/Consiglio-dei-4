@@ -142,10 +142,7 @@ public class Partita extends Observable {
     }
 
     public void setRiservaConsiglieri(ArrayList<Consigliere> riservaConsiglieri) throws IllegalArgumentException {
-        if(riservaConsiglieri.size() != NUM_CONSIGLIERI_RISERVA) {
-            throw new IllegalArgumentException("Il numero di consiglieri deve essere " + NUM_CONSIGLIERI_RISERVA);
-        }
-        else if (this.riservaConsiglieri == null){
+       if (this.riservaConsiglieri == null){
             this.riservaConsiglieri = riservaConsiglieri;
         }
         updateViewRiservaConsiglieri();
