@@ -4,7 +4,7 @@ package model;
 import java.util.ArrayList;
 
 public enum ColoreCittà {
-    ORO, ARGENTO, BRONZO, FERRO;
+    ORO, ARGENTO, BRONZO, FERRO, CITTA_RE;
     public Colore toColore(){
         return Colore.valueOf(this.toString());
     }

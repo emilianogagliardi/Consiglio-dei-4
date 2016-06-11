@@ -26,32 +26,32 @@ public class AvviatorePartita implements Runnable {
 
     @Override
     public void run() {
-        Partita nuovaPartita = creaPartita(proxyViews);
+        Partita nuovaPartita = creaPartita();
         if (!Thread.currentThread().isInterrupted()) {
             executors.submit(new Controller(nuovaPartita, proxyViews));
         }
     }
 
-    private Partita creaPartita(ArrayList<InterfacciaView> proxyViews){
-        FileInputStream fileMappa = sceltaMappa(proxyViews);
+    private Partita creaPartita(){
+        FileInputStream fileMappa = sceltaMappa();
         Partita partita = new Partita(proxyViews);
         partita.aggiungiAiutanti(Costanti.NUM_AIUTANTI);
         partita.setRiservaConsiglieri(creaRiservaConsiglieri());
-        HashSet<Città> tutteLeCittà = creaCittàDaFile(fileMappa, proxyViews);
-        creaSentieriCittàDaFile(fileMappa, tutteLeCittà, proxyViews);
-        partita.setRegioni(creaRegioni(fileMappa, tutteLeCittà, partita.getRiservaConsiglieri(), proxyViews));
-        partita.setBalconeDelConsiglioRe(creaBalcone(IdBalcone.RE, partita.getRiservaConsiglieri(), proxyViews));
-        partita.setRe(creaRe(tutteLeCittà, proxyViews));
+        HashSet<Città> tutteLeCittà = creaCittàDaFile(fileMappa);
+        creaSentieriCittàDaFile(fileMappa, tutteLeCittà);
+        partita.setRegioni(creaRegioni(fileMappa, tutteLeCittà, partita.getRiservaConsiglieri()));
+        partita.setBalconeDelConsiglioRe(creaBalcone(IdBalcone.RE, partita.getRiservaConsiglieri()));
+        partita.setRe(creaRe(tutteLeCittà));
         partita.setPercorsoDellaNobiltà(creaPercorsoNobiltà());
         partita.setMazzoCartePolitica(creaMazzoCartePolitica());
         partita.setMazzoCartePremioRe(creaMazzoCartePremioRe());
         partita.setCarteBonusColoreCittà(creaMazzoBonusColoreCittà());
-        ArrayList<Giocatore> giocatori = creaGiocatori(proxyViews);
-        giocatori.forEach((Giocatore giocatore) -> partita.addGiocatore(giocatore));
+        ArrayList<Giocatore> giocatori = creaGiocatori();
+        giocatori.forEach(partita::addGiocatore);
         return partita;
     }
 
-    private FileInputStream sceltaMappa(ArrayList<InterfacciaView> proxyViews){
+    private FileInputStream sceltaMappa(){
         int idMappa = proxyViews.get(0).scegliMappa(); //il primo giocatore loggato sceglie la mappa
         String nomeFile = "mappa"+idMappa;
         try {
@@ -75,23 +75,34 @@ public class AvviatorePartita implements Runnable {
     }
 
     //crea un insieme contenente tutte le città, leggendo da file i colori e le regioni
-    private HashSet<Città> creaCittàDaFile(InputStream is, ArrayList<InterfacciaView> proxyViews){
-        HashSet<Città> cittàs = new HashSet<>();
+    private HashSet<Città> creaCittàDaFile(InputStream is){
+        HashSet<Città> tutteLeCittà = new HashSet<>();
         Properties pro = new Properties();
         try {
             pro.load(is);
-            HashMap<NomeCittà, NomeRegione> nomeCittàRegione= new HashMap<>(); //hashmap necessaria per assegnare nomi regioni alle città all'atto della loro creazione
-            //popola la hashmap nomiCittàRegione con (NomeCittà, NomeRegione) leggendo da file NOMEREGIONE=NOMECITTA1,NOMECITTA2,NOMECITTA3
-            Arrays.stream(NomeRegione.values()).forEach((NomeRegione nomeRegione) -> {
-                String città = pro.getProperty(nomeRegione.toString());
-                Arrays.stream(città.split(",")).forEach((String stringaNomeCittà) -> nomeCittàRegione.put(NomeCittà.valueOf(stringaNomeCittà), nomeRegione));
+            /*
+            ottiene una hashmap contenente nome città come chiave, nome regione come valore
+             */
+            HashMap<NomeCittà, NomeRegione> nomeCittàNomeRegioneHashMap = new HashMap<>();
+            Arrays.stream(NomeRegione.values()).forEach(nomeRegione -> {
+                String stringNomiCittàInRegione = pro.getProperty(nomeRegione.toString());
+                Arrays.stream(stringNomiCittàInRegione.split(",")).forEach((String nomeCittà) -> nomeCittàNomeRegioneHashMap.put(NomeCittà.valueOf(nomeCittà), nomeRegione));
             });
+            /*
+            ottiene una hashMap contenente nome città come chiave, colore come valore
+             */
+            HashMap<NomeCittà, ColoreCittà> nomeCittàColoreCittàHashMap = new HashMap<>();
             Arrays.stream(NomeCittà.values()).forEach((NomeCittà nomeCittà) -> {
-                String coloreStringa = pro.getProperty(nomeCittà.toString() + ".colore");
-                ColoreCittà colore = ColoreCittà.valueOf(coloreStringa);
-                cittàs.add(new Città(nomeCittàRegione.get(nomeCittà), nomeCittà, colore, creaBonus(), proxyViews));
+                String stringColore = pro.getProperty(nomeCittà.toString()+ ".colore");
+                nomeCittàColoreCittàHashMap.put(nomeCittà, ColoreCittà.valueOf(stringColore));
             });
-            return cittàs;
+            /*
+            riempie l'hashset di nuove città, sfruttando le informazioni contenute nelle hashmap
+             */
+            Arrays.stream(NomeCittà.values()).forEach((NomeCittà nomeCittà) -> {
+                tutteLeCittà.add(new Città(nomeCittàNomeRegioneHashMap.get(nomeCittà),nomeCittà, nomeCittàColoreCittàHashMap.get(nomeCittà), creaBonus(), proxyViews));
+            });
+            return tutteLeCittà;
         }catch (IOException e){
             System.out.println("impossibile trovare file di configurazione mappa");
             proxyViews.forEach(InterfacciaView::erroreDiConnessione);
@@ -100,9 +111,9 @@ public class AvviatorePartita implements Runnable {
         }
     }
 
-    private void creaSentieriCittàDaFile(InputStream is, HashSet<Città> tutteLeCittà, ArrayList<InterfacciaView> proxyViews){
+    private void creaSentieriCittàDaFile(InputStream is, HashSet<Città> tutteLeCittà){
         Properties pro = new Properties();
-        HashMap<String, Città> mapCittà = new HashMap(); //mappa conetente (nomecittà, città) utile per l'algoritmo
+        HashMap<String, Città> mapCittà = new HashMap<>(); //mappa conetente (nomecittà, città) utile per l'algoritmo
         tutteLeCittà.forEach((Città città) -> mapCittà.put(città.getNome().toString(), città));
         try{
             pro.load(is);
@@ -118,17 +129,17 @@ public class AvviatorePartita implements Runnable {
         }
     }
 
-    private HashSet<Regione> creaRegioni(InputStream fileMappa, HashSet<Città> tutteLeCittà, ArrayList<Consigliere> riservaConsiglieri, ArrayList<InterfacciaView> proxyViews) {
+    private HashSet<Regione> creaRegioni(InputStream fileMappa, HashSet<Città> tutteLeCittà, ArrayList<Consigliere> riservaConsiglieri) {
         HashSet<Regione> regioni = new HashSet<>();
         Arrays.stream(NomeRegione.values()).forEach((NomeRegione nomeRegione) -> {
             ArrayList<Città> cittàRegione = new ArrayList<>(Costanti.NUM_CITTA_PER_REGIONE);
-            cittàRegione.addAll(cittàInRegioniDaFile(fileMappa, nomeRegione, tutteLeCittà, proxyViews)); //cittàRegione contiene solo le città apparteneti alla regione corrente
+            cittàRegione.addAll(cittàInRegioniDaFile(fileMappa, nomeRegione, tutteLeCittà)); //cittàRegione contiene solo le città apparteneti alla regione corrente
             Mazzo<CartaPermessoCostruzione> mazzoCartePermesso = creaMazzoCartePermesso(cittàRegione);
             mazzoCartePermesso.mischia();
             CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(nomeRegione, Costanti.PUNTI_VITTORIA_BONUS_REGIONE);
-            BalconeDelConsiglio balcone = creaBalcone(IdBalcone.valueOf(nomeRegione.toString()), riservaConsiglieri, proxyViews);
+            BalconeDelConsiglio balcone = creaBalcone(IdBalcone.valueOf(nomeRegione.toString()), riservaConsiglieri);
             Regione regione = new Regione(nomeRegione, mazzoCartePermesso, balcone, cartaBonusRegione, proxyViews);
-            cittàRegione.forEach(città -> regione.addCittà(città));
+            cittàRegione.forEach(regione::addCittà);
             regioni.add(regione);
         });
         return regioni;
@@ -139,7 +150,7 @@ public class AvviatorePartita implements Runnable {
         Mazzo<CartaPermessoCostruzione> mazzo = new Mazzo<>();
         //crea 5 carte con una sola città
         cittàs.forEach((Città città) -> {
-            ArrayList<Città> cittàCarta = new ArrayList(1);
+            ArrayList<Città> cittàCarta = new ArrayList<>(1);
             cittàCarta.add(città);
             mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(), cittàCarta));
         });
@@ -190,16 +201,16 @@ public class AvviatorePartita implements Runnable {
         return bonus;
     }
 
-    private BalconeDelConsiglio creaBalcone(IdBalcone id, ArrayList<Consigliere> riservaConsiglieri, ArrayList<InterfacciaView> views){
+    private BalconeDelConsiglio creaBalcone(IdBalcone id, ArrayList<Consigliere> riservaConsiglieri){
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
         for (int i = 0; i < Costanti.NUM_CONSIGLIERI_BALCONE; i++) {
             consiglieri.add(riservaConsiglieri.remove(consiglieri.size()-1));
         }
-        return new BalconeDelConsiglio(id, views, consiglieri);
+        return new BalconeDelConsiglio(id, proxyViews, consiglieri);
     }
 
     //prende in input tutte le citta assegna alla regione richiesta quelle giuste leggendolo da file
-    private HashSet<Città> cittàInRegioniDaFile(InputStream is, NomeRegione nomeRegione, HashSet<Città> tutteLeCittà, ArrayList<InterfacciaView> views){
+    private HashSet<Città> cittàInRegioniDaFile(InputStream is, NomeRegione nomeRegione, HashSet<Città> tutteLeCittà){
         Properties pro = new Properties();
         HashMap<String, Città> mapCittà = new HashMap<>();
         HashSet<Città> appartenentiRegione = new HashSet<>();
@@ -213,13 +224,13 @@ public class AvviatorePartita implements Runnable {
             return appartenentiRegione;
         }catch(IOException e) {
             System.out.println("imposssibile trovare file di configurazione mappa");
-            views.forEach((InterfacciaView view) -> view.erroreDiConnessione());
+            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
             Thread.currentThread().interrupt();
             return null;
         }
     }
 
-    private Re creaRe(HashSet<Città> tutteLeCittà, ArrayList<InterfacciaView> proxyViews) {
+    private Re creaRe(HashSet<Città> tutteLeCittà) {
         NomeCittà nomeCittàRe = NomeCittà.valueOf(Costanti.CITTÀ_RE);
         for (Città città : tutteLeCittà) {
             if (città.getNome() == nomeCittàRe) {
@@ -278,7 +289,7 @@ public class AvviatorePartita implements Runnable {
         return carte;
     }
 
-    private ArrayList<Giocatore> creaGiocatori(ArrayList<InterfacciaView> proxyViews) {
+    private ArrayList<Giocatore> creaGiocatori() {
         ArrayList<Giocatore> giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
