@@ -209,7 +209,7 @@ public class Partita extends Observable {
         super.notifyViews((InterfacciaView v) -> v.updateCarteBonusColoreCittàTabellone(mapCarte));
     }
 
-    private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in vima al mazzo
+    private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in cima al mazzo
         CartaPremioDelRe cartaDaMostrare = mazzoCartePremioRe.getCarta();
         int punti = 0;
         try {

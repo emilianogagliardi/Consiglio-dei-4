@@ -57,7 +57,7 @@ public class Città extends Observable {
     public boolean equals (Object o) {
         if (o instanceof Città){
             Città c = (Città) o;
-            if (c.getNome().equals(this.getNome()))
+            if (c.getNome().equals(this.getNome()) && this.getColore().equals(c.getColore()) && this.nomeRegione.equals(c.getNomeRegione()))
                 return true;
         }
         return false;
@@ -96,5 +96,10 @@ public class Città extends Observable {
         ArrayList<Integer> ids = new ArrayList<>();
         empori.stream().forEach((Emporio e) -> ids.add(e.getIdGiocatore()));
         super.notifyViews((InterfacciaView v) -> v.updateEmporiCittà(nome.toString(), ids));
+    }
+
+    @Override
+    public String toString() {
+        return nome+ " " + colore + " " + nomeRegione;
     }
 }
