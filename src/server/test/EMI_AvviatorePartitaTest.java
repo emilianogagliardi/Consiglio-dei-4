@@ -17,9 +17,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by emilianogagliardi on 11/06/16.
- */
+
 public class EMI_AvviatorePartitaTest {
     AvviatorePartita avviatorePartita;
     ArrayList<InterfacciaView> proxyViews;
