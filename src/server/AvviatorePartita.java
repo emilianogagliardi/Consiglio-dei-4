@@ -284,12 +284,16 @@ public class AvviatorePartita implements Runnable {
         return carte;
     }
 
-    private ArrayList<Giocatore> creaGiocatori() {
+    private ArrayList<Giocatore> creaGiocatori(Mazzo<CartaPolitica> mazzo) {
         ArrayList<Giocatore> giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
             int idGiocatore = viewCorrente.getIdGiocatore();
-            giocatori.add (new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews));
+            Giocatore giocatore = new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
+            for (int j = 0; j < Costanti.NUM_CARTE_POLITICA_INIZIALI_GIOCATORE; j++) {
+                giocatore.addCarta(mazzo.ottieniCarta());
+            }
+            giocatori.add (giocatore);
         }
         return giocatori;
     }
