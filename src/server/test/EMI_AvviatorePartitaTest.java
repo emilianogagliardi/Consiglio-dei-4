@@ -18,9 +18,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by emilianogagliardi on 11/06/16.
- */
+
 public class EMI_AvviatorePartitaTest {
     AvviatorePartita avviatorePartita;
 

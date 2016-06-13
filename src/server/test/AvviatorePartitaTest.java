@@ -162,11 +162,11 @@ public class AvviatorePartitaTest {
 
     private Partita creaPartita(ArrayList<InterfacciaView> proxyViews){
         try {
-            Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita", proxyViews.getClass());
+            Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita", null);
             method.setAccessible(true);
             try{
                 AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
-                return (Partita) method.invoke(avviatorePartita, proxyViews);
+                return (Partita) method.invoke(avviatorePartita, null);
             } catch (IllegalAccessException exc){
                 exc.printStackTrace();
             } catch (InvocationTargetException exc){
