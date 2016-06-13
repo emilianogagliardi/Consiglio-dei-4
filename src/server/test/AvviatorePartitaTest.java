@@ -150,7 +150,7 @@ public class AvviatorePartitaTest {
 
             }}); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
-        partita = creaPartita(proxyViews);
+        partita = creaPartita();
         controller = new Controller(partita, proxyViews);
         executors.submit(controller);
     }
@@ -160,13 +160,13 @@ public class AvviatorePartitaTest {
 
     }
 
-    private Partita creaPartita(ArrayList<InterfacciaView> proxyViews){
+    private Partita creaPartita(){
         try {
-            Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita", null);
+            Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita");
             method.setAccessible(true);
             try{
                 AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
-                return (Partita) method.invoke(avviatorePartita, null);
+                return (Partita) method.invoke(avviatorePartita);
             } catch (IllegalAccessException exc){
                 exc.printStackTrace();
             } catch (InvocationTargetException exc){
