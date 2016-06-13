@@ -82,8 +82,8 @@ public class TestGiocatore {
         CartaBonusRegione cbr = new CartaBonusRegione(NomeRegione.COSTA, 2);
         CartaBonusColoreCittà cbcc = new CartaBonusColoreCittà(1, ColoreCittà.FERRO);
         CartaPremioDelRe cpr = new CartaPremioDelRe(2);
-        ArrayList<Città> città = new ArrayList<>();
-        città.add(new Città(NomeRegione.COLLINA, NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>()));
+        ArrayList<NomeCittà> città = new ArrayList<>();
+        città.add(new Città(NomeRegione.COLLINA, NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>()).getNome());
         CartaPermessoCostruzione cpc = new CartaPermessoCostruzione(NullBonus.getInstance(),città);
         giocatore.addCarta(cp);
         assertTrue(giocatore.getManoCartePolitica().contains(cp));

@@ -178,6 +178,7 @@ public class Controller implements Runnable, InterfacciaController{
                     default:
                         return false;
                 }
+                giocatoreCorrente.addCarta(cartaPermessoCostruzione);
                 assegnaBonus(cartaPermessoCostruzione.getBonus());
                 decrementaAzioniPrincipaliDisponibili();
                 return true;

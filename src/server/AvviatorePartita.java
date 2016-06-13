@@ -45,7 +45,7 @@ public class AvviatorePartita implements Runnable {
         partita.setMazzoCartePolitica(creaMazzoCartePolitica());
         partita.setMazzoCartePremioRe(creaMazzoCartePremioRe());
         partita.setCarteBonusColoreCittà(creaMazzoBonusColoreCittà());
-        ArrayList<Giocatore> giocatori = creaGiocatori();
+        ArrayList<Giocatore> giocatori = creaGiocatori(partita);
         giocatori.forEach(partita::addGiocatore);
         return partita;
     }
@@ -149,24 +149,25 @@ public class AvviatorePartita implements Runnable {
     }
 
     //crea un mazzo carte permesso aventi città possibili in cui costruire quelle contenute in città
+    //prende in input un arrayList di città che appartengono ad una determinata regione
     private Mazzo<CartaPermessoCostruzione> creaMazzoCartePermesso(ArrayList<Città> cittàs) {
         Mazzo<CartaPermessoCostruzione> mazzo = new Mazzo<>();
         //crea 5 carte con una sola città
         cittàs.forEach((Città città) -> {
-            ArrayList<Città> cittàCarta = new ArrayList<>(1);
-            cittàCarta.add(città);
+            ArrayList<NomeCittà> cittàCarta = new ArrayList<>(1);
+            cittàCarta.add(città.getNome());
             mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(), cittàCarta));
         });
         //crea le restanti NUM_CARTE_PERMESSO_REGIONE -5 carte permesso, assegnando città randomiche
         Random rand = new Random();
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE - 5; i++) {
-            ArrayList<Città> cittàCarta = new ArrayList<>(2);
+            ArrayList<NomeCittà> cittàCarta = new ArrayList<>(2);
             int numCittàCarta = 2 + rand.nextInt(2); //numCittàCarta può valere 2 oppure 3
             ArrayList<Città> cittàPossibili = new ArrayList<>();
             cittàs.forEach(cittàPossibili::add); //città possibili contiene le città che possono essere assegnate alla carta corrente
             for (int j = 0; j < numCittàCarta; j++) {
                 int posizioneCittàDaAggiungere = rand.nextInt(cittàPossibili.size());
-                cittàCarta.add(cittàPossibili.get(posizioneCittàDaAggiungere));
+                cittàCarta.add(cittàPossibili.get(posizioneCittàDaAggiungere).getNome());
                 cittàPossibili.remove(posizioneCittàDaAggiungere); //permette di evitare di aggiungere due volte la stessa città
             }
             mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(), cittàCarta));
@@ -284,14 +285,14 @@ public class AvviatorePartita implements Runnable {
         return carte;
     }
 
-    private ArrayList<Giocatore> creaGiocatori(Mazzo<CartaPolitica> mazzo) {
+    private ArrayList<Giocatore> creaGiocatori(Partita partita) {
         ArrayList<Giocatore> giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
             int idGiocatore = viewCorrente.getIdGiocatore();
             Giocatore giocatore = new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
             for (int j = 0; j < Costanti.NUM_CARTE_POLITICA_INIZIALI_GIOCATORE; j++) {
-                giocatore.addCarta(mazzo.ottieniCarta());
+                giocatore.addCarta(partita.ottieniCartaPolitica());
             }
             giocatori.add (giocatore);
         }

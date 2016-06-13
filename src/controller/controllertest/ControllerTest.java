@@ -97,13 +97,13 @@ public class ControllerTest {
             else percorsoDellaNobiltà1.add(NullBonus.getInstance());
         }
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
-            mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<Città>()));
+            mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<>()));
         }
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
         consiglieri.addAll(Arrays.asList(new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.ARANCIONE), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.ARANCIONE)));
         regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COSTA, 6), new ArrayList<InterfacciaView>()));
-        ArrayList<Città> cittàCartePermessoCostruzione = new ArrayList<>();
-        cittàCartePermessoCostruzione.add(new Città(NomeRegione.COLLINA, NomeCittà.INDUR, ColoreCittà.ARGENTO, new BonusPuntiVittoria(6, NullBonus.getInstance()), new ArrayList<InterfacciaView>()));
+        ArrayList<NomeCittà> cittàCartePermessoCostruzione = new ArrayList<>();
+        cittàCartePermessoCostruzione.add(NomeCittà.ARKON);
         for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
@@ -391,7 +391,15 @@ public class ControllerTest {
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
             int idGiocatore = viewCorrente.getIdGiocatore();
-            giocatori.add (new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews));
+            Giocatore giocatore = new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.NERO));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.VIOLA));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.AZZURRO));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.AZZURRO));
+            giocatori.add(giocatore);
         }
         giocatori.forEach(partita::addGiocatore);
         controller = new Controller(partita, proxyViews);
@@ -431,7 +439,24 @@ public class ControllerTest {
         nomiColoriCartePolitica.add("ARANCIONE");
         nomiColoriCartePolitica.add("ARANCIONE");
         nomiColoriCartePolitica.add("JOLLY");
+        int moneteOld = giocatori.get(0).getMonete();
+        int numTessereCostruzioneOld = giocatori.get(0).getManoCartePermessoCostruzione().size();
+        int puntiVittoriaOld = giocatori.get(0).getPuntiVittoria();
         assertTrue(controller.acquistareTesseraPermessoCostruzione("COSTA", nomiColoriCartePolitica, 2));
+        assertTrue(giocatori.get(0).getMonete() == moneteOld - 5);
+        assertEquals("Non è stata aggiunta la carta permesso", numTessereCostruzioneOld+1, giocatori.get(0).getManoCartePermessoCostruzione().size());
+        assertEquals("Non sono stati asseganti i bonus", puntiVittoriaOld+2, giocatori.get(0).getPuntiVittoria());
+        resetGiocatore();
+        nomiColoriCartePolitica = new ArrayList<>();
+        nomiColoriCartePolitica.add("NERO");
+        nomiColoriCartePolitica.add("ARANCIONE");
+        nomiColoriCartePolitica.add("JOLLY");
+        assertFalse(controller.acquistareTesseraPermessoCostruzione("COSTA", nomiColoriCartePolitica, 1));
+
+    }
+
+    @Test
+    public void costruireEmporioConTesseraPermessoCostruzione(){
 
     }
 
