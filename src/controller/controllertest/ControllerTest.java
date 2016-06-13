@@ -30,7 +30,7 @@ public class ControllerTest {
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCosta1 = new Mazzo<>();
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCollina1 = new Mazzo<>();
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneMontagna1 = new Mazzo<>();
-    ArrayList<Giocatore> giocatori;
+    private ArrayList<Giocatore> giocatori;
 
     public ControllerTest(){
         partita = new Partita(new ArrayList<InterfacciaView>());
@@ -117,7 +117,7 @@ public class ControllerTest {
         consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
         consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
         consiglieri.add(new Consigliere(ColoreConsigliere.NERO));
-        partita.setBalconeDelConsiglioRe(new BalconeDelConsiglio(IdBalcone.MONTAGNA.COSTA, new ArrayList<InterfacciaView>(), consiglieri));
+        partita.setBalconeDelConsiglioRe(new BalconeDelConsiglio(IdBalcone.RE, new ArrayList<InterfacciaView>(), consiglieri));
         partita.setCarteBonusColoreCittà(carteBonusColoreCittà1);
         partita.setMazzoCartePolitica(mazzoCartePolitica1);
         partita.setMazzoCartePremioRe(mazzoCartaPremioRe1);

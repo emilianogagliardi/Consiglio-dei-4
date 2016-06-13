@@ -45,19 +45,19 @@ public class BalconeDelConsiglio extends Observable {
         return colori;
     }
 
-    public boolean soddisfaConsiglio(ArrayList<ColoreCartaPolitica> coloriCartePolitica) throws IllegalArgumentException {
+    public boolean soddisfaConsiglio(List<ColoreCartaPolitica> coloriCartePolitica) throws IllegalArgumentException {
         if (coloriCartePolitica.size() <= 0 || coloriCartePolitica.size() > NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di carte politica scartate è negativo o nullo oppure maggiore di " + NUM_CONSIGLIERI_BALCONE);
         } else {
             //metto i colori del balcone e delle carte politica in HashMap con chiave il colore e valore il numero di volte che appare il colore nella collezione
             HashMap<Colore, Integer> mappaColoriBalcone;
-            mappaColoriBalcone = Utility.arrayListToHashMap(this.getColoriConsiglieri());
+            mappaColoriBalcone = Utility.listToHashMap(this.getColoriConsiglieri());
             HashMap<Colore, Integer> mappaColoriCartePolitica;
             ArrayList<Colore> coloriCartePoliticaSenzaJolly = new ArrayList<>();
             for(ColoreCartaPolitica colore : coloriCartePolitica)
                 if(!colore.toColore().equals(Colore.JOLLY))            //le carte color JOLLY non rientrano nella verifica
                     coloriCartePoliticaSenzaJolly.add(colore.toColore());
-            mappaColoriCartePolitica = Utility.arrayListToHashMap(coloriCartePoliticaSenzaJolly);
+            mappaColoriCartePolitica = Utility.listToHashMap(coloriCartePoliticaSenzaJolly);
             return Utility.hashMapContainsAllWithDuplicates(mappaColoriBalcone, mappaColoriCartePolitica);
         }
     }

@@ -88,14 +88,6 @@ public class Regione extends Observable{
         this.città.add(città);
     }
 
-    public Città getCittàSingola(NomeCittà nomeCittà) throws IllegalArgumentException {
-        for(Città cittàSingola : città)
-            if (cittàSingola.getNome().equals(nomeCittà)) {
-                return cittàSingola;
-            }
-        throw new IllegalArgumentException("Non esiste una città con questo nome!");
-    }
-
     public Collection<Città> getCittà(){
         return città;
     }

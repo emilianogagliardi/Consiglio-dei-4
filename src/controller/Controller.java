@@ -14,14 +14,14 @@ import server.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
     private ArrayList<InterfacciaView> views;
-    private int idGiocatoreCorrente;
     private Giocatore giocatoreCorrente;
     private int azioniPrincipaliDisponibili;
     private boolean azioneVeloceEseguita;
@@ -33,7 +33,6 @@ public class Controller implements Runnable, InterfacciaController{
         this.partita = partita;
         this.views = views;
         this.giocatoreCorrente = partita.getGiocatori().get(0);
-        idGiocatoreCorrente = 0;
         azioniPrincipaliDisponibili = 0;
         azioneVeloceEseguita= false;
         //creo una mappaBalconi come struttura di supporto
@@ -45,8 +44,7 @@ public class Controller implements Runnable, InterfacciaController{
         //creazione del grafo delle città che vuole in input la lista di tutte le città
         ArrayList<Città> cittàPartita = new ArrayList<>();
         for (Regione regione : partita.getRegioni())
-            for (Città città : regione.getCittà())
-                cittàPartita.add(città);
+                cittàPartita.addAll(regione.getCittà());
         grafoCittà = new GrafoCittà(cittàPartita);
 
     }
@@ -152,14 +150,34 @@ public class Controller implements Runnable, InterfacciaController{
 
 
     @Override
-    public boolean acquistareTesseraPermessoCostruzione(String nomeBalcone, ArrayList<String> nomiColoriCartePolitica, int numeroCarta) {
+    public boolean acquistareTesseraPermessoCostruzione(String nomeBalcone, List<String> nomiColoriCartePolitica, int numeroCarta) {
+        Supplier<Boolean> supplier = () -> {
+            CartaPermessoCostruzione cartaPermessoCostruzione;
+            switch (numeroCarta) {
+                case 1:
+                    cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione1();
+                    break;
+                case 2:
+                    cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione2();
+                    break;
+                default:
+                    return false;
+            }
+            giocatoreCorrente.addCarta(cartaPermessoCostruzione);
+            assegnaBonus(cartaPermessoCostruzione.getBonus());
+            return true;
+        };
+        return acquistareTesseraPermesso(nomeBalcone, nomiColoriCartePolitica, supplier);
+    }
+
+
+
+    private boolean acquistareTesseraPermesso(String nomeBalcone, List<String> nomiColoriCartePolitica, Supplier<Boolean> supplier){
         if(!azionePrincipaleDisponibile())
             return false;
         BalconeDelConsiglio balconeDelConsiglio = mappaBalconi.get(IdBalcone.valueOf(nomeBalcone));
-        //creo una manoCartePolitica come struttura di supporto
-        ArrayList<ColoreCartaPolitica> coloriCartePolitica = new ArrayList<>();
-        for(String nomeColoreCartaPolitica : nomiColoriCartePolitica)
-            coloriCartePolitica.add(ColoreCartaPolitica.valueOf(nomeColoreCartaPolitica));
+        //creo una mano di colori carte  politica come struttura di supporto
+        List<ColoreCartaPolitica> coloriCartePolitica = nomiColoriCartePolitica.stream().map(ColoreCartaPolitica::valueOf).collect(Collectors.toList());
         if(balconeDelConsiglio.soddisfaConsiglio(coloriCartePolitica)){
             if (prendiCartePoliticaGiocatore(giocatoreCorrente, coloriCartePolitica)) {
                 try {
@@ -167,19 +185,9 @@ public class Controller implements Runnable, InterfacciaController{
                 } catch (MoneteNonSufficientiException exc) {
                     return false;
                 }
-                CartaPermessoCostruzione cartaPermessoCostruzione;
-                switch (numeroCarta) {
-                    case 1:
-                        cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione1();
-                        break;
-                    case 2:
-                        cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione2();
-                        break;
-                    default:
-                        return false;
+                if (!supplier.get()) {
+                    return false;
                 }
-                giocatoreCorrente.addCarta(cartaPermessoCostruzione);
-                assegnaBonus(cartaPermessoCostruzione.getBonus());
                 decrementaAzioniPrincipaliDisponibili();
                 return true;
             } else {
@@ -187,8 +195,8 @@ public class Controller implements Runnable, InterfacciaController{
             }
         }
         return false;
-    }
 
+    }
     @Override
     public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà) {
         NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
@@ -200,7 +208,7 @@ public class Controller implements Runnable, InterfacciaController{
         if (!giocatoreCorrente.decrementaEmporiDisponibili()) {
             return false;
         } else {
-            if (costruisciEmporio(nomeCittà, getRegioneDaCittà(nomeCittà))) {
+            if (costruisciEmporio(nomeCittà)) {
                 giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
                 cartaPermessoCostruzione.setVisibile(false);
                 giocatoreCorrente.addCarta(cartaPermessoCostruzione);
@@ -209,7 +217,30 @@ public class Controller implements Runnable, InterfacciaController{
         }
     }
 
-    private int moneteDaPagareSoddisfaConsiglio(ArrayList<ColoreCartaPolitica> coloriCartePolitica){
+    @Override
+    public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione) {
+        if (!acquistareTesseraPermesso("RE", nomiColoriCartePolitica, () -> true)){
+            return false;
+        }
+        grafoCittà.bfs(getCittàDaNome(partita.getCittàRe()), (p1, p2) -> {});
+        Città cittàCostruzione = getCittàDaNome(NomeCittà.valueOf(nomeCittàCostruzione));
+        Integer distanza = cittàCostruzione.getDistanza();
+        if (distanza.equals(Integer.MAX_VALUE)){
+            return false; //la città scelta non è collegata a quella dove risiede attualmente il Re
+        }
+        try {
+            giocatoreCorrente.pagaMonete(distanza * Costanti.MONETE_PER_STRADA);
+        } catch (MoneteNonSufficientiException exc){
+            return false;
+        }
+        if (!costruisciEmporio(cittàCostruzione.getNome())) {
+            return false;
+        }
+        return true;
+    }
+
+
+    private int moneteDaPagareSoddisfaConsiglio(List<ColoreCartaPolitica> coloriCartePolitica){
         int numeroCarteJolly = 0;
         int monete;
         for (ColoreCartaPolitica coloreCartaPolitica : coloriCartePolitica)
@@ -243,17 +274,13 @@ public class Controller implements Runnable, InterfacciaController{
     }
 
     private boolean azionePrincipaleDisponibile(){
-        if (azioniPrincipaliDisponibili > 0)
-            return true;
-        else return false;
+       return azioniPrincipaliDisponibili > 0;
     }
 
-    private boolean prendiCartePoliticaGiocatore(Giocatore giocatore, ArrayList<ColoreCartaPolitica> coloriCartePolitica){
-        ArrayList<Colore> arrayListManoColoriCartePolitica = new ArrayList<>();
-        for(CartaPolitica cartaPolitica : giocatore.getManoCartePolitica())
-            arrayListManoColoriCartePolitica.add(cartaPolitica.getColore().toColore());
-        HashMap<Colore, Integer> mappaColoriManoCartePoliticaGiocatore = Utility.arrayListToHashMap(arrayListManoColoriCartePolitica);
-        HashMap<Colore, Integer> mappaColoriCartePolitica = Utility.arrayListToHashMap(ColoreCartaPolitica.toColore(coloriCartePolitica));
+    private boolean prendiCartePoliticaGiocatore(Giocatore giocatore, List<ColoreCartaPolitica> coloriCartePolitica){
+        List<Colore> arrayListManoColoriCartePolitica = coloriCartePolitica.stream().map(ColoreCartaPolitica::toColore).collect(Collectors.toList());
+        HashMap<Colore, Integer> mappaColoriManoCartePoliticaGiocatore = Utility.listToHashMap(arrayListManoColoriCartePolitica);
+        HashMap<Colore, Integer> mappaColoriCartePolitica = Utility.listToHashMap(ColoreCartaPolitica.toColore(coloriCartePolitica));
         if(Utility.hashMapContainsAllWithDuplicates(mappaColoriManoCartePoliticaGiocatore, mappaColoriCartePolitica)){
             ArrayList<CartaPolitica> cartePoliticaScartate = giocatore.scartaCartePolitica(coloriCartePolitica);
             cartePoliticaScartate.forEach((cartaPolitica) -> cartaPolitica.setVisibile(false));
@@ -263,8 +290,9 @@ public class Controller implements Runnable, InterfacciaController{
         return false;
     }
 
-    private boolean costruisciEmporio(NomeCittà nomeCittàCostruzione, Regione regione){
-        Città cittàCostruzione = regione.getCittàSingola(nomeCittàCostruzione);
+    private boolean costruisciEmporio(NomeCittà nomeCittàCostruzione){
+        Città cittàCostruzione = getCittàDaNome(nomeCittàCostruzione);
+        Regione regione = getRegioneDaNomeCittà(nomeCittàCostruzione);
         ArrayList<Città> cittàCollegateRitornate;
         try {
             cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
@@ -285,7 +313,7 @@ public class Controller implements Runnable, InterfacciaController{
                         assegnaBonus(città.getBonus());
                 //verifico se il giocatore ha costruito empori in tutte le città dello stesso colore
                 if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
-                    if (cittàAdiacente.getColore().equals(cittàCostruzione))
+                    if (cittàAdiacente.getColore().equals(cittàCostruzione.getColore()))
                         if (!cittàAdiacente.giàCostruito(giocatoreCorrente))
                             return false;
                     return valoreDaRitornare;
@@ -313,13 +341,22 @@ public class Controller implements Runnable, InterfacciaController{
 
     }
 
-    private Regione getRegioneDaCittà(NomeCittà nomeCittà) throws IllegalArgumentException{
+    private Regione getRegioneDaNomeCittà(NomeCittà nomeCittà) throws IllegalArgumentException{
         for (Regione regione : partita.getRegioni()) {
             if (regione.getNomiCittà().contains(nomeCittà)) {
                 return regione;
             }
         }
         throw new IllegalArgumentException("Non esiste una città con questo nome");
+    }
+
+    private Città getCittàDaNome(NomeCittà nomeCittà) throws IllegalArgumentException{
+        Regione regione = getRegioneDaNomeCittà(nomeCittà);
+            for(Città cittàSingola : regione.getCittà())
+                if (cittàSingola.getNome().equals(nomeCittà)) {
+                    return cittàSingola;
+                }
+            throw new IllegalArgumentException("Non esiste una città con questo nome!");
     }
 }
 

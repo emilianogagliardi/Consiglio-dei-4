@@ -29,6 +29,10 @@ public class Partita extends Observable {
         giocatori = new ArrayList<>(MAX_GIOCATORI);
     }
 
+    public NomeCittà getCittàRe(){
+        return re.getCittà().getNome();
+    }
+
     public Regione getRegione(NomeRegione nomeRegione) throws NoSuchElementException{
         for(Regione regione : regioni){
             if(regione.getNome().equals(nomeRegione))

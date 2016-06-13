@@ -129,7 +129,7 @@ public class Giocatore extends Observable {
         else throw new IllegalArgumentException();
     }
 
-    public ArrayList<CartaPolitica> scartaCartePolitica(ArrayList<ColoreCartaPolitica> colori){
+    public ArrayList<CartaPolitica> scartaCartePolitica(List<ColoreCartaPolitica> colori){
         ArrayList<CartaPolitica> carteScartate = new ArrayList<>();
         for (ColoreCartaPolitica colore : colori) {
             for (CartaPolitica carta : manoCartePolitica) {

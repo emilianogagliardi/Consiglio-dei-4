@@ -9,6 +9,7 @@ public class CartaPolitica extends Carta {
     public CartaPolitica(ColoreCartaPolitica colore){
         this.colore = Objects.requireNonNull(colore);
     }
+
     public ColoreCartaPolitica getColore(){
         return colore;
     }

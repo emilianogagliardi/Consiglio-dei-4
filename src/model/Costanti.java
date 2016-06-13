@@ -32,6 +32,7 @@ public class Costanti {
     public static final int PUNTI_BONUS_COLORE_CITTA_ARGENTO = 12;
     public static final int PUNTI_BONUS_COLORE_CITTA_BRONZO = 8;
     public static final int PUNTI_BONUS_COLORE_CITTA_FERRO = 5;
+    public static final int MONETE_PER_STRADA = 2; //monete da pagare per strada percorsa nella mossa acquistare una tessera permesso con l'aiuto del re
     //monete che si guadagnano nella mossa eleggereConsigliere
     public static final int MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE = 4;
     //monete da pagare nella mossa acquistarePermessoCostruzione per soddisfare un consiglio

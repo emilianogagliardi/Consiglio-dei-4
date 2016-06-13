@@ -1,15 +1,12 @@
 package server;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Utility {
-    public static <K> HashMap<K,Integer> arrayListToHashMap(ArrayList<K> arrayList){ //il valore è il numero di volte che la chiave appare nell'arrayList
-        HashMap<K,Integer> hashMap = new HashMap<>(arrayList.size());
+    public static <K> HashMap<K,Integer> listToHashMap(List<K> list){ //il valore è il numero di volte che la chiave appare nell'arrayList
+        HashMap<K,Integer> hashMap = new HashMap<>(list.size());
         Integer value;
-        for(K element : arrayList){
+        for(K element : list){
             if(hashMap.containsKey(element)){
                 value = hashMap.get(element);
                 hashMap.put(element, ++value);
