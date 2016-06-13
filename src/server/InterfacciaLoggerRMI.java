@@ -6,5 +6,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface InterfacciaLoggerRMI extends Remote {
-    void login(InterfacciaView view) throws RemoteException;
+    int login(InterfacciaView view) throws RemoteException;
 }

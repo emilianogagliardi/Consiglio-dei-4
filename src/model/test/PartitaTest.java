@@ -1,12 +1,10 @@
 import model.*;
 import model.bonus.*;
 import model.carte.*;
-import org.junit.Before;
 import org.junit.Test;
 import proxyView.InterfacciaView;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class PartitaTest {
     private Partita partita1;

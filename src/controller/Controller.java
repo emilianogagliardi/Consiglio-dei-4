@@ -15,8 +15,6 @@ import server.Utility;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
