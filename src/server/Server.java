@@ -4,6 +4,7 @@ import proxyView.InterfacciaView;
 import proxyView.SocketProxyView;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
@@ -48,7 +49,12 @@ public class Server {
         while (true) {
             try{
                 Socket socket = serverSocket.accept();
-                addView(new SocketProxyView(socket));
+                //comunica al client qual è il suo id e aggiunge la proxy view associata
+                synchronized ((Object) idCorrente) {
+                    PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+                    pw.println(idCorrente);
+                    addView(new SocketProxyView(socket));
+                }
             }catch (IOException e){
                 System.out.println("impossibile creare socket da server socket");
             }catch (NullPointerException e) {
@@ -75,6 +81,12 @@ public class Server {
         idCorrente = 0;
         AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
         new Thread(avviatorePartita).start();
+    }
+
+    public int getIdCorrente(){
+        synchronized ((Object) idCorrente) {
+            return idCorrente;
+        }
     }
 
     public static void main(String[] args) {

@@ -19,6 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+
 public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
     private ArrayList<InterfacciaView> views;
