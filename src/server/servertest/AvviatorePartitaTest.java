@@ -1,7 +1,4 @@
-import model.Città;
-import model.ColoreCittà;
-import model.NomeCittà;
-import model.NomeRegione;
+import model.*;
 import model.bonus.NullBonus;
 import model.carte.CartaPermessoCostruzione;
 import org.junit.Before;
@@ -18,7 +15,7 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 
-public class EMI_AvviatorePartitaTest {
+public class AvviatorePartitaTest {
     AvviatorePartita avviatorePartita;
     ArrayList<InterfacciaView> proxyViews;
     @Before
@@ -152,6 +149,27 @@ public class EMI_AvviatorePartitaTest {
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         avviatorePartita = new AvviatorePartita(proxyViews);
     }
+
+    @Test
+    public void creaPartita(){
+        Partita partita;
+        try {
+            Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita");
+            method.setAccessible(true);
+            try{
+                AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
+                partita = (Partita) method.invoke(avviatorePartita);
+            } catch (IllegalAccessException exc){
+                exc.printStackTrace();
+            } catch (InvocationTargetException exc){
+                exc.printStackTrace();
+            }
+        } catch (NoSuchMethodException exc) {
+            exc.printStackTrace();
+        }
+       partita = null;
+    }
+
 
     @Test
     public void sceltaMappaTest(){

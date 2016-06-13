@@ -21,34 +21,38 @@ import java.util.function.Consumer;
 public class Controller implements Runnable, InterfacciaController{
     private Partita partita;
     private ArrayList<InterfacciaView> views;
-    private int idGiocatoreCorrente = 0;
+    private int idGiocatoreCorrente;
     private Giocatore giocatoreCorrente;
-    private int azioniPrincipaliDisponibili = 0;
-    private boolean azioneVeloceEseguita = false;
+    private int azioniPrincipaliDisponibili;
+    private boolean azioneVeloceEseguita;
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
-    GrafoCittà grafoCittà;
+    private GrafoCittà grafoCittà;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) {
         this.partita = partita;
         this.views = views;
         this.giocatoreCorrente = partita.getGiocatori().get(0);
+        idGiocatoreCorrente = 0;
+        azioniPrincipaliDisponibili = 0;
+        azioneVeloceEseguita= false;
+        //creo una mappaBalconi come struttura di supporto
+        mappaBalconi = new HashMap<>();
+        mappaBalconi.put(IdBalcone.COSTA, partita.getRegione(NomeRegione.valueOf(IdBalcone.COSTA.toString())).getBalconeDelConsiglio());
+        mappaBalconi.put(IdBalcone.COLLINA, partita.getRegione(NomeRegione.valueOf(IdBalcone.COLLINA.toString())).getBalconeDelConsiglio());
+        mappaBalconi.put(IdBalcone.MONTAGNA, partita.getRegione(NomeRegione.valueOf(IdBalcone.MONTAGNA.toString())).getBalconeDelConsiglio());
+        mappaBalconi.put(IdBalcone.RE, partita.getBalconeDelConsiglioRe());
         //creazione del grafo delle città che vuole in input la lista di tutte le città
         ArrayList<Città> cittàPartita = new ArrayList<>();
         for (Regione regione : partita.getRegioni())
             for (Città città : regione.getCittà())
                 cittàPartita.add(città);
         grafoCittà = new GrafoCittà(cittàPartita);
+
     }
 
     @Override
     public void run() {
-        //creo una mappaBalconi come struttura di supporto
-        mappaBalconi.put(IdBalcone.COSTA, partita.getRegione(NomeRegione.valueOf(IdBalcone.COSTA.toString())).getBalconeDelConsiglio());
-        mappaBalconi.put(IdBalcone.COLLINA, partita.getRegione(NomeRegione.valueOf(IdBalcone.COLLINA.toString())).getBalconeDelConsiglio());
-        mappaBalconi.put(IdBalcone.MONTAGNA, partita.getRegione(NomeRegione.valueOf(IdBalcone.MONTAGNA.toString())).getBalconeDelConsiglio());
-        mappaBalconi.put(IdBalcone.RE, partita.getBalconeDelConsiglioRe());
-
         //inizio il ciclo dei turni
         while(!partitaTerminata()){
             azioniPrincipaliDisponibili = 1;
@@ -68,7 +72,7 @@ public class Controller implements Runnable, InterfacciaController{
                 //si passa al giocatore successivo
                 giocatoreCorrente = prossimoGiocatore(giocatoreCorrente);
             } catch (InterruptedException exc) {
-                //do nothing
+                exc.printStackTrace();
             }
         }
 
@@ -126,13 +130,13 @@ public class Controller implements Runnable, InterfacciaController{
     }
 
     @Override
-    public boolean eleggereConsigliere(String nomeBalcone, String coloreConsigliere) {
+    public boolean eleggereConsigliere(String nomeBalcone, String coloreConsigliereDaRiserva) {
         if(!azionePrincipaleDisponibile())
             return false;
         Consigliere consigliereDaInserireInBalcone, consigliereDaInserireInRiserva;
         BalconeDelConsiglio balcone;
         try{
-            consigliereDaInserireInBalcone = partita.ottieniConsigliereDaRiserva(ColoreConsigliere.valueOf(coloreConsigliere));
+            consigliereDaInserireInBalcone = partita.ottieniConsigliereDaRiserva(ColoreConsigliere.valueOf(coloreConsigliereDaRiserva));
         } catch (NoSuchElementException exc){
             return false;
         }

@@ -21,6 +21,7 @@ public class PartitaTest {
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCollina1 = new Mazzo<>();
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneMontagna1 = new Mazzo<>();
 
+
     public PartitaTest(){
         partita1 = new Partita(new ArrayList<InterfacciaView>());
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(5, ColoreCittà.ARGENTO));
@@ -120,6 +121,11 @@ public class PartitaTest {
             riservaConsiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
         }
         partita1.setRiservaConsiglieri(riservaConsiglieri);
+    }
+
+    @Test
+    public void test(){
+
     }
 
     public Partita getPartita1(){

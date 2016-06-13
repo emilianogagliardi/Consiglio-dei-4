@@ -7,10 +7,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src/model/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/instauraconnessione/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/controller/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/server/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/server/servertest" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/mappe" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/controller/controllertest" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
