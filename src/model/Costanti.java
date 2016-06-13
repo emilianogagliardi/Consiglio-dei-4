@@ -33,6 +33,13 @@ public class Costanti {
     public static final int PUNTI_BONUS_COLORE_CITTA_BRONZO = 8;
     public static final int PUNTI_BONUS_COLORE_CITTA_FERRO = 5;
     public static final int MONETE_PER_STRADA = 2; //monete da pagare per strada percorsa nella mossa acquistare una tessera permesso con l'aiuto del re
+    //azione veloce ingaggiare un aiutante
+    public static final int MONETE_INGAGGIARE_AIUTANTE = 3; //monete da pagare per eseguire la mossa veloce "ingaggiare un aiutante"
+    public static final int AIUTANTI_GUADAGNATI_INGAGG_AIUTANTE = 1;
+
+    public static final int AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO = 1; //aiutanti da pagare per effettuare l'azione veloce del cambio delle tessere permesso di una regione
+    public static final int AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS = 1; //aiutanti da pagare per effettuare l'azione veloce mandare un aiutante ad eleggere un consigliere
+    public static final int AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA = 3; //aiutanti da pagare per compiere un'azione principale aggiuntiva
     //monete che si guadagnano nella mossa eleggereConsigliere
     public static final int MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE = 4;
     //monete da pagare nella mossa acquistarePermessoCostruzione per soddisfare un consiglio

@@ -74,8 +74,6 @@ public class Controller implements Runnable, InterfacciaController{
                 exc.printStackTrace();
             }
         }
-
-
     }
 
     private boolean emporiDisponibili(Giocatore giocatore){
@@ -129,54 +127,59 @@ public class Controller implements Runnable, InterfacciaController{
     }
 
     @Override
-    public boolean eleggereConsigliere(String nomeBalcone, String coloreConsigliereDaRiserva) {
+    public boolean eleggereConsigliere(String idBalcone, String coloreConsigliereDaRiserva) {
         if(!azionePrincipaleDisponibile())
             return false;
-        Consigliere consigliereDaInserireInBalcone, consigliereDaInserireInRiserva;
-        BalconeDelConsiglio balcone;
-        try{
-            consigliereDaInserireInBalcone = partita.ottieniConsigliereDaRiserva(ColoreConsigliere.valueOf(coloreConsigliereDaRiserva));
-        } catch (NoSuchElementException exc){
+        if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliereDaRiserva))
             return false;
-        }
-        balcone = mappaBalconi.get(IdBalcone.valueOf(nomeBalcone));
-        if(balcone == null)
-            return false;
-        consigliereDaInserireInRiserva = balcone.addConsigliere(consigliereDaInserireInBalcone);
-        partita.addConsigliereARiserva(consigliereDaInserireInRiserva);
         giocatoreCorrente.guadagnaMonete(Costanti.MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE);
         decrementaAzioniPrincipaliDisponibili();
         return true;
     }
 
+    private boolean inserisciConsigliereRiservaInBalcone(String idBalcone, String coloreConsigliereDaRiserva){
+        Consigliere consigliereDaInserireInBalcone, consigliereDaInserireInRiserva;
+        try{
+            consigliereDaInserireInBalcone = partita.ottieniConsigliereDaRiserva(ColoreConsigliere.valueOf(coloreConsigliereDaRiserva));
+        } catch (NoSuchElementException exc){
+            return false;
+        }
+        BalconeDelConsiglio balcone = mappaBalconi.get(IdBalcone.valueOf(idBalcone));
+        if(balcone == null)
+            return false;
+        consigliereDaInserireInRiserva = balcone.addConsigliere(consigliereDaInserireInBalcone);
+        partita.addConsigliereARiserva(consigliereDaInserireInRiserva);
+        return true;
+    }
 
     @Override
-    public boolean acquistareTesseraPermessoCostruzione(String nomeBalcone, List<String> nomiColoriCartePolitica, int numeroCarta) {
+    public boolean acquistareTesseraPermessoCostruzione(String idBalconeRegione, List<String> nomiColoriCartePolitica, int numeroCarta) {
+        if(!azionePrincipaleDisponibile())
+            return false;
         Supplier<Boolean> supplier = () -> {
             CartaPermessoCostruzione cartaPermessoCostruzione;
             switch (numeroCarta) {
                 case 1:
-                    cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione1();
+                    cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(idBalconeRegione)).ottieniCartaPermessoCostruzione1();
                     break;
                 case 2:
-                    cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(nomeBalcone)).ottieniCartaPermessoCostruzione2();
+                    cartaPermessoCostruzione = partita.getRegione(NomeRegione.valueOf(idBalconeRegione)).ottieniCartaPermessoCostruzione2();
                     break;
                 default:
                     return false;
             }
             giocatoreCorrente.addCarta(cartaPermessoCostruzione);
             assegnaBonus(cartaPermessoCostruzione.getBonus());
+            decrementaAzioniPrincipaliDisponibili();
             return true;
         };
-        return acquistareTesseraPermesso(nomeBalcone, nomiColoriCartePolitica, supplier);
+        return acquistareTesseraPermesso(idBalconeRegione, nomiColoriCartePolitica, supplier);
     }
 
 
 
-    private boolean acquistareTesseraPermesso(String nomeBalcone, List<String> nomiColoriCartePolitica, Supplier<Boolean> supplier){
-        if(!azionePrincipaleDisponibile())
-            return false;
-        BalconeDelConsiglio balconeDelConsiglio = mappaBalconi.get(IdBalcone.valueOf(nomeBalcone));
+    private boolean acquistareTesseraPermesso(String idBalcone, List<String> nomiColoriCartePolitica, Supplier<Boolean> supplier){
+        BalconeDelConsiglio balconeDelConsiglio = mappaBalconi.get(IdBalcone.valueOf(idBalcone));
         //creo una mano di colori carte  politica come struttura di supporto
         List<ColoreCartaPolitica> coloriCartePolitica = nomiColoriCartePolitica.stream().map(ColoreCartaPolitica::valueOf).collect(Collectors.toList());
         if(balconeDelConsiglio.soddisfaConsiglio(coloriCartePolitica)){
@@ -189,7 +192,6 @@ public class Controller implements Runnable, InterfacciaController{
                 if (!supplier.get()) {
                     return false;
                 }
-                decrementaAzioniPrincipaliDisponibili();
                 return true;
             } else {
                 return false;
@@ -200,6 +202,8 @@ public class Controller implements Runnable, InterfacciaController{
     }
     @Override
     public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà) {
+        if(!azionePrincipaleDisponibile())
+            return false;
         NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
         //il giocatore deve avere azioni principali disponibili; la carta permesso costruzione non deve essere coperta; la città passat in input deve essere presenta sulla carta
         //permesso; la carta permesso passata in input deve effettivamente appartenere alla mano carte permesso del giocatore
@@ -213,6 +217,7 @@ public class Controller implements Runnable, InterfacciaController{
                 giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
                 cartaPermessoCostruzione.setVisibile(false);
                 giocatoreCorrente.addCarta(cartaPermessoCostruzione);
+                decrementaAzioniPrincipaliDisponibili();
                 return true;
             } else return false;
         }
@@ -220,6 +225,8 @@ public class Controller implements Runnable, InterfacciaController{
 
     @Override
     public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione) {
+        if(!azionePrincipaleDisponibile())
+            return false;
         if (!acquistareTesseraPermesso("RE", nomiColoriCartePolitica, () -> true)){
             return false;
         }
@@ -237,6 +244,73 @@ public class Controller implements Runnable, InterfacciaController{
         if (!costruisciEmporio(cittàCostruzione.getNome())) {
             return false;
         }
+        decrementaAzioniPrincipaliDisponibili();
+        return true;
+    }
+
+    @Override
+    public boolean ingaggiareAiutante() {
+        if(azioneVeloceEseguita)
+            return false;
+        try {
+            giocatoreCorrente.pagaMonete(Costanti.MONETE_INGAGGIARE_AIUTANTE);
+        } catch (MoneteNonSufficientiException exc){
+            return false;
+        }
+        int aiutanti = Costanti.AIUTANTI_GUADAGNATI_INGAGG_AIUTANTE;
+        try {
+            partita.decrementaAiutanti(aiutanti);
+        } catch (IllegalArgumentException exc){
+            return false;
+        }
+        giocatoreCorrente.guadagnaAiutanti(aiutanti);
+        azioneVeloceEseguita = true;
+        return true;
+    }
+
+    @Override
+    public boolean cambiareTesserePermessoCostruzione(String regione) {
+        if(azioneVeloceEseguita)
+            return false;
+        if (!giocatoreRestituisciAiutantiARiserva(Costanti.AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO)){
+            return false;
+        }
+        partita.getRegione(NomeRegione.valueOf(regione)).cambiaCartePermessoCostruzione();
+        azioneVeloceEseguita = true;
+        return true;
+    }
+
+    @Override
+    public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere) {
+        if(azioneVeloceEseguita)
+            return false;
+        if (!giocatoreRestituisciAiutantiARiserva(Costanti.AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS)) {
+            return false;
+        }
+        if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliere))
+            return false;
+        azioneVeloceEseguita = true;
+        return true;
+    }
+
+    @Override
+    public boolean compiereAzionePrincipaleAggiuntiva() {
+        if(azioneVeloceEseguita)
+            return false;
+        if (!giocatoreRestituisciAiutantiARiserva(Costanti.AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA))
+            return false;
+        azioniPrincipaliDisponibili++;
+        azioneVeloceEseguita = true;
+        return true;
+    }
+
+    private boolean giocatoreRestituisciAiutantiARiserva(int aiutanti){
+        try {
+            giocatoreCorrente.pagaAiutanti(aiutanti);
+        } catch (AiutantiNonSufficientiException exc){
+            return  false;
+        }
+        partita.aggiungiAiutanti(aiutanti);
         return true;
     }
 

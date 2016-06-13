@@ -45,7 +45,7 @@ public class Partita extends Observable {
         return regioni;
     }
 
-    public void riceviAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
+    public void decrementaAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
         if ((this.riservaAiutanti - numAiutanti) < 0)
            throw new IllegalArgumentException("Non ci sono abbastanza aiutanti in riserva");
         this.riservaAiutanti -= numAiutanti;
