@@ -12,6 +12,9 @@
       <sourceFolder url="file://$MODULE_DIR$/serverResources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/server/controller/controllertest" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/clientResources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/clientResources/fxml" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/serverResources/mappe" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
