@@ -14,7 +14,10 @@
       <sourceFolder url="file://$MODULE_DIR$/clientResources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/clientResources/fxml" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/serverResources/mappe" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/serverResources/fileconfigmappe" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/frecce_direzionali" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/mappe" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -15,13 +15,13 @@ public class FlussoView extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException{
         finestraAttuale = primaryStage;
-        setFinestraDaFXML("login.fxml");
+        setFinestraDaFXML("mappegallery.fxml");
     }
 
     public void setFinestraDaFXML(String nomeFile) throws IOException{
         //assegna la scena
         FXMLLoader loader = new FXMLLoader();
-        Parent root =  loader.load(getClass().getResource(nomeFile).openStream());
+        Parent root =  loader.load(getClass().getResource("/"+nomeFile).openStream());
         GestoreFlussoFinestra controllerFX = loader.getController();
         controllerFX.setFlusso(this);
         finestraAttuale.setTitle("Council Of Four");
