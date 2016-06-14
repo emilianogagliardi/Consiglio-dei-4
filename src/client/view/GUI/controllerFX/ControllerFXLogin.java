@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import client.view.Costanti;
+import client.view.CostantiClient;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -84,7 +84,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
      */
     private void apriConnessioneSocket() {
         try {
-            Socket socket = new Socket(Costanti.IP_SERVER, Costanti.SOCKET_PORT);
+            Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
             Scanner in = new Scanner(socket.getInputStream()); //get dell'idGicatore assegnato da server
             int id = Integer.parseInt(in.nextLine());
             assegnaIdGiocatore(id);
@@ -102,8 +102,8 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
 
     private void apriConnessioneRMI() {
         try {
-            Registry registry = LocateRegistry.getRegistry(Costanti.IP_SERVER, Costanti.REGISTRY_PORT);
-            InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(Costanti.CHIAVE_LOGGER);
+            Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
+            InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
             //effettua login ottenendo l'id del giocatore
             //int id = loggerRMI.login(view); //passa la view per rendere possibile la comunicazione server -> client
             String chiaveController = loggerRMI.getChiaveController();

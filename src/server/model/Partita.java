@@ -8,7 +8,7 @@ import interfaccecondivise.InterfacciaView;
 
 import java.util.*;
 
-import static server.model.Costanti.*;
+import static server.model.CostantiModel.*;
 
 public class Partita extends Observable {
     private Re re;

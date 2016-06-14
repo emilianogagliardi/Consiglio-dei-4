@@ -22,11 +22,11 @@ public class ControllerTest {
     //attributi di partita
     private Partita partita;
     private static int idCounter = 1;
-    private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà1 = new HashSet<>(Costanti.NUM_CARTE_BONUS_COLORE_CITTA);
+    private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà1 = new HashSet<>(CostantiModel.NUM_CARTE_BONUS_COLORE_CITTA);
     private Mazzo<CartaPolitica> mazzoCartePolitica1 = new Mazzo<>();
     private Mazzo<CartaPremioDelRe> mazzoCartaPremioRe1 =  new Mazzo<>();
-    List<Bonus> percorsoDellaNobiltà1 = new ArrayList<>(Costanti.MAX_POS_NOBILTA);
-    HashSet<Regione> regioni1 = new HashSet<>(Costanti.NUM_REGIONI);
+    List<Bonus> percorsoDellaNobiltà1 = new ArrayList<>(CostantiModel.MAX_POS_NOBILTA);
+    HashSet<Regione> regioni1 = new HashSet<>(CostantiModel.NUM_REGIONI);
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCosta1 = new Mazzo<>();
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCollina1 = new Mazzo<>();
     Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneMontagna1 = new Mazzo<>();
@@ -75,7 +75,7 @@ public class ControllerTest {
         mazzoCartaPremioRe1.addCarta(new CartaPremioDelRe(25));
         mazzoCartaPremioRe1.addCarta(new CartaPremioDelRe(30));
         Random random = new Random();
-        for(int i = 0; i < Costanti.MAX_POS_NOBILTA; i++){
+        for(int i = 0; i < CostantiModel.MAX_POS_NOBILTA; i++){
             if(random.nextDouble() < 0.3){
                 switch (random.nextInt(4)){
                     case 0:
@@ -96,7 +96,7 @@ public class ControllerTest {
             }
             else percorsoDellaNobiltà1.add(NullBonus.getInstance());
         }
-        for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
+        for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<>()));
         }
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
@@ -104,11 +104,11 @@ public class ControllerTest {
         regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COSTA, 6), new ArrayList<InterfacciaView>()));
         ArrayList<NomeCittà> cittàCartePermessoCostruzione = new ArrayList<>();
         cittàCartePermessoCostruzione.add(NomeCittà.ARKON);
-        for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
+        for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
         regioni1.add(new Regione(NomeRegione.COLLINA, mazzoCartePermessoCostruzioneCollina1, new BalconeDelConsiglio(IdBalcone.COLLINA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COLLINA, 6),new ArrayList<InterfacciaView>()));
-        for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE; i++){
+        for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneMontagna1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(10, NullBonus.getInstance()), cittàCartePermessoCostruzione));
         }
         regioni1.add(new Regione(NomeRegione.MONTAGNA, mazzoCartePermessoCostruzioneMontagna1, new BalconeDelConsiglio(IdBalcone.MONTAGNA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.MONTAGNA, 1), new  ArrayList<InterfacciaView>()));
@@ -391,7 +391,7 @@ public class ControllerTest {
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
             int idGiocatore = viewCorrente.getIdGiocatore();
-            Giocatore giocatore = new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
+            Giocatore giocatore = new Giocatore(idGiocatore, CostantiModel.MONETE_INIZIALI_GIOCATORI[i], CostantiModel.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));

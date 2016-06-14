@@ -27,7 +27,7 @@ public class Giocatore extends Observable {
         idGiocatore = id;
         guadagnaMonete(monete);
         guadagnaAiutanti(aiutanti);
-        emporiDisponibili = Costanti.NUM_EMPORI_GIOCATORE;
+        emporiDisponibili = CostantiModel.NUM_EMPORI_GIOCATORE;
         manoCartePolitica = new ArrayList<CartaPolitica>();
         manoCarteBonusRegione = new ArrayList<CartaBonusRegione>();
         manoCartePremioDelRe = new ArrayList<CartaPremioDelRe>();
@@ -51,8 +51,8 @@ public class Giocatore extends Observable {
     public void guadagnaMonete(int m) throws IllegalArgumentException{
         if(m < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a guadagnaMonete(int m)");
         monete = (monete + m);
-        if (monete > Costanti.MAX_MONETE) {
-            monete = Costanti.MAX_MONETE;
+        if (monete > CostantiModel.MAX_MONETE) {
+            monete = CostantiModel.MAX_MONETE;
         }
         updateViewMonete();
     }
@@ -86,8 +86,8 @@ public class Giocatore extends Observable {
     public void avanzaPercorsoNobiltà(int n) throws IllegalArgumentException{
         if (n < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a avanzaPercorsoNobiltà(int n)");
         posizionePercorsoNobiltà = posizionePercorsoNobiltà + n;
-        if (posizionePercorsoNobiltà > Costanti.MAX_POS_NOBILTA) {
-            posizionePercorsoNobiltà = Costanti.MAX_POS_NOBILTA;
+        if (posizionePercorsoNobiltà > CostantiModel.MAX_POS_NOBILTA) {
+            posizionePercorsoNobiltà = CostantiModel.MAX_POS_NOBILTA;
         }
         updateViewPercorsoNobiltà();
     }
@@ -98,8 +98,8 @@ public class Giocatore extends Observable {
     public void guadagnaPuntiVittoria(int p) throws IllegalArgumentException{
         if (p < 0) throw new IllegalArgumentException("Non è possibile assegnare un valore negativo a guadagnaPuntiVittoria(int p)");
         puntiVittoria = puntiVittoria + p;
-        if (puntiVittoria > Costanti.MAX_PUNTI_VITTORIA) {
-            puntiVittoria = Costanti.MAX_PUNTI_VITTORIA;
+        if (puntiVittoria > CostantiModel.MAX_PUNTI_VITTORIA) {
+            puntiVittoria = CostantiModel.MAX_PUNTI_VITTORIA;
         }
         updateViewPuntiVittoria();
     }

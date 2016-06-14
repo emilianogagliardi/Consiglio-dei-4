@@ -8,7 +8,7 @@ import interfaccecondivise.InterfacciaView;
 
 import java.util.*;
 
-import static server.model.Costanti.NUM_CITTA_PER_REGIONE;
+import static server.model.CostantiModel.NUM_CITTA_PER_REGIONE;
 
 
 public class Regione extends Observable{

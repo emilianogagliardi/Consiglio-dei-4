@@ -1,6 +1,6 @@
 package server.model.eccezioni;
 
-import static server.model.Costanti.MAX_GIOCATORI;
+import static server.model.CostantiModel.MAX_GIOCATORI;
 
 public class NumeroMassimoGiocatoriRaggiuntoException extends RuntimeException {
     public NumeroMassimoGiocatoriRaggiuntoException(){

@@ -3,7 +3,7 @@ package server.model.carte;
 import server.model.bonus.BonusPuntiVittoria;
 import server.model.bonus.NullBonus;
 
-import static server.model.Costanti.NUM_CARTE_PREMIO_RE;
+import static server.model.CostantiModel.NUM_CARTE_PREMIO_RE;
 
 public class CartaPremioDelRe extends CartaConBonus {
     private static int contatore = 1;

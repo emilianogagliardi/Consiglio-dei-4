@@ -7,7 +7,7 @@ import server.sistema.Utility;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static server.model.Costanti.NUM_CONSIGLIERI_BALCONE;
+import static server.model.CostantiModel.NUM_CONSIGLIERI_BALCONE;
 
 public class BalconeDelConsiglio extends Observable {
     private IdBalcone IdBalcone;
