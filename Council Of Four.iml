@@ -4,13 +4,14 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/model/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/server/model/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/instauraconnessione/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/server/servertest" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/server/sistema/servertest" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/mappe" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/controller/controllertest" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/serverResources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/server/controller/controllertest" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/clientResources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
