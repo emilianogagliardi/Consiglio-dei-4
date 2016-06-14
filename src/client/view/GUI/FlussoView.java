@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.GUI.controllerFX.GestoreFlussoFinestra;
+import client.view.GUI.controllerFX.GestoreFlussoFinestra;
 
 import java.io.IOException;
 

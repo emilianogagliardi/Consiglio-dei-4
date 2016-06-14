@@ -1,12 +1,10 @@
 package client.view;
 
+import interfaccecondivise.InterfacciaView;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
-
-/**
- * Created by emilianogagliardi on 13/06/16.
- */
 
 /*
     codice di un thread che fa polling sul socket. Riceve oridini e chiama metodi sulla view.

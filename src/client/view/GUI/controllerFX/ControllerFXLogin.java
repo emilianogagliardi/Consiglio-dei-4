@@ -1,15 +1,15 @@
 package client.view.GUI.controllerFX;
 
-import RMI.InterfacciaLoggerRMI;
-import controller.InterfacciaController;
-import view.SocketProxyController;
+import interfaccecondivise.InterfacciaLoggerRMI;
+import interfaccecondivise.InterfacciaController;
+import client.view.SocketProxyController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import view.Costanti;
+import client.view.Costanti;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -21,9 +21,6 @@ import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-/**
- * Created by emilianogagliardi on 10/06/16.
- */
 
 //TODO è necessario avere un riferimento alla view
 

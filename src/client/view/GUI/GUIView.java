@@ -1,14 +1,13 @@
 package client.view.GUI;
 
-import view.GUI.controllerFX.GestoreFlussoFinestra;
-import view.InterfacciaView;
+import client.view.GUI.controllerFX.GestoreFlussoFinestra;
+import interfaccecondivise.InterfacciaView;
+import server.model.carte.CartaPermessoCostruzione;
 
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by emilianogagliardi on 13/06/16.
- */
+
 public class GUIView extends GestoreFlussoFinestra implements InterfacciaView {
 
     @Override
@@ -53,6 +52,16 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView {
 
     @Override
     public void updateCartePoliticaProprie(List<String> carte) {
+
+    }
+
+    @Override
+    public void updateCartePermessoRegione(String regione, CartaPermessoCostruzione c1, CartaPermessoCostruzione c2) {
+
+    }
+
+    @Override
+    public void updateCartePermessoGiocatore(int idGiocatore, List<CartaPermessoCostruzione> mano) {
 
     }
 
