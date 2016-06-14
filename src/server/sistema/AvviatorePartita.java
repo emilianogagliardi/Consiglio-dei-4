@@ -34,7 +34,7 @@ public class AvviatorePartita implements Runnable {
     private Partita creaPartita(){
         Properties pro = sceltaMappa();
         Partita partita = new Partita(proxyViews);
-        partita.aggiungiAiutanti(Costanti.NUM_AIUTANTI);
+        partita.aggiungiAiutanti(CostantiModel.NUM_AIUTANTI);
         partita.setRiservaConsiglieri(creaRiservaConsiglieri());
         HashSet<Città> tutteLeCittà = creaCittàDaFile(pro);
         creaSentieriCittàDaFile(pro, tutteLeCittà);
@@ -74,7 +74,7 @@ public class AvviatorePartita implements Runnable {
     private ArrayList<Consigliere> creaRiservaConsiglieri() {
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
         Arrays.stream(ColoreConsigliere.values()).forEach((ColoreConsigliere colore) -> {
-            for (int i = 0; i < Costanti.NUM_CONSIGLIERI_PER_COLORE; i++)
+            for (int i = 0; i < CostantiModel.NUM_CONSIGLIERI_PER_COLORE; i++)
                 consiglieri.add(new Consigliere(colore));
         });
         return consiglieri; //TODO: mischiare i consiglieri prima di restituirli
@@ -135,11 +135,11 @@ public class AvviatorePartita implements Runnable {
     private HashSet<Regione> creaRegioni(Properties pro, HashSet<Città> tutteLeCittà, ArrayList<Consigliere> riservaConsiglieri) {
         HashSet<Regione> regioni = new HashSet<>();
         Arrays.stream(NomeRegione.values()).forEach((NomeRegione nomeRegione) -> {
-            ArrayList<Città> cittàRegione = new ArrayList<>(Costanti.NUM_CITTA_PER_REGIONE);
+            ArrayList<Città> cittàRegione = new ArrayList<>(CostantiModel.NUM_CITTA_PER_REGIONE);
             cittàRegione.addAll(cittàInRegioniDaFile(pro, nomeRegione, tutteLeCittà)); //cittàRegione contiene solo le città apparteneti alla regione corrente
             Mazzo<CartaPermessoCostruzione> mazzoCartePermesso = creaMazzoCartePermesso(cittàRegione);
             mazzoCartePermesso.mischia();
-            CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(nomeRegione, Costanti.PUNTI_VITTORIA_BONUS_REGIONE);
+            CartaBonusRegione cartaBonusRegione = new CartaBonusRegione(nomeRegione, CostantiModel.PUNTI_VITTORIA_BONUS_REGIONE);
             BalconeDelConsiglio balcone = creaBalcone(IdBalcone.valueOf(nomeRegione.toString()), riservaConsiglieri);
             Regione regione = new Regione(nomeRegione, mazzoCartePermesso, balcone, cartaBonusRegione, proxyViews);
             cittàRegione.forEach(regione::addCittà);
@@ -160,7 +160,7 @@ public class AvviatorePartita implements Runnable {
         });
         //crea le restanti NUM_CARTE_PERMESSO_REGIONE -5 carte permesso, assegnando città randomiche
         Random rand = new Random();
-        for (int i = 0; i < Costanti.NUM_CARTE_PERMESSO_REGIONE - 5; i++) {
+        for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE - 5; i++) {
             ArrayList<NomeCittà> cittàCarta = new ArrayList<>(2);
             int numCittàCarta = 2 + rand.nextInt(2); //numCittàCarta può valere 2 oppure 3
             ArrayList<Città> cittàPossibili = new ArrayList<>();
@@ -178,10 +178,10 @@ public class AvviatorePartita implements Runnable {
     private Bonus creaBonus() {
         Bonus bonus = NullBonus.getInstance();
         Random rand = new Random();
-        int numeroSottobonus = Costanti.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(Costanti.MAX_NUM_SOTTOBONUS_PER_BONUS - Costanti.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
+        int numeroSottobonus = CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(CostantiModel.MAX_NUM_SOTTOBONUS_PER_BONUS - CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
         for (int i = 0; i < numeroSottobonus; i++) {
             int sceltaBonus = (int) rand.nextInt(5);
-            int valoreBonus = Costanti.MIN_VALORE_SOTTOBONUS + rand.nextInt(Costanti.MAX_VALORE_SOTTOBONUS - Costanti.MIN_VALORE_SOTTOBONUS) + 1;
+            int valoreBonus = CostantiModel.MIN_VALORE_SOTTOBONUS + rand.nextInt(CostantiModel.MAX_VALORE_SOTTOBONUS - CostantiModel.MIN_VALORE_SOTTOBONUS) + 1;
             switch (sceltaBonus){
                 case 0:
                     bonus = new BonusAiutanti(valoreBonus, bonus);
@@ -207,7 +207,7 @@ public class AvviatorePartita implements Runnable {
 
     private BalconeDelConsiglio creaBalcone(IdBalcone id, ArrayList<Consigliere> riservaConsiglieri){
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
-        for (int i = 0; i < Costanti.NUM_CONSIGLIERI_BALCONE; i++) {
+        for (int i = 0; i < CostantiModel.NUM_CONSIGLIERI_BALCONE; i++) {
             consiglieri.add(riservaConsiglieri.remove(riservaConsiglieri.size()-1));
         }
         return new BalconeDelConsiglio(id, proxyViews, consiglieri);
@@ -226,7 +226,7 @@ public class AvviatorePartita implements Runnable {
     }
 
     private Re creaRe(HashSet<Città> tutteLeCittà) {
-        NomeCittà nomeCittàRe = NomeCittà.valueOf(Costanti.CITTÀ_RE);
+        NomeCittà nomeCittàRe = NomeCittà.valueOf(CostantiModel.CITTÀ_RE);
         for (Città città : tutteLeCittà) {
             if (città.getNome() == nomeCittàRe) {
                 return new Re (città, proxyViews);
@@ -239,10 +239,10 @@ public class AvviatorePartita implements Runnable {
     }
 
     private List<Bonus> creaPercorsoNobiltà () {
-        List<Bonus> percorso = new ArrayList<>(Costanti.MAX_POS_NOBILTA);
+        List<Bonus> percorso = new ArrayList<>(CostantiModel.MAX_POS_NOBILTA);
         Random random = new Random();
-        for(int i = 0; i < Costanti.MAX_POS_NOBILTA; i++){
-            if(random.nextDouble() < Costanti.PERCENTUALE_BONUS_PERCORSO_NOBILTA){
+        for(int i = 0; i < CostantiModel.MAX_POS_NOBILTA; i++){
+            if(random.nextDouble() < CostantiModel.PERCENTUALE_BONUS_PERCORSO_NOBILTA){
                 percorso.add(creaBonus());
             }
             else percorso.add(NullBonus.getInstance());
@@ -253,7 +253,7 @@ public class AvviatorePartita implements Runnable {
     private Mazzo<CartaPolitica> creaMazzoCartePolitica () {
         Mazzo<CartaPolitica> mazzo = new Mazzo<>();
         Arrays.stream(ColoreCartaPolitica.values()).forEach((ColoreCartaPolitica colore) ->{
-            for (int i = 0; i < Costanti.NUM_CARTE_POLITICA_PER_COLORE; i++) {
+            for (int i = 0; i < CostantiModel.NUM_CARTE_POLITICA_PER_COLORE; i++) {
                 mazzo.addCarta(new CartaPolitica(colore));
             }
         });
@@ -263,8 +263,8 @@ public class AvviatorePartita implements Runnable {
 
     private Mazzo<CartaPremioDelRe> creaMazzoCartePremioRe() {
         Mazzo<CartaPremioDelRe> mazzo = new Mazzo<>();
-        for (int i = 0; i < Costanti.NUM_CARTE_PREMIO_RE; i++) {
-            CartaPremioDelRe carta = new CartaPremioDelRe(Costanti.PUNTI_CARTA_PREMIO_RE[i]);
+        for (int i = 0; i < CostantiModel.NUM_CARTE_PREMIO_RE; i++) {
+            CartaPremioDelRe carta = new CartaPremioDelRe(CostantiModel.PUNTI_CARTA_PREMIO_RE[i]);
             carta.setVisibile(true);
             mazzo.addCarta(carta);
         }
@@ -273,10 +273,10 @@ public class AvviatorePartita implements Runnable {
 
     private HashSet<CartaBonusColoreCittà> creaMazzoBonusColoreCittà () {
         HashMap<ColoreCittà, Integer> puntiColoreMap = new HashMap<>();
-        puntiColoreMap.put(ColoreCittà.ORO, Costanti.PUNTI_BONUS_COLORE_CITTA_ORO);
-        puntiColoreMap.put(ColoreCittà.ARGENTO, Costanti.PUNTI_BONUS_COLORE_CITTA_ARGENTO);
-        puntiColoreMap.put(ColoreCittà.BRONZO, Costanti.PUNTI_BONUS_COLORE_CITTA_BRONZO);
-        puntiColoreMap.put(ColoreCittà.FERRO, Costanti.PUNTI_BONUS_COLORE_CITTA_FERRO);
+        puntiColoreMap.put(ColoreCittà.ORO, CostantiModel.PUNTI_BONUS_COLORE_CITTA_ORO);
+        puntiColoreMap.put(ColoreCittà.ARGENTO, CostantiModel.PUNTI_BONUS_COLORE_CITTA_ARGENTO);
+        puntiColoreMap.put(ColoreCittà.BRONZO, CostantiModel.PUNTI_BONUS_COLORE_CITTA_BRONZO);
+        puntiColoreMap.put(ColoreCittà.FERRO, CostantiModel.PUNTI_BONUS_COLORE_CITTA_FERRO);
         HashSet<CartaBonusColoreCittà> carte = new HashSet<>();
         Arrays.stream(ColoreCittà.values()).filter(coloreCittà -> coloreCittà!=ColoreCittà.CITTA_RE).forEach((ColoreCittà colore) -> {
             CartaBonusColoreCittà carta = new CartaBonusColoreCittà(puntiColoreMap.get(colore), colore);
@@ -290,8 +290,8 @@ public class AvviatorePartita implements Runnable {
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
             int idGiocatore = viewCorrente.getIdGiocatore();
-            Giocatore giocatore = new Giocatore(idGiocatore, Costanti.MONETE_INIZIALI_GIOCATORI[i], Costanti.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
-            for (int j = 0; j < Costanti.NUM_CARTE_POLITICA_INIZIALI_GIOCATORE; j++) {
+            Giocatore giocatore = new Giocatore(idGiocatore, CostantiModel.MONETE_INIZIALI_GIOCATORI[i], CostantiModel.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
+            for (int j = 0; j < CostantiModel.NUM_CARTE_POLITICA_INIZIALI_GIOCATORE; j++) {
                 giocatore.addCarta(partita.ottieniCartaPolitica());
             }
             giocatori.add (giocatore);

@@ -133,7 +133,7 @@ public class Controller implements Runnable, InterfacciaController {
             return false;
         if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliereDaRiserva))
             return false;
-        giocatoreCorrente.guadagnaMonete(Costanti.MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE);
+        giocatoreCorrente.guadagnaMonete(CostantiModel.MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE);
         decrementaAzioniPrincipaliDisponibili();
         return true;
     }
@@ -238,7 +238,7 @@ public class Controller implements Runnable, InterfacciaController {
             return false; //la città scelta non è collegata a quella dove risiede attualmente il Re
         }
         try {
-            giocatoreCorrente.pagaMonete(distanza * Costanti.MONETE_PER_STRADA);
+            giocatoreCorrente.pagaMonete(distanza * CostantiModel.MONETE_PER_STRADA);
         } catch (MoneteNonSufficientiException exc){
             return false;
         }
@@ -254,11 +254,11 @@ public class Controller implements Runnable, InterfacciaController {
         if(azioneVeloceEseguita)
             return false;
         try {
-            giocatoreCorrente.pagaMonete(Costanti.MONETE_INGAGGIARE_AIUTANTE);
+            giocatoreCorrente.pagaMonete(CostantiModel.MONETE_INGAGGIARE_AIUTANTE);
         } catch (MoneteNonSufficientiException exc){
             return false;
         }
-        int aiutanti = Costanti.AIUTANTI_GUADAGNATI_INGAGG_AIUTANTE;
+        int aiutanti = CostantiModel.AIUTANTI_GUADAGNATI_INGAGG_AIUTANTE;
         try {
             partita.decrementaAiutanti(aiutanti);
         } catch (IllegalArgumentException exc){
@@ -273,7 +273,7 @@ public class Controller implements Runnable, InterfacciaController {
     public boolean cambiareTesserePermessoCostruzione(String regione) {
         if(azioneVeloceEseguita)
             return false;
-        if (!giocatoreRestituisciAiutantiARiserva(Costanti.AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO)){
+        if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO)){
             return false;
         }
         partita.getRegione(NomeRegione.valueOf(regione)).cambiaCartePermessoCostruzione();
@@ -285,7 +285,7 @@ public class Controller implements Runnable, InterfacciaController {
     public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere) {
         if(azioneVeloceEseguita)
             return false;
-        if (!giocatoreRestituisciAiutantiARiserva(Costanti.AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS)) {
+        if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS)) {
             return false;
         }
         if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliere))
@@ -298,7 +298,7 @@ public class Controller implements Runnable, InterfacciaController {
     public boolean compiereAzionePrincipaleAggiuntiva() {
         if(azioneVeloceEseguita)
             return false;
-        if (!giocatoreRestituisciAiutantiARiserva(Costanti.AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA))
+        if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA))
             return false;
         azioniPrincipaliDisponibili++;
         azioneVeloceEseguita = true;
@@ -324,19 +324,19 @@ public class Controller implements Runnable, InterfacciaController {
                 numeroCarteJolly++;
         switch (coloriCartePolitica.size()) {
             case 1:
-                monete = Costanti.MONETE_1_CARTA_POLITICA;
+                monete = CostantiModel.MONETE_1_CARTA_POLITICA;
                 break;
             case 2:
-                monete = Costanti.MONETE_2_CARTE_POLITICA;
+                monete = CostantiModel.MONETE_2_CARTE_POLITICA;
                 break;
             case 3:
-                monete = Costanti.MONETE_3_CARTE_POLITICA;
+                monete = CostantiModel.MONETE_3_CARTE_POLITICA;
                 break;
             default:
                 monete = 0;
                 break;
         }
-        return monete + numeroCarteJolly * Costanti.MONETE_PER_CARTA_JOLLY;
+        return monete + numeroCarteJolly * CostantiModel.MONETE_PER_CARTA_JOLLY;
 
     }
 
@@ -375,7 +375,7 @@ public class Controller implements Runnable, InterfacciaController {
             if(cittàCostruzione.giàCostruito(giocatoreCorrente))
                 return false;
             try {
-                giocatoreCorrente.pagaAiutanti(Costanti.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti());
+                giocatoreCorrente.pagaAiutanti(CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti());
                 assegnaBonus(cittàCostruzione.getBonus());
                 //ora utilizzo un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
                 cittàCollegateRitornate = grafoCittà.bfs(cittàCostruzione, (cittàAdiacente, cittàCollegate) -> {

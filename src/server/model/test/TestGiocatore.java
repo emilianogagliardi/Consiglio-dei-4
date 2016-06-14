@@ -134,18 +134,18 @@ public class TestGiocatore {
     @After
     @Test
     public void overflowMoneteTest() {
-        giocatore.guadagnaMonete(Costanti.MAX_MONETE);
-        assertEquals(Costanti.MAX_MONETE, giocatore.getMonete());
+        giocatore.guadagnaMonete(CostantiModel.MAX_MONETE);
+        assertEquals(CostantiModel.MAX_MONETE, giocatore.getMonete());
         giocatore.guadagnaMonete(13);
-        assertEquals(Costanti.MAX_MONETE, giocatore.getMonete());
+        assertEquals(CostantiModel.MAX_MONETE, giocatore.getMonete());
     }
 
     @After
     @Test
     public void overflowPercorsoNobiltàTest() {
-        giocatore.avanzaPercorsoNobiltà(Costanti.MAX_POS_NOBILTA);
-        assertEquals(Costanti.MAX_POS_NOBILTA, giocatore.getPosizionePercorsoNobiltà());
+        giocatore.avanzaPercorsoNobiltà(CostantiModel.MAX_POS_NOBILTA);
+        assertEquals(CostantiModel.MAX_POS_NOBILTA, giocatore.getPosizionePercorsoNobiltà());
         giocatore.avanzaPercorsoNobiltà(21);
-        assertEquals(Costanti.MAX_POS_NOBILTA, giocatore.getPosizionePercorsoNobiltà());
+        assertEquals(CostantiModel.MAX_POS_NOBILTA, giocatore.getPosizionePercorsoNobiltà());
     }
 }

@@ -2,7 +2,7 @@ package server.model;
 
 import server.model.carte.ColoreCartaPolitica;
 
-public class Costanti {
+public class CostantiModel {
     //caratteristiche della partita
     public static final int NUM_REGIONI = 3;
     public static final int NUM_CITTA = 15;
