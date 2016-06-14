@@ -1,6 +1,4 @@
-package client.view.GUI.controllerFX;
-
-import client.view.GUI.FlussoView;
+package client.view.GUI;
 
 import java.io.IOException;
 
@@ -12,7 +10,12 @@ public abstract class GestoreFlussoFinestra {
     public void setFlusso(FlussoView flusso) {
         this.flusso = flusso;
     }
-    public void setNuovoStep(String nomeFileFXML) throws IOException{
-        flusso.setFinestraDaFXML(nomeFileFXML);
+    public FlussoView getFlusso(){return flusso;}
+    public void setNuovoStep(String nomeFileFXML){
+        try {
+            flusso.setFinestraDaFXML(nomeFileFXML);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

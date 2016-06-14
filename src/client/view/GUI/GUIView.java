@@ -1,28 +1,56 @@
 package client.view.GUI;
 
-import client.view.GUI.controllerFX.GestoreFlussoFinestra;
+import client.view.GUI.controllerFX.ControllerFXMosse;
+import client.view.GUI.controllerFX.ControllerFXPartita;
+import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 import server.model.carte.CartaPermessoCostruzione;
 
 import java.util.HashMap;
 import java.util.List;
 
-
+/*
+    SINGLETON
+    GUIView riceve gli ordini da remoto, in socket o in RMI, e a sua volta impone l'update
+    a controllerFXPartita, e l'esecuzione delle mosse a controllerFXMosse.
+    Quindi estende il tipo GestoreFlussoFinestra.
+ */
 public class GUIView extends GestoreFlussoFinestra implements InterfacciaView {
+    private int idGiocatore;
+    private static GUIView instance;
+    private ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
+    private ControllerFXPartita controllerFXPartita; //utilizzato per le update
+
+    private GUIView(ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FlussoView flusso){
+        super.setFlusso(flusso);
+        this.controllerFXMosse = controllerFXMosse;
+        this.controllerFXPartita = controllerFXPartita;
+    }
+
+    public static void initGUIView (ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FlussoView flusso){
+        if (instance == null) {
+            instance = new GUIView(controllerFXMosse, controllerFXPartita, flusso);
+        }
+    }
+
+    public static GUIView getInstance() throws SingletonNonInizializzatoException{
+        if (instance == null) throw new SingletonNonInizializzatoException();
+        return instance;
+    }
 
     @Override
     public void setIdGiocatore(int idGiocatore) {
-
+        this.idGiocatore = idGiocatore;
     }
 
     @Override
     public int getIdGiocatore() {
-        return 0;
+        return idGiocatore;
     }
 
     @Override
-    public int scegliMappa() {
-        return 0;
+    public void scegliMappa() {
+        super.setNuovoStep("mappegallery.fxml");
     }
 
     @Override

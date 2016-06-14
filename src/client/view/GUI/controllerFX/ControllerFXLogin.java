@@ -1,15 +1,19 @@
 package client.view.GUI.controllerFX;
 
-import interfaccecondivise.InterfacciaLoggerRMI;
-import interfaccecondivise.InterfacciaController;
+import client.view.CostantiClient;
+import client.view.GUI.GUIView;
+import client.view.GUI.GestoreFlussoFinestra;
+import client.view.SocketPolling;
 import client.view.SocketProxyController;
+import client.view.eccezioni.SingletonNonInizializzatoException;
+import interfaccecondivise.InterfacciaController;
+import interfaccecondivise.InterfacciaLoggerRMI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import client.view.CostantiClient;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -20,9 +24,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-
-
-//TODO è necessario avere un riferimento alla view
 
 /*
 classe che si occupa di gestire la finestra di login, assegnando ad ogni bottone l'eventhandler.
@@ -61,14 +62,12 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         startButton.setOnAction(e -> {
             //questo metodo da per scontato che i toggle button siano premuti in modo mutuamente esclusivo
             if (socketButton.isSelected() || RMIButton.isSelected()) {
-                if (socketButton.isSelected())
+                if (socketButton.isSelected()) {
                     apriConnessioneSocket();
-                else
+                }else{
                     apriConnessioneRMI();
+                }
                 labelLogin.setText("Attendi altri giocatori...");
-                try {
-                    super.setNuovoStep("mappegallery.fxml");
-                }catch(IOException ex) {ex.printStackTrace();}
             }else {
                 labelLogin.setText("Nessun metodo di comunicazione selezionato!");
             }
@@ -89,14 +88,13 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             int id = Integer.parseInt(in.nextLine());
             assegnaIdGiocatore(id);
             assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
-            //new Thread(new SocketPolling(socket, view)).start(); //necessario alla comunicazione server -> client
+            //inizializza la gui view
+            GUIView view = getNewGUIView();
+            new Thread(new SocketPolling(view, socket)).start(); //necessario alla comunicazione server -> client
+            view.setIdGiocatore(id);
         }catch(IOException e) {
             e.printStackTrace();
-            try {
-                super.setNuovoStep("erroreconnessione.fxml");
-            }catch (IOException ex){
-                ex.printStackTrace();
-            }
+            super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 
@@ -105,23 +103,14 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
             //effettua login ottenendo l'id del giocatore
-            //int id = loggerRMI.login(view); //passa la view per rendere possibile la comunicazione server -> client
+            GUIView view = getNewGUIView();
+            int id = loggerRMI.login(getNewGUIView()); //passa la view per rendere possibile la comunicazione server -> client
+            view.setIdGiocatore(id);
             String chiaveController = loggerRMI.getChiaveController();
             assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
-        }catch(RemoteException e){
+        }catch(RemoteException | NotBoundException e){
             e.printStackTrace();
-            try {
-                super.setNuovoStep("erroreconnessione.fxml");
-            }catch (IOException ex){
-                ex.printStackTrace();
-            }
-        }catch (NotBoundException e){
-            e.printStackTrace();
-            try {
-                super.setNuovoStep("erroreconnessione.fxml");
-            }catch (IOException ex){
-                ex.printStackTrace();
-            }
+            super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 
@@ -143,5 +132,27 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    //inizializza e torna la GUIView
+    private GUIView getNewGUIView() {
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            loader.load(getClass().getClassLoader().getResource("mosse.fxml").openStream());
+            ControllerFXMosse controllerFXMosse = loader.getController();
+            loader = new FXMLLoader();
+            loader.load(getClass().getClassLoader().getResource("viewgioco.fxml"));
+            ControllerFXPartita controllerFXPartita = loader.getController();
+            GUIView.initGUIView(controllerFXMosse, controllerFXPartita, super.getFlusso());
+            try {
+                GUIView view = GUIView.getInstance();
+                return view;
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

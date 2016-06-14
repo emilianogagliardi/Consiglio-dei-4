@@ -8,7 +8,7 @@ import java.util.List;
 public interface InterfacciaView {
     void setIdGiocatore(int idGiocatore);
     int getIdGiocatore();
-    int scegliMappa();
+    void scegliMappa();
     void erroreDiConnessione();
     void updatePuntiVittoriaGiocatore(int idGiocatore, int punti);
     void updateBalcone(String regione, String colore1, String colore2, String colore3, String colore4);

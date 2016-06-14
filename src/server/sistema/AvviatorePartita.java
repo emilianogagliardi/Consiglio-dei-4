@@ -1,16 +1,19 @@
 package server.sistema;
 
+import interfaccecondivise.InterfacciaView;
 import server.controller.Controller;
 import server.model.*;
 import server.model.bonus.*;
 import server.model.carte.*;
-import interfaccecondivise.InterfacciaView;
-import server.model.carte.CartaBonusRegione;
-import server.model.carte.CartaPermessoCostruzione;
+import server.proxyView.SocketProxyView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,10 +21,13 @@ import java.util.concurrent.Executors;
 public class AvviatorePartita implements Runnable {
     private ArrayList<InterfacciaView> proxyViews;
     private static ExecutorService executors = Executors.newCachedThreadPool();
+    private int idMappa;
 
     public AvviatorePartita(ArrayList<InterfacciaView> proxyViews) {
         this.proxyViews = proxyViews;
     }
+
+    public void setMappa(int idMappa){this.idMappa = idMappa;}
 
     @Override
     public void run() {
@@ -29,10 +35,14 @@ public class AvviatorePartita implements Runnable {
         if (!Thread.currentThread().isInterrupted()) {
             executors.submit(new Controller(nuovaPartita, proxyViews));
         }
+        //TODO togliere questa riga
+        System.out.println("la partita è configurata, si poò cominciare");
     }
 
     private Partita creaPartita(){
         Properties pro = sceltaMappa();
+        //TODO togliere questa riga
+        System.out.println("è stata scelta una mappa");
         Partita partita = new Partita(proxyViews);
         partita.aggiungiAiutanti(CostantiModel.NUM_AIUTANTI);
         partita.setRiservaConsiglieri(creaRiservaConsiglieri());
@@ -51,7 +61,18 @@ public class AvviatorePartita implements Runnable {
     }
 
     private Properties sceltaMappa(){
-        int idMappa = proxyViews.get(0).scegliMappa(); //il primo giocatore loggato sceglie la mappa
+        if(proxyViews.get(0) instanceof SocketProxyView) { //il primo giocatore loggato sceglie la mappa
+            idMappa = sceltaMappaSocket();
+        }else{
+            try {
+                Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
+                registry.bind("primonomechemivieneinmente", new SceltaMappaRMI(this));
+            }catch(RemoteException | AlreadyBoundException e){
+                e.printStackTrace();
+                idMappa = 0;
+            }
+        }
+        //TODO 0 è messo li solo per far funzionare, il client non compie ancora la scelta della mappa
         String nomeFile = "mappa"+idMappa;
         try {
             FileInputStream is = new FileInputStream("./resources/mappe/"+nomeFile);
@@ -297,5 +318,11 @@ public class AvviatorePartita implements Runnable {
             giocatori.add (giocatore);
         }
         return giocatori;
+    }
+
+    private int sceltaMappaSocket() {
+        int id;
+        //TODO
+        return 0;
     }
 }
