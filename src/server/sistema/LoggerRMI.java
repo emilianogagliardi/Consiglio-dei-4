@@ -19,4 +19,9 @@ class LoggerRMI extends UnicastRemoteObject implements InterfacciaLoggerRMI {
         server.addView(view);
         return idAggiunto;
     }
+
+    @Override
+    public String getChiaveController() throws RemoteException {
+        return null;
+    }
 }
