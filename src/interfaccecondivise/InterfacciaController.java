@@ -2,9 +2,10 @@ package interfaccecondivise;
 
 import server.model.carte.CartaPermessoCostruzione;
 
+import java.rmi.Remote;
 import java.util.List;
 
-public interface InterfacciaController {
+public interface InterfacciaController extends Remote {
     void passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
 
     //azioni principali

@@ -29,6 +29,7 @@ public class Server {
     }
 
     public void startServer() {
+        NomeChiaveRMI.init();
         try{
             LoggerRMI loggerRMI = new LoggerRMI(this);
             Registry registry = LocateRegistry.createRegistry(CostantiSistema.RMI_PORT);

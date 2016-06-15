@@ -34,4 +34,8 @@ public class ListaCircolare <T>{
     public T getCorrente(){
         return lista.get(i);
     }
+
+    public int getPosizioneCorrente() {
+        return i+1;
+    }
 }

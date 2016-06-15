@@ -1,5 +1,7 @@
 package client.view.GUI.controllerFX;
 
+import client.ComunicazioneSceltaMappaRMI;
+import client.ComunicazioneSceltaMappaSocket;
 import client.view.CostantiClient;
 import client.view.GUI.GUIView;
 import client.view.GUI.GestoreFlussoFinestra;
@@ -88,15 +90,20 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             int id = Integer.parseInt(in.nextLine());
             assegnaIdGiocatore(id);
             assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
+            //inizializza il singleton per la comunicazione della scelta della mappa
+            ComunicazioneSceltaMappaSocket.init(socket);
+            //setta nel controller di scelta mappa isSocket = true
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("/mappegallery.fxml").openStream());
+            ControllerFXGallery controllerFXGallery = loader.getController();
+            controllerFXGallery.setIsSocketClient();
             //inizializza la gui view
-            new Thread(new SocketPolling(getNewGUIView(), socket)).start(); //necessario alla comunicazione server -> client
+            GUIView view = getNewGUIView();
+            new Thread(new SocketPolling(view, socket)).start(); //necessario alla comunicazione server -> client
+            view.setIdGiocatore(id);
         }catch(IOException e) {
             e.printStackTrace();
-            //try {
-                super.setNuovoStep("erroreconnessione.fxml");
-            //}catch (IOException ex){
-               // ex.printStackTrace();
-            //}
+            super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 
@@ -105,23 +112,16 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
             //effettua login ottenendo l'id del giocatore
+            GUIView view = getNewGUIView();
             int id = loggerRMI.login(getNewGUIView()); //passa la view per rendere possibile la comunicazione server -> client
+            view.setIdGiocatore(id);
             String chiaveController = loggerRMI.getChiaveController();
             assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
-        }catch(RemoteException e){
+            //inizializza il singleton per la comuncazione della mappa scelta
+            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
+        }catch(RemoteException | NotBoundException e){
             e.printStackTrace();
-            //try {
-                super.setNuovoStep("erroreconnessione.fxml");
-            //}catch (IOException ex){
-               // ex.printStackTrace();
-            //}
-        }catch (NotBoundException e){
-            e.printStackTrace();
-            //try {
-                super.setNuovoStep("erroreconnessione.fxml");
-            //}catch (IOException ex){
-               // ex.printStackTrace();
-            //}
+            super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 

@@ -2,6 +2,7 @@ package server.proxyView;
 
 import interfaccecondivise.InterfacciaView;
 import server.model.carte.CartaPermessoCostruzione;
+import server.sistema.AvviatorePartita;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,9 +12,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class SocketProxyView implements InterfacciaView {
+    private AvviatorePartita avviatore;
     private int idGiocatore;
     private PrintWriter out;
     private Scanner in;
+    private Socket socket;
 
     public SocketProxyView(Socket socket){
         try {
@@ -23,6 +26,10 @@ public class SocketProxyView implements InterfacciaView {
             erroreDiConnessione();
             System.out.println("impossibile aprire output stream socket");
         }
+    }
+
+    public void setAvviatore(AvviatorePartita avviatore) {
+        this.avviatore = avviatore;
     }
 
     @Override
@@ -36,10 +43,11 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public int scegliMappa() {
+    public void scegliMappa() {
         out.println("sceglimappa");
-        out.flush();
-        return Integer.parseInt(in.nextLine());
+        System.out.println("in attesa della scelta da client");
+        avviatore.setMappa(Integer.parseInt(in.nextLine()));
+        System.out.println("ricevuta la scelta");
     }
 
     @Override

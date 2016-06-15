@@ -1,5 +1,7 @@
 package client.view.GUI.controllerFX;
 
+import client.ComunicazioneSceltaMappaRMI;
+import client.ComunicazioneSceltaMappaSocket;
 import client.view.CostantiClient;
 import client.view.GUI.GUIView;
 import client.view.GUI.GestoreFlussoFinestra;
@@ -88,6 +90,13 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             int id = Integer.parseInt(in.nextLine());
             assegnaIdGiocatore(id);
             assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
+            //inizializza il singleton per la comunicazione della scelta della mappa
+            ComunicazioneSceltaMappaSocket.init(socket);
+            //setta nel controller di scelta mappa isSocket = true
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("/mappegallery.fxml").openStream());
+            ControllerFXGallery controllerFXGallery = loader.getController();
+            controllerFXGallery.setIsSocketClient();
             //inizializza la gui view
             GUIView view = getNewGUIView();
             new Thread(new SocketPolling(view, socket)).start(); //necessario alla comunicazione server -> client
@@ -108,6 +117,8 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             view.setIdGiocatore(id);
             String chiaveController = loggerRMI.getChiaveController();
             assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
+            //inizializza il singleton per la comuncazione della mappa scelta
+            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
         }catch(RemoteException | NotBoundException e){
             e.printStackTrace();
             super.setNuovoStep("erroreconnessione.fxml");

@@ -16,6 +16,7 @@ import java.util.List;
     Quindi estende il tipo GestoreFlussoFinestra.
  */
 public class GUIView extends GestoreFlussoFinestra implements InterfacciaView {
+    private int idGiocatore;
     private static GUIView instance;
     private ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
     private ControllerFXPartita controllerFXPartita; //utilizzato per le update
@@ -39,19 +40,17 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView {
 
     @Override
     public void setIdGiocatore(int idGiocatore) {
-
+        this.idGiocatore = idGiocatore;
     }
 
     @Override
     public int getIdGiocatore() {
-        return 0;
+        return idGiocatore;
     }
 
     @Override
-    public int scegliMappa() {
-        //prova
+    public void scegliMappa() {
         super.setNuovoStep("mappegallery.fxml");
-        return 0;
     }
 
     @Override

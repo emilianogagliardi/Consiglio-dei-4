@@ -22,6 +22,12 @@ class LoggerRMI extends UnicastRemoteObject implements InterfacciaLoggerRMI {
 
     @Override
     public String getChiaveController() throws RemoteException {
-        return null;
+        return NomeChiaveRMI.getChiaveController();
     }
+
+    @Override
+    public String getChiaveSceltaMappa() throws RemoteException {
+        return NomeChiaveRMI.getChiaveSceltaMappa();
+    }
+
 }

@@ -146,8 +146,8 @@ public class ControllerTest {
             }
 
             @Override
-            public int scegliMappa() {
-                return 1;
+            public void scegliMappa() {
+
             }
 
             @Override
@@ -272,8 +272,7 @@ public class ControllerTest {
             }
 
             @Override
-            public int scegliMappa() {
-                return 1;
+            public void scegliMappa() {
             }
 
             @Override

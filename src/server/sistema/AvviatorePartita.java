@@ -31,18 +31,25 @@ public class AvviatorePartita implements Runnable {
 
     @Override
     public void run() {
-        Partita nuovaPartita = creaPartita();
+        Properties pro = sceltaMappa();
+        Partita nuovaPartita = creaPartita(pro);
         if (!Thread.currentThread().isInterrupted()) {
-            executors.submit(new Controller(nuovaPartita, proxyViews));
+            Controller controller = new Controller(nuovaPartita, proxyViews);
+            //TODO creare una socket polling per il controller, per ogni client
+            try {
+                LocateRegistry.getRegistry(CostantiSistema.RMI_PORT).bind(NomeChiaveRMI.getChiaveController(), controller);
+            }catch (RemoteException | AlreadyBoundException e){
+                System.out.println("impossibile bindare controller");
+                e.printStackTrace();
+                proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+            }
+            executors.submit(controller);
         }
         //TODO togliere questa riga
         System.out.println("la partita è configurata, si poò cominciare");
     }
 
-    private Partita creaPartita(){
-        Properties pro = sceltaMappa();
-        //TODO togliere questa riga
-        System.out.println("è stata scelta una mappa");
+    private Partita creaPartita(Properties pro){
         Partita partita = new Partita(proxyViews);
         partita.aggiungiAiutanti(CostantiModel.NUM_AIUTANTI);
         partita.setRiservaConsiglieri(creaRiservaConsiglieri());
@@ -58,38 +65,6 @@ public class AvviatorePartita implements Runnable {
         ArrayList<Giocatore> giocatori = creaGiocatori(partita);
         giocatori.forEach(partita::addGiocatore);
         return partita;
-    }
-
-    private Properties sceltaMappa(){
-        if(proxyViews.get(0) instanceof SocketProxyView) { //il primo giocatore loggato sceglie la mappa
-            idMappa = sceltaMappaSocket();
-        }else{
-            try {
-                Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
-                registry.bind("primonomechemivieneinmente", new SceltaMappaRMI(this));
-            }catch(RemoteException | AlreadyBoundException e){
-                e.printStackTrace();
-                idMappa = 0;
-            }
-        }
-        //TODO 0 è messo li solo per far funzionare, il client non compie ancora la scelta della mappa
-        String nomeFile = "mappa"+idMappa;
-        try {
-            FileInputStream is = new FileInputStream("./resources/mappe/"+nomeFile);
-            Properties pro = new Properties();
-            pro.load(is);
-            return pro;
-        }catch(FileNotFoundException e) {
-            System.out.println("impossibile trovare il file di configurazione della mappa");
-            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
-            Thread.currentThread().interrupt();
-            return null;
-        } catch (IOException e) {
-            System.out.println("impossibile trovare il file di configurazione della mappa");
-            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
-            Thread.currentThread().interrupt();
-            return null;
-        }
     }
 
     private ArrayList<Consigliere> creaRiservaConsiglieri() {
@@ -320,9 +295,42 @@ public class AvviatorePartita implements Runnable {
         return giocatori;
     }
 
-    private int sceltaMappaSocket() {
-        int id;
-        //TODO
-        return 0;
+    private Properties sceltaMappa(){
+        if(proxyViews.get(0) instanceof SocketProxyView) { //il primo giocatore loggato sceglie la mappa
+            SocketProxyView proxyView = (SocketProxyView) proxyViews.get(0);
+            proxyView.setAvviatore(this);
+            proxyViews.get(0).scegliMappa();
+        }else{
+            sceltaMappaRMI(proxyViews.get(0));
+        }
+        String nomeFile = "mappa"+idMappa;
+        try {
+            FileInputStream is = new FileInputStream("./resources/mappe/"+nomeFile);
+            Properties pro = new Properties();
+            pro.load(is);
+            return pro;
+        }catch(FileNotFoundException e) {
+            System.out.println("impossibile trovare il file di configurazione della mappa");
+            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+            Thread.currentThread().interrupt();
+            return null;
+        } catch (IOException e) {
+            System.out.println("impossibile trovare il file di configurazione della mappa");
+            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+            Thread.currentThread().interrupt();
+            return null;
+        }
+    }
+
+    private void sceltaMappaRMI(InterfacciaView view) {
+        try {
+            Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
+            registry.bind(NomeChiaveRMI.getChiaveSceltaMappa(), new SceltaMappaRMI(this));
+            view.scegliMappa();
+        }catch(RemoteException | AlreadyBoundException e){
+            e.printStackTrace();
+            //TODO togliere commento
+            //setMappa(1); // in caso di errorore viene settato ad 1 l'idMappa
+        }
     }
 }

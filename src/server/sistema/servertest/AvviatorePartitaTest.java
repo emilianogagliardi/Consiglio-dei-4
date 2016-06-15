@@ -1,9 +1,9 @@
+import interfaccecondivise.InterfacciaView;
+import org.junit.Before;
+import org.junit.Test;
 import server.model.*;
 import server.model.bonus.NullBonus;
 import server.model.carte.CartaPermessoCostruzione;
-import org.junit.Before;
-import org.junit.Test;
-import interfaccecondivise.InterfacciaView;
 import server.sistema.AvviatorePartita;
 
 import java.io.FileInputStream;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 
 
@@ -32,8 +33,7 @@ public class AvviatorePartitaTest {
             }
 
             @Override
-            public int scegliMappa() {
-                return 1;
+            public void scegliMappa() {
             }
 
             @Override
@@ -150,14 +150,16 @@ public class AvviatorePartitaTest {
     }
 
     @Test
-    public void creaPartita(){
+    public void creaPartita() throws IOException {
         Partita partita;
         try {
-            Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita");
+            Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita", Properties.class);
             method.setAccessible(true);
             try{
                 AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
-                partita = (Partita) method.invoke(avviatorePartita);
+                Properties pro = new Properties();
+                pro.load(new FileInputStream("./serverResources/fileconfigmappe/mappa1"));
+                partita = (Partita) method.invoke(avviatorePartita, pro);
             } catch (IllegalAccessException exc){
                 exc.printStackTrace();
             } catch (InvocationTargetException exc){
@@ -167,26 +169,6 @@ public class AvviatorePartitaTest {
             exc.printStackTrace();
         }
        partita = null;
-    }
-
-
-    @Test
-    public void sceltaMappaTest(){
-        Method method = null;
-        try {
-            method = AvviatorePartita.class.getDeclaredMethod("sceltaMappa");
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-            method.setAccessible(true);
-        try {
-            Properties pro = (Properties) method.invoke(avviatorePartita);
-            assertEquals(pro.size(),33); //il file mappa1 contiene 33 righe
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -201,7 +183,7 @@ public class AvviatorePartitaTest {
         method.setAccessible(true);
         try {
             Properties pro = new Properties();
-            pro.load(new FileInputStream("./resources/mappe/mappa1"));
+            pro.load(new FileInputStream("./serverResources/fileconfigmappe/mappa1"));
             HashSet<Città> cittàDaAlgoritmo = (HashSet<Città>) method.invoke(avviatorePartita, pro);
             ArrayList<Città> cittàHardCoded = new ArrayList<>();
             //istanze di città solo ugiali se hanno lo stesso nome, nome regione, colore
@@ -248,7 +230,7 @@ public class AvviatorePartitaTest {
         methodCreaSentieri.setAccessible(true);
         try{
             Properties pro = new Properties();
-            pro.load(new FileInputStream("./resources/mappe/mappa1"));
+            pro.load(new FileInputStream("./serverResources/fileconfigmappe/mappa1"));
             HashSet<Città> cittàDaAlgoritmo = (HashSet<Città>) methodOttieniCittà.invoke(avviatorePartita, pro);
             //modifica le città in cittàDaAlgoritmo, assegnando le città adiacenti
             methodCreaSentieri.invoke(avviatorePartita, pro, cittàDaAlgoritmo);
@@ -351,7 +333,7 @@ public class AvviatorePartitaTest {
         methodCittàInRegioniDaFile.setAccessible(true);
         methodCreaCittàDaFile.setAccessible(true);
         Properties pro = new Properties();
-        pro.load(new FileInputStream("./resources/mappe/mappa1"));
+        pro.load(new FileInputStream("./serverResources/fileconfigmappe/mappa1"));
         try {
             HashSet<Città> tutteLeCittà = (HashSet<Città>) methodCreaCittàDaFile.invoke(avviatorePartita, pro);
             //assegnamento delle città alla regione costa
