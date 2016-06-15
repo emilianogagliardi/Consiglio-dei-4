@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.util.List;
 
 public interface InterfacciaController extends Remote {
-    void passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
+    boolean passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
 
     //azioni principali
     boolean eleggereConsigliere(String idBalcone, String coloreConsigliere);

@@ -1,0 +1,9 @@
+package classicondivise;
+
+
+public enum ComunicazioneController {
+    PASSA_TURNO,
+    ELEGGERE_CONSIGLIERE,
+    ACQUISTARE_TESSERA_PERMESSO_COSTRUZIONE,
+    COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO_COSTRUZIONE;
+}
