@@ -21,13 +21,13 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView {
     private ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
     private ControllerFXPartita controllerFXPartita; //utilizzato per le update
 
-    private GUIView(ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FlussoView flusso){
-        super.setFlusso(flusso);
+    private GUIView(ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FXApplication flusso){
+        super.setApplication(flusso);
         this.controllerFXMosse = controllerFXMosse;
         this.controllerFXPartita = controllerFXPartita;
     }
 
-    public static void initGUIView (ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FlussoView flusso){
+    public static void initGUIView (ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FXApplication flusso){
         if (instance == null) {
             instance = new GUIView(controllerFXMosse, controllerFXPartita, flusso);
         }
