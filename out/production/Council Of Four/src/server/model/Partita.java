@@ -6,6 +6,7 @@ import server.model.carte.*;
 import server.model.eccezioni.*;
 import interfaccecondivise.InterfacciaView;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 import static server.model.CostantiModel.*;
@@ -187,13 +188,25 @@ public class Partita extends Observable {
 
     //update view
     private void updateViewRiservaAiutanti(){
-        super.notifyViews((InterfacciaView view) -> view.updateRiservaAiutanti(riservaAiutanti));
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateRiservaAiutanti(riservaAiutanti);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewRiservaConsiglieri(){
         ArrayList<String> coloriConsiglieri = new ArrayList<>();
         riservaConsiglieri.forEach((Consigliere consigliere) -> coloriConsiglieri.add(consigliere.getColore().toString()));
-        super.notifyViews((InterfacciaView view) -> view.updateRiservaConsiglieri(coloriConsiglieri));
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateRiservaConsiglieri(coloriConsiglieri);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewCarteBonusColoreCittà (){
@@ -210,7 +223,13 @@ public class Partita extends Observable {
             }
             mapCarte.put(carta.getColore().toString(), punti);
         });
-        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusColoreCittàTabellone(mapCarte));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateCarteBonusColoreCittàTabellone(mapCarte);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in cima al mazzo
@@ -224,6 +243,12 @@ public class Partita extends Observable {
             punti = 0; //errore
         }
         int finalPunti = punti; // solo per utilizzare in lambda expression
-        super.notifyViews((InterfacciaView view) -> view.updateCarteBonusReTabellone(finalPunti));
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateCarteBonusReTabellone(finalPunti);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

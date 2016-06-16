@@ -6,6 +6,7 @@ import server.model.carte.CartaBonusRegione;
 import server.model.carte.CartaPermessoCostruzione;
 import interfaccecondivise.InterfacciaView;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 import static server.model.CostantiModel.NUM_CITTA_PER_REGIONE;
@@ -134,10 +135,22 @@ public class Regione extends Observable{
             puntiCarta = -1; //-1 indica l'assenza della carta
         }
         int finalPuntiCarta = puntiCarta; //per utilizzarla nella lambda expression
-        super.notifyViews((InterfacciaView view) -> view.updateCarteBonusRegioneTabellone(getNome().toString(), finalPuntiCarta));
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateCarteBonusRegioneTabellone(getNome().toString(), finalPuntiCarta);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewCartePermessoCostruzione() {
-        super.notifyViews((InterfacciaView view) -> view.updateCartePermessoRegione(getNome().toString(), cartaPermessoCostruzione1, cartaPermessoCostruzione2));
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateCartePermessoRegione(getNome().toString(), cartaPermessoCostruzione1, cartaPermessoCostruzione2);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

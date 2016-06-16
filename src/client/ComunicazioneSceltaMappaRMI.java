@@ -15,16 +15,11 @@ import java.rmi.registry.Registry;
 //singleton
 public class ComunicazioneSceltaMappaRMI implements ComunicazioneSceltaMappa{
     private InterfacciaSceltaMappa setterMappa;
+    private String chiaveSceltaMappaRMI;
     private static ComunicazioneSceltaMappaRMI instance;
 
     private ComunicazioneSceltaMappaRMI(String chiaveSceltaMappaRMI) {
-        try {
-            Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
-            setterMappa = (InterfacciaSceltaMappa) registry.lookup(chiaveSceltaMappaRMI);
-        } catch (RemoteException | NotBoundException e) {
-            System.out.println("impossibile comunicare scelta mappa in rmi");
-            e.printStackTrace();
-        }
+        this.chiaveSceltaMappaRMI = chiaveSceltaMappaRMI;
     }
 
     public static void init(String chiaveSceltaMappaRMI){
@@ -40,6 +35,13 @@ public class ComunicazioneSceltaMappaRMI implements ComunicazioneSceltaMappa{
 
     @Override
     public void comunicaSceltaMappa(int id) {
+        try {
+            Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
+            setterMappa = (InterfacciaSceltaMappa) registry.lookup(chiaveSceltaMappaRMI);
+        } catch (RemoteException | NotBoundException e) {
+            System.out.println("impossibile comunicare scelta mappa in rmi");
+            e.printStackTrace();
+        }
         try {
             setterMappa.mappaScelta(id);
         } catch (RemoteException e) {

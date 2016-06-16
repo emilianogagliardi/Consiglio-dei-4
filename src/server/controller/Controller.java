@@ -13,6 +13,7 @@ import interfaccecondivise.InterfacciaView;
 import server.sistema.CostantiSistema;
 import server.sistema.Utility;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,11 @@ public class Controller implements Runnable, InterfacciaController {
             giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
 
             //il server.controller da il consenso al giocatore di iniziare il turno
-            views.get(giocatoreCorrente.getId()).eseguiTurno();
+            try {
+                views.get(giocatoreCorrente.getId()).eseguiTurno();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
 
             //il server.controller aspetta che il giocatore abbia finito il turno
             try {

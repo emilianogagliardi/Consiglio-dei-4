@@ -12,8 +12,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
+<<<<<<< HEAD
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+=======
+import java.rmi.RemoteException;
+>>>>>>> 3b47715f30029855d0e619f8edf2100e2c7511dc
 import java.util.*;
 
 
@@ -423,7 +427,12 @@ public class ControllerTest {
         giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
-            int idGiocatore = viewCorrente.getIdGiocatore();
+            int idGiocatore = 0;
+            try {
+                idGiocatore = viewCorrente.getIdGiocatore();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             Giocatore giocatore = new Giocatore(idGiocatore, CostantiModel.MONETE_INIZIALI_GIOCATORI[i], CostantiModel.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
