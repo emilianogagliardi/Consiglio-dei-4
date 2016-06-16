@@ -3,6 +3,7 @@ package client.view.GUI.controllerFX;
 import client.ComunicazioneSceltaMappa;
 import client.ComunicazioneSceltaMappaRMI;
 import client.ComunicazioneSceltaMappaSocket;
+import client.strutturedati.ListaCircolare;
 import client.view.GUI.GestoreFlussoFinestra;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.fxml.FXML;
@@ -10,14 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import client.strutturedati.ListaCircolare;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
 public class ControllerFXGallery extends GestoreFlussoFinestra implements Initializable{
-    private static boolean isSocketClient;
     private ComunicazioneSceltaMappa setterMappa;
     private ListaCircolare<Image> immagini;
     @FXML
@@ -26,22 +25,6 @@ public class ControllerFXGallery extends GestoreFlussoFinestra implements Initia
     private Button bottoneConferma;
     @FXML
     private ImageView vistaMappa;
-
-    public ControllerFXGallery(){
-        try{
-            if (isSocketClient) {
-                setterMappa = ComunicazioneSceltaMappaSocket.getInstance();
-            }else{
-                setterMappa = ComunicazioneSceltaMappaRMI.getInstance();
-            }
-        }catch(SingletonNonInizializzatoException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void setIsSocketClient(){
-        isSocketClient = true;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,6 +66,15 @@ public class ControllerFXGallery extends GestoreFlussoFinestra implements Initia
     //TODO da gestire in socket e RMI
     private void setAzioneBottoneConferma() {
         bottoneConferma.setOnAction(e -> {
+            try {
+                if (super.getApplication().isSocketClient()) {
+                    setterMappa = ComunicazioneSceltaMappaSocket.getInstance();
+                } else {
+                    setterMappa = ComunicazioneSceltaMappaRMI.getInstance();
+                }
+            }catch(SingletonNonInizializzatoException ex) {
+                ex.printStackTrace();
+            }
             int id = immagini.getPosizioneCorrente();
             setterMappa.comunicaSceltaMappa(id);
         });

@@ -8,8 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class FlussoView extends Application {
-    Stage finestraAttuale;
+public class FXApplication extends Application {
+    private Stage finestraAttuale;
+    private boolean isSocketClient;
 
     @Override
     public void start(Stage primaryStage) throws IOException{
@@ -22,12 +23,18 @@ public class FlussoView extends Application {
         FXMLLoader loader = new FXMLLoader();
         Parent root =  loader.load(getClass().getResource("/"+nomeFile).openStream());
         GestoreFlussoFinestra controllerFX = loader.getController();
-        controllerFX.setFlusso(this);
+        controllerFX.setApplication(this);
         finestraAttuale.setTitle("Council Of Four");
         finestraAttuale.setResizable(false);
         finestraAttuale.setScene(new Scene(root));
         finestraAttuale.show();
     }
+
+    public void setIsSocketClient(boolean isSocketClient){
+        this.isSocketClient = isSocketClient;
+    }
+
+    public boolean isSocketClient(){return isSocketClient;}
 
     public static void main(String[] args) {
         launch(args);

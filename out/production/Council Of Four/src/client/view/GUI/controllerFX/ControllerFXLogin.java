@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
@@ -90,17 +89,12 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             int id = Integer.parseInt(in.nextLine());
             assegnaIdGiocatore(id);
             assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
-            //inizializza il singleton per la comunicazione della scelta della mappa
-            ComunicazioneSceltaMappaSocket.init(socket);
-            //setta nel controller di scelta mappa isSocket = true
-            FXMLLoader loader = new FXMLLoader();
-            loader.load(getClass().getResource("/mappegallery.fxml").openStream());
-            ControllerFXGallery controllerFXGallery = loader.getController();
-            controllerFXGallery.setIsSocketClient();
             //inizializza la gui view
             GUIView view = getNewGUIView();
             new Thread(new SocketPolling(view, socket)).start(); //necessario alla comunicazione server -> client
             view.setIdGiocatore(id);
+            ComunicazioneSceltaMappaSocket.init(socket);
+            super.getApplication().setIsSocketClient(true);
         }catch(IOException e) {
             e.printStackTrace();
             super.setNuovoStep("erroreconnessione.fxml");
@@ -117,9 +111,9 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             view.setIdGiocatore(id);
             String chiaveController = loggerRMI.getChiaveController();
             assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
-            //inizializza il singleton per la comuncazione della mappa scelta
-            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
-        }catch(RemoteException | NotBoundException e){
+            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveController());
+            super.getApplication().setIsSocketClient(false);
+        }catch( NotBoundException | IOException e){
             e.printStackTrace();
             super.setNuovoStep("erroreconnessione.fxml");
         }
@@ -133,6 +127,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         controllerFXPartita.setIdGiocatore(id);
     }
 
+    //TODO non so se è possibile assegnare il proxy controller in questo modo, potrebbe scazzare
     //assegnamento del controller a controllerFXMosse
     private void assegnaController(InterfacciaController controller) {
         FXMLLoader loader = new FXMLLoader();
@@ -154,7 +149,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             loader = new FXMLLoader();
             loader.load(getClass().getClassLoader().getResource("viewgioco.fxml"));
             ControllerFXPartita controllerFXPartita = loader.getController();
-            GUIView.initGUIView(controllerFXMosse, controllerFXPartita, super.getFlusso());
+            GUIView.initGUIView(controllerFXMosse, controllerFXPartita, super.getApplication());
             try {
                 GUIView view = GUIView.getInstance();
                 return view;

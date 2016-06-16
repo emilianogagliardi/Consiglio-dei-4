@@ -146,7 +146,7 @@ public class AvviatorePartitaTest {
 
             }}); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
-        avviatorePartita = new AvviatorePartita(proxyViews);
+        avviatorePartita = new AvviatorePartita(proxyViews, 0);
     }
 
     @Test
@@ -156,7 +156,7 @@ public class AvviatorePartitaTest {
             Method method = AvviatorePartita.class.getDeclaredMethod("creaPartita", Properties.class);
             method.setAccessible(true);
             try{
-                AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
+                AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, 0);
                 Properties pro = new Properties();
                 pro.load(new FileInputStream("./serverResources/fileconfigmappe/mappa1"));
                 partita = (Partita) method.invoke(avviatorePartita, pro);
