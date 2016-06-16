@@ -6,8 +6,11 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.List;
 
-public interface InterfacciaController extends Remote, Serializable{ //serializable? l'ho messo per bindarlo su rmiregistry
-    void passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
+
+public interface InterfacciaController extends Remote, Serializable{ //serializable è per fare il bind su rmiregistry
+
+    boolean passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
+
 
     //azioni principali
     boolean eleggereConsigliere(String idBalcone, String coloreConsigliere);

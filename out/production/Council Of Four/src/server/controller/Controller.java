@@ -96,9 +96,10 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public void passaTurno(){ //verifica che il giocatore possa finire il turno
+    public boolean passaTurno(){ //verifica che il giocatore possa finire il turno
         //TODO: verifica azioni
         notify();
+        return true;
     }
 
     private void assegnaBonus(Bonus bonus) throws IllegalArgumentException {
@@ -208,8 +209,7 @@ public class Controller implements Runnable, InterfacciaController {
         NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
         //il giocatore deve avere azioni principali disponibili; la carta permesso costruzione non deve essere coperta; la città passat in input deve essere presenta sulla carta
         //permesso; la carta permesso passata in input deve effettivamente appartenere alla mano carte permesso del giocatore
-        if(!(azionePrincipaleDisponibile() && cartaPermessoCostruzione.isVisibile() && cartaPermessoCostruzione.getCittà().contains(nomeCittà)
-                && giocatoreCorrente.getManoCartePermessoCostruzione().contains(cartaPermessoCostruzione)))
+        if(!(cartaPermessoCostruzione.isVisibile() && cartaPermessoCostruzione.getCittà().contains(nomeCittà) && giocatoreCorrente.getManoCartePermessoCostruzione().contains(cartaPermessoCostruzione)))
             return false;
         if (!giocatoreCorrente.decrementaEmporiDisponibili()) {
             return false;
@@ -217,7 +217,7 @@ public class Controller implements Runnable, InterfacciaController {
             if (costruisciEmporio(nomeCittà)) {
                 giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
                 cartaPermessoCostruzione.setVisibile(false);
-                giocatoreCorrente.addCarta(cartaPermessoCostruzione);
+                giocatoreCorrente.addCarta(cartaPermessoCostruzione);  //riassegno al giocatore la stessa carta coperta
                 decrementaAzioniPrincipaliDisponibili();
                 return true;
             } else return false;
@@ -371,9 +371,9 @@ public class Controller implements Runnable, InterfacciaController {
         Regione regione = getRegioneDaNomeCittà(nomeCittàCostruzione);
         ArrayList<Città> cittàCollegateRitornate;
         try {
-            cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
             if(cittàCostruzione.giàCostruito(giocatoreCorrente))
                 return false;
+            cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
             try {
                 giocatoreCorrente.pagaAiutanti(CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti());
                 assegnaBonus(cittàCostruzione.getBonus());

@@ -157,14 +157,14 @@ public class AvviatorePartita implements Runnable {
         Mazzo<CartaPermessoCostruzione> mazzo = new Mazzo<>();
         //crea 5 carte con una sola città
         cittàs.forEach((Città città) -> {
-            ArrayList<NomeCittà> cittàCarta = new ArrayList<>(1);
+            HashSet<NomeCittà> cittàCarta = new HashSet<NomeCittà>(1);
             cittàCarta.add(città.getNome());
             mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(), cittàCarta));
         });
         //crea le restanti NUM_CARTE_PERMESSO_REGIONE -5 carte permesso, assegnando città randomiche
         Random rand = new Random();
         for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE - 5; i++) {
-            ArrayList<NomeCittà> cittàCarta = new ArrayList<>(2);
+            HashSet<NomeCittà> cittàCarta = new HashSet<>(2);
             int numCittàCarta = 2 + rand.nextInt(2); //numCittàCarta può valere 2 oppure 3
             ArrayList<Città> cittàPossibili = new ArrayList<>();
             cittàs.forEach(cittàPossibili::add); //città possibili contiene le città che possono essere assegnate alla carta corrente

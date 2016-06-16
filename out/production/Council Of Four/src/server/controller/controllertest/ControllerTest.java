@@ -6,8 +6,14 @@ import server.model.bonus.*;
 import server.model.carte.*;
 import org.junit.Test;
 import interfaccecondivise.InterfacciaView;
+import server.sistema.AvviatorePartita;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 
@@ -16,8 +22,10 @@ import static org.junit.Assert.*;
 public class ControllerTest {
     private ArrayList<InterfacciaView> proxyViews;
     private Controller controller;
-    Field azioniPrincipaliDisponibili;
-    Field azioneVeloceEseguita;
+    private Field azioniPrincipaliDisponibili;
+    private Field azioneVeloceEseguita;
+    private Field giocatoreCorrente;
+    private AvviatorePartita avviatorePartita;
 
     //attributi di partita
     private Partita partita;
@@ -25,12 +33,15 @@ public class ControllerTest {
     private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà1 = new HashSet<>(CostantiModel.NUM_CARTE_BONUS_COLORE_CITTA);
     private Mazzo<CartaPolitica> mazzoCartePolitica1 = new Mazzo<>();
     private Mazzo<CartaPremioDelRe> mazzoCartaPremioRe1 =  new Mazzo<>();
-    List<Bonus> percorsoDellaNobiltà1 = new ArrayList<>(CostantiModel.MAX_POS_NOBILTA);
-    HashSet<Regione> regioni1 = new HashSet<>(CostantiModel.NUM_REGIONI);
-    Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCosta1 = new Mazzo<>();
-    Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCollina1 = new Mazzo<>();
-    Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneMontagna1 = new Mazzo<>();
+    private List<Bonus> percorsoDellaNobiltà1 = new ArrayList<>(CostantiModel.MAX_POS_NOBILTA);
+    private HashSet<Regione> regioni1 = new HashSet<>(CostantiModel.NUM_REGIONI);
+    private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCosta1 = new Mazzo<>();
+    private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneCollina1 = new Mazzo<>();
+    private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzioneMontagna1 = new Mazzo<>();
+    private Properties pro;
+    private HashSet<Città> tutteLeCittà, cittàRegione;
     private ArrayList<Giocatore> giocatori;
+    private CartaPermessoCostruzione cartaPermessoCostruzione, cartaPermessoCostruzione2;
 
     public ControllerTest(){
         partita = new Partita(new ArrayList<InterfacciaView>());
@@ -97,12 +108,12 @@ public class ControllerTest {
             else percorsoDellaNobiltà1.add(NullBonus.getInstance());
         }
         for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE; i++){
-            mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<>()));
+            mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new HashSet<NomeCittà>()));
         }
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
         consiglieri.addAll(Arrays.asList(new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.ARANCIONE), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.ARANCIONE)));
         regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COSTA, 6), new ArrayList<InterfacciaView>()));
-        ArrayList<NomeCittà> cittàCartePermessoCostruzione = new ArrayList<>();
+        HashSet<NomeCittà> cittàCartePermessoCostruzione = new HashSet<>();
         cittàCartePermessoCostruzione.add(NomeCittà.ARKON);
         for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance()), cittàCartePermessoCostruzione));
@@ -133,6 +144,7 @@ public class ControllerTest {
         riservaConsiglieri.add(new Consigliere(ColoreConsigliere.VIOLA));
         riservaConsiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
         partita.setRiservaConsiglieri(riservaConsiglieri);
+
         proxyViews = new ArrayList<>();
         proxyViews.add(new InterfacciaView() {
             @Override
@@ -385,6 +397,28 @@ public class ControllerTest {
 
             }
         });
+
+        avviatorePartita = new AvviatorePartita(proxyViews, 0);
+        //ottengo le città dal file di properties
+        try {
+            FileInputStream is = new FileInputStream("./serverResources/fileconfigmappe/mappa1");
+            pro = new Properties();
+            pro.load(is);
+        }catch(FileNotFoundException e) {
+            System.out.println("impossibile trovare il file di configurazione della mappa");
+        } catch (IOException e) {
+            System.out.println("impossibile trovare il file di configurazione della mappa");
+        }
+        tutteLeCittà = creaCittàDaFile(pro);
+        creaSentieriCittàDaFile(pro, tutteLeCittà);
+        cittàRegione = cittàInRegioniDaFile(pro, NomeRegione.COLLINA, tutteLeCittà);
+        partita.getRegione(NomeRegione.COLLINA).addCittà(cittàRegione);
+        cittàRegione = cittàInRegioniDaFile(pro, NomeRegione.COSTA, tutteLeCittà);
+        partita.getRegione(NomeRegione.COSTA).addCittà(cittàRegione);
+        cittàRegione = cittàInRegioniDaFile(pro, NomeRegione.MONTAGNA, tutteLeCittà);
+        partita.getRegione(NomeRegione.MONTAGNA).addCittà(cittàRegione);
+
+
         //creo i giocatori
         giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
@@ -398,6 +432,14 @@ public class ControllerTest {
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.VIOLA));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.AZZURRO));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.AZZURRO));
+            HashSet< NomeCittà> cittàs = new HashSet<>();
+            cittàs.add(NomeCittà.ARKON);
+            cartaPermessoCostruzione = new CartaPermessoCostruzione(new BonusAvanzaPercorsoNobiltà(2,NullBonus.getInstance()), cittàs);
+            cittàs = new HashSet<>();
+            cittàs.add(NomeCittà.CASTRUM);
+            cartaPermessoCostruzione2 = new CartaPermessoCostruzione(new BonusAvanzaPercorsoNobiltà(2,NullBonus.getInstance()), cittàs);
+            giocatore.addCarta(cartaPermessoCostruzione);
+            giocatore.addCarta(cartaPermessoCostruzione2);
             giocatori.add(giocatore);
         }
         giocatori.forEach(partita::addGiocatore);
@@ -409,12 +451,48 @@ public class ControllerTest {
             azioneVeloceEseguita = Controller.class.getDeclaredField("azioneVeloceEseguita");
             azioneVeloceEseguita.setAccessible(true);
             azioneVeloceEseguita.set(controller, false);
+            giocatoreCorrente = Controller.class.getDeclaredField("giocatoreCorrente");
+            giocatoreCorrente.setAccessible(true);
         } catch (NoSuchFieldException exc){
             exc.printStackTrace();
         } catch (IllegalAccessException exc){
             exc.printStackTrace();
         }
     }
+
+    private HashSet<Città> creaCittàDaFile(Properties pro){
+        try {
+            Method method = AvviatorePartita.class.getDeclaredMethod("creaCittàDaFile", Properties.class);
+            method.setAccessible(true);
+            return (HashSet<Città>) method.invoke(avviatorePartita, pro);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exc) {
+            exc.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private HashSet<Città> cittàInRegioniDaFile(Properties pro, NomeRegione nomeRegione, HashSet<Città> tutteLeCittà){
+        try {
+            Method method = AvviatorePartita.class.getDeclaredMethod("cittàInRegioniDaFile", Properties.class, NomeRegione.class, HashSet.class);
+            method.setAccessible(true);
+            return (HashSet<Città>) method.invoke(avviatorePartita, pro, nomeRegione, tutteLeCittà);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exc) {
+            exc.printStackTrace();
+            return null;
+        }
+    }
+
+    private void creaSentieriCittàDaFile(Properties pro, HashSet<Città> tutteLeCittà){
+        try {
+            Method method = AvviatorePartita.class.getDeclaredMethod("creaSentieriCittàDaFile", Properties.class, HashSet.class);
+            method.setAccessible(true);
+            method.invoke(avviatorePartita, pro, tutteLeCittà);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exc) {
+            exc.printStackTrace();
+        }
+    }
+
 
     @Test
     public void eleggiConsigliereTest(){
@@ -456,13 +534,21 @@ public class ControllerTest {
 
     @Test
     public void costruireEmporioConTesseraPermessoCostruzione(){
-
+        resetGiocatore();
+        assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
+        resetGiocatore();
+        assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione2, NomeCittà.CASTRUM.toString()));
+        //TODO_ verificare se vengono assegnati i bonus per tutte le città dello stesso colore e per tutte le città in una regione
     }
 
     private void resetGiocatore(){
         try {
+            //utilizzo la reflection
             azioniPrincipaliDisponibili.set(controller, 1);
             azioneVeloceEseguita.set(controller, false);
+            Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
+            giocatore.guadagnaMonete(5);
+            giocatore.guadagnaAiutanti(5);
         } catch (IllegalAccessException exc){
             exc.printStackTrace();
         }

@@ -8,7 +8,8 @@ import java.util.List;
 
 
 public interface InterfacciaController extends Remote, Serializable{ //serializable è per fare il bind su rmiregistry
-    void passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
+
+    boolean passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
 
 
     //azioni principali

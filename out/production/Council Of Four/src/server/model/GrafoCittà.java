@@ -58,13 +58,13 @@ public class GrafoCittà {
 
     public boolean dfsVisit(Città elCittà, BiFunction<Città, Boolean, Boolean> biFunction, boolean valoreDaRitornare) {
         elCittà.setDistanza(0);
+        elCittà.setFlag(true);
         for (Città cittàAdiacente : elCittà.getCittàAdiacenti()) {
             if (!cittàAdiacente.getFlag()) {
                 valoreDaRitornare = biFunction.apply(cittàAdiacente, valoreDaRitornare);
                 valoreDaRitornare = dfsVisit(cittàAdiacente, biFunction, valoreDaRitornare);
             }
         }
-        elCittà.setFlag(true);
         return valoreDaRitornare;
     }
 }

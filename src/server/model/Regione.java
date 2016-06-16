@@ -16,7 +16,7 @@ public class Regione extends Observable{
     private CartaBonusRegione cartaBonusRegione;
     private CartaPermessoCostruzione cartaPermessoCostruzione1;
     private CartaPermessoCostruzione cartaPermessoCostruzione2;
-    private Collection<Città> città = new HashSet<Città>(NUM_CITTA_PER_REGIONE); //HashSet è un'implementazione dell'interfaccia Set, una Collection che non permette duplicati. NUM_CITTA_PER_REGIONE è la capacità iniziale
+    private HashSet<Città> città = new HashSet<Città>(NUM_CITTA_PER_REGIONE); //HashSet è un'implementazione dell'interfaccia Set, una Collection che non permette duplicati. NUM_CITTA_PER_REGIONE è la capacità iniziale
     private Mazzo<CartaPermessoCostruzione> mazzoCartePermessoCostruzione;
     private NomeRegione nomeRegione;
 
@@ -88,7 +88,14 @@ public class Regione extends Observable{
         this.città.add(città);
     }
 
-    public Collection<Città> getCittà(){
+    public void addCittà(HashSet<Città> città) throws IllegalArgumentException {
+        for (Città cittàSingola : città)
+            if (!cittàSingola.getNomeRegione().equals(this.getNome()))
+                throw new IllegalArgumentException("La città non appartiene a questa regione");
+            else this.città.add(cittàSingola);
+    }
+
+    public HashSet<Città> getCittà(){
         return città;
     }
 

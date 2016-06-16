@@ -85,12 +85,12 @@ public class PartitaTest {
             else percorsoDellaNobiltà1.add(NullBonus.getInstance());
         }
         for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE; i++){
-            mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new ArrayList<>()));
+            mazzoCartePermessoCostruzioneCosta1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(2, NullBonus.getInstance()), new HashSet<NomeCittà>()));
         }
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
         consiglieri.addAll(Arrays.asList(new Consigliere(ColoreConsigliere.VIOLA), new Consigliere(ColoreConsigliere.BIANCO), new Consigliere(ColoreConsigliere.AZZURRO), new Consigliere(ColoreConsigliere.VIOLA)));
         regioni1.add(new Regione(NomeRegione.COSTA, mazzoCartePermessoCostruzioneCosta1, new BalconeDelConsiglio(IdBalcone.COSTA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.COSTA, 6), new ArrayList<InterfacciaView>()));
-        ArrayList<NomeCittà> cittàCartePermessoCostruzione = new ArrayList<>();
+        HashSet<NomeCittà> cittàCartePermessoCostruzione = new HashSet<>();
         cittàCartePermessoCostruzione.add(NomeCittà.INDUR);
         for (int i = 0; i < CostantiModel.NUM_CARTE_PERMESSO_REGIONE; i++){
             mazzoCartePermessoCostruzioneCollina1.addCarta(new CartaPermessoCostruzione(new BonusPuntiVittoria(6, NullBonus.getInstance()), cittàCartePermessoCostruzione));
