@@ -57,31 +57,68 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String città) {
-        return false;
+        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true); ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))){ //autoFlush enabled
+            writer.println(ComunicazioneController.COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO_COSTRUZIONE.toString());
+            oos.writeObject(cartaPermessoCostruzione);
+            writer.println(città);
+        } catch (IOException exc){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione) {
-        return false;
+        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true); ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))){ //autoFlush enabled
+            writer.println(ComunicazioneController.COSTRUIRE_EMPORIO_CON_AIUTO_RE.toString());
+            oos.writeObject(nomiColoriCartePolitica);
+            writer.println(nomeCittàCostruzione);
+        } catch (IOException exc){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean ingaggiareAiutante() {
-        return false;
+        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
+            writer.println(ComunicazioneController.INGAGGIARE_AIUTANTE.toString());
+        } catch (IOException exc){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean cambiareTesserePermessoCostruzione(String regione) {
-        return false;
+        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
+            writer.println(ComunicazioneController.CAMBIARE_TESSERE_PERMESSO_COSTRUZIONE.toString());
+            writer.println(regione);
+        } catch (IOException exc){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere) {
-        return false;
+        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
+            writer.println(ComunicazioneController.MANDARE_AIUTANTE_ELEGGERE_CONSIGLIERE.toString());
+            writer.println(idBalcone);
+            writer.println(coloreConsigliere);
+        } catch (IOException exc){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean compiereAzionePrincipaleAggiuntiva() {
-        return false;
+        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
+            writer.println(ComunicazioneController.COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA.toString());
+        } catch (IOException exc){
+            return false;
+        }
+        return true;
     }
 }
