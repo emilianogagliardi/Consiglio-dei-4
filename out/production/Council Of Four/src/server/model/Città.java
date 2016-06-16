@@ -6,6 +6,7 @@ import server.model.eccezioni.CittàAdiacenteSeStessaException;
 import server.model.eccezioni.EmporioGiàEsistenteException;
 import interfaccecondivise.InterfacciaView;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -93,9 +94,15 @@ public class Città extends Observable {
     public Bonus getBonus() {return bonus;}
 
     private void updateView(){
-        ArrayList<Integer> ids = new ArrayList<>();
-        empori.stream().forEach((Emporio e) -> ids.add(e.getIdGiocatore()));
-        super.notifyViews((InterfacciaView v) -> v.updateEmporiCittà(nome.toString(), ids));
+        ArrayList<Integer> idGiocatori = new ArrayList<>();
+        empori.stream().forEach((Emporio e) -> idGiocatori.add(e.getIdGiocatore()));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateEmporiCittà(nome.toString(), idGiocatori);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

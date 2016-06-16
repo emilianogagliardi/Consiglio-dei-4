@@ -47,7 +47,13 @@ public class AvviatorePartita implements Runnable {
             }catch (RemoteException | AlreadyBoundException e){
                 System.out.println("impossibile bindare controller");
                 e.printStackTrace();
-                proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+                proxyViews.forEach((InterfacciaView view) -> {
+                    try {
+                        view.erroreDiConnessione();
+                    } catch (RemoteException e1) {
+                        e1.printStackTrace();
+                    }
+                });
             }
             executors.submit(controller);
         }
@@ -112,7 +118,13 @@ public class AvviatorePartita implements Runnable {
             return tutteLeCittà;
         }catch(NullPointerException e) {
             System.out.println("impossibile creare le città da file");
-            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+            proxyViews.forEach((InterfacciaView view) -> {
+                try {
+                    view.erroreDiConnessione();
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                }
+            });
             Thread.currentThread().interrupt();
             return null;
         }
@@ -130,7 +142,13 @@ public class AvviatorePartita implements Runnable {
             });
         }catch (NullPointerException e) {
             System.out.println("impossibile assegnare città adiacenti");
-            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+            proxyViews.forEach((InterfacciaView view) -> {
+                try {
+                    view.erroreDiConnessione();
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                }
+            });
             Thread.currentThread().interrupt();
         }
     }
@@ -236,7 +254,13 @@ public class AvviatorePartita implements Runnable {
             }
         }
         //se la città re non è stata trovata
-        proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+        proxyViews.forEach((InterfacciaView view) -> {
+            try {
+                view.erroreDiConnessione();
+            } catch (RemoteException e1) {
+                e1.printStackTrace();
+            }
+        });
         Thread.currentThread().interrupt();
         return null;
     }
@@ -292,7 +316,12 @@ public class AvviatorePartita implements Runnable {
         ArrayList<Giocatore> giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
-            int idGiocatore = viewCorrente.getIdGiocatore();
+            int idGiocatore = 0;
+            try {
+                idGiocatore = viewCorrente.getIdGiocatore();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             Giocatore giocatore = new Giocatore(idGiocatore, CostantiModel.MONETE_INIZIALI_GIOCATORI[i], CostantiModel.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
             for (int j = 0; j < CostantiModel.NUM_CARTE_POLITICA_INIZIALI_GIOCATORE; j++) {
                 giocatore.addCarta(partita.ottieniCartaPolitica());
@@ -306,7 +335,11 @@ public class AvviatorePartita implements Runnable {
         if(proxyViews.get(0) instanceof SocketProxyView) { //il primo giocatore loggato sceglie la mappa
             SocketProxyView proxyView = (SocketProxyView) proxyViews.get(0);
             proxyView.setAvviatore(this);
-            proxyViews.get(0).scegliMappa();
+            try {
+                proxyViews.get(0).scegliMappa();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }else{
             sceltaMappaRMI(proxyViews.get(0));
         }
@@ -318,12 +351,24 @@ public class AvviatorePartita implements Runnable {
             return pro;
         }catch(FileNotFoundException e) {
             System.out.println("impossibile trovare il file di configurazione della mappa");
-            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+            proxyViews.forEach((InterfacciaView view) -> {
+                try {
+                    view.erroreDiConnessione();
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                }
+            });
             Thread.currentThread().interrupt();
             return null;
         } catch (IOException e) {
             System.out.println("impossibile trovare il file di configurazione della mappa");
-            proxyViews.forEach(InterfacciaView::erroreDiConnessione);
+            proxyViews.forEach((InterfacciaView view) -> {
+                try {
+                    view.erroreDiConnessione();
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                }
+            });
             Thread.currentThread().interrupt();
             return null;
         }

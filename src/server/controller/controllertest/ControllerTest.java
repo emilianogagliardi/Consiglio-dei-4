@@ -8,6 +8,7 @@ import org.junit.Test;
 import interfaccecondivise.InterfacciaView;
 
 import java.lang.reflect.Field;
+import java.rmi.RemoteException;
 import java.util.*;
 
 
@@ -389,7 +390,12 @@ public class ControllerTest {
         giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
             InterfacciaView viewCorrente = proxyViews.get(i);
-            int idGiocatore = viewCorrente.getIdGiocatore();
+            int idGiocatore = 0;
+            try {
+                idGiocatore = viewCorrente.getIdGiocatore();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             Giocatore giocatore = new Giocatore(idGiocatore, CostantiModel.MONETE_INIZIALI_GIOCATORI[i], CostantiModel.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));

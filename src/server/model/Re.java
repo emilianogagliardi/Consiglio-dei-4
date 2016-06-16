@@ -2,6 +2,7 @@ package server.model;
 
 import interfaccecondivise.InterfacciaView;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -21,6 +22,12 @@ public class Re extends Observable {
     }
 
     private void updateViewPosizione(){
-        super.notifyViews((InterfacciaView v) -> v.updatePosizioneRe(città.getNome().toString()));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updatePosizioneRe(città.getNome().toString());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

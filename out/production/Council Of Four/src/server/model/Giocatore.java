@@ -5,6 +5,7 @@ import server.model.eccezioni.AiutantiNonSufficientiException;
 import server.model.eccezioni.MoneteNonSufficientiException;
 import interfaccecondivise.InterfacciaView;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -185,32 +186,66 @@ public class Giocatore extends Observable {
 
     //update view
     private void updateViewMonete(){
-        super.notifyViews((InterfacciaView v) -> v.updateMonete(getId(), getMonete()));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateMonete(getId(), getMonete());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewAiutanti(){
-        super.notifyViews((InterfacciaView v) -> v.updateAiutanti(getId(), getAiutanti()));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateAiutanti(getId(), getAiutanti());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewCartePolitica(){
         super.notifyViews((InterfacciaView v) -> {
             ArrayList<String> colori = new ArrayList<>();
             manoCartePolitica.stream().forEach((CartaPolitica c) -> colori.add(c.getColore().toString()));
-            if (v.getIdGiocatore() == getId())  v.updateCartePoliticaProprie(colori);
-            else v.updateCartePoliticaAvversari(getId(), getManoCartePolitica().size());
+            try {
+                if (v.getIdGiocatore() == getId())  v.updateCartePoliticaProprie(colori);
+                else v.updateCartePoliticaAvversari(getId(), getManoCartePolitica().size());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         });
     }
 
     private void updateViewEmporiDisponibili(){
-        super.notifyViews((InterfacciaView v) -> v.updateEmporiDisponibiliGiocatore(getId(), getEmporiDisponibili()));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateEmporiDisponibiliGiocatore(getId(), getEmporiDisponibili());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewPuntiVittoria(){
-        super.notifyViews((InterfacciaView v) -> v.updatePuntiVittoriaGiocatore(getId(), getPuntiVittoria()));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updatePuntiVittoriaGiocatore(getId(), getPuntiVittoria());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewPercorsoNobiltà(){
-        super.notifyViews((InterfacciaView v) -> v.updatePercorsoNobiltà(getId(), getPosizionePercorsoNobiltà()));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updatePercorsoNobiltà(getId(), getPosizionePercorsoNobiltà());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewCarteBonusRegione() {
@@ -227,7 +262,13 @@ public class Giocatore extends Observable {
             }
             mapCarte.put(carta.getNomeRegione().toString(), punti);
         });
-        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusRegioneGiocatore(getId(), mapCarte));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateCarteBonusRegioneGiocatore(getId(), mapCarte);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewCarteBonusColoreCittà (){
@@ -244,7 +285,13 @@ public class Giocatore extends Observable {
             }
             mapCarte.put(carta.getColore().toString(), punti);
         });
-        super.notifyViews((InterfacciaView v) -> v.updateCarteBonusColoreCittàGiocatore(getId(), mapCarte));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateCarteBonusColoreCittàGiocatore(getId(), mapCarte);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void updateViewCartePremioRe(){
@@ -261,10 +308,22 @@ public class Giocatore extends Observable {
             }
             mapCarte.put(((Integer)carta.getNumeroOrdine()).toString(), punti);
         });
-       super.notifyViews((InterfacciaView v) -> v.updateCarteBonusReGiocatore(getId(), mapCarte));
+       super.notifyViews((InterfacciaView v) -> {
+           try {
+               v.updateCarteBonusReGiocatore(getId(), mapCarte);
+           } catch (RemoteException e) {
+               e.printStackTrace();
+           }
+       });
     }
 
     private void updateViewCartePermessoCostruzione() {
-        super.notifyViews((InterfacciaView v) -> v.updateCartePermessoGiocatore(getId(), manoCartePermessoCostruzione));
+        super.notifyViews((InterfacciaView v) -> {
+            try {
+                v.updateCartePermessoGiocatore(getId(), manoCartePermessoCostruzione);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

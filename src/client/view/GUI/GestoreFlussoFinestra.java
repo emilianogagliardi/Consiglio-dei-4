@@ -5,8 +5,8 @@ import java.io.IOException;
 /*
 classe che contiene un riferimento alla javafx application (FlussoView), in grado di assegnare una nuova finestra principale
  */
-public abstract class GestoreFlussoFinestra {
-    private FXApplication application;
+public abstract class GestoreFlussoFinestra{
+    transient private FXApplication application;
 
     public void setApplication(FXApplication application) {
         this.application = application;

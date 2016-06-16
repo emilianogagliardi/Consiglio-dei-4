@@ -4,6 +4,7 @@ import server.model.carte.ColoreCartaPolitica;
 import interfaccecondivise.InterfacciaView;
 import server.sistema.Utility;
 
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -63,10 +64,16 @@ public class BalconeDelConsiglio extends Observable {
     }
 
     private void updateView(){
-        super.notifyViews((InterfacciaView view) -> view.updateBalcone(   IdBalcone.toString(),
-                                                                    getColoriConsiglieri().get(0).toString(),
-                                                                    getColoriConsiglieri().get(1).toString(),
-                                                                    getColoriConsiglieri().get(2).toString(),
-                                                                    getColoriConsiglieri().get(3).toString()));
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateBalcone(   IdBalcone.toString(),
+                        getColoriConsiglieri().get(0).toString(),
+                        getColoriConsiglieri().get(1).toString(),
+                        getColoriConsiglieri().get(2).toString(),
+                        getColoriConsiglieri().get(3).toString());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

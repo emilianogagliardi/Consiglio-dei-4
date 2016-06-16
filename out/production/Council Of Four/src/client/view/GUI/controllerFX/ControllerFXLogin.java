@@ -107,11 +107,12 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
             //effettua login ottenendo l'id del giocatore
             GUIView view = getNewGUIView();
-            int id = loggerRMI.login(getNewGUIView()); //passa la view per rendere possibile la comunicazione server -> client
+            int id = loggerRMI.login(view); //passa la view per rendere possibile la comunicazione server -> client
             view.setIdGiocatore(id);
-            String chiaveController = loggerRMI.getChiaveController();
-            assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
-            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveController());
+            //TODO non è qui che deve essere lookuppato il controller, verrà bindato solo quando tutti i giocatori hanno loggato
+            //String chiaveController = loggerRMI.getChiaveController();
+            //assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
+            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
             super.getApplication().setIsSocketClient(false);
         }catch( NotBoundException | IOException e){
             e.printStackTrace();
@@ -127,6 +128,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         controllerFXPartita.setIdGiocatore(id);
     }
 
+    //TODO non è il momento giusto per gettare e assegare il controller, in questo punto è necessario solamente ottenere la stringa
     //TODO non so se è possibile assegnare il proxy controller in questo modo, potrebbe scazzare
     //assegnamento del controller a controllerFXMosse
     private void assegnaController(InterfacciaController controller) {

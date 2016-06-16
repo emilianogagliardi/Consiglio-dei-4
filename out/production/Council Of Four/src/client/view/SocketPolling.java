@@ -1,10 +1,11 @@
 package client.view;
 
+import client.view.GUI.GUIView;
 import interfaccecondivise.InterfacciaView;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /*
@@ -15,7 +16,7 @@ public class SocketPolling implements Runnable{
     InterfacciaView view;
     Scanner in;
 
-    public SocketPolling(InterfacciaView view, Socket socket) {
+    public SocketPolling(GUIView view, Socket socket) {
         this.view = view;
         try {
             in = new Scanner(socket.getInputStream());
@@ -31,7 +32,11 @@ public class SocketPolling implements Runnable{
             switch (daServer){
                 //TODO ricezione e servizio degli ordini da server, chiamando i metodi sulla view
                 case "sceglimappa":
-                    Platform.runLater(() -> view.scegliMappa()); //le modifiche sulla voiew possono essere fatte solo nel thread principale
+                    try { //non è possibile che venga lanciata questa eccezzione, non è utilizzato rmi ma socket
+                        view.scegliMappa();
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 default:
                     break;

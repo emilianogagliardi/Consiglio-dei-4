@@ -68,7 +68,11 @@ public class Server {
     }
 
     public synchronized void addView(InterfacciaView view){
-        view.setIdGiocatore(idCorrente);
+        try {
+            view.setIdGiocatore(idCorrente);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         proxyViews.add(view);
         idCorrente++;
         if (proxyViews.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
