@@ -19,12 +19,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AvviatorePartita implements Runnable {
+    private int numeroBindRegistry;
     private ArrayList<InterfacciaView> proxyViews;
     private static ExecutorService executors = Executors.newCachedThreadPool();
     private int idMappa;
 
-    public AvviatorePartita(ArrayList<InterfacciaView> proxyViews) {
+    public AvviatorePartita(ArrayList<InterfacciaView> proxyViews, int numeroBindRegistry) {
         this.proxyViews = proxyViews;
+        this.numeroBindRegistry = numeroBindRegistry;
     }
 
     public void setMappa(int idMappa){this.idMappa = idMappa;}
@@ -37,7 +39,11 @@ public class AvviatorePartita implements Runnable {
             Controller controller = new Controller(nuovaPartita, proxyViews);
             //TODO creare una socket polling per il controller, per ogni client
             try {
-                LocateRegistry.getRegistry(CostantiSistema.RMI_PORT).bind(NomeChiaveRMI.getChiaveController(), controller);
+                Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
+                String chiaveController = PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + numeroBindRegistry ;
+                //TODO togliere questa riga
+                System.out.println("chiaveController = " + chiaveController);
+                registry.bind(chiaveController, controller);
             }catch (RemoteException | AlreadyBoundException e){
                 System.out.println("impossibile bindare controller");
                 e.printStackTrace();
@@ -45,7 +51,8 @@ public class AvviatorePartita implements Runnable {
             }
             executors.submit(controller);
         }
-        //TODO togliere questa riga
+        //TODO togliere queste righe
+        System.out.println("la mappa scleta è "+idMappa);
         System.out.println("la partita è configurata, si poò cominciare");
     }
 
@@ -305,7 +312,7 @@ public class AvviatorePartita implements Runnable {
         }
         String nomeFile = "mappa"+idMappa;
         try {
-            FileInputStream is = new FileInputStream("./resources/mappe/"+nomeFile);
+            FileInputStream is = new FileInputStream("./serverResources/fileconfigmappe/"+nomeFile);
             Properties pro = new Properties();
             pro.load(is);
             return pro;
@@ -325,7 +332,8 @@ public class AvviatorePartita implements Runnable {
     private void sceltaMappaRMI(InterfacciaView view) {
         try {
             Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
-            registry.bind(NomeChiaveRMI.getChiaveSceltaMappa(), new SceltaMappaRMI(this));
+            String chiaveSceltaMappa = PrefissiChiaviRMI.PREFISSO_CHIAVE_SCELTA_MAPPA + numeroBindRegistry;
+            registry.bind(chiaveSceltaMappa, new SceltaMappaRMI(this));
             view.scegliMappa();
         }catch(RemoteException | AlreadyBoundException e){
             e.printStackTrace();

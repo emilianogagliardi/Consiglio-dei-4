@@ -2,10 +2,11 @@ package interfaccecondivise;
 
 import server.model.carte.CartaPermessoCostruzione;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.List;
 
-public interface InterfacciaController extends Remote {
+public interface InterfacciaController extends Remote, Serializable{ //serializable? l'ho messo per bindarlo su rmiregistry
     void passaTurno(); //la View chiama passaTurno per passare il turno al giocatore successivo
 
     //azioni principali

@@ -6,6 +6,7 @@ import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 import server.model.carte.CartaPermessoCostruzione;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,11 +16,11 @@ import java.util.List;
     a controllerFXPartita, e l'esecuzione delle mosse a controllerFXMosse.
     Quindi estende il tipo GestoreFlussoFinestra.
  */
-public class GUIView extends GestoreFlussoFinestra implements InterfacciaView {
+public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, Serializable{
     private int idGiocatore;
-    private static GUIView instance;
-    private ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
-    private ControllerFXPartita controllerFXPartita; //utilizzato per le update
+    transient private static GUIView instance;
+    transient private ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
+    transient private ControllerFXPartita controllerFXPartita; //utilizzato per le update
 
     private GUIView(ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FXApplication flusso){
         super.setApplication(flusso);

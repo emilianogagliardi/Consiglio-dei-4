@@ -29,7 +29,7 @@ public class Server {
     }
 
     public void startServer() {
-        NomeChiaveRMI.init();
+        NumeroNomeChiaveRMI.init();
         try{
             LoggerRMI loggerRMI = new LoggerRMI(this);
             Registry registry = LocateRegistry.createRegistry(CostantiSistema.RMI_PORT);
@@ -84,8 +84,9 @@ public class Server {
     public void fineGiocatoriAccettati() {
         //TODO togliere questa riga
         System.out.println("pronti per cominciare!");
+        int numeroChiavi = NumeroNomeChiaveRMI.ottieniNuovoNumero();
         idCorrente = 0;
-        AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews);
+        AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, numeroChiavi);
         new Thread(avviatorePartita).start();
     }
 
