@@ -101,9 +101,10 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public void passaTurno(){ //verifica che il giocatore possa finire il turno
+    public boolean passaTurno(){ //verifica che il giocatore possa finire il turno
         //TODO: verifica azioni
         notify();
+        return true;
     }
 
     private void assegnaBonus(Bonus bonus) throws IllegalArgumentException {
