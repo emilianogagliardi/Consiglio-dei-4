@@ -167,4 +167,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     public void eseguiTurno() throws RemoteException {
 
     }
+
+    @Override
+    public void fineTurno() throws RemoteException {
+
+    }
 }

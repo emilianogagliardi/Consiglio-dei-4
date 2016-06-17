@@ -273,7 +273,13 @@ public class ControllerTest {
             @Override
             public void eseguiTurno() {
 
-            }}); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
+            }
+
+            @Override
+            public void fineTurno() throws RemoteException {
+
+            }
+        }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         proxyViews.add(new InterfacciaView() {
             @Override
@@ -397,6 +403,11 @@ public class ControllerTest {
 
             @Override
             public void eseguiTurno() {
+
+            }
+
+            @Override
+            public void fineTurno() throws RemoteException {
 
             }
         });
@@ -588,6 +599,7 @@ public class ControllerTest {
             exc.printStackTrace();
         }
     }
+
 
     private void resetGiocatore(){
         try {

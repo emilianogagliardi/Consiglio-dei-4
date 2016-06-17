@@ -69,11 +69,20 @@ public class Controller implements Runnable, InterfacciaController {
                 e.printStackTrace();
             }
 
-            //il server.controller aspetta che il giocatore abbia finito il turno
+            //il controller aspetta che il giocatore abbia finito il turno
             try {
-                wait(CostantiSistema.TIMEOUT_TURNO);
-                //TODO: view.fineTuno();
-
+                synchronized (this){
+                    wait(CostantiSistema.TIMEOUT_TURNO);
+                }
+                int idGiocatoreCorrente = giocatoreCorrente.getId();
+                views.forEach((InterfacciaView view) -> {
+                    try {
+                        if (view.getIdGiocatore() == idGiocatoreCorrente)
+                            view.fineTurno();
+                    } catch (RemoteException exc) {
+                        exc.printStackTrace();
+                    }
+                });
                 //si passa al giocatore successivo
                 giocatoreCorrente = prossimoGiocatore(giocatoreCorrente);
             } catch (InterruptedException exc) {
@@ -102,8 +111,9 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean passaTurno(){ //verifica che il giocatore possa finire il turno
-        //TODO: verifica azioni
-        notify();
+        synchronized (this){
+            notify();
+        }
         return true;
     }
 

@@ -5,7 +5,7 @@ import client.ComunicazioneSceltaMappaSocket;
 import client.view.CostantiClient;
 import client.view.GUI.GUIView;
 import client.view.GUI.GestoreFlussoFinestra;
-import client.view.SocketPolling;
+import client.view.SocketPollingView;
 import client.view.SocketProxyController;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
@@ -91,7 +91,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
             //inizializza la gui view
             GUIView view = getNewGUIView();
-            new Thread(new SocketPolling(view, socket)).start(); //necessario alla comunicazione server -> client
+            new Thread(new SocketPollingView(view, socket)).start(); //necessario alla comunicazione server -> client
             view.setIdGiocatore(id);
             ComunicazioneSceltaMappaSocket.init(socket);
             super.getApplication().setIsSocketClient(true);

@@ -12,11 +12,11 @@ import java.util.Scanner;
     codice di un thread che fa polling sul socket. Riceve oridini e chiama metodi sulla view.
     Rende trasparente nel caso di comunicazone socket la ricezione di ordini dal server remoto.
  */
-public class SocketPolling implements Runnable{
+public class SocketPollingView implements Runnable{
     InterfacciaView view;
     Scanner in;
 
-    public SocketPolling(GUIView view, Socket socket) {
+    public SocketPollingView(GUIView view, Socket socket) {
         this.view = view;
         try {
             in = new Scanner(socket.getInputStream());

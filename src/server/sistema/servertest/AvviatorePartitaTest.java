@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.rmi.RemoteException;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -144,7 +145,13 @@ public class AvviatorePartitaTest {
             @Override
             public void eseguiTurno() {
 
-            }}); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
+            }
+
+            @Override
+            public void fineTurno() throws RemoteException {
+
+            }
+        }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         avviatorePartita = new AvviatorePartita(proxyViews, 0);
     }

@@ -7,6 +7,7 @@ import server.sistema.AvviatorePartita;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -157,6 +158,11 @@ public class SocketProxyView implements InterfacciaView {
 
     @Override
     public void eseguiTurno() {
+
+    }
+
+    @Override
+    public void fineTurno() throws RemoteException {
 
     }
 }
