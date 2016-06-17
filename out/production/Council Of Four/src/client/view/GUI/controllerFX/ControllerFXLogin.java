@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.rmi.NotBoundException;
@@ -85,8 +86,10 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
     private void apriConnessioneSocket() {
         try {
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
-            Scanner in = new Scanner(socket.getInputStream()); //get dell'idGicatore assegnato da server
-            int id = Integer.parseInt(in.nextLine());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            int id = ois.readInt();
+            /*Scanner in = new Scanner(socket.getInputStream()); //get dell'idGicatore assegnato da server
+            int id = Integer.parseInt(in.nextLine());*/
             assegnaIdGiocatore(id);
             assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
             //inizializza la gui view

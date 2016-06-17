@@ -10,8 +10,8 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;
 
-public class SocketPollingController implements Runnable{
-    private Socket socket; //TODO: il chiamante deve chiudere il socket
+public class SocketPollingController implements Runnable {
+    private Socket socket;
     private Controller controller;
     private volatile boolean running = true;
 
@@ -21,76 +21,86 @@ public class SocketPollingController implements Runnable{
     }
 
     public void termina(){
+        try {
+            this.socket.close();
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
         running = false;
-    } //TODO: ricordarsi di chiamare questo metodo
+    }
 
     @Override
     public void run() {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())); ObjectInputStream ois = new ObjectInputStream(new FileInputStream("save.ser"));) {
+        try (ObjectInputStream ois = new ObjectInputStream(socket.getInputStream())) {
             String inputLine, idBalcone, coloreConsigliereDaRiserva, stringaNomeCittà, regione, coloreConsigliere;
             int numeroCarta;
             List<String> nomiColoriCartePolitica;
             CartaPermessoCostruzione cartaPermessoCostruzione;
             while (running) {
-                inputLine = in.readLine();
-                ComunicazioneController comunicazioneController = ComunicazioneController.valueOf(inputLine);
-                switch (comunicazioneController) {
-                    case PASSA_TURNO:
-                        controller.passaTurno();
-                        break;
-                    case ELEGGERE_CONSIGLIERE:
-                        idBalcone = in.readLine();
-                        coloreConsigliereDaRiserva  = in.readLine();
-                        controller.eleggereConsigliere(idBalcone, coloreConsigliereDaRiserva);
-                        break;
-                    case ACQUISTARE_TESSERA_PERMESSO_COSTRUZIONE:
-                        idBalcone = in.readLine();
-                        try {
-                            nomiColoriCartePolitica = (List<String>) ois.readObject();
-                        } catch (ClassNotFoundException exc){
-                            exc.printStackTrace();
+                try {
+                    inputLine = (String) ois.readObject();
+                    ComunicazioneController comunicazioneController = ComunicazioneController.valueOf(inputLine);
+                    switch (comunicazioneController) {
+                        case PASSA_TURNO:
+                            controller.passaTurno();
                             break;
-                        }
-                        numeroCarta = Integer.valueOf(in.readLine());
-                        controller.acquistareTesseraPermessoCostruzione(idBalcone, nomiColoriCartePolitica, numeroCarta);
-                        break;
-                    case COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO_COSTRUZIONE:
-                        try {
-                            cartaPermessoCostruzione = (CartaPermessoCostruzione) ois.readObject();
-                        } catch (ClassNotFoundException exc){
-                            exc.printStackTrace();
+                        case ELEGGERE_CONSIGLIERE:
+                            idBalcone = (String) ois.readObject();
+                            coloreConsigliereDaRiserva  = (String) ois.readObject();
+                            controller.eleggereConsigliere(idBalcone, coloreConsigliereDaRiserva);
                             break;
-                        }
-                        stringaNomeCittà = in.readLine();
-                        controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, stringaNomeCittà);
-                        break;
-                    case COSTRUIRE_EMPORIO_CON_AIUTO_RE:
-                        try {
-                            nomiColoriCartePolitica = (List<String>) ois.readObject();
-                        } catch (ClassNotFoundException exc){
-                            exc.printStackTrace();
+                        case ACQUISTARE_TESSERA_PERMESSO_COSTRUZIONE:
+                            idBalcone = (String) ois.readObject();
+                            try {
+                                nomiColoriCartePolitica = (List<String>) ois.readObject();
+                            } catch (ClassNotFoundException exc){
+                                exc.printStackTrace();
+                                break;
+                            }
+                            numeroCarta = Integer.valueOf((Integer) ois.readObject());
+                            controller.acquistareTesseraPermessoCostruzione(idBalcone, nomiColoriCartePolitica, numeroCarta);
                             break;
-                        }
-                        stringaNomeCittà = in.readLine();
-                        controller.costruireEmporioConAiutoRe(nomiColoriCartePolitica, stringaNomeCittà);
-                        break;
-                    case INGAGGIARE_AIUTANTE:
-                        controller.ingaggiareAiutante();
-                        break;
-                    case CAMBIARE_TESSERE_PERMESSO_COSTRUZIONE:
-                        regione = in.readLine();
-                        controller.cambiareTesserePermessoCostruzione(regione);
-                        break;
-                    case MANDARE_AIUTANTE_ELEGGERE_CONSIGLIERE:
-                        idBalcone = in.readLine();
-                        coloreConsigliere = in.readLine();
-                        controller.mandareAiutanteEleggereConsigliere(idBalcone, coloreConsigliere);
-                        break;
-                    case COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA:
-                        controller.compiereAzionePrincipaleAggiuntiva();
-                        break;
-                    default:
-                        break;
+                        case COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO_COSTRUZIONE:
+                            try {
+                                cartaPermessoCostruzione = (CartaPermessoCostruzione) ois.readObject();
+                            } catch (ClassNotFoundException exc){
+                                exc.printStackTrace();
+                                break;
+                            }
+                            stringaNomeCittà = (String) ois.readObject();
+                            controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, stringaNomeCittà);
+                            break;
+                        case COSTRUIRE_EMPORIO_CON_AIUTO_RE:
+                            try {
+                                nomiColoriCartePolitica = (List<String>) ois.readObject();
+                            } catch (ClassNotFoundException exc){
+                                exc.printStackTrace();
+                                break;
+                            }
+                            stringaNomeCittà = (String) ois.readObject();
+                            controller.costruireEmporioConAiutoRe(nomiColoriCartePolitica, stringaNomeCittà);
+                            break;
+                        case INGAGGIARE_AIUTANTE:
+                            controller.ingaggiareAiutante();
+                            break;
+                        case CAMBIARE_TESSERE_PERMESSO_COSTRUZIONE:
+                            regione = (String) ois.readObject();
+                            controller.cambiareTesserePermessoCostruzione(regione);
+                            break;
+                        case MANDARE_AIUTANTE_ELEGGERE_CONSIGLIERE:
+                            idBalcone = (String) ois.readObject();
+                            coloreConsigliere = (String) ois.readObject();
+                            controller.mandareAiutanteEleggereConsigliere(idBalcone, coloreConsigliere);
+                            break;
+                        case COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA:
+                            controller.compiereAzionePrincipaleAggiuntiva();
+                            break;
+                        default:
+                            break;
+                    }
+
+                } catch (ClassNotFoundException exc) {
+                    exc.printStackTrace();
                 }
             }
         } catch (IOException exc){

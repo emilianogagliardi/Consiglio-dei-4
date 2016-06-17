@@ -4,6 +4,7 @@ import interfaccecondivise.InterfacciaView;
 import server.proxyView.SocketProxyView;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -58,8 +59,9 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 //comunica al client qual è il suo id e aggiunge la proxy view associata
                 synchronized ((Object) idCorrente) {
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-                    pw.println(idCorrente);
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    oos.writeInt(idCorrente);
+                    oos.flush();
                     addView(new SocketProxyView(socket));
                 }
             }catch (IOException e){

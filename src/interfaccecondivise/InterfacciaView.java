@@ -35,4 +35,5 @@ public interface InterfacciaView extends Remote {
     void updatePosizioneRe(String città) throws RemoteException;
     void eseguiTurno() throws RemoteException;
     void fineTurno() throws RemoteException;
+    void mostraMessaggio(String messaggio) throws RemoteException;
 }

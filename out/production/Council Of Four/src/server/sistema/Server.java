@@ -4,6 +4,7 @@ import interfaccecondivise.InterfacciaView;
 import server.proxyView.SocketProxyView;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -58,8 +59,11 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 //comunica al client qual è il suo id e aggiunge la proxy view associata
                 synchronized ((Object) idCorrente) {
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-                    pw.println(idCorrente);
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    oos.writeInt(idCorrente);
+                    oos.flush();
+                    /*PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+                    pw.println(idCorrente);*/
                     addView(new SocketProxyView(socket));
                 }
             }catch (IOException e){
@@ -83,18 +87,12 @@ public class Server {
         if (proxyViews.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
             timeout = scheduler.schedule(() -> {fineGiocatoriAccettati();}, CostantiSistema.TIMEOUT_2_GIOCATORI, SECONDS);
         } else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
-            //TODO: DEBUG sotto
-            System.out.println("Timeout stoppato!");
-            //TODO: DEBUG sopra
             timeout.cancel(true);
             fineGiocatoriAccettati();
         }
     }
 
     public void fineGiocatoriAccettati() {
-        //TODO: DEBUG sotto
-        System.out.println("Partita iniziata!");
-        //TODO: DEBUG sopra
         idCorrente = 0;
         AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, numeroChiaviCorrente);
         new Thread(avviatorePartita).start();

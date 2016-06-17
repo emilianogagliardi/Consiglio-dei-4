@@ -3,20 +3,19 @@ package client;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-/**
- * Created by emilianogagliardi on 15/06/16.
- */
+
 //singleton
 public class ComunicazioneSceltaMappaSocket implements ComunicazioneSceltaMappa{
     private static ComunicazioneSceltaMappaSocket instance;
-    private static PrintWriter out;
+    private static ObjectOutputStream oos;
 
     private ComunicazioneSceltaMappaSocket(Socket socket) {
         try {
-            out = new PrintWriter(socket.getOutputStream(), true);
+            oos = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             System.out.println("impossibile comunicare la scelta della mappa in socket");
             e.printStackTrace();
@@ -34,7 +33,11 @@ public class ComunicazioneSceltaMappaSocket implements ComunicazioneSceltaMappa{
 
     @Override
     public void comunicaSceltaMappa(int id) {
-        out.println(id);
-        out.flush();
+        try{
+            oos.writeInt(id);
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 }
