@@ -37,6 +37,7 @@ public class AvviatorePartita implements Runnable {
         Partita nuovaPartita = creaPartita(pro);
         if (!Thread.currentThread().isInterrupted()) {
             Controller controller = new Controller(nuovaPartita, proxyViews);
+
             //TODO creare una socket polling per il controller, per ogni client
             try {
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);

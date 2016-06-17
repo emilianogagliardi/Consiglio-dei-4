@@ -89,6 +89,7 @@ public class Controller implements Runnable, InterfacciaController {
                 exc.printStackTrace();
             }
         }
+
     }
 
     private boolean emporiDisponibili(Giocatore giocatore){

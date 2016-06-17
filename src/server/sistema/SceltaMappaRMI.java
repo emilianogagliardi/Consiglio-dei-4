@@ -4,9 +4,7 @@ import interfaccecondivise.InterfacciaSceltaMappa;
 
 import java.io.Serializable;
 
-/**
- * Created by emilianogagliardi on 14/06/16.
- */
+
 public class SceltaMappaRMI implements InterfacciaSceltaMappa, Serializable{
     transient AvviatorePartita avviatorePartita;
 
