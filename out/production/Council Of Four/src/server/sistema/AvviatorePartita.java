@@ -35,12 +35,14 @@ public class AvviatorePartita implements Runnable {
     public void run() {
         Properties pro = sceltaMappa();
         Partita nuovaPartita = creaPartita(pro);
+        ArrayList<SocketPollingController> socketPollingControllers = new ArrayList<>();
         if (!Thread.currentThread().isInterrupted()) {
-            //TODO creare una socket polling per il controller, per ogni client
             try {
                 Controller controller = new Controller(nuovaPartita, proxyViews);
                 //crea i socketPolling per il controller
-                proxyViews.stream().filter((InterfacciaView view) -> view instanceof SocketProxyView).forEach((InterfacciaView view) -> new Thread(new SocketPollingController(((SocketProxyView)view).getSocket(), controller)).start());
+                proxyViews.stream().filter((InterfacciaView view) -> view instanceof SocketProxyView).forEach((InterfacciaView view) -> socketPollingControllers.add(new SocketPollingController(((SocketProxyView)view).getSocket(), controller)));
+                socketPollingControllers.forEach((SocketPollingController runnable) -> {new Thread(runnable).start();});
+                controller.setSocketPollingControllers(socketPollingControllers);
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
                 String chiaveController = PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + numeroBindRegistry ;
                 //TODO togliere questa riga

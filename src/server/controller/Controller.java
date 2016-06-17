@@ -10,6 +10,7 @@ import server.model.carte.ColoreCartaPolitica;
 import server.model.eccezioni.AiutantiNonSufficientiException;
 import server.model.eccezioni.MoneteNonSufficientiException;
 import server.sistema.CostantiSistema;
+import server.sistema.SocketPollingController;
 import server.sistema.Utility;
 
 import java.rmi.RemoteException;
@@ -30,6 +31,7 @@ public class Controller implements Runnable, InterfacciaController {
     private boolean azioneVeloceEseguita;
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
     private GrafoCittà grafoCittà;
+    private ArrayList<SocketPollingController> socketPollingControllers;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
@@ -50,6 +52,10 @@ public class Controller implements Runnable, InterfacciaController {
                 cittàPartita.addAll(regione.getCittà());
         grafoCittà = new GrafoCittà(cittàPartita);
         UnicastRemoteObject.exportObject(this, 0);
+    }
+
+    public void setSocketPollingControllers(ArrayList<SocketPollingController> socketPollingControllers){
+        this.socketPollingControllers = socketPollingControllers;
     }
 
     @Override
@@ -89,7 +95,7 @@ public class Controller implements Runnable, InterfacciaController {
                 exc.printStackTrace();
             }
         }
-
+        socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
     }
 
     private boolean emporiDisponibili(Giocatore giocatore){
