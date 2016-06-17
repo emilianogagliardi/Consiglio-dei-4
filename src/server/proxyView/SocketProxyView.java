@@ -33,6 +33,10 @@ public class SocketProxyView implements InterfacciaView {
         this.avviatore = avviatore;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     @Override
     public void setIdGiocatore(int idGiocatore) {
         this.idGiocatore = idGiocatore;
@@ -49,6 +53,11 @@ public class SocketProxyView implements InterfacciaView {
         System.out.println("in attesa della scelta da client");
         avviatore.setMappa(Integer.parseInt(in.nextLine()));
         System.out.println("ricevuta la scelta");
+    }
+
+    @Override
+    public void iniziaAGiocare() throws RemoteException {
+        out.println("start");
     }
 
     @Override

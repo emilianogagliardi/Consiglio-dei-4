@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class NumeroNomeChiaveRMI {
     private static NumeroNomeChiaveRMI instance;
     private static ArrayList<Boolean> isNumeroInUso;
-    private static int ultimaOttenuto;
+    private static int ultimoOttenuto;
 
     private NumeroNomeChiaveRMI() {
-        isNumeroInUso = new ArrayList<>(1);
+        isNumeroInUso = new ArrayList<>();
         isNumeroInUso.add(false);
     }
 
@@ -28,15 +28,19 @@ public class NumeroNomeChiaveRMI {
         for (int i = 0; i < isNumeroInUso.size(); i++){
             if (!isNumeroInUso.get(i)){ //il numero è già stato utilizzato in precedenza, ma ora non è in uso
                 isNumeroInUso.set(i, true);
+                ultimoOttenuto = i;
                 return i;
             }
         }
         //tutti i numeri già utilizzati in precedenza sono ancora in uso
         isNumeroInUso.add(true);
-        return isNumeroInUso.size() - 1;
+        System.out.println("ciao cazzo di budda");
+        ultimoOttenuto = isNumeroInUso.size() - 1;
+        return ultimoOttenuto;
     }
 
     public static int ottieniUltimoNumero(){
-        return ultimaOttenuto;
+        System.out.println(ultimoOttenuto);
+        return ultimoOttenuto;
     }
 }

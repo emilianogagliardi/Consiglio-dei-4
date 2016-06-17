@@ -38,6 +38,11 @@ public class AvviatorePartitaTest {
             }
 
             @Override
+            public void iniziaAGiocare() throws RemoteException {
+
+            }
+
+            @Override
             public void erroreDiConnessione() {
 
             }

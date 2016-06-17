@@ -46,7 +46,7 @@ public class ControllerTest {
     private ArrayList<Giocatore> giocatori;
     private CartaPermessoCostruzione cartaPermessoCostruzione, cartaPermessoCostruzione2, cartaPermessoCostruzione3, cartaPermessoCostruzione4, cartaPermessoCostruzione5;
 
-    public ControllerTest(){
+    public ControllerTest() throws RemoteException {
         partita = new Partita(new ArrayList<InterfacciaView>());
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(5, ColoreCittà.ARGENTO));
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(10, ColoreCittà.BRONZO));
@@ -162,6 +162,11 @@ public class ControllerTest {
 
             @Override
             public void scegliMappa() {
+
+            }
+
+            @Override
+            public void iniziaAGiocare() throws RemoteException {
 
             }
 
@@ -294,6 +299,11 @@ public class ControllerTest {
 
             @Override
             public void scegliMappa() {
+            }
+
+            @Override
+            public void iniziaAGiocare() throws RemoteException {
+
             }
 
             @Override
@@ -526,7 +536,7 @@ public class ControllerTest {
 
 
     @Test
-    public void eleggiConsigliereTest(){
+    public void eleggiConsigliereTest() throws RemoteException {
         //il giocatore pesca una carta politica
         resetGiocatore();
         giocatori.get(0).addCarta(partita.ottieniCartaPolitica());
@@ -540,7 +550,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void acquistareTesseraPermessoCostruzione(){
+    public void acquistareTesseraPermessoCostruzione() throws RemoteException {
         resetGiocatore();
         giocatori.get(0).addCarta(partita.ottieniCartaPolitica());
         ArrayList<String> nomiColoriCartePolitica = new ArrayList<>();
@@ -564,7 +574,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void costruireEmporioConTesseraPermessoCostruzioneTutteRegione(){
+    public void costruireEmporioConTesseraPermessoCostruzioneTutteRegione() throws  RemoteException{
         try {
             Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
             resetGiocatore();
@@ -583,7 +593,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void costruireEmporioConAiutoRe(){
+    public void costruireEmporioConAiutoRe() throws RemoteException{
         try {
             Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
             resetGiocatore();

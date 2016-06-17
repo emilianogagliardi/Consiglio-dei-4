@@ -22,7 +22,7 @@ class LoggerRMI extends UnicastRemoteObject implements InterfacciaLoggerRMI {
 
     @Override
     public String getChiaveController() throws RemoteException {
-        return PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + NumeroNomeChiaveRMI.ottieniNuovoNumero();
+        return PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + NumeroNomeChiaveRMI.ottieniUltimoNumero();
     }
 
     @Override

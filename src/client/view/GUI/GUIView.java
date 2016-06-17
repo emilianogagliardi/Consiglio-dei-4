@@ -59,6 +59,11 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
+    public void iniziaAGiocare() throws RemoteException {
+        Platform.runLater(() -> super.setNuovoStep("viewgioco.fxml"));
+    }
+
+    @Override
     public void erroreDiConnessione() throws RemoteException {
 
     }

@@ -36,15 +36,20 @@ public class AvviatorePartita implements Runnable {
         Properties pro = sceltaMappa();
         Partita nuovaPartita = creaPartita(pro);
         if (!Thread.currentThread().isInterrupted()) {
-            Controller controller = new Controller(nuovaPartita, proxyViews);
-
             //TODO creare una socket polling per il controller, per ogni client
             try {
+                Controller controller = new Controller(nuovaPartita, proxyViews);
+                //crea i socketPolling per il controller
+                proxyViews.stream().filter((InterfacciaView view) -> view instanceof SocketProxyView).forEach((InterfacciaView view) -> new Thread(new SocketPollingController(((SocketProxyView)view).getSocket(), controller)).start());
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
                 String chiaveController = PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + numeroBindRegistry ;
                 //TODO togliere questa riga
                 System.out.println("chiaveController = " + chiaveController);
                 registry.bind(chiaveController, controller);
+                for(InterfacciaView view : proxyViews) {
+                    view.iniziaAGiocare();
+                }
+                executors.submit(controller);
             }catch (RemoteException | AlreadyBoundException e){
                 System.out.println("impossibile bindare controller");
                 e.printStackTrace();
@@ -56,11 +61,7 @@ public class AvviatorePartita implements Runnable {
                     }
                 });
             }
-            executors.submit(controller);
         }
-        //TODO togliere queste righe
-        System.out.println("la mappa scleta è "+idMappa);
-        System.out.println("la partita è configurata, si poò cominciare");
     }
 
     private Partita creaPartita(Properties pro){
@@ -113,9 +114,7 @@ public class AvviatorePartita implements Runnable {
             /*
             riempie l'hashset di nuove città, sfruttando le informazioni contenute nelle hashmap
              */
-            Arrays.stream(NomeCittà.values()).forEach((NomeCittà nomeCittà) -> {
-                tutteLeCittà.add(new Città(nomeCittàNomeRegioneHashMap.get(nomeCittà),nomeCittà, nomeCittàColoreCittàHashMap.get(nomeCittà), creaBonus(), proxyViews));
-            });
+            Arrays.stream(NomeCittà.values()).forEach((NomeCittà nomeCittà) -> tutteLeCittà.add(new Città(nomeCittàNomeRegioneHashMap.get(nomeCittà),nomeCittà, nomeCittàColoreCittàHashMap.get(nomeCittà), creaBonus(), proxyViews)));
             return tutteLeCittà;
         }catch(NullPointerException e) {
             System.out.println("impossibile creare le città da file");
@@ -176,7 +175,7 @@ public class AvviatorePartita implements Runnable {
         Mazzo<CartaPermessoCostruzione> mazzo = new Mazzo<>();
         //crea 5 carte con una sola città
         cittàs.forEach((Città città) -> {
-            HashSet<NomeCittà> cittàCarta = new HashSet<NomeCittà>(1);
+            HashSet<NomeCittà> cittàCarta = new HashSet<>(1);
             cittàCarta.add(città.getNome());
             mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(), cittàCarta));
         });
@@ -202,7 +201,7 @@ public class AvviatorePartita implements Runnable {
         Random rand = new Random();
         int numeroSottobonus = CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(CostantiModel.MAX_NUM_SOTTOBONUS_PER_BONUS - CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
         for (int i = 0; i < numeroSottobonus; i++) {
-            int sceltaBonus = (int) rand.nextInt(5);
+            int sceltaBonus = rand.nextInt(5);
             int valoreBonus = CostantiModel.MIN_VALORE_SOTTOBONUS + rand.nextInt(CostantiModel.MAX_VALORE_SOTTOBONUS - CostantiModel.MIN_VALORE_SOTTOBONUS) + 1;
             switch (sceltaBonus){
                 case 0:
@@ -345,6 +344,7 @@ public class AvviatorePartita implements Runnable {
             sceltaMappaRMI(proxyViews.get(0));
         }
         String nomeFile = "mappa"+idMappa;
+        System.out.println("nomeFile = " + nomeFile);
         try {
             FileInputStream is = new FileInputStream("./serverResources/fileconfigmappe/"+nomeFile);
             Properties pro = new Properties();
@@ -377,14 +377,22 @@ public class AvviatorePartita implements Runnable {
 
     private void sceltaMappaRMI(InterfacciaView view) {
         try {
-            Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
-            String chiaveSceltaMappa = PrefissiChiaviRMI.PREFISSO_CHIAVE_SCELTA_MAPPA + numeroBindRegistry;
-            registry.bind(chiaveSceltaMappa, new SceltaMappaRMI(this));
-            view.scegliMappa();
-        }catch(RemoteException | AlreadyBoundException e){
+            synchronized (this){
+                Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
+                String chiaveSceltaMappa = PrefissiChiaviRMI.PREFISSO_CHIAVE_SCELTA_MAPPA + numeroBindRegistry;
+                registry.bind(chiaveSceltaMappa, new SceltaMappaRMI(this));
+                view.scegliMappa();
+                wait();
+            }
+        }catch(RemoteException | AlreadyBoundException | InterruptedException e){
             e.printStackTrace();
-            //TODO togliere commento
-            //setMappa(1); // in caso di errorore viene settato ad 1 l'idMappa
+        }
+    }
+
+    //friendly
+    void mappaSettata(){
+        synchronized (this) {
+            notify();
         }
     }
 }

@@ -1,19 +1,19 @@
 package server.controller;
 
 import interfaccecondivise.InterfacciaController;
+import interfaccecondivise.InterfacciaView;
 import server.model.*;
 import server.model.bonus.*;
 import server.model.carte.CartaPermessoCostruzione;
 import server.model.carte.CartaPolitica;
 import server.model.carte.ColoreCartaPolitica;
 import server.model.eccezioni.AiutantiNonSufficientiException;
-import server.model.eccezioni.EmporioGiàEsistenteException;
 import server.model.eccezioni.MoneteNonSufficientiException;
-import interfaccecondivise.InterfacciaView;
 import server.sistema.CostantiSistema;
 import server.sistema.Utility;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ public class Controller implements Runnable, InterfacciaController {
     private GrafoCittà grafoCittà;
 
 
-    public Controller(Partita partita, ArrayList<InterfacciaView> views) {
+    public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
         this.partita = partita;
         this.views = views;
         this.giocatoreCorrente = partita.getGiocatori().get(0);
@@ -49,7 +49,7 @@ public class Controller implements Runnable, InterfacciaController {
         for (Regione regione : partita.getRegioni())
                 cittàPartita.addAll(regione.getCittà());
         grafoCittà = new GrafoCittà(cittàPartita);
-
+        UnicastRemoteObject.exportObject(this, 0);
     }
 
     @Override
@@ -89,6 +89,7 @@ public class Controller implements Runnable, InterfacciaController {
                 exc.printStackTrace();
             }
         }
+
     }
 
     private boolean emporiDisponibili(Giocatore giocatore){
@@ -110,12 +111,13 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean passaTurno(){ //verifica che il giocatore possa finire il turno
-        synchronized (this){
+    public boolean passaTurno() throws RemoteException { //verifica che il giocatore possa finire il turno
+        synchronized (this) {
             notify();
         }
         return true;
     }
+
 
     private void assegnaBonus(Bonus bonus) throws IllegalArgumentException {
         while (!(bonus instanceof NullBonus)){
@@ -144,7 +146,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean eleggereConsigliere(String idBalcone, String coloreConsigliereDaRiserva) {
+    public boolean eleggereConsigliere(String idBalcone, String coloreConsigliereDaRiserva)  throws RemoteException{
         if(!azionePrincipaleDisponibile())
             return false;
         if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliereDaRiserva))
@@ -170,7 +172,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean acquistareTesseraPermessoCostruzione(String idBalconeRegione, List<String> nomiColoriCartePolitica, int numeroCarta) {
+    public boolean acquistareTesseraPermessoCostruzione(String idBalconeRegione, List<String> nomiColoriCartePolitica, int numeroCarta)  throws RemoteException{
         if(!azionePrincipaleDisponibile())
             return false;
         Supplier<Boolean> supplier = () -> {
@@ -218,7 +220,7 @@ public class Controller implements Runnable, InterfacciaController {
 
     }
     @Override
-    public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà) {
+    public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà)  throws RemoteException{
         if(!azionePrincipaleDisponibile())
             return false;
         NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
@@ -240,7 +242,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione) {
+    public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione)  throws RemoteException{
         if(!azionePrincipaleDisponibile())
             return false;
         if (!acquistareTesseraPermesso("RE", nomiColoriCartePolitica, () -> true)){
@@ -266,7 +268,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean ingaggiareAiutante() {
+    public boolean ingaggiareAiutante()  throws RemoteException{
         if(azioneVeloceEseguita)
             return false;
         try {
@@ -286,7 +288,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean cambiareTesserePermessoCostruzione(String regione) {
+    public boolean cambiareTesserePermessoCostruzione(String regione)  throws RemoteException{
         if(azioneVeloceEseguita)
             return false;
         if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO)){
@@ -298,7 +300,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere) {
+    public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere)  throws RemoteException{
         if(azioneVeloceEseguita)
             return false;
         if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS)) {
@@ -311,7 +313,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean compiereAzionePrincipaleAggiuntiva() {
+    public boolean compiereAzionePrincipaleAggiuntiva()  throws RemoteException{
         if(azioneVeloceEseguita)
             return false;
         if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA))

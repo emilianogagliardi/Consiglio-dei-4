@@ -29,17 +29,20 @@ public class SocketPollingView implements Runnable{
     public void run() {
         while(true){
             String daServer = in.nextLine();
-            switch (daServer){
-                //TODO ricezione e servizio degli ordini da server, chiamando i metodi sulla view
-                case "sceglimappa":
-                    try { //non è possibile che venga lanciata questa eccezzione, non è utilizzato rmi ma socket
+            try{
+                switch (daServer) {
+                    //TODO ricezione e servizio degli ordini da server, chiamando i metodi sulla view
+                    case "sceglimappa":
                         view.scegliMappa();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    case "start":
+                        view.iniziaAGiocare();
+                        break;
+                    default:
+                        break;
+                }
+            }catch(RemoteException e){
+                e.printStackTrace();
             }
         }
     }
