@@ -21,6 +21,7 @@ public class Server {
     private int idCorrente;
     private ScheduledExecutorService timeoutExecutor;
     private Thread timeoutThread;
+    private int numeroChiaviCorrente;
 
     public Server() {
         proxyViews = new ArrayList<>();
@@ -30,6 +31,7 @@ public class Server {
 
     public void startServer() {
         NumeroNomeChiaveRMI.init();
+        numeroChiaviCorrente = NumeroNomeChiaveRMI.ottieniNuovoNumero();
         try{
             LoggerRMI loggerRMI = new LoggerRMI(this);
             Registry registry = LocateRegistry.createRegistry(CostantiSistema.RMI_PORT);
@@ -86,12 +88,11 @@ public class Server {
     }
 
     public void fineGiocatoriAccettati() {
-        //TODO togliere questa riga
-        System.out.println("pronti per cominciare!");
-        int numeroChiavi = NumeroNomeChiaveRMI.ottieniNuovoNumero();
         idCorrente = 0;
-        AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, numeroChiavi);
+        AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, numeroChiaviCorrente);
         new Thread(avviatorePartita).start();
+        proxyViews = new ArrayList<>();
+        numeroChiaviCorrente = NumeroNomeChiaveRMI.ottieniNuovoNumero();
     }
 
     public int getIdCorrente(){

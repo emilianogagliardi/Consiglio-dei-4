@@ -112,7 +112,9 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             //TODO non è qui che deve essere lookuppato il controller, verrà bindato solo quando tutti i giocatori hanno loggato
             //String chiaveController = loggerRMI.getChiaveController();
             //assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
-            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
+            String chiaveSceltaMappa = loggerRMI.getChiaveSceltaMappa();
+            ComunicazioneSceltaMappaRMI.init(chiaveSceltaMappa);
+            System.out.println("chiavesceltamappa = " + chiaveSceltaMappa);
             super.getApplication().setIsSocketClient(false);
         }catch( NotBoundException | IOException e){
             e.printStackTrace();

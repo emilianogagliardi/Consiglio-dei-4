@@ -11,6 +11,7 @@ public interface InterfacciaView extends Remote {
     void setIdGiocatore(int idGiocatore) throws RemoteException;
     int getIdGiocatore() throws RemoteException;
     void scegliMappa() throws RemoteException;
+    void iniziaAGiocare()throws RemoteException;
     void erroreDiConnessione() throws RemoteException;
     void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) throws RemoteException;
     void updateBalcone(String regione, String colore1, String colore2, String colore3, String colore4) throws RemoteException;

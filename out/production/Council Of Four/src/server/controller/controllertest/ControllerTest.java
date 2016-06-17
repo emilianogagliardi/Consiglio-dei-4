@@ -12,12 +12,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
-<<<<<<< HEAD
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-=======
+
 import java.rmi.RemoteException;
->>>>>>> 3b47715f30029855d0e619f8edf2100e2c7511dc
 import java.util.*;
 
 
@@ -47,7 +46,7 @@ public class ControllerTest {
     private ArrayList<Giocatore> giocatori;
     private CartaPermessoCostruzione cartaPermessoCostruzione, cartaPermessoCostruzione2;
 
-    public ControllerTest(){
+    public ControllerTest() throws RemoteException {
         partita = new Partita(new ArrayList<InterfacciaView>());
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(5, ColoreCittà.ARGENTO));
         carteBonusColoreCittà1.add(new CartaBonusColoreCittà(10, ColoreCittà.BRONZO));
@@ -163,6 +162,11 @@ public class ControllerTest {
 
             @Override
             public void scegliMappa() {
+
+            }
+
+            @Override
+            public void iniziaAGiocare() throws RemoteException {
 
             }
 
@@ -289,6 +293,11 @@ public class ControllerTest {
 
             @Override
             public void scegliMappa() {
+            }
+
+            @Override
+            public void iniziaAGiocare() throws RemoteException {
+
             }
 
             @Override
@@ -504,7 +513,7 @@ public class ControllerTest {
 
 
     @Test
-    public void eleggiConsigliereTest(){
+    public void eleggiConsigliereTest() throws RemoteException {
         //il giocatore pesca una carta politica
         resetGiocatore();
         giocatori.get(0).addCarta(partita.ottieniCartaPolitica());
@@ -518,7 +527,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void acquistareTesseraPermessoCostruzione(){
+    public void acquistareTesseraPermessoCostruzione() throws RemoteException {
         resetGiocatore();
         giocatori.get(0).addCarta(partita.ottieniCartaPolitica());
         ArrayList<String> nomiColoriCartePolitica = new ArrayList<>();
@@ -542,7 +551,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void costruireEmporioConTesseraPermessoCostruzione(){
+    public void costruireEmporioConTesseraPermessoCostruzione() throws RemoteException {
         resetGiocatore();
         assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
         resetGiocatore();
