@@ -14,19 +14,22 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Server {
     private ArrayList<InterfacciaView> proxyViews;
     private int idCorrente;
-    private ScheduledExecutorService timeoutExecutor;
-    private Thread timeoutThread;
+    private ScheduledExecutorService scheduler;
+    private ScheduledFuture<?> timeout;
     private int numeroChiaviCorrente;
 
     public Server() {
         proxyViews = new ArrayList<>();
         idCorrente = 0;
-        timeoutExecutor = Executors.newSingleThreadScheduledExecutor();
+        scheduler = Executors.newScheduledThreadPool(1);
     }
 
     public void startServer() {
@@ -78,16 +81,20 @@ public class Server {
         proxyViews.add(view);
         idCorrente++;
         if (proxyViews.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
-            timeoutThread = new ThreadTimeout(this);
-            timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT_2_GIOCATORI, TimeUnit.SECONDS);
-        }else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
-            //TODO funziona l'interrupt sul thread?
-            timeoutThread.interrupt(); //killa il thread di timeout
+            timeout = scheduler.schedule(() -> {fineGiocatoriAccettati();}, CostantiSistema.TIMEOUT_2_GIOCATORI, SECONDS);
+        } else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
+            //TODO: DEBUG sotto
+            System.out.println("Timeout stoppato!");
+            //TODO: DEBUG sopra
+            timeout.cancel(true);
             fineGiocatoriAccettati();
         }
     }
 
     public void fineGiocatoriAccettati() {
+        //TODO: DEBUG sotto
+        System.out.println("Partita iniziata!");
+        //TODO: DEBUG sopra
         idCorrente = 0;
         AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, numeroChiaviCorrente);
         new Thread(avviatorePartita).start();
