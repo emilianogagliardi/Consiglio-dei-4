@@ -83,18 +83,12 @@ public class Server {
         if (proxyViews.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
             timeout = scheduler.schedule(() -> {fineGiocatoriAccettati();}, CostantiSistema.TIMEOUT_2_GIOCATORI, SECONDS);
         } else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
-            //TODO: DEBUG sotto
-            System.out.println("Timeout stoppato!");
-            //TODO: DEBUG sopra
             timeout.cancel(true);
             fineGiocatoriAccettati();
         }
     }
 
     public void fineGiocatoriAccettati() {
-        //TODO: DEBUG sotto
-        System.out.println("Partita iniziata!");
-        //TODO: DEBUG sopra
         idCorrente = 0;
         AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, numeroChiaviCorrente);
         new Thread(avviatorePartita).start();

@@ -34,7 +34,6 @@ public class NumeroNomeChiaveRMI {
         }
         //tutti i numeri già utilizzati in precedenza sono ancora in uso
         isNumeroInUso.add(true);
-        System.out.println("ciao cazzo di budda");
         ultimoOttenuto = isNumeroInUso.size() - 1;
         return ultimoOttenuto;
     }
