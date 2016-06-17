@@ -69,8 +69,7 @@ public class Città extends Observable {
         else cittàAdiacenti.add(città);
     }
 
-    public void costruisciEmporio (Emporio e) throws EmporioGiàEsistenteException{
-        if (empori.contains(e)) throw new EmporioGiàEsistenteException();
+    public void costruisciEmporio (Emporio e){
         empori.add(e);
         updateView();
     }

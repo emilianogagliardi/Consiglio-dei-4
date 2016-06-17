@@ -1,15 +1,14 @@
 package server.controller;
 
 import interfaccecondivise.InterfacciaController;
+import interfaccecondivise.InterfacciaView;
 import server.model.*;
 import server.model.bonus.*;
 import server.model.carte.CartaPermessoCostruzione;
 import server.model.carte.CartaPolitica;
 import server.model.carte.ColoreCartaPolitica;
 import server.model.eccezioni.AiutantiNonSufficientiException;
-import server.model.eccezioni.EmporioGiàEsistenteException;
 import server.model.eccezioni.MoneteNonSufficientiException;
-import interfaccecondivise.InterfacciaView;
 import server.sistema.CostantiSistema;
 import server.sistema.Utility;
 
@@ -243,14 +242,15 @@ public class Controller implements Runnable, InterfacciaController {
         if (distanza.equals(Integer.MAX_VALUE)){
             return false; //la città scelta non è collegata a quella dove risiede attualmente il Re
         }
+        if (!costruisciEmporio(cittàCostruzione.getNome())) {
+            return false;
+        }
         try {
             giocatoreCorrente.pagaMonete(distanza * CostantiModel.MONETE_PER_STRADA);
         } catch (MoneteNonSufficientiException exc){
             return false;
         }
-        if (!costruisciEmporio(cittàCostruzione.getNome())) {
-            return false;
-        }
+        partita.getRe().setPosizione(cittàCostruzione);
         decrementaAzioniPrincipaliDisponibili();
         return true;
     }
@@ -376,51 +376,48 @@ public class Controller implements Runnable, InterfacciaController {
         Città cittàCostruzione = getCittàDaNome(nomeCittàCostruzione);
         Regione regione = getRegioneDaNomeCittà(nomeCittàCostruzione);
         ArrayList<Città> cittàCollegateRitornate;
-        try {
-            if(cittàCostruzione.giàCostruito(giocatoreCorrente))
-                return false;
-            cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
-            try {
-                giocatoreCorrente.pagaAiutanti(CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti());
-                assegnaBonus(cittàCostruzione.getBonus());
-                //ora utilizzo un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
-                cittàCollegateRitornate = grafoCittà.bfs(cittàCostruzione, (cittàAdiacente, cittàCollegate) -> {
-                    if (cittàAdiacente.giàCostruito(giocatoreCorrente)) {
-                        cittàCollegate.add(cittàAdiacente);
-                    } else {
-                        cittàAdiacente.setFlag(true); //stoppo l'esplorazione attraverso questa città
-                    }
-                });
-                for (Città città : cittàCollegateRitornate)
-                        assegnaBonus(città.getBonus());
-                //verifico se il giocatore ha costruito empori in tutte le città dello stesso colore
-                if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
-                    if (cittàAdiacente.getColore().equals(cittàCostruzione.getColore()))
-                        if (!cittàAdiacente.giàCostruito(giocatoreCorrente))
-                            return false;
-                    return valoreDaRitornare;
-                })) { //corpo dell'if
-                    assegnaBonus(partita.ottieniCartaBonusColoreCittà(cittàCostruzione.getColore()).getBonus());
-                }
-                //verifico se il giocatore ha costruito empori in tutte le città della stessa regione
-                if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
-                    if (cittàAdiacente.getNomeRegione().equals(cittàCostruzione.getNomeRegione())) {
-                        if (!cittàAdiacente.giàCostruito(giocatoreCorrente)) {
-                            return false;
-                        }
-                    }
-                    return valoreDaRitornare;
-                })) { //corpo dell'if
-                    assegnaBonus(regione.ottieniCartaBonusRegione().getBonus());
-                }
-                return true;
-            } catch (AiutantiNonSufficientiException exc){
-                return false;
-            }
-        } catch (EmporioGiàEsistenteException exc) {
+        if(cittàCostruzione.giàCostruito(giocatoreCorrente))
             return false;
-        }
 
+        try {
+            giocatoreCorrente.pagaAiutanti(CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti());
+        } catch (AiutantiNonSufficientiException exc){return false;}
+
+
+        cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
+
+        assegnaBonus(cittàCostruzione.getBonus());
+        //ora utilizzo un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
+        cittàCollegateRitornate = grafoCittà.bfs(cittàCostruzione, (cittàAdiacente, cittàCollegate) -> {
+            if (cittàAdiacente.giàCostruito(giocatoreCorrente)) {
+                cittàCollegate.add(cittàAdiacente);
+            } else {
+                cittàAdiacente.setFlag(true); //stoppo l'esplorazione attraverso questa città
+            }
+        });
+        for (Città città : cittàCollegateRitornate)
+            assegnaBonus(città.getBonus());
+        //verifico se il giocatore ha costruito empori in tutte le città dello stesso colore
+        if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
+            if (cittàAdiacente.getColore().equals(cittàCostruzione.getColore()))
+                if (!cittàAdiacente.giàCostruito(giocatoreCorrente))
+                    return false;
+            return valoreDaRitornare;
+        })) { //corpo dell'if
+            assegnaBonus(partita.ottieniCartaBonusColoreCittà(cittàCostruzione.getColore()).getBonus());
+        }
+        //verifico se il giocatore ha costruito empori in tutte le città della stessa regione
+        if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
+            if (cittàAdiacente.getNomeRegione().equals(cittàCostruzione.getNomeRegione())) {
+                if (!cittàAdiacente.giàCostruito(giocatoreCorrente)) {
+                    return false;
+                }
+            }
+            return valoreDaRitornare;
+        })) { //corpo dell'if
+            assegnaBonus(regione.ottieniCartaBonusRegione().getBonus());
+        }
+        return true;
     }
 
     private Regione getRegioneDaNomeCittà(NomeCittà nomeCittà) throws IllegalArgumentException{

@@ -68,6 +68,10 @@ public class Partita extends Observable {
             this.re = re;
     }
 
+    public Re getRe(){
+        return this.re;
+    }
+
     public void setBalconeDelConsiglioRe(BalconeDelConsiglio balconeDelConsiglioRe){
         if (this.balconeDelConsiglioRe == null)
             this.balconeDelConsiglioRe = balconeDelConsiglioRe;
