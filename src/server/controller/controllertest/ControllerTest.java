@@ -44,7 +44,7 @@ public class ControllerTest {
     private Properties pro;
     private HashSet<Città> tutteLeCittà, cittàRegione;
     private ArrayList<Giocatore> giocatori;
-    private CartaPermessoCostruzione cartaPermessoCostruzione, cartaPermessoCostruzione2;
+    private CartaPermessoCostruzione cartaPermessoCostruzione, cartaPermessoCostruzione2, cartaPermessoCostruzione3, cartaPermessoCostruzione4, cartaPermessoCostruzione5;
 
     public ControllerTest(){
         partita = new Partita(new ArrayList<InterfacciaView>());
@@ -127,8 +127,8 @@ public class ControllerTest {
         }
         regioni1.add(new Regione(NomeRegione.MONTAGNA, mazzoCartePermessoCostruzioneMontagna1, new BalconeDelConsiglio(IdBalcone.MONTAGNA, new ArrayList<InterfacciaView>(), consiglieri), new CartaBonusRegione(NomeRegione.MONTAGNA, 1), new  ArrayList<InterfacciaView>()));
         consiglieri = new ArrayList<>();
-        consiglieri.add(new Consigliere(ColoreConsigliere.AZZURRO));
-        consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
+        consiglieri.add(new Consigliere(ColoreConsigliere.ARANCIONE));
         consiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
         consiglieri.add(new Consigliere(ColoreConsigliere.NERO));
         partita.setBalconeDelConsiglioRe(new BalconeDelConsiglio(IdBalcone.RE, new ArrayList<InterfacciaView>(), consiglieri));
@@ -137,7 +137,7 @@ public class ControllerTest {
         partita.setMazzoCartePremioRe(mazzoCartaPremioRe1);
         partita.setPercorsoDellaNobiltà(percorsoDellaNobiltà1);
         partita.setRegioni(regioni1);
-        partita.setRe(new Re(new Città(NomeRegione.COLLINA, NomeCittà.INDUR, ColoreCittà.ARGENTO, new BonusRipetiAzionePrincipale(NullBonus.getInstance()),new ArrayList<InterfacciaView>()), new ArrayList<InterfacciaView>()));
+        partita.setRe(new Re(new Città(NomeRegione.COLLINA, NomeCittà.JUVELAR, ColoreCittà.ARGENTO, new BonusRipetiAzionePrincipale(NullBonus.getInstance()),new ArrayList<InterfacciaView>()), new ArrayList<InterfacciaView>()));
         ArrayList<Consigliere> riservaConsiglieri = new ArrayList<>();
         Consigliere consigliereRiserva;
         riservaConsiglieri.add( new Consigliere(ColoreConsigliere.ARANCIONE));
@@ -446,8 +446,20 @@ public class ControllerTest {
             cittàs = new HashSet<>();
             cittàs.add(NomeCittà.CASTRUM);
             cartaPermessoCostruzione2 = new CartaPermessoCostruzione(new BonusAvanzaPercorsoNobiltà(2,NullBonus.getInstance()), cittàs);
+            cittàs = new HashSet<>();
+            cittàs.add(NomeCittà.BURGEN);
+            cartaPermessoCostruzione3 = new CartaPermessoCostruzione(new BonusAvanzaPercorsoNobiltà(2,NullBonus.getInstance()), cittàs);
+            cittàs = new HashSet<>();
+            cittàs.add(NomeCittà.DORFUL);
+            cartaPermessoCostruzione4 = new CartaPermessoCostruzione(new BonusAvanzaPercorsoNobiltà(2,NullBonus.getInstance()), cittàs);
+            cittàs = new HashSet<>();
+            cittàs.add(NomeCittà.ESTI);
+            cartaPermessoCostruzione5 = new CartaPermessoCostruzione(new BonusAvanzaPercorsoNobiltà(2,NullBonus.getInstance()), cittàs);
             giocatore.addCarta(cartaPermessoCostruzione);
             giocatore.addCarta(cartaPermessoCostruzione2);
+            giocatore.addCarta(cartaPermessoCostruzione3);
+            giocatore.addCarta(cartaPermessoCostruzione4);
+            giocatore.addCarta(cartaPermessoCostruzione5);
             giocatori.add(giocatore);
         }
         giocatori.forEach(partita::addGiocatore);
@@ -541,12 +553,40 @@ public class ControllerTest {
     }
 
     @Test
-    public void costruireEmporioConTesseraPermessoCostruzione(){
-        resetGiocatore();
-        assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
-        resetGiocatore();
-        assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione2, NomeCittà.CASTRUM.toString()));
-        //TODO_ verificare se vengono assegnati i bonus per tutte le città dello stesso colore e per tutte le città in una regione
+    public void costruireEmporioConTesseraPermessoCostruzioneTutteRegione(){
+        try {
+            Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
+            resetGiocatore();
+            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
+            resetGiocatore();
+            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione2, NomeCittà.CASTRUM.toString()));
+            resetGiocatore();
+            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione3, NomeCittà.BURGEN.toString()));
+            resetGiocatore();
+            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione4, NomeCittà.DORFUL.toString()));
+            resetGiocatore();
+            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione5, NomeCittà.ESTI.toString()));
+        } catch (IllegalAccessException exc){
+            exc.printStackTrace();
+        }
+    }
+
+    @Test
+    public void costruireEmporioConAiutoRe(){
+        try {
+            Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
+            resetGiocatore();
+            ArrayList<String> nomiColoriCartePolitica = new ArrayList<>();
+            nomiColoriCartePolitica.add("ARANCIONE");
+            nomiColoriCartePolitica.add("ARANCIONE");
+            nomiColoriCartePolitica.add("JOLLY");
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
+            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
+            assertTrue(controller.costruireEmporioConAiutoRe(nomiColoriCartePolitica,  NomeCittà.ESTI.toString()));
+        } catch (IllegalAccessException exc){
+            exc.printStackTrace();
+        }
     }
 
     private void resetGiocatore(){
