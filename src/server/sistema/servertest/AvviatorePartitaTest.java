@@ -38,7 +38,7 @@ public class AvviatorePartitaTest {
             }
 
             @Override
-            public void iniziaAGiocare() throws RemoteException {
+            public void iniziaAGiocare(int idMappa) throws RemoteException {
 
 
             }

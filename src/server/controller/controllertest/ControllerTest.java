@@ -166,7 +166,7 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaAGiocare() throws RemoteException {
+            public void iniziaAGiocare(int idMappa) throws RemoteException {
 
             }
 
@@ -307,7 +307,7 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaAGiocare() throws RemoteException {
+            public void iniziaAGiocare(int idMappa) throws RemoteException {
 
             }
 
