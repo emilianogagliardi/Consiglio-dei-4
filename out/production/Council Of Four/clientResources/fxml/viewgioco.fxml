@@ -10,38 +10,51 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<TabPane fx:controller="client.view.GUI.ControllerFXPartita" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
-  <tabs>
-    <Tab text="Mappa">
-         <content>
-            <GridPane>
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1106.7840576171875" minWidth="10.0" prefWidth="1106.7840576171875" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="617.2052612304688" minWidth="10.0" prefWidth="193.2159423828125" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="765.8246154785156" minHeight="10.0" prefHeight="673.4248046875" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="559.4940185546875" minHeight="10.0" prefHeight="193.5751953125" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <TextArea fx:id="textArea" prefHeight="250.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="650.0" prefWidth="1100.0">
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GUI.ControllerFXPartita">
+   <children>
+      <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1300.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Mappa">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="850.0" prefWidth="1300.0">
+                     <children>
+                        <GridPane layoutX="164.0" layoutY="139.0" prefHeight="850.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1300.0" minWidth="10.0" prefWidth="1121.61865234375" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="641.6546630859375" minWidth="0.0" prefWidth="178.38134765625" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="755.9274291992188" minHeight="10.0" prefHeight="683.2037963867188" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="440.18914794921875" minHeight="10.0" prefHeight="133.79620361328125" vgrow="SOMETIMES" />
+                          </rowConstraints>
                            <children>
-                              <ImageView fx:id="immagineMappa" fitHeight="650.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1100.0" AnchorPane.topAnchor="0.0" />
+                              <ScrollPane prefViewportHeight="650.0" prefViewportWidth="1100.0">
+                                 <content>
+                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="1105.0">
+                                       <children>
+                                          <ImageView fx:id="immagineMappa" fitHeight="680.0" fitWidth="1120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-15.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </ScrollPane>
+                              <AnchorPane GridPane.rowIndex="1">
+                                 <children>
+                                    <TextArea layoutX="20.0" layoutY="8.0" prefHeight="134.0" prefWidth="1120.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" />
+                                 </children>
+                              </AnchorPane>
                            </children>
-                        </AnchorPane>
-                    </content>
-                  </ScrollPane>
-               </children>
-            </GridPane>
-         </content>
-    </Tab>
-    <Tab text="Gioco">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </Tab>
-  </tabs>
-</TabPane>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Gioco">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
