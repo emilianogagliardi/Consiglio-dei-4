@@ -69,6 +69,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
                     apriConnessioneRMI();
                 }
                 labelLogin.setText("Attendi altri giocatori...");
+                startButton.setDisable(true);
             }else {
                 labelLogin.setText("Nessun metodo di comunicazione selezionato!");
             }

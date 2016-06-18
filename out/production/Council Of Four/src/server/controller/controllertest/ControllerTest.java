@@ -563,51 +563,47 @@ public class ControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
     public void costruireEmporioConTesseraPermessoCostruzione() throws RemoteException {
         resetGiocatore();
         assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
         resetGiocatore();
         assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione2, NomeCittà.CASTRUM.toString()));
         //TODO_ verificare se vengono assegnati i bonus per tutte le città dello stesso colore e per tutte le città in una regione
-=======
-    public void costruireEmporioConTesseraPermessoCostruzioneTutteRegione(){
-        try {
-            Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
-            resetGiocatore();
-            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
-            resetGiocatore();
-            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione2, NomeCittà.CASTRUM.toString()));
-            resetGiocatore();
-            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione3, NomeCittà.BURGEN.toString()));
-            resetGiocatore();
-            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione4, NomeCittà.DORFUL.toString()));
-            resetGiocatore();
-            assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione5, NomeCittà.ESTI.toString()));
-        } catch (IllegalAccessException exc){
-            exc.printStackTrace();
+        public void costruireEmporioConTesseraPermessoCostruzioneTutteRegione(){
+            try {
+                Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
+                resetGiocatore();
+                assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
+                resetGiocatore();
+                assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione2, NomeCittà.CASTRUM.toString()));
+                resetGiocatore();
+                assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione3, NomeCittà.BURGEN.toString()));
+                resetGiocatore();
+                assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione4, NomeCittà.DORFUL.toString()));
+                resetGiocatore();
+                assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione5, NomeCittà.ESTI.toString()));
+            } catch (IllegalAccessException exc){
+                exc.printStackTrace();
+            }
         }
-    }
 
-    @Test
-    public void costruireEmporioConAiutoRe(){
-        try {
-            Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
-            resetGiocatore();
-            ArrayList<String> nomiColoriCartePolitica = new ArrayList<>();
-            nomiColoriCartePolitica.add("ARANCIONE");
-            nomiColoriCartePolitica.add("ARANCIONE");
-            nomiColoriCartePolitica.add("JOLLY");
-            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
-            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
-            giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
-            assertTrue(controller.costruireEmporioConAiutoRe(nomiColoriCartePolitica,  NomeCittà.ESTI.toString()));
-        } catch (IllegalAccessException exc){
-            exc.printStackTrace();
+        @Test
+        public void costruireEmporioConAiutoRe(){
+            try {
+                Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
+                resetGiocatore();
+                ArrayList<String> nomiColoriCartePolitica = new ArrayList<>();
+                nomiColoriCartePolitica.add("ARANCIONE");
+                nomiColoriCartePolitica.add("ARANCIONE");
+                nomiColoriCartePolitica.add("JOLLY");
+                giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
+                giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
+                giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
+                assertTrue(controller.costruireEmporioConAiutoRe(nomiColoriCartePolitica,  NomeCittà.ESTI.toString()));
+            } catch (IllegalAccessException exc){
+                exc.printStackTrace();
+            }
         }
->>>>>>> 884bc20a9c46cd636aa1cb360975a30c00f3cd84
-    }
-
     private void resetGiocatore(){
         try {
             //utilizzo la reflection

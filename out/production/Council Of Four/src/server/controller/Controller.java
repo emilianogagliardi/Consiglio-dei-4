@@ -1,15 +1,15 @@
 package server.controller;
 
 import interfaccecondivise.InterfacciaController;
+import interfaccecondivise.InterfacciaView;
 import server.model.*;
 import server.model.bonus.*;
+import server.model.carte.CartaBonusRegione;
 import server.model.carte.CartaPermessoCostruzione;
 import server.model.carte.CartaPolitica;
 import server.model.carte.ColoreCartaPolitica;
 import server.model.eccezioni.AiutantiNonSufficientiException;
-import server.model.eccezioni.EmporioGiàEsistenteException;
 import server.model.eccezioni.MoneteNonSufficientiException;
-import interfaccecondivise.InterfacciaView;
 import server.sistema.CostantiSistema;
 import server.sistema.Utility;
 
@@ -416,7 +416,9 @@ public class Controller implements Runnable, InterfacciaController {
             }
             return valoreDaRitornare;
         })) { //corpo dell'if
-            assegnaBonus(regione.ottieniCartaBonusRegione().getBonus());
+            CartaBonusRegione carta = regione.ottieniCartaBonusRegione();
+            Bonus bonus = carta.getBonus();
+            assegnaBonus(bonus);
         }
         return true;
     }

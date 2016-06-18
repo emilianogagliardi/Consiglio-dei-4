@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 /*
     SINGLETON
-    NomiChiaveRMI conta il numero di partite in esecuzione. Serve esclusivamente ad ottenere una chiave
+    NomiChiaveRMI serve esclusivamente ad ottenere una chiave
     su RMI registry diversa per ogni partita in atto (che viene comunicata ai client)
  */
 public class NumeroNomeChiaveRMI {
