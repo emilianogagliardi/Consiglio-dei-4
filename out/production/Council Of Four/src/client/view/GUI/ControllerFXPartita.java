@@ -3,6 +3,7 @@ package client.view.GUI;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -15,6 +16,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     @FXML
     ImageView immagineMappa;
+    @FXML
+    TextArea textArea;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -24,11 +27,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         } catch (RemoteException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
         }
+        textArea.setDisable(true);
     }
 
     private void inizializzaImmagine() throws SingletonNonInizializzatoException {
         int idMappa = GUIView.getInstance().getIdMappa();
         String nomeFile = "mappa"+idMappa+"_gioco.jpg";
-        immagineMappa.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
+        Image immagine = new Image(getClass().getClassLoader().getResourceAsStream(nomeFile));
+        immagineMappa.setImage(immagine);
+        System.out.println(immagineMappa.getFitWidth()+"x"+immagineMappa.getFitHeight());
     }
 }

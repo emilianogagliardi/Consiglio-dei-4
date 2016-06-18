@@ -63,7 +63,12 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     @Override
     public void iniziaAGiocare(int idMappa) throws RemoteException {
         this.setIdMappa(idMappa);
-        Platform.runLater(() -> super.setNuovoStep("viewgioco.fxml"));
+        Platform.runLater(() -> {
+            super.setNuovoStep("viewgioco.fxml");
+            super.getApplication().getStage().setResizable(true);
+            super.getApplication().getStage().setMinHeight(500);
+            super.getApplication().getStage().setMinWidth(700);
+        });
     }
 
     @Override
