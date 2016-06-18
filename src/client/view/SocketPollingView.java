@@ -38,15 +38,6 @@ public class SocketPollingView implements Runnable {
             ComunicazioneView comunicazioneView;
             while (running) {
                 try{
-                    //TODO viene lanciata un eccezione
-                    /*
-                    java.io.EOFException
-	                at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2608)
-	                at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1319)
-	                at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
-	                at client.view.SocketPollingView.run(SocketPollingView.java:42)
-	                at java.lang.Thread.run(Thread.java:745)
-                     */
                     inputLine = (String) ois.readObject();
                     comunicazioneView = ComunicazioneView.valueOf(inputLine);
                     switch (comunicazioneView) {

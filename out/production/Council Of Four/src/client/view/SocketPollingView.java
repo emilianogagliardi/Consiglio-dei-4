@@ -4,10 +4,9 @@ import classicondivise.ComunicazioneView;
 import client.view.GUI.GUIView;
 import interfaccecondivise.InterfacciaView;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.rmi.RemoteException;
-import java.util.Scanner;
 
 /*
     codice di un thread che fa polling sul socket. Riceve oridini e chiama metodi sulla view.

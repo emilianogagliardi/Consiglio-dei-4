@@ -84,7 +84,8 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         try {
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            int id = ois.readInt(); //get dell'idGicatore assegnato da server
+            //get dell'idGicatore assegnato da server
+            int id = ois.readInt();
             //inizializza la gui view
             GUIView.initGUIView(id, super.getApplication());
             new Thread(new SocketPollingView(GUIView.getInstance(), socket)).start(); //necessario alla comunicazione server -> client
@@ -96,6 +97,11 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         }
     }
 
+    /*
+        l'apertura della comunicaione in rmi comporta il lookup dell'oggetto di login bindato da server.
+        Dal logger deve essere ricavato il nome con cui viene bindato l'oggetto remoto di comunicazione di scelta
+        della mappa, e loggetto remoto controller del gioco.
+    */
     private void apriConnessioneRMI() {
         try {
             Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
@@ -108,6 +114,8 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             GUIView.getInstance().setIdGiocatore(id);
             ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
             super.getApplication().setIsSocketClient(false);
+            //TODO rimuovere questa riga
+            System.out.println("scelta mappa id = " + loggerRMI.getChiaveSceltaMappa());
         }catch( NotBoundException | IOException | SingletonNonInizializzatoException e){
             e.printStackTrace();
             super.setNuovoStep("erroreconnessione.fxml");
