@@ -4,10 +4,9 @@ import classicondivise.ComunicazioneView;
 import client.view.GUI.GUIView;
 import interfaccecondivise.InterfacciaView;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.rmi.RemoteException;
-import java.util.Scanner;
 
 /*
     codice di un thread che fa polling sul socket. Riceve oridini e chiama metodi sulla view.
@@ -39,6 +38,15 @@ public class SocketPollingView implements Runnable {
             ComunicazioneView comunicazioneView;
             while (running) {
                 try{
+                    //TODO viene lanciata un eccezione
+                    /*
+                    java.io.EOFException
+	                at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2608)
+	                at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1319)
+	                at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
+	                at client.view.SocketPollingView.run(SocketPollingView.java:42)
+	                at java.lang.Thread.run(Thread.java:745)
+                     */
                     inputLine = (String) ois.readObject();
                     comunicazioneView = ComunicazioneView.valueOf(inputLine);
                     switch (comunicazioneView) {

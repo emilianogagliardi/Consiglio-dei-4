@@ -6,12 +6,9 @@ import client.view.CostantiClient;
 import client.view.GUI.GUIView;
 import client.view.GUI.GestoreFlussoFinestra;
 import client.view.SocketPollingView;
-import client.view.SocketProxyController;
 import client.view.eccezioni.SingletonNonInizializzatoException;
-import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -87,18 +84,13 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         try {
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            int id = ois.readInt();
-            /*Scanner in = new Scanner(socket.getInputStream()); //get dell'idGicatore assegnato da server
-            int id = Integer.parseInt(in.nextLine());*/
-            assegnaIdGiocatore(id);
-            assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
+            int id = ois.readInt(); //get dell'idGicatore assegnato da server
             //inizializza la gui view
-            GUIView view = getNewGUIView();
-            new Thread(new SocketPollingView(view, socket)).start(); //necessario alla comunicazione server -> client
-            view.setIdGiocatore(id);
+            GUIView.initGUIView(id, super.getApplication());
+            new Thread(new SocketPollingView(GUIView.getInstance(), socket)).start(); //necessario alla comunicazione server -> client
             ComunicazioneSceltaMappaSocket.init(socket);
             super.getApplication().setIsSocketClient(true);
-        }catch(IOException e) {
+        }catch(IOException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
             super.setNuovoStep("erroreconnessione.fxml");
         }
@@ -108,64 +100,17 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         try {
             Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
+            //inizializza la gui view con un valore fittizio di id giocatore
+            GUIView.initGUIView(0, super.getApplication());
             //effettua login ottenendo l'id del giocatore
-            GUIView view = getNewGUIView();
-            int id = loggerRMI.login(view); //passa la view per rendere possibile la comunicazione server -> client
-            view.setIdGiocatore(id);
-            //TODO non è qui che deve essere lookuppato il controller, verrà bindato solo quando tutti i giocatori hanno loggato
-            //String chiaveController = loggerRMI.getChiaveController();
-            //assegnaController((InterfacciaController) registry.lookup(chiaveController)); //ottiene un riferimento al controller remoto, per comunicazione client -> server
-            String chiaveSceltaMappa = loggerRMI.getChiaveSceltaMappa();
-            ComunicazioneSceltaMappaRMI.init(chiaveSceltaMappa);
-            System.out.println("chiavesceltamappa = " + chiaveSceltaMappa);
+            int id = loggerRMI.login(GUIView.getInstance()); //passa la view per rendere possibile la comunicazione server -> client
+            //assegna il giusto id ottenuto tramite il login
+            GUIView.getInstance().setIdGiocatore(id);
+            ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
             super.getApplication().setIsSocketClient(false);
-        }catch( NotBoundException | IOException e){
+        }catch( NotBoundException | IOException | SingletonNonInizializzatoException e){
             e.printStackTrace();
             super.setNuovoStep("erroreconnessione.fxml");
         }
-    }
-
-    //assegna l'id ottenuto dal server al controller fx che si occupa delle update (controllerFXPartita
-    private void assegnaIdGiocatore(int id) throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        loader.load(getClass().getClassLoader().getResource("viewgioco.fxml").openStream());
-        ControllerFXPartita controllerFXPartita = loader.getController();
-        controllerFXPartita.setIdGiocatore(id);
-    }
-
-    //TODO non è il momento giusto per gettare e assegare il controller, in questo punto è necessario solamente ottenere la stringa
-    //TODO non so se è possibile assegnare il proxy controller in questo modo, potrebbe scazzare
-    //assegnamento del controller a controllerFXMosse
-    private void assegnaController(InterfacciaController controller) {
-        FXMLLoader loader = new FXMLLoader();
-        try {
-            loader.load(getClass().getClassLoader().getResource("mosse.fxml").openStream());
-            ControllerFXMosse controllerFXMosse = loader.getController();
-            controllerFXMosse.setController(controller);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    //inizializza e torna la GUIView
-    private GUIView getNewGUIView() {
-        FXMLLoader loader = new FXMLLoader();
-        try {
-            loader.load(getClass().getClassLoader().getResource("mosse.fxml").openStream());
-            ControllerFXMosse controllerFXMosse = loader.getController();
-            loader = new FXMLLoader();
-            loader.load(getClass().getClassLoader().getResource("viewgioco.fxml"));
-            ControllerFXPartita controllerFXPartita = loader.getController();
-            GUIView.initGUIView(controllerFXMosse, controllerFXPartita, super.getApplication());
-            try {
-                GUIView view = GUIView.getInstance();
-                return view;
-            } catch (SingletonNonInizializzatoException e) {
-                e.printStackTrace();
-            }
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return null;
     }
 }

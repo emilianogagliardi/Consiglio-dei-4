@@ -25,16 +25,14 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     private ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
     private ControllerFXPartita controllerFXPartita; //utilizzato per le update
 
-    private GUIView(ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FXApplication flusso) throws RemoteException {
-        super.setApplication(flusso);
-        this.controllerFXMosse = controllerFXMosse;
-        this.controllerFXPartita = controllerFXPartita;
+    private GUIView(int idGiocatore, FXApplication application) throws RemoteException {
+        super.setApplication(application);
         UnicastRemoteObject.exportObject(this, 0);
     }
 
-    public static void initGUIView (ControllerFXMosse controllerFXMosse, ControllerFXPartita controllerFXPartita, FXApplication application) throws RemoteException {
+    public static void initGUIView (int idGiocatore, FXApplication application) throws RemoteException {
         if (instance == null) {
-            instance = new GUIView(controllerFXMosse, controllerFXPartita, application);
+            instance = new GUIView(idGiocatore, application);
         }
     }
 
