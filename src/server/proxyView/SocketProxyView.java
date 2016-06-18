@@ -1,11 +1,11 @@
 package server.proxyView;
 
+import classicondivise.ComunicazioneView;
 import interfaccecondivise.InterfacciaView;
 import server.model.carte.CartaPermessoCostruzione;
 import server.sistema.AvviatorePartita;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;;
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -15,17 +15,17 @@ import java.util.Scanner;
 public class SocketProxyView implements InterfacciaView {
     private AvviatorePartita avviatore;
     private int idGiocatore;
-    private PrintWriter out;
-    private Scanner in;
     private Socket socket;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
 
     public SocketProxyView(Socket socket){
+        this.socket = socket;
         try {
-            out = new PrintWriter(socket.getOutputStream(), true); //non è necessario fare flush
-            in = new Scanner(socket.getInputStream());
-        }catch (IOException e){
-            erroreDiConnessione();
-            System.out.println("impossibile aprire output stream socket");
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException exc) {
+            exc.printStackTrace();
         }
     }
 
@@ -49,15 +49,25 @@ public class SocketProxyView implements InterfacciaView {
 
     @Override
     public void scegliMappa() {
-        out.println("sceglimappa");
-        System.out.println("in attesa della scelta da client");
-        avviatore.setMappa(Integer.parseInt(in.nextLine()));
-        System.out.println("ricevuta la scelta");
+        try{
+            oos.writeObject(ComunicazioneView.SCEGLI_MAPPA.toString());
+            oos.flush();
+            System.out.println("in attesa della scelta da client");
+            avviatore.setMappa(ois.readInt());
+            System.out.println("ricevuta la scelta");
+        } catch (IOException exc){
+           exc.printStackTrace();
+        }
     }
 
     @Override
     public void iniziaAGiocare() throws RemoteException {
-        out.println("start");
+        try {
+            oos.writeObject(ComunicazioneView.INIZIA_A_GIOCARE.toString());
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 
     @Override
@@ -167,6 +177,16 @@ public class SocketProxyView implements InterfacciaView {
 
     @Override
     public void eseguiTurno() {
+
+    }
+
+    @Override
+    public void fineTurno() throws RemoteException {
+
+    }
+
+    @Override
+    public void mostraMessaggio(String messaggio) {
 
     }
 }

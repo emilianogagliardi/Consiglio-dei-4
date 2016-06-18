@@ -34,5 +34,6 @@ public interface InterfacciaView extends Remote {
     void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta) throws RemoteException;
     void updatePosizioneRe(String città) throws RemoteException;
     void eseguiTurno() throws RemoteException;
-
+    void fineTurno() throws RemoteException;
+    void mostraMessaggio(String messaggio) throws RemoteException;
 }

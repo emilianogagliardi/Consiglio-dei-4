@@ -4,6 +4,7 @@ import interfaccecondivise.InterfacciaView;
 import server.proxyView.SocketProxyView;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,19 +15,22 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Server {
     private ArrayList<InterfacciaView> proxyViews;
     private int idCorrente;
-    private ScheduledExecutorService timeoutExecutor;
-    private Thread timeoutThread;
+    private ScheduledExecutorService scheduler;
+    private ScheduledFuture<?> timeout;
     private int numeroChiaviCorrente;
 
     public Server() {
         proxyViews = new ArrayList<>();
         idCorrente = 0;
-        timeoutExecutor = Executors.newSingleThreadScheduledExecutor();
+        scheduler = Executors.newScheduledThreadPool(1);
     }
 
     public void startServer() {
@@ -55,8 +59,9 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 //comunica al client qual è il suo id e aggiunge la proxy view associata
                 synchronized ((Object) idCorrente) {
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-                    pw.println(idCorrente);
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    oos.writeInt(idCorrente);
+                    oos.flush();
                     addView(new SocketProxyView(socket));
                 }
             }catch (IOException e){
@@ -78,11 +83,9 @@ public class Server {
         proxyViews.add(view);
         idCorrente++;
         if (proxyViews.size() == CostantiSistema.NUM_GIOCATORI_TIMEOUT) { //start thread di timeout
-            timeoutThread = new ThreadTimeout(this);
-            timeoutExecutor.schedule(timeoutThread, CostantiSistema.TIMEOUT_2_GIOCATORI, TimeUnit.SECONDS);
-        }else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
-            //TODO funziona l'interrupt sul thread?
-            timeoutThread.interrupt(); //killa il thread di timeout
+            timeout = scheduler.schedule(() -> {fineGiocatoriAccettati();}, CostantiSistema.TIMEOUT_2_GIOCATORI, SECONDS);
+        } else if (proxyViews.size() == CostantiSistema.NUM_GOCATORI_MAX) {
+            timeout.cancel(true);
             fineGiocatoriAccettati();
         }
     }

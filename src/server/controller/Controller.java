@@ -10,6 +10,7 @@ import server.model.carte.ColoreCartaPolitica;
 import server.model.eccezioni.AiutantiNonSufficientiException;
 import server.model.eccezioni.MoneteNonSufficientiException;
 import server.sistema.CostantiSistema;
+import server.sistema.SocketPollingController;
 import server.sistema.Utility;
 
 import java.rmi.RemoteException;
@@ -30,6 +31,7 @@ public class Controller implements Runnable, InterfacciaController {
     private boolean azioneVeloceEseguita;
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
     private GrafoCittà grafoCittà;
+    private ArrayList<SocketPollingController> socketPollingControllers;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
@@ -52,6 +54,10 @@ public class Controller implements Runnable, InterfacciaController {
         UnicastRemoteObject.exportObject(this, 0);
     }
 
+    public void setSocketPollingControllers(ArrayList<SocketPollingController> socketPollingControllers){
+        this.socketPollingControllers = socketPollingControllers;
+    }
+
     @Override
     public void run() {
         //inizio il ciclo dei turni
@@ -69,17 +75,27 @@ public class Controller implements Runnable, InterfacciaController {
                 e.printStackTrace();
             }
 
-            //il server.controller aspetta che il giocatore abbia finito il turno
+            //il controller aspetta che il giocatore abbia finito il turno
             try {
-                wait(CostantiSistema.TIMEOUT_TURNO);
-                //TODO: view.fineTuno();
-
+                synchronized (this){
+                    wait(CostantiSistema.TIMEOUT_TURNO);
+                }
+                int idGiocatoreCorrente = giocatoreCorrente.getId();
+                views.forEach((InterfacciaView view) -> {
+                    try {
+                        if (view.getIdGiocatore() == idGiocatoreCorrente)
+                            view.fineTurno();
+                    } catch (RemoteException exc) {
+                        exc.printStackTrace();
+                    }
+                });
                 //si passa al giocatore successivo
                 giocatoreCorrente = prossimoGiocatore(giocatoreCorrente);
             } catch (InterruptedException exc) {
                 exc.printStackTrace();
             }
         }
+        socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
     }
 
     private boolean emporiDisponibili(Giocatore giocatore){
@@ -101,11 +117,13 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean passaTurno()  throws RemoteException{ //verifica che il giocatore possa finire il turno
-        //TODO: verifica azioni
-        notify();
+    public boolean passaTurno() throws RemoteException { //verifica che il giocatore possa finire il turno
+        synchronized (this) {
+            notify();
+        }
         return true;
     }
+
 
     private void assegnaBonus(Bonus bonus) throws IllegalArgumentException {
         while (!(bonus instanceof NullBonus)){

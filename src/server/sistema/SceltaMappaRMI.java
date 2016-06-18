@@ -6,9 +6,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-/**
- * Created by emilianogagliardi on 14/06/16.
- */
 public class SceltaMappaRMI implements InterfacciaSceltaMappa, Remote {
     transient AvviatorePartita avviatorePartita;
 

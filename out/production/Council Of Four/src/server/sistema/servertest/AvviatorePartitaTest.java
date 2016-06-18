@@ -150,7 +150,18 @@ public class AvviatorePartitaTest {
             @Override
             public void eseguiTurno() {
 
-            }}); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
+            }
+
+            @Override
+            public void fineTurno() throws RemoteException {
+
+            }
+
+            @Override
+            public void mostraMessaggio(String messaggio) {
+
+            }
+        }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         avviatorePartita = new AvviatorePartita(proxyViews, 0);
     }

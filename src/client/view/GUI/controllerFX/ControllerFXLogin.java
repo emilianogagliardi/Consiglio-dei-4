@@ -5,7 +5,7 @@ import client.ComunicazioneSceltaMappaSocket;
 import client.view.CostantiClient;
 import client.view.GUI.GUIView;
 import client.view.GUI.GestoreFlussoFinestra;
-import client.view.SocketPolling;
+import client.view.SocketPollingView;
 import client.view.SocketProxyController;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
@@ -18,13 +18,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 /*
 classe che si occupa di gestire la finestra di login, assegnando ad ogni bottone l'eventhandler.
@@ -86,13 +86,15 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
     private void apriConnessioneSocket() {
         try {
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
-            Scanner in = new Scanner(socket.getInputStream()); //get dell'idGicatore assegnato da server
-            int id = Integer.parseInt(in.nextLine());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            int id = ois.readInt();
+            /*Scanner in = new Scanner(socket.getInputStream()); //get dell'idGicatore assegnato da server
+            int id = Integer.parseInt(in.nextLine());*/
             assegnaIdGiocatore(id);
             assegnaController(new SocketProxyController(socket)); //necessario comunicazione client -> server
             //inizializza la gui view
             GUIView view = getNewGUIView();
-            new Thread(new SocketPolling(view, socket)).start(); //necessario alla comunicazione server -> client
+            new Thread(new SocketPollingView(view, socket)).start(); //necessario alla comunicazione server -> client
             view.setIdGiocatore(id);
             ComunicazioneSceltaMappaSocket.init(socket);
             super.getApplication().setIsSocketClient(true);

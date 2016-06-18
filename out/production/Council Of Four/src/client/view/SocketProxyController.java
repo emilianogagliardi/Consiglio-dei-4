@@ -14,16 +14,23 @@ di tipo socket. Implementa la cominciazione necessaria all'esecuzione delle moss
 trasparente a controllerFXMosse il fatto che il controller sia in remoto, come nel caso di RMI
  */
 public class SocketProxyController implements InterfacciaController {
-    Socket socket;
+    private Socket socket;
+    private ObjectOutputStream oos;
 
     public SocketProxyController(Socket socket) throws IOException {
         this.socket = socket; //TODO: il chiamante deve chiudere il socket
+        try {
+            oos = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 
     @Override
     public boolean passaTurno() {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
-            writer.println(ComunicazioneController.PASSA_TURNO.toString());
+        try {
+            oos.writeObject(ComunicazioneController.PASSA_TURNO.toString());
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -32,10 +39,13 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean eleggereConsigliere(String idBalcone, String coloreConsigliere) {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
-            writer.println(ComunicazioneController.ELEGGERE_CONSIGLIERE.toString());
-            writer.println(idBalcone);
-            writer.println(coloreConsigliere);
+        try {
+            oos.writeObject(ComunicazioneController.ELEGGERE_CONSIGLIERE.toString());
+            oos.flush();
+            oos.writeObject(idBalcone);
+            oos.flush();
+            oos.writeObject(coloreConsigliere);
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -44,11 +54,15 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean acquistareTesseraPermessoCostruzione(String idBalcone, List<String> cartePolitica, int carta) {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true); ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))){ //autoFlush enabled
-            writer.println(ComunicazioneController.ACQUISTARE_TESSERA_PERMESSO_COSTRUZIONE.toString());
-            writer.println(idBalcone);
+        try {
+            oos.writeObject(ComunicazioneController.ACQUISTARE_TESSERA_PERMESSO_COSTRUZIONE.toString());
+            oos.flush();
+            oos.writeObject(idBalcone);
+            oos.flush();
             oos.writeObject(cartePolitica);
-            writer.println(carta);
+            oos.flush();
+            oos.writeObject(carta);
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -57,10 +71,13 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String città) {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true); ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))){ //autoFlush enabled
-            writer.println(ComunicazioneController.COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO_COSTRUZIONE.toString());
+        try {
+            oos.writeObject(ComunicazioneController.COSTRUIRE_EMPORIO_CON_TESSERA_PERMESSO_COSTRUZIONE.toString());
+            oos.flush();
             oos.writeObject(cartaPermessoCostruzione);
-            writer.println(città);
+            oos.flush();
+            oos.writeObject(città);
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -69,10 +86,13 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione) {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true); ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))){ //autoFlush enabled
-            writer.println(ComunicazioneController.COSTRUIRE_EMPORIO_CON_AIUTO_RE.toString());
+        try {
+            oos.writeObject(ComunicazioneController.COSTRUIRE_EMPORIO_CON_AIUTO_RE.toString());
+            oos.flush();
             oos.writeObject(nomiColoriCartePolitica);
-            writer.println(nomeCittàCostruzione);
+            oos.flush();
+            oos.writeObject(nomeCittàCostruzione);
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -81,8 +101,9 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean ingaggiareAiutante() {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
-            writer.println(ComunicazioneController.INGAGGIARE_AIUTANTE.toString());
+        try {
+            oos.writeObject(ComunicazioneController.INGAGGIARE_AIUTANTE.toString());
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -91,9 +112,11 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean cambiareTesserePermessoCostruzione(String regione) {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
-            writer.println(ComunicazioneController.CAMBIARE_TESSERE_PERMESSO_COSTRUZIONE.toString());
-            writer.println(regione);
+        try {
+            oos.writeObject(ComunicazioneController.CAMBIARE_TESSERE_PERMESSO_COSTRUZIONE.toString());
+            oos.flush();
+            oos.writeObject(regione);
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -102,10 +125,13 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere) {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
-            writer.println(ComunicazioneController.MANDARE_AIUTANTE_ELEGGERE_CONSIGLIERE.toString());
-            writer.println(idBalcone);
-            writer.println(coloreConsigliere);
+        try {
+            oos.writeObject(ComunicazioneController.MANDARE_AIUTANTE_ELEGGERE_CONSIGLIERE.toString());
+            oos.flush();
+            oos.writeObject(idBalcone);
+            oos.flush();
+            oos.writeObject(coloreConsigliere);
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
@@ -114,8 +140,9 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public boolean compiereAzionePrincipaleAggiuntiva() {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){ //autoFlush enabled
-            writer.println(ComunicazioneController.COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA.toString());
+        try {
+            oos.writeObject(ComunicazioneController.COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA.toString());
+            oos.flush();
         } catch (IOException exc){
             return false;
         }
