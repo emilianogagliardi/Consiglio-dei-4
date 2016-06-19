@@ -4,6 +4,7 @@ import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 import javafx.application.Platform;
 import server.model.carte.CartaPermessoCostruzione;
+import server.sistema.AvviatorePartita;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -24,15 +25,15 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     private static ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
     private static ControllerFXPartita controllerFXPartita; //utilizzato per le update
 
-    private GUIView(int idGiocatore, FXApplication application) throws RemoteException {
+    private GUIView(FXApplication application) throws RemoteException {
         super.setApplication(application);
         UnicastRemoteObject.exportObject(this, 0);
     }
 
 
-    protected static void initGUIView (int idGiocatore, FXApplication application) throws RemoteException {
+    protected static void initGUIView (FXApplication application) throws RemoteException {
         if (instance == null) {
-            instance = new GUIView(idGiocatore, application);
+            instance = new GUIView(application);
         }
     }
 
@@ -54,6 +55,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     public int getIdGiocatore() throws RemoteException {
         return idGiocatore;
     }
+
 
     @Override
     public void scegliMappa()throws RemoteException {

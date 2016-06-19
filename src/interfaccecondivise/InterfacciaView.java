@@ -1,6 +1,7 @@
 package interfaccecondivise;
 
 import server.model.carte.CartaPermessoCostruzione;
+import server.sistema.AvviatorePartita;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

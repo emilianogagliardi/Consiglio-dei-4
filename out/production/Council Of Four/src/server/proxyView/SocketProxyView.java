@@ -16,11 +16,11 @@ import java.util.List;
 ;
 
 public class SocketProxyView implements InterfacciaView {
-    private AvviatorePartita avviatore;
-    private int idGiocatore;
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    private AvviatorePartita avviatorePartita;
+    private int idGiocatore;
 
     public SocketProxyView(Socket socket){
         this.socket = socket;
@@ -32,17 +32,21 @@ public class SocketProxyView implements InterfacciaView {
         }
     }
 
-    public void setAvviatore(AvviatorePartita avviatore) {
-        this.avviatore = avviatore;
-    }
-
     public Socket getSocket() {
         return socket;
     }
 
     @Override
     public void setIdGiocatore(int idGiocatore) {
-        this.idGiocatore = idGiocatore;
+        try{
+            oos.writeObject(ComunicazioneView.SET_ID_GIOCATORE.toString());
+            oos.flush();
+            oos.writeInt(idGiocatore);
+            oos.flush();
+            this.idGiocatore = idGiocatore;
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 
     @Override
@@ -50,14 +54,18 @@ public class SocketProxyView implements InterfacciaView {
         return idGiocatore;
     }
 
+    public void setAvviatore(AvviatorePartita avviatorePartita) {
+        this.avviatorePartita = avviatorePartita;
+    }
+
     @Override
     public void scegliMappa() {
         try{
             oos.writeObject(ComunicazioneView.SCEGLI_MAPPA.toString());
             oos.flush();
-            avviatore.setMappa(ois.readInt());
+            avviatorePartita.setMappa(ois.readInt());
         } catch (IOException exc){
-           exc.printStackTrace();
+            exc.printStackTrace();
         }
     }
 

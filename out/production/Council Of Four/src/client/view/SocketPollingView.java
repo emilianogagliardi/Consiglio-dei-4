@@ -6,6 +6,7 @@ import interfaccecondivise.InterfacciaView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /*
@@ -24,7 +25,7 @@ public class SocketPollingView implements Runnable {
 
     public void termina(){ //TODO: il chiamante deve chiamare questo metodo per far terminare il thread
         try {
-            this.socket.close();
+            this.socket.close(); //probabilmente questa istruzione non serve perchè il socket viene chiuso automaticamente nel try with resources
         } catch (IOException exc) {
             exc.printStackTrace();
         }
@@ -35,18 +36,10 @@ public class SocketPollingView implements Runnable {
     public void run() {
         try (ObjectInputStream ois = new ObjectInputStream(socket.getInputStream())) {
             String inputLine;
+            int idMappa, idGiocatore;
             ComunicazioneView comunicazioneView;
             while (running) {
                 try{
-                    //TODO viene lanciata un eccezione
-                    /*
-                    java.io.EOFException
-	                at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2608)
-	                at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1319)
-	                at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
-	                at client.view.SocketPollingView.run(SocketPollingView.java:42)
-	                at java.lang.Thread.run(Thread.java:745)
-                     */
                     inputLine = (String) ois.readObject();
                     comunicazioneView = ComunicazioneView.valueOf(inputLine);
                     switch (comunicazioneView) {
@@ -55,8 +48,15 @@ public class SocketPollingView implements Runnable {
                             break;
                         case INIZIA_A_GIOCARE:
                             //riceve l'id della mappa scelta dal server
-                            int idMappa = ois.readInt();
+                            idMappa = ois.readInt();
                             view.iniziaAGiocare(idMappa);
+                            break;
+                        case SET_ID_GIOCATORE:
+                            idGiocatore = ois.readInt();
+                            view.setIdGiocatore(idGiocatore);
+                            break;
+                        case GET_ID_GIOCATORE:
+                           //ci pensa SocketProxyView a restituire l'IDGiocatore
                             break;
                         default:
                             break;
