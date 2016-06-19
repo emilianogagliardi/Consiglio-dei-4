@@ -3,7 +3,7 @@ package server.model;
 
 import server.model.bonus.BonusPuntiVittoria;
 import server.model.carte.CartaBonusRegione;
-import server.model.carte.CartaPermessoCostruzione;
+import classicondivise.CartaPermessoCostruzione;
 import interfaccecondivise.InterfacciaView;
 
 import java.rmi.RemoteException;

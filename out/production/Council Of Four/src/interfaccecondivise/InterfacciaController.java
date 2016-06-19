@@ -1,6 +1,6 @@
 package interfaccecondivise;
 
-import server.model.carte.CartaPermessoCostruzione;
+import classicondivise.CartaPermessoCostruzione;
 
 import java.io.Serializable;
 import java.rmi.Remote;

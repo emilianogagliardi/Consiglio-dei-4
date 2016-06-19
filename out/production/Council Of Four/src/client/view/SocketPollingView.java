@@ -1,11 +1,13 @@
 package client.view;
 
+import classicondivise.CartaPermessoCostruzione;
 import classicondivise.ComunicazioneView;
 import client.view.GUI.GUIView;
 import interfaccecondivise.InterfacciaView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.List;
 
 /*
     codice di un thread che fa polling sul socket. Riceve oridini e chiama metodi sulla view.
@@ -20,21 +22,20 @@ public class SocketPollingView implements Runnable {
         this.view = view;
         this.ois = ois;
     }
-/*
+
     public void termina(){ //TODO: il chiamante deve chiamare questo metodo per far terminare il thread
-        try {
-            this.socket.close(); //probabilmente questa istruzione non serve perchè il socket viene chiuso automaticamente nel try with resources
-        } catch (IOException exc) {
-            exc.printStackTrace();
-        }
         running = false;
     }
-*/
+
     @Override
     public void run() {
         try {
-            String inputLine;
-            int idMappa, idGiocatore;
+            int idMappa, idGiocatore, punti, monete, numCarte, numAiutanti, posizione, numeroEmporiDisponibili;
+            String inputLine, idBalcone, colore1, colore2, colore3, colore4, regione, nomeCittà, messaggio;
+            List<String> carte, coloriConsiglieri;
+            CartaPermessoCostruzione cartaPermessoCostruzione1, cartaPermessoCostruzione2;
+            List<CartaPermessoCostruzione> manoCartePermessoCostruzione;
+            List<Integer> idGiocatori;
             ComunicazioneView comunicazioneView;
             while (running) {
                 try{
@@ -55,6 +56,86 @@ public class SocketPollingView implements Runnable {
                             break;
                         case GET_ID_GIOCATORE:
                            //ci pensa SocketProxyView a restituire l'IDGiocatore
+                            break;
+                        case UPDATE_PUNTI_VITTORIA_GIOCATORE:
+                            idGiocatore = ois.readInt();
+                            punti = ois.readInt();
+                            view.updatePuntiVittoriaGiocatore(idGiocatore, punti);
+                            break;
+                        case UPDATE_BALCONE:
+                            idBalcone = (String) ois.readObject();
+                            colore1 = (String) ois.readObject();
+                            colore2 = (String) ois.readObject();
+                            colore3 = (String) ois.readObject();
+                            colore4 = (String) ois.readObject();
+                            view.updateBalcone(idBalcone, colore1, colore2, colore3, colore4);
+                            break;
+                        case UPDATE_MONETE:
+                            idGiocatore = ois.readInt();
+                            monete = ois.readInt();
+                            view.updateMonete(idGiocatore, monete);
+                            break;
+                        case UPDATE_CARTE_POLITICA_AVVERSARI:
+                            idGiocatore = ois.readInt();
+                            numCarte = ois.readInt();
+                            view.updateCartePoliticaAvversari(idGiocatore, numCarte);
+                            break;
+                        case UPDATE_CARTE_POLITICA_PROPRIE:
+                            carte = (List<String>) ois.readObject();
+                            view.updateCartePoliticaProprie(carte);
+                            break;
+                        case UPDATE_CARTE_PERMESSO_REGIONE:
+                            regione = (String) ois.readObject();
+                            cartaPermessoCostruzione1 = (CartaPermessoCostruzione) ois.readObject();
+                            cartaPermessoCostruzione2 = (CartaPermessoCostruzione) ois.readObject();
+                            view.updateCartePermessoRegione(regione, cartaPermessoCostruzione1, cartaPermessoCostruzione2);
+                            break;
+                        case UPDATE_CARTE_PERMESSO_GIOCATORE:
+                            idGiocatore = ois.readInt();
+                            manoCartePermessoCostruzione = (List<CartaPermessoCostruzione>) ois.readObject();
+                            view.updateCartePermessoGiocatore(idGiocatore, manoCartePermessoCostruzione);
+                            break;
+                        case UPDATE_AIUTANTI:
+                            idGiocatore = ois.readInt();
+                            numAiutanti = ois.readInt();
+                            view.updateAiutanti(idGiocatore, numAiutanti);
+                            break;
+                        case UPDATE_RISERVA_AIUTANTI:
+                            numAiutanti = ois.readInt();
+                            view.updateRiservaAiutanti(numAiutanti);
+                            break;
+                        case UPDATE_RISERVA_CONSIGLIERI:
+                            coloriConsiglieri = (List<String>) ois.readObject();
+                            view.updateRiservaConsiglieri(coloriConsiglieri);
+                            break;
+                        case UPDATE_PERCORSO_NOBILTA:
+                            idGiocatore = ois.readInt();
+                            posizione = ois.readInt();
+                            view.updatePercorsoNobiltà(idGiocatore, posizione);
+                            break;
+                        case UPDATE_EMPORI_CITTA:
+                            nomeCittà = (String) ois.readObject();
+                            idGiocatori = (List<Integer>) ois.readObject();
+                            view.updateEmporiCittà(nomeCittà, idGiocatori);
+                            break;
+                        case UPDATE_EMPORI_DISPONIBILI_GIOCATORE:
+                            idGiocatore = ois.readInt();
+                            numeroEmporiDisponibili = ois.readInt();
+                            view.updateEmporiDisponibiliGiocatore(idGiocatore, numeroEmporiDisponibili);
+                            break;
+                        case UPDATE_POSIZIONE_RE:
+                            nomeCittà = (String) ois.readObject();
+                            view.updatePosizioneRe(nomeCittà);
+                            break;
+                        case ESEGUI_TURNO:
+                            view.eseguiTurno();
+                            break;
+                        case FINE_TURNO:
+                            view.fineTurno();
+                            break;
+                        case MOSTRA_MESSAGGIO:
+                            messaggio = (String) ois.readObject();
+                            view.mostraMessaggio(messaggio);
                             break;
                         default:
                             break;

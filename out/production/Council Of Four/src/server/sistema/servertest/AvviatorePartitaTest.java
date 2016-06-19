@@ -3,7 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 import server.model.*;
 import server.model.bonus.NullBonus;
-import server.model.carte.CartaPermessoCostruzione;
+import classicondivise.CartaPermessoCostruzione;
 import server.sistema.AvviatorePartita;
 
 import java.io.FileInputStream;

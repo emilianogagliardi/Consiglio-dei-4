@@ -1,4 +1,5 @@
 package server.model;
+import classicondivise.CartaPermessoCostruzione;
 import server.model.bonus.*;
 import server.model.carte.*;
 import server.model.eccezioni.AiutantiNonSufficientiException;

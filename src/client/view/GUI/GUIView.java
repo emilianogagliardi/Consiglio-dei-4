@@ -3,7 +3,7 @@ package client.view.GUI;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 import javafx.application.Platform;
-import server.model.carte.CartaPermessoCostruzione;
+import classicondivise.CartaPermessoCostruzione;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
