@@ -56,9 +56,6 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 //comunica al client qual è il suo id e aggiunge la proxy view associata
                 synchronized ((Object) idCorrente) {
-                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                    oos.writeInt(idCorrente);
-                    oos.flush();
                     addView(new SocketProxyView(socket));
                 }
             }catch (IOException e){

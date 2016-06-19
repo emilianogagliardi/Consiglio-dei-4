@@ -9,9 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-/**
- * Created by emilianogagliardi on 15/06/16.
- */
+
 //singleton
 public class ComunicazioneSceltaMappaRMI implements ComunicazioneSceltaMappa{
     private InterfacciaSceltaMappa setterMappa;

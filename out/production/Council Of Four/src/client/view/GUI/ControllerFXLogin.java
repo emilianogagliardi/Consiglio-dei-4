@@ -81,11 +81,11 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
     private void apriConnessioneSocket() {
         try {
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            /*ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             //get dell'idGicatore assegnato da server
             int id = ois.readInt();
-            //inizializza la gui view
-            GUIView.initGUIView(id, super.getApplication());
+            //inizializza la gui view*/
+            GUIView.initGUIView(super.getApplication());
             new Thread(new SocketPollingView(GUIView.getInstance(), socket)).start(); //necessario alla comunicazione server -> client
             ComunicazioneSceltaMappaSocket.init(socket);
             super.getApplication().setIsSocketClient(true);
@@ -105,11 +105,13 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
             //inizializza la gui view con un valore fittizio di id giocatore
-            GUIView.initGUIView(0, super.getApplication());
+            GUIView.initGUIView(super.getApplication());
+            /*
             //effettua login ottenendo l'id del giocatore
             int id = loggerRMI.login(GUIView.getInstance()); //passa la view per rendere possibile la comunicazione server -> client
             //assegna il giusto id ottenuto tramite il login
-            GUIView.getInstance().setIdGiocatore(id);
+            GUIView.getInstance().setIdGiocatore(id);*/
+            loggerRMI.login(GUIView.getInstance()); //passa la view per rendere possibile la comunicazione server -> client
             ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
             super.getApplication().setIsSocketClient(false);
         }catch( NotBoundException | IOException | SingletonNonInizializzatoException e){

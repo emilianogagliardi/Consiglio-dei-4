@@ -160,6 +160,7 @@ public class ControllerTest {
                 return 0;
             }
 
+
             @Override
             public void scegliMappa() {
 
@@ -301,6 +302,7 @@ public class ControllerTest {
             public int getIdGiocatore() {
                 return 1;
             }
+
 
             @Override
             public void scegliMappa() {

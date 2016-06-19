@@ -33,6 +33,8 @@ public class AvviatorePartitaTest {
                 return 0;
             }
 
+
+
             @Override
             public void scegliMappa() {
             }

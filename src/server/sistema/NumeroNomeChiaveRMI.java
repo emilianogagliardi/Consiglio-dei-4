@@ -2,9 +2,6 @@ package server.sistema;
 
 import java.util.ArrayList;
 
-/**
- * Created by emilianogagliardi on 15/06/16.
- */
 /*
     SINGLETON
     NomiChiaveRMI serve esclusivamente ad ottenere una chiave
