@@ -54,7 +54,9 @@ public class SocketPollingView implements Runnable {
                             view.scegliMappa();
                             break;
                         case INIZIA_A_GIOCARE:
-                            view.iniziaAGiocare();
+                            //riceve l'id della mappa scelta dal server
+                            int idMappa = ois.readInt();
+                            view.iniziaAGiocare(idMappa);
                             break;
                         default:
                             break;

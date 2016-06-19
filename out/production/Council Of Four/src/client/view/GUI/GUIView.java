@@ -1,7 +1,5 @@
 package client.view.GUI;
 
-import client.view.GUI.controllerFX.ControllerFXMosse;
-import client.view.GUI.controllerFX.ControllerFXPartita;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 import javafx.application.Platform;
@@ -20,26 +18,32 @@ import java.util.List;
     Quindi estende il tipo GestoreFlussoFinestra.
  */
 public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, Remote {
-    private int idGiocatore;
+    private static int idGiocatore;
+    private static int idMappa;
     private static GUIView instance;
-    private ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
-    private ControllerFXPartita controllerFXPartita; //utilizzato per le update
+    private static ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
+    private static ControllerFXPartita controllerFXPartita; //utilizzato per le update
 
     private GUIView(int idGiocatore, FXApplication application) throws RemoteException {
         super.setApplication(application);
         UnicastRemoteObject.exportObject(this, 0);
     }
 
-    public static void initGUIView (int idGiocatore, FXApplication application) throws RemoteException {
+
+    protected static void initGUIView (int idGiocatore, FXApplication application) throws RemoteException {
         if (instance == null) {
             instance = new GUIView(idGiocatore, application);
         }
     }
 
-    public static GUIView getInstance() throws SingletonNonInizializzatoException{
+    protected static GUIView getInstance() throws SingletonNonInizializzatoException{
         if (instance == null) throw new SingletonNonInizializzatoException();
         return instance;
     }
+
+    protected static void setIdMappa(int id){idMappa = id;}
+
+    protected static int getIdMappa(){return idMappa;}
 
     @Override
     public void setIdGiocatore(int idGiocatore) throws RemoteException{
@@ -57,8 +61,14 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void iniziaAGiocare() throws RemoteException {
-        Platform.runLater(() -> super.setNuovoStep("viewgioco.fxml"));
+    public void iniziaAGiocare(int idMappa) throws RemoteException {
+        this.setIdMappa(idMappa);
+        Platform.runLater(() -> {
+            super.setNuovoStep("viewgioco.fxml");
+            super.getApplication().getStage().setResizable(true);
+            super.getApplication().getStage().setMinHeight(500);
+            super.getApplication().getStage().setMinWidth(700);
+        });
     }
 
     @Override

@@ -49,7 +49,7 @@ public class AvviatorePartita implements Runnable {
                 System.out.println("chiaveController = " + chiaveController);
                 registry.bind(chiaveController, controller);
                 for(InterfacciaView view : proxyViews) {
-                    view.iniziaAGiocare();
+                    view.iniziaAGiocare(idMappa);
                 }
                 executors.submit(controller);
             }catch (RemoteException | AlreadyBoundException e){

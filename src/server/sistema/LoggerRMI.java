@@ -15,9 +15,9 @@ class LoggerRMI extends UnicastRemoteObject implements InterfacciaLoggerRMI {
 
     @Override
     public int login(InterfacciaView view) {
-        int idAggiunto = server.getIdCorrente();
-        server.addView(view);
-        return idAggiunto;
+            int idAggiunto = server.getIdCorrente();
+            server.addView(view);
+            return idAggiunto;
     }
 
     @Override
@@ -27,7 +27,7 @@ class LoggerRMI extends UnicastRemoteObject implements InterfacciaLoggerRMI {
 
     @Override
     public String getChiaveSceltaMappa() throws RemoteException {
-        return PrefissiChiaviRMI.PREFISSO_CHIAVE_SCELTA_MAPPA + NumeroNomeChiaveRMI.ottieniUltimoNumero();
+            return PrefissiChiaviRMI.PREFISSO_CHIAVE_SCELTA_MAPPA + NumeroNomeChiaveRMI.ottieniUltimoNumero();
     }
 
 }

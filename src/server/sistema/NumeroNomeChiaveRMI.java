@@ -36,7 +36,6 @@ public class NumeroNomeChiaveRMI {
     }
 
     public static int ottieniUltimoNumero(){
-        System.out.println(ultimoOttenuto);
         return ultimoOttenuto;
     }
 }

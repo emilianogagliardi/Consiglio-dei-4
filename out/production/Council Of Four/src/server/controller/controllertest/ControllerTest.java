@@ -166,7 +166,7 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaAGiocare() throws RemoteException {
+            public void iniziaAGiocare(int idMappa) throws RemoteException {
 
             }
 
@@ -278,7 +278,18 @@ public class ControllerTest {
             @Override
             public void eseguiTurno() {
 
-            }}); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
+            }
+
+            @Override
+            public void fineTurno() throws RemoteException {
+
+            }
+
+            @Override
+            public void mostraMessaggio(String messaggio) {
+
+            }
+        }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         proxyViews.add(new InterfacciaView() {
             @Override
@@ -296,7 +307,7 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaAGiocare() throws RemoteException {
+            public void iniziaAGiocare(int idMappa) throws RemoteException {
 
             }
 
@@ -407,6 +418,16 @@ public class ControllerTest {
 
             @Override
             public void eseguiTurno() {
+
+            }
+
+            @Override
+            public void fineTurno() throws RemoteException {
+
+            }
+
+            @Override
+            public void mostraMessaggio(String messaggio) {
 
             }
         });
@@ -563,15 +584,7 @@ public class ControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
-    public void costruireEmporioConTesseraPermessoCostruzione() throws RemoteException {
-        resetGiocatore();
-        assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, NomeCittà.ARKON.toString()));
-        resetGiocatore();
-        assertTrue(controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione2, NomeCittà.CASTRUM.toString()));
-        //TODO_ verificare se vengono assegnati i bonus per tutte le città dello stesso colore e per tutte le città in una regione
-=======
-    public void costruireEmporioConTesseraPermessoCostruzioneTutteRegione(){
+    public void costruireEmporioConTesseraPermessoCostruzioneTutteRegione() throws  RemoteException{
         try {
             Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
             resetGiocatore();
@@ -590,7 +603,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void costruireEmporioConAiutoRe(){
+    public void costruireEmporioConAiutoRe() throws RemoteException{
         try {
             Giocatore giocatore = (Giocatore) giocatoreCorrente.get(controller);
             resetGiocatore();
@@ -605,8 +618,8 @@ public class ControllerTest {
         } catch (IllegalAccessException exc){
             exc.printStackTrace();
         }
->>>>>>> 884bc20a9c46cd636aa1cb360975a30c00f3cd84
     }
+
 
     private void resetGiocatore(){
         try {

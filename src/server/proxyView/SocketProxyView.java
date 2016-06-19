@@ -5,12 +5,15 @@ import interfaccecondivise.InterfacciaView;
 import server.model.carte.CartaPermessoCostruzione;
 import server.sistema.AvviatorePartita;
 
-import java.io.*;
-import java.net.Socket;;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
+
+;
 
 public class SocketProxyView implements InterfacciaView {
     private AvviatorePartita avviatore;
@@ -52,18 +55,19 @@ public class SocketProxyView implements InterfacciaView {
         try{
             oos.writeObject(ComunicazioneView.SCEGLI_MAPPA.toString());
             oos.flush();
-            System.out.println("in attesa della scelta da client");
             avviatore.setMappa(ois.readInt());
-            System.out.println("ricevuta la scelta");
         } catch (IOException exc){
            exc.printStackTrace();
         }
     }
 
     @Override
-    public void iniziaAGiocare() throws RemoteException {
+    public void iniziaAGiocare(int idMappa) throws RemoteException {
         try {
             oos.writeObject(ComunicazioneView.INIZIA_A_GIOCARE.toString());
+            oos.flush();
+            //comunica l'id della mappa che è stata scelta
+            oos.writeInt(idMappa);
             oos.flush();
         } catch (IOException exc){
             exc.printStackTrace();

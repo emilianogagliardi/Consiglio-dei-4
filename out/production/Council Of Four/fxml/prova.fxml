@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="860.0" prefWidth="1310.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Mappa">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1106.7840576171875" minWidth="10.0" prefWidth="1062.6463623046875" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="617.2052612304688" minWidth="10.0" prefWidth="247.3536376953125" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="765.8246154785156" minHeight="10.0" prefHeight="673.4248046875" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="559.4940185546875" minHeight="10.0" prefHeight="193.5751953125" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="1100.0" GridPane.rowIndex="1">
+                           <children>
+                              <TextArea maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="1100.0" prefHeight="200.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane>
+                           <children>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" hmin="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="653.0" prefViewportHeight="650.0" prefViewportWidth="1100.0" prefWidth="1100.0" vmin="300.0" vvalue="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="650.0" prefWidth="1100.0">
+                                       <children>
+                                          <ImageView fitHeight="650.0" fitWidth="1100.0" layoutX="26.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="645.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="1095.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../immagini/mappe_gioco/mappa1_gioco.jpg" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane GridPane.columnIndex="1">
+                           <children>
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="650.0" minWidth="200.0" prefHeight="653.0" prefWidth="248.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </GridPane>
+               </content>
+          </Tab>
+          <Tab text="Gioco">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

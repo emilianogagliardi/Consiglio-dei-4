@@ -18,7 +18,7 @@ public class FXApplication extends Application {
         setFinestraDaFXML("login.fxml");
     }
 
-    public void setFinestraDaFXML(String nomeFile) throws IOException{
+    void setFinestraDaFXML(String nomeFile) throws IOException{
         //assegna la scena
         FXMLLoader loader = new FXMLLoader();
         Parent root =  loader.load(getClass().getResource("/"+nomeFile).openStream());
@@ -30,11 +30,13 @@ public class FXApplication extends Application {
         finestraAttuale.show();
     }
 
-    public void setIsSocketClient(boolean isSocketClient){
+    Stage getStage(){return finestraAttuale;}
+
+    void setIsSocketClient(boolean isSocketClient){
         this.isSocketClient = isSocketClient;
     }
 
-    public boolean isSocketClient(){return isSocketClient;}
+    boolean isSocketClient(){return isSocketClient;}
 
     public static void main(String[] args) {
         launch(args);

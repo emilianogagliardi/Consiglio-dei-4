@@ -5,7 +5,6 @@ import server.proxyView.SocketProxyView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -35,7 +33,6 @@ public class Server {
 
     public void startServer() {
         NumeroNomeChiaveRMI.init();
-        numeroChiaviCorrente = NumeroNomeChiaveRMI.ottieniNuovoNumero();
         try{
             LoggerRMI loggerRMI = new LoggerRMI(this);
             Registry registry = LocateRegistry.createRegistry(CostantiSistema.RMI_PORT);
@@ -75,6 +72,10 @@ public class Server {
     }
 
     public synchronized void addView(InterfacciaView view){
+        //TODO togliere questa riga
+        System.out.println("Giocatore"+idCorrente+ " accettato");
+        //se si sta aggiungendo il primo giocatore di una partita si richiede un nuovo numero per le chiavi rmi
+        if(idCorrente == 0) numeroChiaviCorrente = NumeroNomeChiaveRMI.ottieniNuovoNumero();
         try {
             view.setIdGiocatore(idCorrente);
         } catch (RemoteException e) {
@@ -91,11 +92,13 @@ public class Server {
     }
 
     public void fineGiocatoriAccettati() {
+        //TODO togliere questa riga
+        System.out.println("Fine giocatori in partita");
+        System.out.println();
         idCorrente = 0;
         AvviatorePartita avviatorePartita = new AvviatorePartita(proxyViews, numeroChiaviCorrente);
         new Thread(avviatorePartita).start();
         proxyViews = new ArrayList<>();
-        numeroChiaviCorrente = NumeroNomeChiaveRMI.ottieniNuovoNumero();
     }
 
     public int getIdCorrente(){
