@@ -26,6 +26,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     private GUIView(int idGiocatore, FXApplication application) throws RemoteException {
         super.setApplication(application);
+        this.idGiocatore = idGiocatore;
         UnicastRemoteObject.exportObject(this, 0);
     }
 
