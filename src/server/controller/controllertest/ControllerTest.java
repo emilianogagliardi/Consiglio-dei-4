@@ -1,5 +1,6 @@
 
 
+import classicondivise.CartaPermessoCostruzione;
 import server.controller.Controller;
 import server.model.*;
 import server.model.bonus.*;

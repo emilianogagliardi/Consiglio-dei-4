@@ -3,12 +3,11 @@ package server.sistema;
 
 import classicondivise.ComunicazioneController;
 import server.controller.Controller;
-import server.model.carte.CartaPermessoCostruzione;
+import classicondivise.CartaPermessoCostruzione;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
-import java.util.Scanner;
 
 public class SocketPollingController implements Runnable {
     private Socket socket;

@@ -1,3 +1,4 @@
+import classicondivise.CartaPermessoCostruzione;
 import server.model.*;
 import server.model.bonus.*;
 import server.model.carte.*;

@@ -4,7 +4,7 @@ import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaView;
 import server.model.*;
 import server.model.bonus.*;
-import server.model.carte.CartaPermessoCostruzione;
+import classicondivise.CartaPermessoCostruzione;
 import server.model.carte.CartaPolitica;
 import server.model.carte.ColoreCartaPolitica;
 import server.model.eccezioni.AiutantiNonSufficientiException;
@@ -126,37 +126,90 @@ public class Controller implements Runnable, InterfacciaController {
 
 
     private void assegnaBonus(Bonus bonus) throws IllegalArgumentException {
+        int num;
         while (!(bonus instanceof NullBonus)){
             if(bonus instanceof BonusAiutanti) {
-                giocatoreCorrente.guadagnaAiutanti(((BonusAiutanti) bonus).getNumeroAiutanti());
+                num = ((BonusAiutanti) bonus).getNumeroAiutanti();
+                giocatoreCorrente.guadagnaAiutanti(num);
+                comunicaBonus(num + " aiutanti!");
             }
             else if (bonus instanceof BonusAvanzaPercorsoNobiltà){
-                giocatoreCorrente.avanzaPercorsoNobiltà(((BonusAvanzaPercorsoNobiltà) bonus).getNumeroPosti());
+                num = ((BonusAvanzaPercorsoNobiltà) bonus).getNumeroPosti();
+                giocatoreCorrente.avanzaPercorsoNobiltà(num);
+                comunicaBonus(num + " passi in avanti sul percorso della nobiltà!");
             }
             else if(bonus instanceof BonusMonete){
-                giocatoreCorrente.guadagnaMonete(((BonusMonete) bonus).getNumeroMonete());
+                num = ((BonusMonete) bonus).getNumeroMonete();
+                giocatoreCorrente.guadagnaMonete(num);
+                comunicaBonus(num + " monete!");
             }
             else if(bonus instanceof BonusPescaCartaPolitica){
-                for (int i = 0; i < ((BonusPescaCartaPolitica) bonus).getNumeroCarte(); i++)
+                num = ((BonusPescaCartaPolitica) bonus).getNumeroCarte();
+                for (int i = 0; i < num; i++)
                     giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
+                comunicaBonus(num + " pescate di carte politica");
             }
             else if(bonus instanceof BonusPuntiVittoria){
-                giocatoreCorrente.guadagnaPuntiVittoria(((BonusPuntiVittoria) bonus).getPuntiVittoria());
+                num = ((BonusPuntiVittoria) bonus).getPuntiVittoria();
+                giocatoreCorrente.guadagnaPuntiVittoria(num);
+                comunicaBonus(num + " punti vittoria!");
             }
             else if(bonus instanceof BonusRipetiAzionePrincipale){
                 azioniPrincipaliDisponibili++;
+                comunicaBonus("un'azione principale aggiuntiva");
             }
             else throw new IllegalArgumentException("Bonus non previsto"); //non si dovrebbe mai arrivare in questo branch else, se succede significa che è stato passato in ingresso un Bonus non previsto
             bonus = ((RealBonus) bonus).getDecoratedBonus();
         }
     }
 
+    private void comunicaBonus(String messaggio){
+        views.forEach((InterfacciaView view) -> {
+            try {
+                if (view.getIdGiocatore() == giocatoreCorrente.getId()){
+                    view.mostraMessaggio("Hai guadagnato " + messaggio);
+                } else {
+                    view.mostraMessaggio("Giocatore " + giocatoreCorrente.getId() + " ha guadagnato " + messaggio);
+                }
+            } catch (RemoteException exc){
+                exc.printStackTrace();
+            }
+
+        });
+    }
+
+    private void comunicaAGiocatoreCorrente(String messaggio) {
+        views.forEach((InterfacciaView view) -> {
+            try {
+                if (view.getIdGiocatore() == giocatoreCorrente.getId())
+                    view.mostraMessaggio(messaggio);
+            } catch (RemoteException exc) {
+                exc.printStackTrace();
+            }
+        });
+    }
+
+    private void comunicaAdAltriGiocatori(String messaggio){
+        views.forEach((InterfacciaView view) -> {
+            try {
+                if (view.getIdGiocatore() != giocatoreCorrente.getId())
+                    view.mostraMessaggio(messaggio);
+            } catch (RemoteException exc) {
+                exc.printStackTrace();
+            }
+        });
+    }
+
     @Override
     public boolean eleggereConsigliere(String idBalcone, String coloreConsigliereDaRiserva)  throws RemoteException{
-        if(!azionePrincipaleDisponibile())
+        if (!azionePrincipaleDisponibile()) {
+            comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
-        if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliereDaRiserva))
+        }
+        if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliereDaRiserva)) {
+            comunicaAGiocatoreCorrente("Non è stato possibile inserire il consigliere nel balcone!");
             return false;
+        }
         giocatoreCorrente.guadagnaMonete(CostantiModel.MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE);
         decrementaAzioniPrincipaliDisponibili();
         return true;
@@ -179,8 +232,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean acquistareTesseraPermessoCostruzione(String idBalconeRegione, List<String> nomiColoriCartePolitica, int numeroCarta)  throws RemoteException{
-        if(!azionePrincipaleDisponibile())
+        if (!azionePrincipaleDisponibile()) {
+            comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
+        }
         Supplier<Boolean> supplier = () -> {
             CartaPermessoCostruzione cartaPermessoCostruzione;
             switch (numeroCarta) {
@@ -207,10 +262,15 @@ public class Controller implements Runnable, InterfacciaController {
         BalconeDelConsiglio balconeDelConsiglio = mappaBalconi.get(IdBalcone.valueOf(idBalcone));
         //creo una mano di colori carte  politica come struttura di supporto
         List<ColoreCartaPolitica> coloriCartePolitica = nomiColoriCartePolitica.stream().map(ColoreCartaPolitica::valueOf).collect(Collectors.toList());
+        int moneteDaPagare = moneteDaPagareSoddisfaConsiglio(coloriCartePolitica);
+        if (giocatoreCorrente.getMonete() - moneteDaPagare  < 0) {
+            comunicaAGiocatoreCorrente("Non hai abbastanza monete per eseguire la mossa!");
+            return false;
+        }
         if(balconeDelConsiglio.soddisfaConsiglio(coloriCartePolitica)){
             if (prendiCartePoliticaGiocatore(giocatoreCorrente, coloriCartePolitica)) {
                 try {
-                    giocatoreCorrente.pagaMonete(moneteDaPagareSoddisfaConsiglio(coloriCartePolitica));
+                    giocatoreCorrente.pagaMonete(moneteDaPagare);
                 } catch (MoneteNonSufficientiException exc) {
                     return false;
                 }
@@ -227,77 +287,114 @@ public class Controller implements Runnable, InterfacciaController {
     }
     @Override
     public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà)  throws RemoteException{
-        if(!azionePrincipaleDisponibile())
+        if (!azionePrincipaleDisponibile()) {
+            comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
+        }
         NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
         //il giocatore deve avere azioni principali disponibili; la carta permesso costruzione non deve essere coperta; la città passat in input deve essere presenta sulla carta
         //permesso; la carta permesso passata in input deve effettivamente appartenere alla mano carte permesso del giocatore
-        if(!(cartaPermessoCostruzione.isVisibile() && cartaPermessoCostruzione.getCittà().contains(nomeCittà) && giocatoreCorrente.getManoCartePermessoCostruzione().contains(cartaPermessoCostruzione)))
+        if (!(cartaPermessoCostruzione.isVisibile() && cartaPermessoCostruzione.getCittà().contains(nomeCittà) && giocatoreCorrente.getManoCartePermessoCostruzione().contains(cartaPermessoCostruzione))) {
+            comunicaAGiocatoreCorrente("La scelta della carta permesso non è valida!");
             return false;
-        if (!giocatoreCorrente.decrementaEmporiDisponibili()) {
+        }
+        if (giocatoreCorrente.getEmporiDisponibili() < 1) {
+            comunicaAGiocatoreCorrente("Non hai più empori disponibili!");
             return false;
+        }
+        if (costruisciEmporio(nomeCittà)) {
+            giocatoreCorrente.decrementaEmporiDisponibili();
+            giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
+            cartaPermessoCostruzione.setVisibile(false);
+            giocatoreCorrente.addCarta(cartaPermessoCostruzione);  //riassegno al giocatore la stessa carta coperta
+            decrementaAzioniPrincipaliDisponibili();
+            comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha costruito un emporio nella città di " + nomeCittà);
+            return true;
         } else {
-            if (costruisciEmporio(nomeCittà)) {
-                giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
-                cartaPermessoCostruzione.setVisibile(false);
-                giocatoreCorrente.addCarta(cartaPermessoCostruzione);  //riassegno al giocatore la stessa carta coperta
-                decrementaAzioniPrincipaliDisponibili();
-                return true;
-            } else return false;
+            return false;
         }
     }
 
     @Override
     public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione)  throws RemoteException{
-        if(!azionePrincipaleDisponibile())
-            return false;
-        if (!acquistareTesseraPermesso("RE", nomiColoriCartePolitica, () -> true)){
+        if (!azionePrincipaleDisponibile()) {
+            comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
         }
         grafoCittà.bfs(getCittàDaNome(partita.getCittàRe()), (p1, p2) -> {});
         Città cittàCostruzione = getCittàDaNome(NomeCittà.valueOf(nomeCittàCostruzione));
         Integer distanza = cittàCostruzione.getDistanza();
         if (distanza.equals(Integer.MAX_VALUE)){
-            return false; //la città scelta non è collegata a quella dove risiede attualmente il Re
+            comunicaAGiocatoreCorrente("La città scelta non è collegata a quella dove risiede attualmente il Re!");
+            return false;
+        }
+        int moneteDaPagare = distanza * CostantiModel.MONETE_PER_STRADA;
+        if (giocatoreCorrente.getMonete() - moneteDaPagare < 0 ) {
+            comunicaAGiocatoreCorrente("Non hai abbastanza monete per costruire un emporio in questa città!");
+            return false;
+        }
+        //TODO: ahi, ahi, ahi! Una situazione pericolosa da risolvere!
+        if (!acquistareTesseraPermesso("RE", nomiColoriCartePolitica, () -> true)){
+            comunicaAGiocatoreCorrente("Non puoi acquistare una tessera permesso di costruzione!");
+            return false;
         }
         if (!costruisciEmporio(cittàCostruzione.getNome())) {
+            comunicaAGiocatoreCorrente("Non puoi costruire un emporio!");
             return false;
         }
         try {
-            giocatoreCorrente.pagaMonete(distanza * CostantiModel.MONETE_PER_STRADA);
+            giocatoreCorrente.pagaMonete(moneteDaPagare);
         } catch (MoneteNonSufficientiException exc){
             return false;
         }
         partita.getRe().setPosizione(cittàCostruzione);
         decrementaAzioniPrincipaliDisponibili();
+        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha costruito nella città  di " + cittàCostruzione);
         return true;
     }
 
     @Override
     public boolean ingaggiareAiutante()  throws RemoteException{
-        if(azioneVeloceEseguita)
+        if (azioneVeloceEseguita) {
+            comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
-        try {
-            giocatoreCorrente.pagaMonete(CostantiModel.MONETE_INGAGGIARE_AIUTANTE);
-        } catch (MoneteNonSufficientiException exc){
+        }
+        int moneteDaPagare = CostantiModel.MONETE_INGAGGIARE_AIUTANTE;
+        if (giocatoreCorrente.getMonete() - moneteDaPagare < 0) {
+            comunicaAGiocatoreCorrente("Non hai abbastanza monete per eseguire la mossa!");
             return false;
         }
         int aiutanti = CostantiModel.AIUTANTI_GUADAGNATI_INGAGG_AIUTANTE;
+        if (partita.getRiservaAiutanti() - aiutanti < 0) {
+            comunicaAGiocatoreCorrente("Non ci sono abbastanza aiutanti in riserva!");
+            return false;
+        }
+        try {
+            giocatoreCorrente.pagaMonete(moneteDaPagare);
+        } catch (MoneteNonSufficientiException exc){
+            return false;
+        }
         try {
             partita.decrementaAiutanti(aiutanti);
         } catch (IllegalArgumentException exc){
             return false;
         }
         giocatoreCorrente.guadagnaAiutanti(aiutanti);
+        comunicaAGiocatoreCorrente("Hai guadagnato " + aiutanti + " aiutanti");
+        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha guadagnato " + aiutanti);
         azioneVeloceEseguita = true;
         return true;
     }
 
     @Override
     public boolean cambiareTesserePermessoCostruzione(String regione)  throws RemoteException{
-        if(azioneVeloceEseguita)
+        if (azioneVeloceEseguita) {
+            comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
-        if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO)){
+        }
+        int aiutanti = CostantiModel.AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO;
+        if (!giocatoreRestituisciAiutantiARiserva(aiutanti)){
+            comunicaAGiocatoreCorrente("Ti servono " +  aiutanti + " aiutanti per eseguire questa azione veloce!");
             return false;
         }
         partita.getRegione(NomeRegione.valueOf(regione)).cambiaCartePermessoCostruzione();
@@ -307,23 +404,37 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere)  throws RemoteException{
-        if(azioneVeloceEseguita)
-            return false;
-        if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS)) {
+        if (azioneVeloceEseguita) {
+            comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
         }
-        if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliere))
+        int aiutanti = CostantiModel.AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS;
+        if (giocatoreCorrente.getAiutanti() - aiutanti < 0) {
+            comunicaAGiocatoreCorrente("Ti servono " +  aiutanti + " aiutanti per eseguire questa azione veloce!");
             return false;
+        }
+        if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliere)){
+            comunicaAGiocatoreCorrente("Non è possibile inserire nel balcone il consigliere scelto!");
+            return false;
+        }
+        if (!giocatoreRestituisciAiutantiARiserva(aiutanti)) {
+            return false;
+        }
         azioneVeloceEseguita = true;
         return true;
     }
 
     @Override
     public boolean compiereAzionePrincipaleAggiuntiva()  throws RemoteException{
-        if(azioneVeloceEseguita)
+        if (azioneVeloceEseguita) {
+            comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
-        if (!giocatoreRestituisciAiutantiARiserva(CostantiModel.AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA))
+        }
+        int aiutanti = CostantiModel.AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA;
+        if (!giocatoreRestituisciAiutantiARiserva(aiutanti)) {
+            comunicaAGiocatoreCorrente("Ti servono " +  aiutanti + " aiutanti per eseguire questa azione veloce!");
             return false;
+        }
         azioniPrincipaliDisponibili++;
         azioneVeloceEseguita = true;
         return true;
@@ -394,15 +505,22 @@ public class Controller implements Runnable, InterfacciaController {
         Città cittàCostruzione = getCittàDaNome(nomeCittàCostruzione);
         Regione regione = getRegioneDaNomeCittà(nomeCittàCostruzione);
         ArrayList<Città> cittàCollegateRitornate;
-        if(cittàCostruzione.giàCostruito(giocatoreCorrente))
+        if (cittàCostruzione.giàCostruito(giocatoreCorrente)) {
+            comunicaAGiocatoreCorrente("Hai già costruito in questa città!");
             return false;
-
+        }
+        int numeroAiutanti = CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti();
         try {
-            giocatoreCorrente.pagaAiutanti(CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti());
-        } catch (AiutantiNonSufficientiException exc){return false;}
+
+            giocatoreCorrente.pagaAiutanti(numeroAiutanti);
+        } catch (AiutantiNonSufficientiException exc){
+            comunicaAGiocatoreCorrente("Ti servono " + numeroAiutanti + " per cotruire in questa città!");
+            return false;
+        }
 
 
         cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
+        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha costruito un emporio nella città di" + cittàCostruzione);
 
         assegnaBonus(cittàCostruzione.getBonus());
         //ora utilizzo un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
@@ -423,6 +541,8 @@ public class Controller implements Runnable, InterfacciaController {
             return valoreDaRitornare;
         })) { //corpo dell'if
             assegnaBonus(partita.ottieniCartaBonusColoreCittà(cittàCostruzione.getColore()).getBonus());
+            comunicaAGiocatoreCorrente("Complimenti! Hai ottenuto una tessera bonus colore città per aver costruito in tutte le città del colore " + cittàCostruzione.getColore());
+            comunicaAGiocatoreCorrente("Giocatore " + giocatoreCorrente.getId() + " ha ottenuto una tessera bonus colore città per aver costruito in tutte le città del colore " + cittàCostruzione.getColore());
         }
         //verifico se il giocatore ha costruito empori in tutte le città della stessa regione
         if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
@@ -434,6 +554,8 @@ public class Controller implements Runnable, InterfacciaController {
             return valoreDaRitornare;
         })) { //corpo dell'if
             assegnaBonus(regione.ottieniCartaBonusRegione().getBonus());
+            comunicaAGiocatoreCorrente("Complimenti! Hai ottenuto una tessera bonus regione per aver costruito in tutte le città della regione " + cittàCostruzione.getNomeRegione());
+            comunicaAGiocatoreCorrente("Giocatore " + giocatoreCorrente.getId() + " ha ottenuto una tessera bonus regione per aver costruito in tutte le città della regione " + cittàCostruzione.getNomeRegione());
         }
         return true;
     }

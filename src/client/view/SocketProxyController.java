@@ -2,10 +2,9 @@ package client.view;
 
 import classicondivise.ComunicazioneController;
 import interfaccecondivise.InterfacciaController;
-import server.model.carte.CartaPermessoCostruzione;
+import classicondivise.CartaPermessoCostruzione;
 
 import java.io.*;
-import java.net.Socket;
 import java.util.List;
 
 /*
@@ -14,7 +13,6 @@ di tipo socket. Implementa la cominciazione necessaria all'esecuzione delle moss
 trasparente a controllerFXMosse il fatto che il controller sia in remoto, come nel caso di RMI
  */
 public class SocketProxyController implements InterfacciaController {
-    private Socket socket;
     private ObjectOutputStream oos;
 
     public SocketProxyController(ObjectOutputStream oos) throws IOException {

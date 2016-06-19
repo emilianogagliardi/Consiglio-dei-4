@@ -63,6 +63,10 @@ public class Partita extends Observable {
         updateViewRiservaAiutanti();
     }
 
+    public int getRiservaAiutanti(){
+        return this.riservaAiutanti;
+    }
+
     public void setRe(Re re) {
         if(this.re == null)
             this.re = re;
