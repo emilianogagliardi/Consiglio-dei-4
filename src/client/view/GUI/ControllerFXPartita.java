@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -12,7 +13,8 @@ import java.util.ResourceBundle;
 
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     private int idGiocatore;
-
+    @FXML
+    AnchorPane rootPane;
     @FXML
     ImageView immagineMappa;
 

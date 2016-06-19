@@ -17,13 +17,8 @@ public class SocketProxyController implements InterfacciaController {
     private Socket socket;
     private ObjectOutputStream oos;
 
-    public SocketProxyController(Socket socket) throws IOException {
-        this.socket = socket; //TODO: il chiamante deve chiudere il socket
-        try {
-            oos = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException exc){
-            exc.printStackTrace();
-        }
+    public SocketProxyController(ObjectOutputStream oos) throws IOException {
+        this.oos = oos;
     }
 
     @Override

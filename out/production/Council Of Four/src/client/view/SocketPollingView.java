@@ -6,23 +6,21 @@ import interfaccecondivise.InterfacciaView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 /*
     codice di un thread che fa polling sul socket. Riceve oridini e chiama metodi sulla view.
     Rende trasparente nel caso di comunicazone socket la ricezione di ordini dal server remoto.
  */
 public class SocketPollingView implements Runnable {
-    InterfacciaView view;
-    private Socket socket;
+    private InterfacciaView view;
+    ObjectInputStream ois;
     private volatile boolean running = true;
 
-    public SocketPollingView(GUIView view, Socket socket) {
+    public SocketPollingView(GUIView view, ObjectInputStream ois) {
         this.view = view;
-        this.socket = socket;
+        this.ois = ois;
     }
-
+/*
     public void termina(){ //TODO: il chiamante deve chiamare questo metodo per far terminare il thread
         try {
             this.socket.close(); //probabilmente questa istruzione non serve perchè il socket viene chiuso automaticamente nel try with resources
@@ -31,10 +29,10 @@ public class SocketPollingView implements Runnable {
         }
         running = false;
     }
-
+*/
     @Override
     public void run() {
-        try (ObjectInputStream ois = new ObjectInputStream(socket.getInputStream())) {
+        try {
             String inputLine;
             int idMappa, idGiocatore;
             ComunicazioneView comunicazioneView;

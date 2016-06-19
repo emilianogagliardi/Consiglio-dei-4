@@ -14,6 +14,7 @@ import javafx.scene.control.ToggleButton;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.rmi.NotBoundException;
@@ -81,9 +82,11 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
     private void apriConnessioneSocket() {
         try {
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             GUIView.initGUIView(super.getApplication());
-            new Thread(new SocketPollingView(GUIView.getInstance(), socket)).start(); //necessario alla comunicazione server -> client
-            ComunicazioneSceltaMappaSocket.init(socket);
+            new Thread(new SocketPollingView(GUIView.getInstance(), ois)).start(); //necessario alla comunicazione server -> client
+            ComunicazioneSceltaMappaSocket.init(oos);
             super.getApplication().setIsSocketClient(true);
         }catch(IOException | SingletonNonInizializzatoException e) {
             e.printStackTrace();

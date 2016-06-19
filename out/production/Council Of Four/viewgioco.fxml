@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GUI.ControllerFXPartita">
+<AnchorPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GUI.ControllerFXPartita">
    <children>
       <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1300.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -29,20 +28,20 @@
                             <RowConstraints maxHeight="440.18914794921875" minHeight="10.0" prefHeight="133.79620361328125" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <ScrollPane prefViewportHeight="650.0" prefViewportWidth="1100.0">
+                              <ScrollPane fitToHeight="true" fitToWidth="true">
                                  <content>
-                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="1105.0">
+                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0">
                                        <children>
-                                          <ImageView fx:id="immagineMappa" fitHeight="680.0" fitWidth="1120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-15.0" AnchorPane.topAnchor="0.0" />
+                                          <ImageView fx:id="immagineMappa" fitHeight="650.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
                                     </AnchorPane>
                                  </content>
                               </ScrollPane>
-                              <AnchorPane GridPane.rowIndex="1">
-                                 <children>
-                                    <TextArea layoutX="20.0" layoutY="8.0" prefHeight="134.0" prefWidth="1120.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" />
-                                 </children>
-                              </AnchorPane>
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
+                              <AnchorPane GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                      </children>

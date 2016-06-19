@@ -14,6 +14,7 @@ import javafx.scene.control.ToggleButton;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.rmi.NotBoundException;
@@ -81,13 +82,11 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
     private void apriConnessioneSocket() {
         try {
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
-            /*ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            //get dell'idGicatore assegnato da server
-            int id = ois.readInt();
-            //inizializza la gui view*/
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             GUIView.initGUIView(super.getApplication());
-            new Thread(new SocketPollingView(GUIView.getInstance(), socket)).start(); //necessario alla comunicazione server -> client
-            ComunicazioneSceltaMappaSocket.init(socket);
+            new Thread(new SocketPollingView(GUIView.getInstance(), ois)).start(); //necessario alla comunicazione server -> client
+            ComunicazioneSceltaMappaSocket.init(oos);
             super.getApplication().setIsSocketClient(true);
         }catch(IOException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
@@ -106,11 +105,6 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
             //inizializza la gui view con un valore fittizio di id giocatore
             GUIView.initGUIView(super.getApplication());
-            /*
-            //effettua login ottenendo l'id del giocatore
-            int id = loggerRMI.login(GUIView.getInstance()); //passa la view per rendere possibile la comunicazione server -> client
-            //assegna il giusto id ottenuto tramite il login
-            GUIView.getInstance().setIdGiocatore(id);*/
             loggerRMI.login(GUIView.getInstance()); //passa la view per rendere possibile la comunicazione server -> client
             ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
             super.getApplication().setIsSocketClient(false);

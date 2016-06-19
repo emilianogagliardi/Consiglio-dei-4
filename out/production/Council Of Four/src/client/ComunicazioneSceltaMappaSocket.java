@@ -4,8 +4,6 @@ import client.view.eccezioni.SingletonNonInizializzatoException;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
 
 
 //singleton
@@ -13,17 +11,12 @@ public class ComunicazioneSceltaMappaSocket implements ComunicazioneSceltaMappa{
     private static ComunicazioneSceltaMappaSocket instance;
     private static ObjectOutputStream oos;
 
-    private ComunicazioneSceltaMappaSocket(Socket socket) {
-        try {
-            oos = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            System.out.println("impossibile comunicare la scelta della mappa in socket");
-            e.printStackTrace();
-        }
+    private ComunicazioneSceltaMappaSocket(ObjectOutputStream oos) {
+        this.oos = oos;
     }
 
-    public static void init(Socket socket) {
-        instance = new ComunicazioneSceltaMappaSocket(socket);
+    public static void init(ObjectOutputStream oos) {
+        instance = new ComunicazioneSceltaMappaSocket(oos);
     }
 
     public static ComunicazioneSceltaMappa getInstance() throws SingletonNonInizializzatoException{
