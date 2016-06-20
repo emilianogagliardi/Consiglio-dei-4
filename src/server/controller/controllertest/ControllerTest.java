@@ -294,7 +294,12 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaMarket() throws RemoteException {
+            public void vendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void compra() throws RemoteException {
 
             }
         }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
@@ -441,7 +446,12 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaMarket() throws RemoteException {
+            public void vendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void compra() throws RemoteException {
 
             }
         });

@@ -38,7 +38,6 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             e.printStackTrace();
         }
         inizializzaImmaginiCarte();
-        updateBalcone("COSTA", "NERO", "BIANCO", "VIOLA", "ROSA");
     }
 
     private void inizializzaImmagine() throws SingletonNonInizializzatoException {

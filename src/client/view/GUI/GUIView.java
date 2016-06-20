@@ -197,7 +197,12 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void iniziaMarket() throws RemoteException {
+    public void vendi() throws RemoteException {
+
+    }
+
+    @Override
+    public void compra() throws RemoteException {
 
     }
 }

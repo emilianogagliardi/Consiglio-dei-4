@@ -32,14 +32,12 @@ public class Controller implements Runnable, InterfacciaController {
     private GrafoCittà grafoCittà;
     private ArrayList<SocketPollingController> socketPollingControllers;
     private GiocatoriOnline giocatoriOnline;
-    private InterfacciaView viewCorrente;
-    //private HashMap<Integer, ArrayList<ArrayList>> mappaMarket;
+    private HashMap<Integer, ArrayList<ArrayList>> mappaMarket;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
         this.partita = partita;
         this.views = views;
-        //mappaMarket = new HashMap<>();
         giocatoriOnline = new GiocatoriOnline();
         partita.getGiocatori().forEach((Giocatore giocatore) -> {
             giocatoriOnline.aggiungiGiocatore(giocatore);
@@ -66,6 +64,7 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public void run() {
+        InterfacciaView viewCorrente;
         try{
             //inizio il ciclo dei turni
             while(!partitaTerminata()){
@@ -97,9 +96,7 @@ public class Controller implements Runnable, InterfacciaController {
                 } while (giocatoriOnline.haProssimo());
 
 
-
                 //INIZIO FASE VENDITA MARKET
-
                 do {
                     //si passa al giocatore successivo
                     giocatoreCorrente = giocatoriOnline.prossimo();
@@ -116,8 +113,15 @@ public class Controller implements Runnable, InterfacciaController {
                     }
                 } while (giocatoriOnline.haProssimo());
 
+
                 //INIZIO FASE ACQUISTO MARKET
-                //TODO: C'è da scegliere giocatori a caso!
+                mappaMarket = new HashMap<>();
+                ScatolaIdGiocatori scatolaIdGiocatori = new ScatolaIdGiocatori();
+                Giocatore giocatoreAcquistoMarket;
+                do {
+                    //giocatoreAcquistoMarket = partita. scatolaIdGiocatori.pescaNumero()
+
+                } while (!scatolaIdGiocatori.èVuota());
 
 
             }
@@ -129,6 +133,14 @@ public class Controller implements Runnable, InterfacciaController {
 
     }
 
+    private Giocatore giocatoreDaPartita(int idGiocatore) {
+        for (Giocatore giocatore : partita.getGiocatori()) {
+            if (giocatore.getId() == idGiocatore) {
+                return giocatore;
+            }
+        }
+        return null;
+    }
 
     private InterfacciaView getViewGiocatoreCorrente(){
         for (InterfacciaView view : views) {
@@ -656,8 +668,8 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     class GiocatoriOnline {
-        ArrayList<Giocatore> giocatoriOnline;
-        int posizione;
+        private ArrayList<Giocatore> giocatoriOnline;
+        private int posizione;
 
         public GiocatoriOnline(){
             this.giocatoriOnline = new ArrayList<>();
@@ -689,6 +701,37 @@ public class Controller implements Runnable, InterfacciaController {
 
         public synchronized void aggiungiGiocatore(Giocatore giocatore){
             giocatoriOnline.add(giocatore);
+        }
+
+        public ArrayList<Integer> getIdGiocatori(){
+            ArrayList<Integer> ids = new ArrayList<>();
+            giocatoriOnline.forEach((Giocatore giocatore) -> {ids.add(giocatore.getId());});
+            return ids;
+        }
+
+    }
+
+    class ScatolaIdGiocatori{
+        private ArrayList<Integer> numeri;
+        private Random random = new Random();
+        private int posizioneCasuale;
+
+        public ScatolaIdGiocatori(){
+            riempiScatola();
+        }
+
+        public void riempiScatola(){
+            numeri = new ArrayList<>();
+            numeri.addAll(giocatoriOnline.getIdGiocatori());
+        }
+
+        public int pescaNumero(){
+            posizioneCasuale = random.nextInt(numeri.size());
+            return numeri.remove(posizioneCasuale);
+        }
+
+        public boolean èVuota(){
+            return numeri.isEmpty();
         }
 
     }

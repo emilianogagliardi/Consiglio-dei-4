@@ -346,7 +346,7 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void iniziaMarket() throws RemoteException {
+    public void vendi() throws RemoteException {
 
     }
 }

@@ -166,7 +166,7 @@ public class AvviatorePartitaTest {
             }
 
             @Override
-            public void iniziaMarket() throws RemoteException {
+            public void vendi() throws RemoteException {
 
             }
         }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
