@@ -1,4 +1,6 @@
-package server.model;
+package classicondivise;
+
+import server.model.NomeRegione;
 
 public enum IdBalcone {
     COSTA, COLLINA, MONTAGNA, RE;

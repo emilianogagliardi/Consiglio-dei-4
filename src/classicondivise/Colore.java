@@ -1,4 +1,4 @@
-package server.model;
+package classicondivise;
 
 
 public enum Colore {
