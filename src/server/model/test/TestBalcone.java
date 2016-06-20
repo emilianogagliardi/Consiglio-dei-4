@@ -1,3 +1,5 @@
+import classicondivise.Colore;
+import classicondivise.IdBalcone;
 import server.model.*;
 
 import server.model.carte.ColoreCartaPolitica;

@@ -1,5 +1,7 @@
 package server.model;
 
+import classicondivise.Colore;
+import classicondivise.IdBalcone;
 import server.model.carte.ColoreCartaPolitica;
 import interfaccecondivise.InterfacciaView;
 import server.sistema.Utility;
@@ -11,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static server.model.CostantiModel.NUM_CONSIGLIERI_BALCONE;
 
 public class BalconeDelConsiglio extends Observable {
-    private IdBalcone IdBalcone;
+    private classicondivise.IdBalcone IdBalcone;
     private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 

@@ -26,7 +26,6 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     private GUIView(FXApplication application) throws RemoteException {
         super.setApplication(application);
-        this.idGiocatore = idGiocatore;
         UnicastRemoteObject.exportObject(this, 0);
     }
 
@@ -40,6 +39,10 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     protected static GUIView getInstance() throws SingletonNonInizializzatoException{
         if (instance == null) throw new SingletonNonInizializzatoException();
         return instance;
+    }
+
+    protected static void setControllerFXPartita(ControllerFXPartita controller) {
+        controllerFXPartita = controller;
     }
 
     protected static void setIdMappa(int id){idMappa = id;}
@@ -84,8 +87,8 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void updateBalcone(String regione, String colore1, String colore2, String colore3, String colore4) throws RemoteException{
-
+    public void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) throws RemoteException{
+        controllerFXPartita.updateBalcone(idBalcone, colore1, colore2, colore3, colore4);
     }
 
     @Override

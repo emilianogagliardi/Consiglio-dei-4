@@ -5,10 +5,12 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GUI.ControllerFXPartita">
@@ -43,6 +45,38 @@
                                           <ImageView fx:id="cartaCollinaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="396.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaMontagnaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="742.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaCostaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="74.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
+                                          <HBox layoutX="94.0" layoutY="12.0" prefHeight="40.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliere1_costa" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere2_costa" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere3_costa" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere4_costa" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="454.0" layoutY="12.0" prefHeight="40.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliere1_collina" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere2_collina" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere3_collina" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere4_collina" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="778.0" layoutY="12.0" prefHeight="40.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliere1_montagna" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere2_montagna" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere3_montagna" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere4_montagna" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="551.0" layoutY="392.0" prefHeight="40.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliere1_re" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere2_re" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere3_re" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="consigliere4_re" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                        <padding>
                                           <Insets left="10.0" />

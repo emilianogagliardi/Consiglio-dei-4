@@ -1,6 +1,8 @@
 package server.model;
 
 
+import classicondivise.Colore;
+
 import java.util.ArrayList;
 
 public enum ColoreCittà {

@@ -1,7 +1,7 @@
 package server.model.carte;
 
 
-import server.model.Colore;
+import classicondivise.Colore;
 
 import java.util.ArrayList;
 import java.util.List;

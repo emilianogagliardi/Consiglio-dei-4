@@ -1,6 +1,7 @@
 
 
 import classicondivise.CartaPermessoCostruzione;
+import classicondivise.IdBalcone;
 import server.controller.Controller;
 import server.model.*;
 import server.model.bonus.*;

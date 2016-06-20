@@ -1,5 +1,7 @@
 package server.controller;
 
+import classicondivise.Colore;
+import classicondivise.IdBalcone;
 import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaView;
 import server.model.*;

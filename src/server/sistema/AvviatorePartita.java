@@ -1,6 +1,7 @@
 package server.sistema;
 
 import classicondivise.CartaPermessoCostruzione;
+import classicondivise.IdBalcone;
 import interfaccecondivise.InterfacciaView;
 import server.controller.Controller;
 import server.model.*;
