@@ -344,4 +344,9 @@ public class SocketProxyView implements InterfacciaView {
             exc.printStackTrace();
         }
     }
+
+    @Override
+    public void iniziaMarket() throws RemoteException {
+
+    }
 }

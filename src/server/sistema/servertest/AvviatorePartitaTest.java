@@ -164,6 +164,11 @@ public class AvviatorePartitaTest {
             public void mostraMessaggio(String messaggio) {
 
             }
+
+            @Override
+            public void iniziaMarket() throws RemoteException {
+
+            }
         }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         avviatorePartita = new AvviatorePartita(proxyViews, 0);

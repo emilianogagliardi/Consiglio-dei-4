@@ -17,10 +17,7 @@ import server.sistema.Utility;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -34,12 +31,19 @@ public class Controller implements Runnable, InterfacciaController {
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
     private GrafoCittà grafoCittà;
     private ArrayList<SocketPollingController> socketPollingControllers;
+    private GiocatoriOnline giocatoriOnline;
+    private InterfacciaView viewCorrente;
+    //private HashMap<Integer, ArrayList<ArrayList>> mappaMarket;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
         this.partita = partita;
         this.views = views;
-        this.giocatoreCorrente = partita.getGiocatori().get(0);
+        //mappaMarket = new HashMap<>();
+        giocatoriOnline = new GiocatoriOnline();
+        partita.getGiocatori().forEach((Giocatore giocatore) -> {
+            giocatoriOnline.aggiungiGiocatore(giocatore);
+        });
         azioniPrincipaliDisponibili = 0;
         azioneVeloceEseguita= false;
         //creo una mappaBalconi come struttura di supporto
@@ -62,54 +66,88 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public void run() {
-        //inizio il ciclo dei turni
-        while(!partitaTerminata()){
-            azioniPrincipaliDisponibili = 1;
-            azioneVeloceEseguita = false;
+        try{
+            //inizio il ciclo dei turni
+            while(!partitaTerminata()){
 
-            //il giocatore pesca una carta politica
-            giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
+                //INIZIO TURNO
+                do {
+                    //si passa al giocatore successivo
+                    giocatoreCorrente = giocatoriOnline.prossimo();
+                    viewCorrente = getViewGiocatoreCorrente();
+                    azioniPrincipaliDisponibili = 1;
+                    azioneVeloceEseguita = false;
 
-            //il server.controller da il consenso al giocatore di iniziare il turno
-            try {
-                views.get(giocatoreCorrente.getId()).eseguiTurno();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
 
-            //il controller aspetta che il giocatore abbia finito il turno
-            try {
-                synchronized (this){
-                    wait(CostantiSistema.TIMEOUT_TURNO);
-                }
-                int idGiocatoreCorrente = giocatoreCorrente.getId();
-                views.forEach((InterfacciaView view) -> {
+                    //il giocatore pesca una carta politica
+                    giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
+
+                    //il controller da il consenso al giocatore di iniziare il turno
+                    viewCorrente.eseguiTurno();
+
+                    //il controller aspetta che il giocatore abbia finito il turno
                     try {
-                        if (view.getIdGiocatore() == idGiocatoreCorrente)
-                            view.fineTurno();
-                    } catch (RemoteException exc) {
+                        synchronized (this){
+                            wait(CostantiSistema.TIMEOUT_TURNO);
+                        }
+                        viewCorrente.fineTurno();
+                    } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
-                });
-                //si passa al giocatore successivo
-                giocatoreCorrente = prossimoGiocatore(giocatoreCorrente);
-            } catch (InterruptedException exc) {
+                } while (giocatoriOnline.haProssimo());
+
+
+
+                //INIZIO FASE VENDITA MARKET
+
+                do {
+                    //si passa al giocatore successivo
+                    giocatoreCorrente = giocatoriOnline.prossimo();
+                    viewCorrente = getViewGiocatoreCorrente();
+                    viewCorrente.iniziaMarket();
+                    try {
+                        synchronized (this){
+                            wait(CostantiSistema.TIMEOUT_TURNO);
+                        }
+                        viewCorrente.fineTurno();
+
+                    } catch (InterruptedException exc) {
+                        exc.printStackTrace();
+                    }
+                } while (giocatoriOnline.haProssimo());
+
+                //INIZIO FASE ACQUISTO MARKET
+                //TODO: C'è da scegliere giocatori a caso!
+
+
+            }
+            socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
+        } catch (RemoteException exc){
+            exc.printStackTrace();
+        }
+
+
+    }
+
+
+    private InterfacciaView getViewGiocatoreCorrente(){
+        for (InterfacciaView view : views) {
+            try {
+                if (view.getIdGiocatore() == giocatoreCorrente.getId()) {
+                    return view;
+                }
+            } catch (RemoteException exc) {
                 exc.printStackTrace();
             }
+
         }
-        socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
+        return null;
     }
 
     private boolean emporiDisponibili(Giocatore giocatore){
         return giocatore.getEmporiDisponibili() > 0;
     }
 
-    private Giocatore prossimoGiocatore(Giocatore giocatoreCorrente){
-        int idGiocatoreCorrente = giocatoreCorrente.getId();
-        if(idGiocatoreCorrente == partita.getGiocatori().size())
-            return partita.getGiocatori().get(0);
-        return partita.getGiocatori().get(++idGiocatoreCorrente);
-    }
 
     private boolean partitaTerminata(){ //cicla sui giocatori per capire se qualcuno ha terminato i propri empori disponibili
         for(Giocatore giocatore : partita.getGiocatori())
@@ -442,6 +480,43 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+    @Override
+    public boolean vendiCartePermesso(List<CartaPermessoCostruzione> cartePermesso, int prezzo) throws RemoteException {
+
+        return false;
+    }
+
+    @Override
+    public boolean vendiCartePolitica(List<String> cartePolitica, int prezzo) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean compraCartePermesso(int idGiocatore, List<CartaPermessoCostruzione> cartePermesso) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean compraCartePolitica(int idGiocatore, List<String> cartePolitica) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean compraAiutanti(int idGiocatore, int numeroAiutanti) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public void logout() throws RemoteException {
+        giocatoriOnline.eliminaGiocatore(giocatoreCorrente.getId());
+        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " è offline!");
+    }
+
     private boolean giocatoreRestituisciAiutantiARiserva(int aiutanti){
         try {
             giocatoreCorrente.pagaAiutanti(aiutanti);
@@ -578,6 +653,44 @@ public class Controller implements Runnable, InterfacciaController {
                     return cittàSingola;
                 }
             throw new IllegalArgumentException("Non esiste una città con questo nome!");
+    }
+
+    class GiocatoriOnline {
+        ArrayList<Giocatore> giocatoriOnline;
+        int posizione;
+
+        public GiocatoriOnline(){
+            this.giocatoriOnline = new ArrayList<>();
+            posizione = -1;
+        }
+
+        public synchronized boolean haProssimo(){
+            if (posizione == (giocatoriOnline.size() - 1)) {
+                return false;
+            } else return true;
+        }
+
+        public synchronized Giocatore prossimo(){
+            if (this.haProssimo()) {
+                return giocatoriOnline.get(++posizione);
+            } else {
+                posizione = 0;
+                return giocatoriOnline.get(posizione);
+            }
+        }
+
+        public synchronized void eliminaGiocatore(int idGiocatore){
+            giocatoriOnline.forEach((Giocatore giocatore) -> {
+                if (giocatore.getId() == idGiocatore) {
+                    giocatoriOnline.remove(giocatore);
+                }
+            });
+        }
+
+        public synchronized void aggiungiGiocatore(Giocatore giocatore){
+            giocatoriOnline.add(giocatore);
+        }
+
     }
 }
 

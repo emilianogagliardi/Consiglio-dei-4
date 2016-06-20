@@ -195,4 +195,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     public void mostraMessaggio(String messaggio) {
 
     }
+
+    @Override
+    public void iniziaMarket() throws RemoteException {
+
+    }
 }
