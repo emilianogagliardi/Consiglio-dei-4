@@ -42,7 +42,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
     }
 
     private void setAzioneBottoneSocket(){
-        //viene alzato uando bottoneRMI viene premuto
+        //viene alzato quando bottoneRMI viene premuto
         socketButton.setOnAction(e->{if(RMIButton.isSelected()) RMIButton.setSelected(false);});
     }
 
@@ -84,13 +84,13 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             Socket socket = new Socket(CostantiClient.IP_SERVER, CostantiClient.SOCKET_PORT);
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            GUIView.initGUIView(super.getApplication());
             new Thread(new SocketPollingView(GUIView.getInstance(), ois)).start(); //necessario alla comunicazione server -> client
             ComunicazioneSceltaMappaSocket.init(oos);
             super.getApplication().setIsSocketClient(true);
         }catch(IOException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
-            super.setNuovoStep("erroreconnessione.fxml");
+            //TODO
+            //super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 
@@ -103,14 +103,13 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
         try {
             Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
-            //inizializza la gui view con un valore fittizio di id giocatore
-            GUIView.initGUIView(super.getApplication());
             loggerRMI.login(GUIView.getInstance()); //passa la view per rendere possibile la comunicazione server -> client
             ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
             super.getApplication().setIsSocketClient(false);
         }catch( NotBoundException | IOException | SingletonNonInizializzatoException e){
             e.printStackTrace();
-            super.setNuovoStep("erroreconnessione.fxml");
+            //TODO
+            //super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 }

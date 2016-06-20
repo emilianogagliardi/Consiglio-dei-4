@@ -1,10 +1,13 @@
 package client.view.GUI;
 
-import classicondivise.IdBalcone;
 import classicondivise.Colore;
+import classicondivise.IdBalcone;
+import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.eccezioni.SingletonNonInizializzatoException;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,36 +19,52 @@ import java.util.ResourceBundle;
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     private int idGiocatore;
     @FXML
-    AnchorPane rootPane;
+    private AnchorPane rootPane;
     @FXML
-    ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
+    private ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
     @FXML
-    ImageView consigliere1_costa, consigliere2_costa, consigliere3_costa, consigliere4_costa;
+    private ImageView consigliere1_costa, consigliere2_costa, consigliere3_costa, consigliere4_costa;
     @FXML
-    ImageView consigliere1_collina, consigliere2_collina, consigliere3_collina, consigliere4_collina;
+    private ImageView consigliere1_collina, consigliere2_collina, consigliere3_collina, consigliere4_collina;
     @FXML
-    ImageView consigliere1_montagna, consigliere2_montagna, consigliere3_montagna, consigliere4_montagna;
+    private ImageView consigliere1_montagna, consigliere2_montagna, consigliere3_montagna, consigliere4_montagna;
     @FXML
-    ImageView consigliere1_re, consigliere2_re, consigliere3_re, consigliere4_re;
+    private ImageView consigliere1_re, consigliere2_re, consigliere3_re, consigliere4_re;
+    @FXML
+    private TextArea areaNotifiche;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             idGiocatore = GUIView.getInstance().getIdGiocatore();
-            GUIView.getInstance().setControllerFXPartita(this);
-            inizializzaImmagine();
         } catch (RemoteException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
         }
+        //assegna l'handler di mostra mappa all'evento di start del gioco
+        inizializzaImmagineMappa();
+        //inizializza le immagini di retro delle carte permit
         inizializzaImmaginiCarte();
+        //il giocatore non può scrivere in area notifiche
+        areaNotifiche.setEditable(false);
     }
 
-    private void inizializzaImmagine() throws SingletonNonInizializzatoException {
+    //l'algoritmo di caricamento deve essere eguito sullo show, nel momento il cui si conosce già quale deve essere l'immagine da mostrare
+    private void inizializzaImmagineMappa(){
         //inizializza
-        int idMappa = GUIView.getInstance().getIdMappa();
-        String nomeFile = "mappa"+idMappa+"_gioco.jpg";
-        Image immagine = new Image(getClass().getClassLoader().getResourceAsStream(nomeFile));
-        immagineMappa.setImage(immagine);
+        rootPane.addEventHandler(ShowViewGiocoEvent.SHOW_IMAGE, new EventHandler<ShowViewGiocoEvent>(){
+            @Override
+            public void handle(ShowViewGiocoEvent event) {
+                int idMappa = 0;
+                try {
+                    idMappa = GUIView.getInstance().getIdMappa();
+                } catch (SingletonNonInizializzatoException e) {
+                    e.printStackTrace();
+                }
+                String nomeFile = "mappa"+idMappa+"_gioco.jpg";
+                Image immagine = new Image(getClass().getClassLoader().getResourceAsStream(nomeFile));
+                immagineMappa.setImage(immagine);
+            }
+        });
     }
 
     private void inizializzaImmaginiCarte() {
@@ -64,7 +83,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                 balcone = new ImageView[]{consigliere1_costa, consigliere2_costa, consigliere3_costa, consigliere4_costa};
                 break;
             case MONTAGNA:
-                balcone = new ImageView[]{consigliere1_costa, consigliere2_costa, consigliere3_montagna, consigliere4_montagna};
+                balcone = new ImageView[]{consigliere1_montagna, consigliere2_montagna, consigliere3_montagna, consigliere4_montagna};
                 break;
             case RE:
                 balcone = new ImageView[]{consigliere1_re, consigliere2_re, consigliere3_re, consigliere4_re};
@@ -99,5 +118,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             }
             balcone[i].setImage(image);
         }
+    }
+
+    public void nuovoMessaggio(String messaggio) {
+        areaNotifiche.appendText(messaggio);
     }
 }

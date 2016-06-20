@@ -1,5 +1,7 @@
 package client.view.GUI;
 
+import javafx.application.Platform;
+
 import java.io.IOException;
 
 /*
@@ -14,11 +16,23 @@ public abstract class GestoreFlussoFinestra{
 
     public FXApplication getApplication(){return application;}
 
-    public void setNuovoStep(String nomeFileFXML){
-        try {
-            application.setFinestraDaFXML(nomeFileFXML);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    public void showSceltaMappa(){
+        Platform.runLater(() -> {
+            try {
+                application.showSceltaMappa();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void showFinestraGioco(){
+        Platform.runLater(() -> {
+            try {
+                application.showFinestraGioco();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

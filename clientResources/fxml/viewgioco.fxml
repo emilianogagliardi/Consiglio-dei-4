@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -45,7 +45,7 @@
                                           <ImageView fx:id="cartaCollinaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="396.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaMontagnaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="742.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaCostaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="74.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
-                                          <HBox layoutX="94.0" layoutY="12.0" prefHeight="40.0" prefWidth="200.0">
+                                          <HBox layoutX="90.0" layoutY="509.0" prefHeight="40.0" prefWidth="200.0">
                                              <children>
                                                 <ImageView fx:id="consigliere1_costa" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                                 <ImageView fx:id="consigliere2_costa" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -53,7 +53,7 @@
                                                 <ImageView fx:id="consigliere4_costa" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
-                                          <HBox layoutX="454.0" layoutY="12.0" prefHeight="40.0" prefWidth="200.0">
+                                          <HBox layoutX="424.0" layoutY="509.0" prefHeight="40.0" prefWidth="200.0">
                                              <children>
                                                 <ImageView fx:id="consigliere1_collina" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                                 <ImageView fx:id="consigliere2_collina" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -61,7 +61,7 @@
                                                 <ImageView fx:id="consigliere4_collina" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
-                                          <HBox layoutX="778.0" layoutY="12.0" prefHeight="40.0" prefWidth="200.0">
+                                          <HBox layoutX="777.0" layoutY="509.0" prefHeight="40.0" prefWidth="200.0">
                                              <children>
                                                 <ImageView fx:id="consigliere1_montagna" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                                 <ImageView fx:id="consigliere2_montagna" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -84,7 +84,10 @@
                                     </AnchorPane>
                                  </content>
                               </ScrollPane>
-                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
+                              <AnchorPane GridPane.rowIndex="1">
+                                 <children>
+                                    <TextArea fx:id="areaNotifiche" layoutX="366.0" layoutY="-49.0" prefHeight="151.0" prefWidth="1121.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children></AnchorPane>
                               <AnchorPane GridPane.columnIndex="1" />
                            </children>
                         </GridPane>

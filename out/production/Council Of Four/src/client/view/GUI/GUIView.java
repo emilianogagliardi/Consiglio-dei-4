@@ -1,9 +1,9 @@
 package client.view.GUI;
 
+import classicondivise.CartaPermessoCostruzione;
+import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
-import javafx.application.Platform;
-import classicondivise.CartaPermessoCostruzione;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -62,18 +62,14 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void scegliMappa()throws RemoteException {
-        Platform.runLater(() -> super.setNuovoStep("mappegallery.fxml"));
+        super.showSceltaMappa();
     }
 
     @Override
     public void iniziaAGiocare(int idMappa) throws RemoteException {
         this.setIdMappa(idMappa);
-        Platform.runLater(() -> {
-            super.setNuovoStep("viewgioco.fxml");
-            super.getApplication().getStage().setResizable(true);
-            super.getApplication().getStage().setMinHeight(500);
-            super.getApplication().getStage().setMinWidth(700);
-        });
+        controllerFXPartita.rootPane.fireEvent(new ShowViewGiocoEvent());
+        super.showFinestraGioco();
     }
 
     @Override
@@ -193,7 +189,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void mostraMessaggio(String messaggio) {
-
+        controllerFXPartita.nuovoMessaggio(messaggio);
     }
 
     @Override
