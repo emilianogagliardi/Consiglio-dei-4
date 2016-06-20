@@ -1,6 +1,7 @@
 package interfaccecondivise;
 
 import classicondivise.CartaPermessoCostruzione;
+import classicondivise.VetrinaMarket;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -36,5 +37,7 @@ public interface InterfacciaView extends Remote {
     void eseguiTurno() throws RemoteException;
     void fineTurno() throws RemoteException; //per indicare alla view che è finito il suo turno di gioco o il suo turno di market
     void mostraMessaggio(String messaggio) throws RemoteException;
-    void iniziaMarket() throws RemoteException;
+    void vendi() throws RemoteException;
+    void compra() throws RemoteException;
+    void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException;
 }

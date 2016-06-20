@@ -7,6 +7,7 @@ import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,19 +20,19 @@ import java.util.ResourceBundle;
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     private int idGiocatore;
     @FXML
-    AnchorPane rootPane;
+    private AnchorPane rootPane;
     @FXML
-    ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
+    private ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
     @FXML
-    ImageView consigliere1_costa, consigliere2_costa, consigliere3_costa, consigliere4_costa;
+    private ImageView consigliere1_costa, consigliere2_costa, consigliere3_costa, consigliere4_costa;
     @FXML
-    ImageView consigliere1_collina, consigliere2_collina, consigliere3_collina, consigliere4_collina;
+    private ImageView consigliere1_collina, consigliere2_collina, consigliere3_collina, consigliere4_collina;
     @FXML
-    ImageView consigliere1_montagna, consigliere2_montagna, consigliere3_montagna, consigliere4_montagna;
+    private ImageView consigliere1_montagna, consigliere2_montagna, consigliere3_montagna, consigliere4_montagna;
     @FXML
-    ImageView consigliere1_re, consigliere2_re, consigliere3_re, consigliere4_re;
+    private ImageView consigliere1_re, consigliere2_re, consigliere3_re, consigliere4_re;
     @FXML
-    TextArea areaNotifiche;
+    private TextArea areaNotifiche;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -40,10 +41,12 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         } catch (RemoteException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
         }
-        areaNotifiche.setDisable(true);
-        areaNotifiche.appendText("ciao a tutti mi chiamo emiliano");
+        //assegna l'handler di mostra mappa all'evento di start del gioco
         inizializzaImmagineMappa();
+        //inizializza le immagini di retro delle carte permit
         inizializzaImmaginiCarte();
+        //il giocatore non può scrivere in area notifiche
+        areaNotifiche.setEditable(false);
     }
 
     //l'algoritmo di caricamento deve essere eguito sullo show, nel momento il cui si conosce già quale deve essere l'immagine da mostrare
@@ -120,5 +123,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     public void nuovoMessaggio(String messaggio) {
         areaNotifiche.appendText(messaggio);
+    }
+
+    //permette di firare eventi al root pane dall'esterno
+    public Parent getRootPane(){
+        return rootPane;
     }
 }

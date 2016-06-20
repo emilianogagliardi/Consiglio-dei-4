@@ -7,6 +7,7 @@ import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -122,5 +123,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     public void nuovoMessaggio(String messaggio) {
         areaNotifiche.appendText(messaggio);
+    }
+
+    //permette di firare eventi al root pane dall'esterno
+    public Parent getRootPane(){
+        return rootPane;
     }
 }

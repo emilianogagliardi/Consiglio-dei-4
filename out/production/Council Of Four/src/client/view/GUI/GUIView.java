@@ -2,6 +2,7 @@ package client.view.GUI;
 
 import classicondivise.CartaPermessoCostruzione;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
+import classicondivise.VetrinaMarket;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 
@@ -68,7 +69,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     @Override
     public void iniziaAGiocare(int idMappa) throws RemoteException {
         this.setIdMappa(idMappa);
-        controllerFXPartita.rootPane.fireEvent(new ShowViewGiocoEvent());
+        controllerFXPartita.getRootPane().fireEvent(new ShowViewGiocoEvent());
         super.showFinestraGioco();
     }
 
@@ -193,7 +194,17 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void iniziaMarket() throws RemoteException {
+    public void vendi() throws RemoteException {
+
+    }
+
+    @Override
+    public void compra() throws RemoteException {
+
+    }
+
+    @Override
+    public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
     }
 }

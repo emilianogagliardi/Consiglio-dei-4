@@ -2,6 +2,7 @@
 
 import classicondivise.CartaPermessoCostruzione;
 import classicondivise.IdBalcone;
+import classicondivise.VetrinaMarket;
 import server.controller.Controller;
 import server.model.*;
 import server.model.bonus.*;
@@ -294,7 +295,17 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaMarket() throws RemoteException {
+            public void vendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void compra() throws RemoteException {
+
+            }
+
+            @Override
+            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
             }
         }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
@@ -441,7 +452,17 @@ public class ControllerTest {
             }
 
             @Override
-            public void iniziaMarket() throws RemoteException {
+            public void vendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void compra() throws RemoteException {
+
+            }
+
+            @Override
+            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
             }
         });
