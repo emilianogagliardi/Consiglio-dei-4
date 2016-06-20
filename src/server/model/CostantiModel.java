@@ -19,7 +19,6 @@ public class CostantiModel {
     public static final int NUM_CONSIGLIERI_RISERVA = 8;
     public final static int NUM_CONSIGLIERI_PER_COLORE = NUM_CONSIGLIERI / ColoreConsigliere.values().length;
     public static final int NUM_CONSIGLIERI_BALCONE = 4;
-    public static final int MAX_GIOCATORI = 4;
     public static final int NUM_CARTE_BONUS_COLORE_CITTA = 4;
     public static final int MAX_NUM_SOTTOBONUS_PER_BONUS = 3;
     public static final int MIN_NUM_SOTTOBONUS_PER_BONUS = 1;

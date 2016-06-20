@@ -5,6 +5,7 @@ import server.model.bonus.BonusPuntiVittoria;
 import server.model.carte.*;
 import server.model.eccezioni.*;
 import interfaccecondivise.InterfacciaView;
+import server.sistema.CostantiSistema;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -21,13 +22,13 @@ public class Partita extends Observable {
     private Mazzo<CartaPremioDelRe> mazzoCartePremioRe;
     private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà;
     private ArrayList<Consigliere> riservaConsiglieri;
-    private List<Giocatore> giocatori;
+    private ArrayList<Giocatore> giocatori;
     private int riservaAiutanti;
 
     public Partita(ArrayList<InterfacciaView> views){
         super(views);
         cartePoliticaScartate = new Mazzo<>();
-        giocatori = new ArrayList<>(MAX_GIOCATORI);
+        giocatori = new ArrayList<>(CostantiSistema.NUM_GOCATORI_MAX);
     }
 
     public NomeCittà getCittàRe(){
@@ -184,13 +185,13 @@ public class Partita extends Observable {
     public void addGiocatore(Giocatore giocatore) throws IllegalArgumentException, NumeroMassimoGiocatoriRaggiuntoException {
         if(giocatore == null)
             throw new IllegalArgumentException("giocatore is null");
-        if(giocatori.size() == MAX_GIOCATORI) {
+        if(giocatori.size() == CostantiSistema.NUM_GOCATORI_MAX) {
             throw new NumeroMassimoGiocatoriRaggiuntoException();
         }
         this.giocatori.add(giocatore);
     }
 
-    public List<Giocatore> getGiocatori(){
+    public ArrayList<Giocatore> getGiocatori(){
         return giocatori;
     }
 

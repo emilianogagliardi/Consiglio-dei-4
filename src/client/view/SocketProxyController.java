@@ -5,6 +5,7 @@ import interfaccecondivise.InterfacciaController;
 import classicondivise.CartaPermessoCostruzione;
 
 import java.io.*;
+import java.rmi.RemoteException;
 import java.util.List;
 
 /*
@@ -140,5 +141,40 @@ public class SocketProxyController implements InterfacciaController {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean vendiCartePermesso(List<CartaPermessoCostruzione> cartePermesso, int prezzo) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean vendiCartePolitica(List<String> cartePolitica, int prezzo) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean compraCartePermesso(int idGiocatore, List<CartaPermessoCostruzione> cartePermesso) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean compraCartePolitica(int idGiocatore, List<String> cartePolitica) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public boolean compraAiutanti(int idGiocatore, int numeroAiutanti) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public void logout() throws RemoteException {
+
     }
 }

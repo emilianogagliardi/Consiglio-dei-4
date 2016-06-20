@@ -34,6 +34,7 @@ public interface InterfacciaView extends Remote {
     void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta) throws RemoteException;
     void updatePosizioneRe(String nomeCittà) throws RemoteException;
     void eseguiTurno() throws RemoteException;
-    void fineTurno() throws RemoteException;
+    void fineTurno() throws RemoteException; //per indicare alla view che è finito il suo turno di gioco o il suo turno di market
     void mostraMessaggio(String messaggio) throws RemoteException;
+    void iniziaMarket() throws RemoteException;
 }
