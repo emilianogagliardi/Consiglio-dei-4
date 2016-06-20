@@ -19,6 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/frecce_direzionali" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/mappe_gallery" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/mappe_gioco" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/carte" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
