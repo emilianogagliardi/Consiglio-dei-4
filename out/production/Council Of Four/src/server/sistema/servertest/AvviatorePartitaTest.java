@@ -1,3 +1,4 @@
+import classicondivise.VetrinaMarket;
 import interfaccecondivise.InterfacciaView;
 import org.junit.Before;
 import org.junit.Test;
@@ -166,7 +167,17 @@ public class AvviatorePartitaTest {
             }
 
             @Override
-            public void iniziaMarket() throws RemoteException {
+            public void vendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void compra() throws RemoteException {
+
+            }
+
+            @Override
+            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
             }
         }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e

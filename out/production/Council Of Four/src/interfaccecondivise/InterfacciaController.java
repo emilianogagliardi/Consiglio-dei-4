@@ -1,6 +1,7 @@
 package interfaccecondivise;
 
 import classicondivise.CartaPermessoCostruzione;
+import classicondivise.Vendibile;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -38,11 +39,7 @@ public interface InterfacciaController extends Remote, Serializable{ //serializa
 
     boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException;
 
-    boolean compraCartePermesso(int idGiocatore,  List<CartaPermessoCostruzione> cartePermesso) throws RemoteException;
-
-    boolean compraCartePolitica(int idGiocatore, List<String> cartePolitica) throws RemoteException;
-
-    boolean compraAiutanti(int idGiocatore, int numeroAiutanti) throws RemoteException;
+    boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException;
 
 
     void logout() throws RemoteException;

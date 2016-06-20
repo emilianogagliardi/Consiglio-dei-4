@@ -2,6 +2,7 @@
 
 import classicondivise.CartaPermessoCostruzione;
 import classicondivise.IdBalcone;
+import classicondivise.VetrinaMarket;
 import server.controller.Controller;
 import server.model.*;
 import server.model.bonus.*;
@@ -302,6 +303,11 @@ public class ControllerTest {
             public void compra() throws RemoteException {
 
             }
+
+            @Override
+            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
+
+            }
         }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         proxyViews.add(new InterfacciaView() {
@@ -452,6 +458,11 @@ public class ControllerTest {
 
             @Override
             public void compra() throws RemoteException {
+
+            }
+
+            @Override
+            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
             }
         });

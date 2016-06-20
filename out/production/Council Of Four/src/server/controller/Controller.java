@@ -1,12 +1,11 @@
 package server.controller;
 
-import classicondivise.Colore;
-import classicondivise.IdBalcone;
+import classicondivise.*;
 import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaView;
 import server.model.*;
 import server.model.bonus.*;
-import classicondivise.CartaPermessoCostruzione;
+import server.model.carte.Carta;
 import server.model.carte.CartaPolitica;
 import server.model.carte.ColoreCartaPolitica;
 import server.model.eccezioni.AiutantiNonSufficientiException;
@@ -32,7 +31,7 @@ public class Controller implements Runnable, InterfacciaController {
     private GrafoCittà grafoCittà;
     private ArrayList<SocketPollingController> socketPollingControllers;
     private GiocatoriOnline giocatoriOnline;
-    private HashMap<Integer, ArrayList<ArrayList>> mappaMarket;
+    private VetrinaMarket vetrinaMarket;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
@@ -101,7 +100,7 @@ public class Controller implements Runnable, InterfacciaController {
                     //si passa al giocatore successivo
                     giocatoreCorrente = giocatoriOnline.prossimo();
                     viewCorrente = getViewGiocatoreCorrente();
-                    viewCorrente.iniziaMarket();
+                    viewCorrente.vendi();
                     try {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
@@ -115,22 +114,28 @@ public class Controller implements Runnable, InterfacciaController {
 
 
                 //INIZIO FASE ACQUISTO MARKET
-                mappaMarket = new HashMap<>();
+                vetrinaMarket = new VetrinaMarket();
                 ScatolaIdGiocatori scatolaIdGiocatori = new ScatolaIdGiocatori();
-                Giocatore giocatoreAcquistoMarket;
                 do {
-                    //giocatoreAcquistoMarket = partita. scatolaIdGiocatori.pescaNumero()
+                    giocatoreCorrente = giocatoreDaPartita(scatolaIdGiocatori.pescaNumero());
+                    viewCorrente = getViewGiocatoreCorrente();
+                    viewCorrente.compra();
+                    try {
+                        synchronized (this){
+                            wait(CostantiSistema.TIMEOUT_TURNO);
+                        }
+                        viewCorrente.fineTurno();
+                    } catch (InterruptedException exc) {
+                        exc.printStackTrace();
+                    }
 
                 } while (!scatolaIdGiocatori.èVuota());
-
 
             }
             socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
         } catch (RemoteException exc){
             exc.printStackTrace();
         }
-
-
     }
 
     private Giocatore giocatoreDaPartita(int idGiocatore) {
@@ -139,7 +144,7 @@ public class Controller implements Runnable, InterfacciaController {
                 return giocatore;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Non esiste un giocatore con questo Id!");
     }
 
     private InterfacciaView getViewGiocatoreCorrente(){
@@ -153,7 +158,7 @@ public class Controller implements Runnable, InterfacciaController {
             }
 
         }
-        return null;
+        throw new IllegalArgumentException("Non esiste una view con Id uguale all'Id del giocatore corrente!");
     }
 
     private boolean emporiDisponibili(Giocatore giocatore){
@@ -494,33 +499,100 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean vendiCartePermesso(List<CartaPermessoCostruzione> cartePermesso, int prezzo) throws RemoteException {
-
-        return false;
+        HashMap<CartaPermessoCostruzione, Integer> mappaCarteVendibili = Utility.listToHashMap(cartePermesso);
+        HashMap<CartaPermessoCostruzione, Integer> mappaCarteGiocatore = Utility.listToHashMap(giocatoreCorrente.getManoCartePermessoCostruzione());
+        if (Utility.hashMapContainsAllWithDuplicates(mappaCarteGiocatore, mappaCarteVendibili)) {
+            cartePermesso.forEach((CartaPermessoCostruzione carta) -> {
+                vetrinaMarket.aggiungiVendibile(new Vendibile<CartaPermessoCostruzione>(carta, prezzo, giocatoreCorrente.getId(), IdVendibile.CARTA_PERMESSO_COSTRUZIONE));
+            });
+            return true;
+        } else{
+            comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
+            return false;
+        }
     }
 
     @Override
     public boolean vendiCartePolitica(List<String> cartePolitica, int prezzo) throws RemoteException {
-        return false;
+        HashMap<String, Integer> mappaCarteVendibili = Utility.listToHashMap(cartePolitica);
+        List<String> manoColoriCartePolitica = new ArrayList<>();
+        giocatoreCorrente.getManoCartePolitica().forEach((CartaPolitica carta) ->{
+            manoColoriCartePolitica.add(carta.getColore().toString());
+        });
+        HashMap<String, Integer> mappaCarteGiocatore = Utility.listToHashMap(manoColoriCartePolitica);
+        if (Utility.hashMapContainsAllWithDuplicates(mappaCarteGiocatore, mappaCarteVendibili)) {
+            cartePolitica.forEach((String carta) -> {
+                vetrinaMarket.aggiungiVendibile(new Vendibile<String>(carta, prezzo, giocatoreCorrente.getId(), IdVendibile.CARTA_POLITICA));
+            });
+            return true;
+        } else{
+            comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
+            return false;
+        }
     }
 
     @Override
     public boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException {
-        return false;
+        if (giocatoreCorrente.getAiutanti() - numeroAiutanti < 0) {
+            comunicaAGiocatoreCorrente("Non hai abbastanza aiutanti!");
+            return false;
+        } else {
+            vetrinaMarket.aggiungiVendibile(new Vendibile<Integer>(numeroAiutanti, prezzo, giocatoreCorrente.getId(), IdVendibile.AIUTANTI));
+            return true;
+        }
     }
 
     @Override
-    public boolean compraCartePermesso(int idGiocatore, List<CartaPermessoCostruzione> cartePermesso) throws RemoteException {
+    public boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException {
+        int costoTotale = 0;
+        for (Vendibile vendibile : vendibili) {
+            costoTotale += vendibile.getPrezzo();
+        }
+        if (giocatoreCorrente.getMonete() - costoTotale < 0) {
+            comunicaAGiocatoreCorrente("Non hai abbastanza monete!");
+            return false;
+        }
+        int idGiocatore;
+        for (Vendibile vendibile :  vendibili) {
+            idGiocatore = vendibile.getIdGiocatore();
+            //rimuovo i vendibili dal giocatore che li ha messi in vendita e dalla vetrina e li aggiungo al giocatore corrente
+            switch (vendibile.getIdVendibile()) {
+                case CARTA_PERMESSO_COSTRUZIONE:
+                    CartaPermessoCostruzione cartaPermessoCostruzione = (CartaPermessoCostruzione) vendibile.getOggetto();
+                    vetrinaMarket.rimuoviVendibile(vendibile);
+                    getGiocatoreDaPartitaConId(idGiocatore).getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
+                    giocatoreCorrente.addCarta(cartaPermessoCostruzione);
+                    break;
+                case CARTA_POLITICA:
+                    CartaPolitica cartaPolitica = new CartaPolitica(ColoreCartaPolitica.valueOf((String)vendibile.getOggetto()));
+                    vetrinaMarket.rimuoviVendibile(vendibile);
+                    getGiocatoreDaPartitaConId(idGiocatore).getManoCartePolitica().remove(cartaPolitica);
+                    giocatoreCorrente.addCarta(cartaPolitica);
+                    break;
+                case AIUTANTI:
+                    try {
+                        int aiutanti = (Integer) vendibile.getOggetto();
+                        getGiocatoreDaPartitaConId(idGiocatore).pagaAiutanti(aiutanti);
+                        vetrinaMarket.rimuoviVendibile(vendibile);
+                        giocatoreCorrente.guadagnaAiutanti(aiutanti);
+                    } catch (AiutantiNonSufficientiException exc){
+                        exc.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
         return false;
     }
 
-    @Override
-    public boolean compraCartePolitica(int idGiocatore, List<String> cartePolitica) throws RemoteException {
-        return false;
-    }
-
-    @Override
-    public boolean compraAiutanti(int idGiocatore, int numeroAiutanti) throws RemoteException {
-        return false;
+    private Giocatore getGiocatoreDaPartitaConId(int idGiocatore) {
+        for (Giocatore giocatore : partita.getGiocatori()) {
+            if (giocatore.getId() == idGiocatore) {
+                return giocatore;
+            }
+        }
+        throw new IllegalArgumentException("Non esiste un giocatore con questo Id!");
     }
 
     @Override
@@ -667,22 +739,22 @@ public class Controller implements Runnable, InterfacciaController {
             throw new IllegalArgumentException("Non esiste una città con questo nome!");
     }
 
-    class GiocatoriOnline {
+    private class GiocatoriOnline {
         private ArrayList<Giocatore> giocatoriOnline;
         private int posizione;
 
-        public GiocatoriOnline(){
+        GiocatoriOnline(){
             this.giocatoriOnline = new ArrayList<>();
             posizione = -1;
         }
 
-        public synchronized boolean haProssimo(){
+        synchronized boolean haProssimo(){
             if (posizione == (giocatoriOnline.size() - 1)) {
                 return false;
             } else return true;
         }
 
-        public synchronized Giocatore prossimo(){
+        synchronized Giocatore prossimo(){
             if (this.haProssimo()) {
                 return giocatoriOnline.get(++posizione);
             } else {
@@ -691,7 +763,7 @@ public class Controller implements Runnable, InterfacciaController {
             }
         }
 
-        public synchronized void eliminaGiocatore(int idGiocatore){
+        synchronized void eliminaGiocatore(int idGiocatore){
             giocatoriOnline.forEach((Giocatore giocatore) -> {
                 if (giocatore.getId() == idGiocatore) {
                     giocatoriOnline.remove(giocatore);
@@ -699,11 +771,11 @@ public class Controller implements Runnable, InterfacciaController {
             });
         }
 
-        public synchronized void aggiungiGiocatore(Giocatore giocatore){
+        synchronized void aggiungiGiocatore(Giocatore giocatore){
             giocatoriOnline.add(giocatore);
         }
 
-        public ArrayList<Integer> getIdGiocatori(){
+        ArrayList<Integer> getIdGiocatori(){
             ArrayList<Integer> ids = new ArrayList<>();
             giocatoriOnline.forEach((Giocatore giocatore) -> {ids.add(giocatore.getId());});
             return ids;
@@ -711,26 +783,22 @@ public class Controller implements Runnable, InterfacciaController {
 
     }
 
-    class ScatolaIdGiocatori{
+    private class ScatolaIdGiocatori{
         private ArrayList<Integer> numeri;
         private Random random = new Random();
         private int posizioneCasuale;
 
-        public ScatolaIdGiocatori(){
-            riempiScatola();
-        }
-
-        public void riempiScatola(){
+        ScatolaIdGiocatori(){
             numeri = new ArrayList<>();
             numeri.addAll(giocatoriOnline.getIdGiocatori());
         }
 
-        public int pescaNumero(){
+        int pescaNumero(){
             posizioneCasuale = random.nextInt(numeri.size());
             return numeri.remove(posizioneCasuale);
         }
 
-        public boolean èVuota(){
+        boolean èVuota(){
             return numeri.isEmpty();
         }
 

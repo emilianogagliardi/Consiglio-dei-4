@@ -1,6 +1,7 @@
 package server.proxyView;
 
 import classicondivise.ComunicazioneView;
+import classicondivise.VetrinaMarket;
 import interfaccecondivise.InterfacciaView;
 import classicondivise.CartaPermessoCostruzione;
 import server.sistema.AvviatorePartita;
@@ -346,7 +347,17 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void iniziaMarket() throws RemoteException {
+    public void vendi() throws RemoteException {
+
+    }
+
+    @Override
+    public void compra() throws RemoteException {
+        
+    }
+
+    @Override
+    public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
     }
 }

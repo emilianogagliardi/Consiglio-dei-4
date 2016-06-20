@@ -1,6 +1,7 @@
 package client.view;
 
 import classicondivise.ComunicazioneController;
+import classicondivise.Vendibile;
 import interfaccecondivise.InterfacciaController;
 import classicondivise.CartaPermessoCostruzione;
 
@@ -159,19 +160,11 @@ public class SocketProxyController implements InterfacciaController {
     }
 
     @Override
-    public boolean compraCartePermesso(int idGiocatore, List<CartaPermessoCostruzione> cartePermesso) throws RemoteException {
+    public boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException {
         return false;
     }
 
-    @Override
-    public boolean compraCartePolitica(int idGiocatore, List<String> cartePolitica) throws RemoteException {
-        return false;
-    }
 
-    @Override
-    public boolean compraAiutanti(int idGiocatore, int numeroAiutanti) throws RemoteException {
-        return false;
-    }
 
     @Override
     public void logout() throws RemoteException {

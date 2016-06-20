@@ -1,5 +1,6 @@
 package client.view.GUI;
 
+import classicondivise.VetrinaMarket;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 import javafx.application.Platform;
@@ -197,7 +198,17 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void iniziaMarket() throws RemoteException {
+    public void vendi() throws RemoteException {
+
+    }
+
+    @Override
+    public void compra() throws RemoteException {
+
+    }
+
+    @Override
+    public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
     }
 }
