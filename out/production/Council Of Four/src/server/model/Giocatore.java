@@ -43,9 +43,9 @@ public class Giocatore extends Observable {
         updateViewPercorsoNobiltà();
         updateViewEmporiDisponibili();
         updateViewCartePolitica();
-        updateViewCarteBonusRegione();
-        updateViewCarteBonusColoreCittà();
-        updateViewCartePremioRe();
+        //updateViewCarteBonusRegione();
+        //updateViewCarteBonusColoreCittà();
+        //updateViewCartePremioRe();
         updateViewCartePermessoCostruzione();
     }
 
@@ -116,7 +116,7 @@ public class Giocatore extends Observable {
         }
         else if(c instanceof CartaBonusColoreCittà) {
             manoCarteBonusColoreCittà.add((CartaBonusColoreCittà) c);
-            updateViewCarteBonusColoreCittà();
+            //updateViewCarteBonusColoreCittà();
         }
         else if (c instanceof CartaPermessoCostruzione) {
             manoCartePermessoCostruzione.add((CartaPermessoCostruzione) c);
@@ -124,11 +124,11 @@ public class Giocatore extends Observable {
         }
         else if (c instanceof CartaBonusRegione) {
             manoCarteBonusRegione.add((CartaBonusRegione) c);
-            updateViewCarteBonusRegione();
+            //updateViewCarteBonusRegione();
         }
         else if (c instanceof CartaPremioDelRe) {
             manoCartePremioDelRe.add((CartaPremioDelRe) c);
-            updateViewCartePremioRe();
+            //updateViewCartePremioRe();
         }
         else throw new IllegalArgumentException();
     }
@@ -251,7 +251,7 @@ public class Giocatore extends Observable {
         });
     }
 
-    private void updateViewCarteBonusRegione() {
+    /*private void updateViewCarteBonusRegione() {
         HashMap<String, Integer> mapCarte = new HashMap<>();
         manoCarteBonusRegione.forEach((CartaBonusRegione carta) -> {
             Bonus bonus = carta.getBonus();
@@ -272,9 +272,9 @@ public class Giocatore extends Observable {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 
-    private void updateViewCarteBonusColoreCittà (){
+    /*private void updateViewCarteBonusColoreCittà (){
         HashMap<String, Integer> mapCarte = new HashMap<>();
         manoCarteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
             Bonus bonus = carta.getBonus();
@@ -295,9 +295,9 @@ public class Giocatore extends Observable {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 
-    private void updateViewCartePremioRe(){
+    /*private void updateViewCartePremioRe(){
         HashMap<String, Integer> mapCarte = new HashMap<>();
         manoCartePremioDelRe.forEach((CartaPremioDelRe carta) -> {
             Bonus bonus = carta.getBonus();
@@ -318,7 +318,7 @@ public class Giocatore extends Observable {
                e.printStackTrace();
            }
        });
-    }
+    }*/
 
     private void updateViewCartePermessoCostruzione() {
         super.notifyViews((InterfacciaView v) -> {

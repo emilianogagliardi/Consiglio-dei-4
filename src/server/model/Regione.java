@@ -38,7 +38,7 @@ public class Regione extends Observable{
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione2.setVisibile(true);
         updateViewCartePermessoCostruzione();
-        updateViewCarteBonusRegione();
+        //updateViewCarteBonusRegione();
     }
 
     public BalconeDelConsiglio getBalconeDelConsiglio(){
@@ -50,7 +50,7 @@ public class Regione extends Observable{
     public CartaBonusRegione ottieniCartaBonusRegione(){
         CartaBonusRegione cartaBonusRegioneDaRitornare = this.cartaBonusRegione;
         this.cartaBonusRegione = null;
-        updateViewCarteBonusRegione();
+        //updateViewCarteBonusRegione();
         return cartaBonusRegioneDaRitornare;
     }
 
@@ -121,7 +121,7 @@ public class Regione extends Observable{
     }
 
     //update view
-    private void updateViewCarteBonusRegione() {
+   /* private void updateViewCarteBonusRegione() {
         int puntiCarta = 0;
         if (cartaBonusRegione != null) {
             try {
@@ -143,7 +143,7 @@ public class Regione extends Observable{
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 
     private void updateViewCartePermessoCostruzione() {
         super.notifyViews((InterfacciaView view) -> {
