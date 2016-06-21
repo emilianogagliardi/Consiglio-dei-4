@@ -108,7 +108,7 @@ public class Città extends Observable {
     private void updateViewBonusCittà(){
         super.notifyViews((InterfacciaView view) -> {
             try {
-                view.updateBonusCittà(this.bonus);
+                view.updateBonusCittà(nome.toString(), this.bonus);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

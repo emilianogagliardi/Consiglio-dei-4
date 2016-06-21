@@ -114,9 +114,10 @@ public class AvviatorePartitaTest {
             }
 
             @Override
-            public void updateBonusCittà(Bonus bonus) throws RemoteException {
+            public void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException {
 
             }
+            
 
             @Override
             public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) {

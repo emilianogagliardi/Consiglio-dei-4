@@ -140,9 +140,10 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void updateBonusCittà(Bonus bonus) throws RemoteException {
+    public void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException {
 
     }
+
 
     @Override
     public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) throws RemoteException{
