@@ -76,12 +76,14 @@ public class Controller implements Runnable, InterfacciaController {
                     azioniPrincipaliDisponibili = 1;
                     azioneVeloceEseguita = false;
 
-
                     //il giocatore pesca una carta politica
                     giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
 
                     //il controller da il consenso al giocatore di iniziare il turno
                     viewCorrente.eseguiTurno();
+
+                    comunicaAGiocatoreCorrente("E' il tuo turno");
+                    comunicaAdAltriGiocatori("E' il turno di giocatore " + giocatoreCorrente.getId());
 
                     //il controller aspetta che il giocatore abbia finito il turno
                     try {
@@ -390,11 +392,23 @@ public class Controller implements Runnable, InterfacciaController {
             comunicaAGiocatoreCorrente("Non hai abbastanza monete per costruire un emporio in questa città!");
             return false;
         }
-        //TODO: ahi, ahi, ahi! Una situazione pericolosa da risolvere!
+
+        //verifico se si può costruire un emporio e poi provo ad acquistare una tessera permesso
+        if (cittàCostruzione.giàCostruito(giocatoreCorrente)) {
+            comunicaAGiocatoreCorrente("Hai già costruito in questa città!");
+            return false;
+        }
+        int numeroAiutanti = CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti();
+        if (giocatoreCorrente.getAiutanti() - numeroAiutanti < 0) {
+            comunicaAGiocatoreCorrente("Ti servono " + numeroAiutanti + " per cotruire in questa città!");
+            return false;
+        }
         if (!acquistareTesseraPermesso("RE", nomiColoriCartePolitica, () -> true)){
             comunicaAGiocatoreCorrente("Non puoi acquistare una tessera permesso di costruzione!");
             return false;
         }
+
+        //ora sono sicuro che posso costruire un emporio
         if (!costruisciEmporio(cittàCostruzione.getNome())) {
             comunicaAGiocatoreCorrente("Non puoi costruire un emporio!");
             return false;

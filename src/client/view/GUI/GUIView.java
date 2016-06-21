@@ -150,35 +150,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     }
 
-    @Override
-    public void updateCarteBonusColoreCittàGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) throws RemoteException{
 
-    }
-
-    @Override
-    public void updateCarteBonusColoreCittàTabellone(HashMap<String, Integer> coloriEPunti) throws RemoteException{
-
-    }
-
-    @Override
-    public void updateCarteBonusReGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) throws RemoteException{
-
-    }
-
-    @Override
-    public void updateCarteBonusReTabellone(int puntiVIttoriaPrimaCarta) throws RemoteException{
-
-    }
-
-    @Override
-    public void updateCarteBonusRegioneGiocatore(int idGiocatore, HashMap<String, Integer> carte) throws RemoteException {
-
-    }
-
-    @Override
-    public void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta) throws RemoteException {
-
-    }
 
     @Override
     public void updatePosizioneRe(String città) throws RemoteException {

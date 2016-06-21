@@ -119,7 +119,7 @@ public class Partita extends Observable {
     public void setMazzoCartePremioRe(Mazzo<CartaPremioDelRe> mazzoCartePremioRe){
         if(this.mazzoCartePremioRe == null)
             this.mazzoCartePremioRe = mazzoCartePremioRe;
-        updateViewCartePremioRe();
+        //updateViewCartePremioRe();
     }
 
     public CartaPremioDelRe ottieniCartaPremioRe(){
@@ -129,7 +129,7 @@ public class Partita extends Observable {
         } catch (NoSuchElementException exc){
             cartaPremioDelRe = null;
         }
-        updateViewCartePremioRe();
+        //updateViewCartePremioRe();
         return cartaPremioDelRe;
     }
 
@@ -139,7 +139,7 @@ public class Partita extends Observable {
         }
         else if(this.carteBonusColoreCittà == null)
             this.carteBonusColoreCittà = carteBonusColoreCittà;
-        updateViewCarteBonusColoreCittà();
+        //updateViewCarteBonusColoreCittà();
     }
 
     public HashSet<CartaBonusColoreCittà> getCarteBonusColoreCittà(){
@@ -219,7 +219,7 @@ public class Partita extends Observable {
         });
     }
 
-    private void updateViewCarteBonusColoreCittà (){
+    /*private void updateViewCarteBonusColoreCittà (){
         HashMap<String, Integer> mapCarte = new HashMap<>();
         carteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
             Bonus bonus = carta.getBonus();
@@ -240,9 +240,9 @@ public class Partita extends Observable {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 
-    private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in cima al mazzo
+    /*private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in cima al mazzo
         CartaPremioDelRe cartaDaMostrare = mazzoCartePremioRe.getCarta();
         int punti = 0;
         try {
@@ -260,5 +260,5 @@ public class Partita extends Observable {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 }

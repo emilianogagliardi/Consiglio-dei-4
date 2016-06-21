@@ -250,36 +250,6 @@ public class ControllerTest {
             }
 
             @Override
-            public void updateCarteBonusColoreCittàGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) {
-
-            }
-
-            @Override
-            public void updateCarteBonusColoreCittàTabellone(HashMap<String, Integer> coloriEPunti) {
-
-            }
-
-            @Override
-            public void updateCarteBonusReGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) {
-
-            }
-
-            @Override
-            public void updateCarteBonusReTabellone(int puntiVIttoriaPrimaCarta) {
-
-            }
-
-            @Override
-            public void updateCarteBonusRegioneGiocatore(int idGiocatore, HashMap<String, Integer> carte) {
-
-            }
-
-            @Override
-            public void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta) {
-
-            }
-
-            @Override
             public void updatePosizioneRe(String città) {
 
             }
@@ -409,36 +379,6 @@ public class ControllerTest {
 
             @Override
             public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) {
-
-            }
-
-            @Override
-            public void updateCarteBonusColoreCittàGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) {
-
-            }
-
-            @Override
-            public void updateCarteBonusColoreCittàTabellone(HashMap<String, Integer> coloriEPunti) {
-
-            }
-
-            @Override
-            public void updateCarteBonusReGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) {
-
-            }
-
-            @Override
-            public void updateCarteBonusReTabellone(int puntiVIttoriaPrimaCarta) {
-
-            }
-
-            @Override
-            public void updateCarteBonusRegioneGiocatore(int idGiocatore, HashMap<String, Integer> carte) {
-
-            }
-
-            @Override
-            public void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta) {
 
             }
 
