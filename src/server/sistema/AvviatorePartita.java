@@ -200,7 +200,6 @@ public class AvviatorePartita implements Runnable {
         return mazzo;
     }
 
-    //TODO fare in modo che non vengano creati bonus con sottobonus duplicati
     private Bonus creaBonus() {
         Random rand = new Random();
         Bonus bonus = NullBonus.getInstance();
@@ -225,7 +224,7 @@ public class AvviatorePartita implements Runnable {
                 case "punti":
                     bonus = new BonusPuntiVittoria(valoreBonus, bonus);
                     break;
-                case "nobiltà":
+                case "nobilta":
                     bonus = new BonusAvanzaPercorsoNobiltà(valoreBonus, bonus);
                     break;
                 case "carta":
