@@ -122,7 +122,8 @@ public class SocketPollingView implements Runnable {
                             break;
                         case UPDATE_BONUS_CITTA:
                             bonus = (Bonus) ois.readObject();
-                            view.updateBonusCittà(bonus);
+                            nomeCittà = (String) ois.readObject();
+                            view.updateBonusCittà(nomeCittà, bonus);
                             break;
                         case UPDATE_EMPORI_DISPONIBILI_GIOCATORE:
                             idGiocatore = ois.readInt();

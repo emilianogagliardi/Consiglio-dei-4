@@ -27,7 +27,7 @@ public interface InterfacciaView extends Remote {
     void updateRiservaConsiglieri(List<String> coloriConsiglieri) throws RemoteException;
     void updatePercorsoNobiltà(int idGiocatore, int posizione) throws RemoteException;
     void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) throws RemoteException;
-    void updateBonusCittà(Bonus bonus) throws RemoteException;
+    void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException;
     void updateEmporiDisponibiliGiocatore(int idGiocatore, int numeroEmporiDisponibili) throws RemoteException;
     void updateCarteBonusColoreCittàGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) throws RemoteException;
     void updateCarteBonusColoreCittàTabellone(HashMap<String, Integer> coloriEPunti) throws RemoteException;

@@ -260,9 +260,11 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateBonusCittà(Bonus bonus) throws RemoteException {
+    public void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException {
         try {
             oos.writeObject(ComunicazioneView.UPDATE_BONUS_CITTA.toString());
+            oos.flush();
+            oos.writeObject(nomeCittà);
             oos.flush();
             oos.writeObject(bonus);
             oos.flush();
