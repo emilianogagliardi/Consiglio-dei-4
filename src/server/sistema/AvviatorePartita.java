@@ -48,8 +48,6 @@ public class AvviatorePartita implements Runnable {
                 controller.setSocketPollingControllers(socketPollingControllers);
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
                 String chiaveController = PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + numeroBindRegistry ;
-                //TODO togliere questa riga
-                System.out.println("chiaveController = " + chiaveController);
                 registry.bind(chiaveController, controller);
                 for(InterfacciaView view : proxyViews) {
                     view.iniziaAGiocare(idMappa);
@@ -93,7 +91,8 @@ public class AvviatorePartita implements Runnable {
             for (int i = 0; i < CostantiModel.NUM_CONSIGLIERI_PER_COLORE; i++)
                 consiglieri.add(new Consigliere(colore));
         });
-        return consiglieri; //TODO: mischiare i consiglieri prima di restituirli
+        Collections.shuffle(consiglieri);
+        return consiglieri;
     }
 
     //crea un insieme contenente tutte le città, leggendo da file i colori e le regioni
