@@ -1,4 +1,4 @@
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
 import server.model.ColoreCittà;
 import server.model.Mazzo;
 import server.model.carte.*;

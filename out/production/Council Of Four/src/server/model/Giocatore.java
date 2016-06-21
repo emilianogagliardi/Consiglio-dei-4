@@ -1,6 +1,8 @@
 package server.model;
-import classicondivise.CartaPermessoCostruzione;
-import server.model.bonus.*;
+import classicondivise.bonus.Bonus;
+import classicondivise.bonus.BonusPuntiVittoria;
+import classicondivise.carte.Carta;
+import classicondivise.carte.CartaPermessoCostruzione;
 import server.model.carte.*;
 import server.model.eccezioni.AiutantiNonSufficientiException;
 import server.model.eccezioni.MoneteNonSufficientiException;

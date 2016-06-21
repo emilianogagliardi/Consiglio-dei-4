@@ -3,7 +3,7 @@ package client.view;
 import classicondivise.ComunicazioneController;
 import classicondivise.Vendibile;
 import interfaccecondivise.InterfacciaController;
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
 
 import java.io.*;
 import java.rmi.RemoteException;

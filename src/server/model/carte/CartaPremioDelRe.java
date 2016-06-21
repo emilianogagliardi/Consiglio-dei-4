@@ -1,7 +1,8 @@
 package server.model.carte;
 
-import server.model.bonus.BonusPuntiVittoria;
-import server.model.bonus.NullBonus;
+import classicondivise.carte.CartaConBonus;
+import classicondivise.bonus.BonusPuntiVittoria;
+import classicondivise.bonus.NullBonus;
 
 import static server.model.CostantiModel.NUM_CARTE_PREMIO_RE;
 

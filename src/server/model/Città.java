@@ -1,9 +1,9 @@
 package server.model;
 
 
-import server.model.bonus.Bonus;
+import classicondivise.bonus.Bonus;
+import classicondivise.NomeCittà;
 import server.model.eccezioni.CittàAdiacenteSeStessaException;
-import server.model.eccezioni.EmporioGiàEsistenteException;
 import interfaccecondivise.InterfacciaView;
 
 import java.rmi.RemoteException;
@@ -32,6 +32,7 @@ public class Città extends Observable {
         empori = new ArrayList<Emporio>();
         flag = false;
         distanza = Integer.MAX_VALUE;
+        updateViewBonusCittà();
     }
 
     public NomeRegione getNomeRegione() {
@@ -71,7 +72,7 @@ public class Città extends Observable {
 
     public void costruisciEmporio (Emporio e){
         empori.add(e);
-        updateView();
+        updateViewEmpori();
     }
 
     public int getNumeroEmporiCostruiti(){
@@ -92,7 +93,7 @@ public class Città extends Observable {
 
     public Bonus getBonus() {return bonus;}
 
-    private void updateView(){
+    private void updateViewEmpori(){
         ArrayList<Integer> idGiocatori = new ArrayList<>();
         empori.stream().forEach((Emporio e) -> idGiocatori.add(e.getIdGiocatore()));
         super.notifyViews((InterfacciaView v) -> {
@@ -102,6 +103,17 @@ public class Città extends Observable {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void updateViewBonusCittà(){
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateBonusCittà(this.bonus);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @Override

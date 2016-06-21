@@ -3,7 +3,7 @@ package server.sistema;
 
 import classicondivise.ComunicazioneController;
 import server.controller.Controller;
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
 
 import java.io.*;
 import java.net.Socket;

@@ -1,11 +1,12 @@
 package server.sistema;
 
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.bonus.*;
+import classicondivise.carte.CartaPermessoCostruzione;
 import classicondivise.IdBalcone;
+import classicondivise.NomeCittà;
 import interfaccecondivise.InterfacciaView;
 import server.controller.Controller;
 import server.model.*;
-import server.model.bonus.*;
 import server.model.carte.*;
 import server.proxyView.SocketProxyView;
 

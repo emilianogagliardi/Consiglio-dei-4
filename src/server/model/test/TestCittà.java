@@ -1,7 +1,8 @@
 
 
+import classicondivise.NomeCittà;
 import server.model.*;
-import server.model.bonus.NullBonus;
+import classicondivise.bonus.NullBonus;
 import server.model.eccezioni.CittàAdiacenteSeStessaException;
 import server.model.eccezioni.EmporioGiàEsistenteException;
 import org.junit.Test;

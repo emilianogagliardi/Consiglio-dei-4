@@ -1,6 +1,8 @@
 package server.model.carte;
 
 
+import classicondivise.carte.Carta;
+
 import java.util.Objects;
 
 public class CartaPolitica extends Carta {

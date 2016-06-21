@@ -1,7 +1,8 @@
 package server.model;
 
-import server.model.bonus.Bonus;
-import server.model.bonus.BonusPuntiVittoria;
+import classicondivise.bonus.Bonus;
+import classicondivise.NomeCittà;
+import classicondivise.bonus.BonusPuntiVittoria;
 import server.model.carte.*;
 import server.model.eccezioni.*;
 import interfaccecondivise.InterfacciaView;

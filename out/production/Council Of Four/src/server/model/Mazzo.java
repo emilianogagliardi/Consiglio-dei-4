@@ -1,6 +1,6 @@
 package server.model;
 
-import server.model.carte.Carta;
+import classicondivise.carte.Carta;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
