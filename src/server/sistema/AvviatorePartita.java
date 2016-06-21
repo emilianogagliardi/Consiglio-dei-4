@@ -201,13 +201,19 @@ public class AvviatorePartita implements Runnable {
     }
 
     private Bonus creaBonus() {
-        Bonus bonus = NullBonus.getInstance();
         Random rand = new Random();
+        Bonus bonus = NullBonus.getInstance();
+        ArrayList<Integer> bonusNonUtilizzati = new ArrayList<>();
+        bonusNonUtilizzati.add(0);
+        bonusNonUtilizzati.add(1);
+        bonusNonUtilizzati.add(2);
+        bonusNonUtilizzati.add(3);
+        bonusNonUtilizzati.add(4);
         int numeroSottobonus = CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(CostantiModel.MAX_NUM_SOTTOBONUS_PER_BONUS - CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
         for (int i = 0; i < numeroSottobonus; i++) {
-            int sceltaBonus = rand.nextInt(5);
             int valoreBonus = CostantiModel.MIN_VALORE_SOTTOBONUS + rand.nextInt(CostantiModel.MAX_VALORE_SOTTOBONUS - CostantiModel.MIN_VALORE_SOTTOBONUS) + 1;
-            switch (sceltaBonus){
+            int sceltaBonus = rand.nextInt(bonusNonUtilizzati.size());
+            switch (bonusNonUtilizzati.get(sceltaBonus)){
                 case 0:
                     bonus = new BonusAiutanti(valoreBonus, bonus);
                     break;
@@ -226,6 +232,7 @@ public class AvviatorePartita implements Runnable {
                 default:
                     break;
             }
+            bonusNonUtilizzati.remove((Object)sceltaBonus);
         }
         return bonus;
     }

@@ -2,6 +2,9 @@ package client.view.GUI;
 
 import classicondivise.Colore;
 import classicondivise.IdBalcone;
+import classicondivise.bonus.Bonus;
+import classicondivise.bonus.BonusAiutanti;
+import classicondivise.bonus.NullBonus;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
@@ -135,8 +138,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
 
     //TODO
-    private void updateBonusCittà(){
+    public void updateBonusCittà(Bonus bonus){
+        int i = 0;
 
+        while (!(bonus instanceof NullBonus)){
+            if (bonus instanceof BonusAiutanti) {
+
+            }
+        }
     }
 
     //TODO sono già pronte le immagini degli empori
