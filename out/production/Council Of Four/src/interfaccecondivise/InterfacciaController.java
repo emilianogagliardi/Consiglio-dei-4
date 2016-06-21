@@ -1,6 +1,6 @@
 package interfaccecondivise;
 
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
 import classicondivise.Vendibile;
 
 import java.io.Serializable;

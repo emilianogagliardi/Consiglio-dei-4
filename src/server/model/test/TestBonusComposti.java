@@ -1,5 +1,5 @@
+import classicondivise.bonus.*;
 import server.model.Giocatore;
-import server.model.bonus.*;
 import org.junit.Before;
 import interfaccecondivise.InterfacciaView;
 

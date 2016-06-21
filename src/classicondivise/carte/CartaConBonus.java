@@ -1,5 +1,6 @@
-package server.model.carte;
-import server.model.bonus.Bonus;
+package classicondivise.carte;
+
+import classicondivise.bonus.Bonus;
 
 import java.util.Objects;
 

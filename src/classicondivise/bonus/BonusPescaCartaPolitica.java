@@ -1,4 +1,6 @@
-package server.model.bonus;
+package classicondivise.bonus;
+
+import java.io.Serializable;
 
 public class BonusPescaCartaPolitica extends RealBonus {
     private int numeroCarte;

@@ -1,4 +1,6 @@
-package server.model.bonus;
+package classicondivise.bonus;
+
+import java.io.Serializable;
 
 public class BonusAvanzaPercorsoNobiltà extends RealBonus {
     private int numeroPosti;

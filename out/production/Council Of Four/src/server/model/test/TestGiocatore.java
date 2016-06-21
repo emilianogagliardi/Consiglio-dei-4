@@ -1,6 +1,7 @@
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
+import classicondivise.NomeCittà;
 import server.model.*;
-import server.model.bonus.NullBonus;
+import classicondivise.bonus.NullBonus;
 import server.model.carte.*;
 import server.model.eccezioni.AiutantiNonSufficientiException;
 import server.model.eccezioni.MoneteNonSufficientiException;

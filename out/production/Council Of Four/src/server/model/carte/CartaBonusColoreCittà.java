@@ -1,7 +1,8 @@
 package server.model.carte;
+import classicondivise.carte.CartaConBonus;
 import server.model.ColoreCittà;
-import server.model.bonus.BonusPuntiVittoria;
-import server.model.bonus.NullBonus;
+import classicondivise.bonus.BonusPuntiVittoria;
+import classicondivise.bonus.NullBonus;
 
 import java.util.Objects;
 

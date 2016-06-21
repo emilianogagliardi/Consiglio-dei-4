@@ -1,4 +1,8 @@
-package server.model.bonus;
+package classicondivise.bonus;
+
+import classicondivise.bonus.Bonus;
+
+import java.io.Serializable;
 
 public abstract class RealBonus extends Bonus {
     private Bonus decoratedBonus;

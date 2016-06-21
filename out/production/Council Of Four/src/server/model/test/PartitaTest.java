@@ -1,7 +1,8 @@
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.bonus.*;
+import classicondivise.carte.CartaPermessoCostruzione;
 import classicondivise.IdBalcone;
+import classicondivise.NomeCittà;
 import server.model.*;
-import server.model.bonus.*;
 import server.model.carte.*;
 import org.junit.Test;
 import interfaccecondivise.InterfacciaView;

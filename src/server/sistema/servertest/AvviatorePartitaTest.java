@@ -1,10 +1,12 @@
+import classicondivise.NomeCittà;
 import classicondivise.VetrinaMarket;
+import classicondivise.bonus.Bonus;
 import interfaccecondivise.InterfacciaView;
 import org.junit.Before;
 import org.junit.Test;
 import server.model.*;
-import server.model.bonus.NullBonus;
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.bonus.NullBonus;
+import classicondivise.carte.CartaPermessoCostruzione;
 import server.sistema.AvviatorePartita;
 
 import java.io.FileInputStream;
@@ -108,6 +110,11 @@ public class AvviatorePartitaTest {
 
             @Override
             public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) {
+
+            }
+
+            @Override
+            public void updateBonusCittà(Bonus bonus) throws RemoteException {
 
             }
 

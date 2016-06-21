@@ -1,10 +1,11 @@
 package client.view.GUI;
 
 import classicondivise.VetrinaMarket;
+import classicondivise.bonus.Bonus;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
 import javafx.application.Platform;
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -139,6 +140,11 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) throws RemoteException{
+
+    }
+
+    @Override
+    public void updateBonusCittà(Bonus bonus) throws RemoteException {
 
     }
 

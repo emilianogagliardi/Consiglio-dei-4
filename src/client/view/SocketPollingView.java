@@ -1,6 +1,7 @@
 package client.view;
 
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.bonus.Bonus;
+import classicondivise.carte.CartaPermessoCostruzione;
 import classicondivise.ComunicazioneView;
 import client.view.GUI.GUIView;
 import interfaccecondivise.InterfacciaView;
@@ -37,6 +38,7 @@ public class SocketPollingView implements Runnable {
             List<CartaPermessoCostruzione> manoCartePermessoCostruzione;
             List<Integer> idGiocatori;
             ComunicazioneView comunicazioneView;
+            Bonus bonus;
             while (running) {
                 try{
                     inputLine = (String) ois.readObject();
@@ -117,6 +119,10 @@ public class SocketPollingView implements Runnable {
                             nomeCittà = (String) ois.readObject();
                             idGiocatori = (List<Integer>) ois.readObject();
                             view.updateEmporiCittà(nomeCittà, idGiocatori);
+                            break;
+                        case UPDATE_BONUS_CITTA:
+                            bonus = (Bonus) ois.readObject();
+                            view.updateBonusCittà(bonus);
                             break;
                         case UPDATE_EMPORI_DISPONIBILI_GIOCATORE:
                             idGiocatore = ois.readInt();

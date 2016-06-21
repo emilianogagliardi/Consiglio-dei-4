@@ -1,9 +1,10 @@
 package server.model;
 
 
-import server.model.bonus.BonusPuntiVittoria;
+import classicondivise.NomeCittà;
+import classicondivise.bonus.BonusPuntiVittoria;
 import server.model.carte.CartaBonusRegione;
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
 import interfaccecondivise.InterfacciaView;
 
 import java.rmi.RemoteException;

@@ -1,4 +1,6 @@
-package server.model.bonus;
+package classicondivise.bonus;
+
+import java.io.Serializable;
 
 public class BonusMonete extends RealBonus {
     private int numeroMonete;

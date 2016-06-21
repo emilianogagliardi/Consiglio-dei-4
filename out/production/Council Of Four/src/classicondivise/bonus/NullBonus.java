@@ -1,4 +1,6 @@
-package server.model.bonus;
+package classicondivise.bonus;
+
+import java.io.Serializable;
 
 public class NullBonus extends Bonus {
     private static NullBonus instance;

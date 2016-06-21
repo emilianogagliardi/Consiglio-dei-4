@@ -1,11 +1,10 @@
-package classicondivise;
+package classicondivise.carte;
+
+import classicondivise.bonus.Bonus;
+import classicondivise.NomeCittà;
 
 import java.io.Serializable;
 import java.util.HashSet;
-
-import server.model.NomeCittà;
-import server.model.bonus.Bonus;
-import server.model.carte.CartaConBonus;
 
 public class CartaPermessoCostruzione extends CartaConBonus implements Serializable{
     private HashSet<NomeCittà> città = new HashSet<>(1);

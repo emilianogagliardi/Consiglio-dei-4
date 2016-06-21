@@ -2,8 +2,9 @@ package server.proxyView;
 
 import classicondivise.ComunicazioneView;
 import classicondivise.VetrinaMarket;
+import classicondivise.bonus.Bonus;
 import interfaccecondivise.InterfacciaView;
-import classicondivise.CartaPermessoCostruzione;
+import classicondivise.carte.CartaPermessoCostruzione;
 import server.sistema.AvviatorePartita;
 
 import java.io.IOException;
@@ -259,6 +260,18 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
+    public void updateBonusCittà(Bonus bonus) throws RemoteException {
+        try {
+            oos.writeObject(ComunicazioneView.UPDATE_BONUS_CITTA.toString());
+            oos.flush();
+            oos.writeObject(bonus);
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
+    }
+
+    @Override
     public void updateEmporiDisponibiliGiocatore(int idGiocatore, int numeroEmporiDisponibili) {
         try {
             oos.writeObject(ComunicazioneView.UPDATE_EMPORI_DISPONIBILI_GIOCATORE.toString());
@@ -353,7 +366,7 @@ public class SocketProxyView implements InterfacciaView {
 
     @Override
     public void compra() throws RemoteException {
-        
+
     }
 
     @Override

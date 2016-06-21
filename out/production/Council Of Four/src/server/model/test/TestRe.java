@@ -1,5 +1,6 @@
+import classicondivise.NomeCittà;
 import server.model.*;
-import server.model.bonus.NullBonus;
+import classicondivise.bonus.NullBonus;
 import org.junit.Before;
 import org.junit.Test;
 import interfaccecondivise.InterfacciaView;

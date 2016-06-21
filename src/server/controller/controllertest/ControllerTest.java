@@ -1,11 +1,10 @@
 
 
-import classicondivise.CartaPermessoCostruzione;
-import classicondivise.IdBalcone;
-import classicondivise.VetrinaMarket;
+import classicondivise.*;
+import classicondivise.bonus.*;
+import classicondivise.carte.CartaPermessoCostruzione;
 import server.controller.Controller;
 import server.model.*;
-import server.model.bonus.*;
 import server.model.carte.*;
 import org.junit.Test;
 import interfaccecondivise.InterfacciaView;
@@ -240,6 +239,11 @@ public class ControllerTest {
             }
 
             @Override
+            public void updateBonusCittà(Bonus bonus) throws RemoteException {
+
+            }
+
+            @Override
             public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) {
 
             }
@@ -393,6 +397,11 @@ public class ControllerTest {
 
             @Override
             public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) {
+
+            }
+
+            @Override
+            public void updateBonusCittà(Bonus bonus) throws RemoteException {
 
             }
 

@@ -1,4 +1,4 @@
-package server.model.bonus;
+package classicondivise.bonus;
 
 import java.io.Serializable;
 
