@@ -32,6 +32,7 @@ public class Città extends Observable {
         empori = new ArrayList<Emporio>();
         flag = false;
         distanza = Integer.MAX_VALUE;
+        updateViewBonusCittà();
     }
 
     public NomeRegione getNomeRegione() {
