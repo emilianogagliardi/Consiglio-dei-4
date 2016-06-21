@@ -264,9 +264,9 @@ public class SocketProxyView implements InterfacciaView {
         try {
             oos.writeObject(ComunicazioneView.UPDATE_BONUS_CITTA.toString());
             oos.flush();
-            oos.writeObject(nomeCittà);
-            oos.flush();
             oos.writeObject(bonus);
+            oos.flush();
+            oos.writeObject(nomeCittà);
             oos.flush();
         } catch (IOException exc){
             exc.printStackTrace();

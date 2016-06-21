@@ -117,7 +117,7 @@ public class AvviatorePartitaTest {
             public void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException {
 
             }
-            
+
 
             @Override
             public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) {
