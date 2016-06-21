@@ -295,6 +295,13 @@
                                                 <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
+                                          <HBox fx:id="bonusJuvelar" layoutX="554.0" layoutY="281.0" prefHeight="30.0" prefWidth="90.0">
+                                             <children>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                        <padding>
                                           <Insets left="10.0" />

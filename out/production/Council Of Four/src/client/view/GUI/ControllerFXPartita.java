@@ -2,9 +2,7 @@ package client.view.GUI;
 
 import classicondivise.Colore;
 import classicondivise.IdBalcone;
-import classicondivise.bonus.Bonus;
-import classicondivise.bonus.BonusAiutanti;
-import classicondivise.bonus.NullBonus;
+import classicondivise.bonus.*;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
@@ -18,9 +16,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -34,9 +34,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HBox balconeRe, balconeCollina, balconeCosta, balconeMontagna;
     @FXML
     private TextArea areaNotifiche;
+    //sono utilizzati ottenendo l'attributo tramite il loro nome, per evitare noiosi switch case
     @FXML
     private HBox bonusArkon, bonusBurgen, bonusCastrum, bonusDorful, bonusEsti, bonusFramek, bonusGraden, bonusIndur,
-            bonusHellar, bonusKultos, bonusLyram, bonusNaris, bonusMerkatim, bonusOsium;
+            bonusHellar, bonusKultos, bonusLyram, bonusNaris, bonusMerkatim, bonusOsium, bonusJuvelar;
     @FXML
     private HBox emporiArkon, emporiBurgen, emporiCastrum, emporiDorful, emporiEsti, emporiFramek, emporiGraden, emporiIndur,
             emporiHellar, emporiKultos, emporiLyram, emporiNaris, emporiMerkatim, emporiOsium;
@@ -138,18 +139,43 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
 
     //TODO
-    public void updateBonusCittà(Bonus bonus){
-        int i = 0;
-
-        while (!(bonus instanceof NullBonus)){
-            if (bonus instanceof BonusAiutanti) {
-
+    public void updateBonusCittà(String nomeCittà, Bonus bonus){
+        Comparator<Node> piuADestra = (Node n1, Node n2) -> ((Double)n2.getLayoutX()).compareTo(n1.getLayoutX());
+        HBox hBoxBonus;
+        Class c = this.getClass();
+        try {
+            Field fieldHBox = c.getDeclaredField("bonus" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1).toLowerCase());
+            hBoxBonus = (HBox) fieldHBox.get(this);
+            List<Node> nodi = hBoxBonus.getChildren();
+            //parte ad inserire le immagini dall'ultimo elemento dell'hbox, per questioni grafiche
+            List<ImageView> immagini = new ArrayList<>();
+            immagini.add((ImageView) nodi.get(0));
+            immagini.add((ImageView) nodi.get(1));
+            immagini.add((ImageView) nodi.get(2));
+            immagini.sort(piuADestra);
+            int i = 0;
+            while (!(bonus instanceof NullBonus)){
+                if (bonus instanceof BonusAiutanti) {
+                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
+                }else if(bonus instanceof BonusMonete) {
+                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png")));
+                }else if(bonus instanceof BonusAvanzaPercorsoNobiltà) {
+                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_percorsonobilta.png")));
+                }else if(bonus instanceof BonusRipetiAzionePrincipale) {
+                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_ripetiazione.png")));
+                }else if(bonus instanceof BonusPescaCartaPolitica) {
+                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_cartapolitica.png")));
+                }
+                bonus = ((RealBonus) bonus).getDecoratedBonus();
+                i++;
             }
+        }catch (NoSuchFieldException | IllegalAccessException e){
+            e.printStackTrace();
         }
     }
 
-    //TODO sono già pronte le immagini degli empori
-    private void updateEmporiCittà(){
+
+    public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori){
 
     }
 

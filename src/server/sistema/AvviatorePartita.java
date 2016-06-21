@@ -200,39 +200,43 @@ public class AvviatorePartita implements Runnable {
         return mazzo;
     }
 
+    //TODO fare in modo che non vengano creati bonus con sottobonus duplicati
     private Bonus creaBonus() {
         Random rand = new Random();
         Bonus bonus = NullBonus.getInstance();
-        ArrayList<Integer> bonusNonUtilizzati = new ArrayList<>();
-        bonusNonUtilizzati.add(0);
-        bonusNonUtilizzati.add(1);
-        bonusNonUtilizzati.add(2);
-        bonusNonUtilizzati.add(3);
-        bonusNonUtilizzati.add(4);
+        ArrayList<String> bonusNonUtilizzati = new ArrayList<>();
+        bonusNonUtilizzati.add("aiutanti");
+        bonusNonUtilizzati.add("monete");
+        bonusNonUtilizzati.add("ripeti");
+        bonusNonUtilizzati.add("nobilta");
+        bonusNonUtilizzati.add("carta");
+        bonusNonUtilizzati.add("punti");
         int numeroSottobonus = CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(CostantiModel.MAX_NUM_SOTTOBONUS_PER_BONUS - CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
         for (int i = 0; i < numeroSottobonus; i++) {
             int valoreBonus = CostantiModel.MIN_VALORE_SOTTOBONUS + rand.nextInt(CostantiModel.MAX_VALORE_SOTTOBONUS - CostantiModel.MIN_VALORE_SOTTOBONUS) + 1;
             int sceltaBonus = rand.nextInt(bonusNonUtilizzati.size());
             switch (bonusNonUtilizzati.get(sceltaBonus)){
-                case 0:
+                case "aiutanti":
                     bonus = new BonusAiutanti(valoreBonus, bonus);
                     break;
-                case 1:
+                case "monete":
                     bonus = new BonusMonete(valoreBonus, bonus);
                     break;
-                case 2:
+                case "punti":
                     bonus = new BonusPuntiVittoria(valoreBonus, bonus);
                     break;
-                case 3:
+                case "nobiltà":
                     bonus = new BonusAvanzaPercorsoNobiltà(valoreBonus, bonus);
                     break;
-                case 4:
+                case "carta":
                     bonus = new BonusPescaCartaPolitica(valoreBonus, bonus);
                     break;
+                case "ripeti":
+                    bonus = new BonusRipetiAzionePrincipale(bonus);
                 default:
                     break;
             }
-            bonusNonUtilizzati.remove((Object)sceltaBonus);
+            bonusNonUtilizzati.remove(sceltaBonus);
         }
         return bonus;
     }
