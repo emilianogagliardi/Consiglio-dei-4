@@ -55,5 +55,5 @@ public class CostantiModel {
     public static final int MAX_PUNTI_VITTORIA = 99;
     public static final int NUM_CARTE_POLITICA_INIZIALI_GIOCATORE = 6;
     public final static int[] MONETE_INIZIALI_GIOCATORI = {10, 11, 12, 13};
-    public final static int[] AIUTANTI_INIZIALI_GIIOCATORI = {1, 2, 3, 4};
+    public final static int[] AIUTANTI_INIZIALI_GIIOCATORI = {4, 3, 2, 1};
 }

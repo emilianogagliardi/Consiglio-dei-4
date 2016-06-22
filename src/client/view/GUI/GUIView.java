@@ -10,7 +10,6 @@ import interfaccecondivise.InterfacciaView;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.List;
 
 /*
@@ -81,7 +80,8 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) throws RemoteException{
-
+        if(idGiocatore == this.getIdGiocatore()) controllerFXPartita.updatePuntiVittoriaGiocatore(punti);
+        else controllerFXPartita.updatePuntiVittoriaAvversario(idGiocatore, punti);
     }
 
     @Override
@@ -90,8 +90,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void updateMonete(int idGiocatore, int idMonete) throws RemoteException {
-
+    public void updateMonete(int idGiocatore, int monete) throws RemoteException {
+        if(idGiocatore==this.getIdGiocatore()) controllerFXPartita.updateMoneteGiocatore(monete);
+        else controllerFXPartita.updateMoneteAvversario(idGiocatore, monete);
     }
 
     @Override
@@ -116,7 +117,8 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateAiutanti(int idGiocatore, int numAiutanti) throws RemoteException{
-
+        if(idGiocatore == this.getIdGiocatore()) controllerFXPartita.updateAiutantiGiocatore(numAiutanti);
+        else controllerFXPartita.updateAiutantiAvversari(idGiocatore, numAiutanti);
     }
 
     @Override

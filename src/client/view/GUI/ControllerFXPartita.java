@@ -13,17 +13,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.*;
 
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
-    private int idGiocatore;
     @FXML
     private AnchorPane rootPane, anchorInScroll;
     @FXML
@@ -39,21 +38,20 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private HBox emporiArkon, emporiBurgen, emporiCastrum, emporiDorful, emporiEsti, emporiFramek, emporiGraden, emporiIndur,
             emporiHellar, emporiKultos, emporiLyram, emporiNaris, emporiMerkatim, emporiOsium;
+    @FXML
+    private ImageView imageViewMonete, imageViewAiutanti, imageViewPunti;
+    @FXML
+    private Label moneteGiocatore, puntiVittoriaGiocatore, aiutantiGiocatore;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        rootPane.setBackground(new Background(new BackgroundImage(new Image(getClass().getClassLoader().getResourceAsStream("sfondo.jpg")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-        try {
-            idGiocatore = GUIView.getInstance().getIdGiocatore();
-        } catch (RemoteException | SingletonNonInizializzatoException e) {
-            e.printStackTrace();
-        }
         //assegna l'handler di mostra mappa all'evento di start del gioco
         inizializzaImmagineMappa();
         //inizializza le immagini di retro delle carte permit
         inizializzaImmaginiCarte();
         //il giocatore non può scrivere in area notifiche
         areaNotifiche.setEditable(false);
+        inizializzaImmaginiRisorseGiocatore();
         inizializzaImmaginiBalconiDiLegno();
     }
 
@@ -80,6 +78,12 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         cartaCollinaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_collina.jpg")));
         cartaCostaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_costa.jpg")));
         cartaMontagnaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_montagna.jpg")));
+    }
+
+    private void inizializzaImmaginiRisorseGiocatore() {
+        imageViewAiutanti.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
+        imageViewMonete.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png")));
+        imageViewPunti.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_puntivittoria.png")));
     }
 
     private void inizializzaImmaginiBalconiDiLegno(){
@@ -179,17 +183,49 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         }
     }
 
+    //friendly
+    void updateMoneteGiocatore(int monete) {
+        moneteGiocatore.setText(monete+"");
+    }
 
-    public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori){
+    //TODO
+    public void updateMoneteAvversario(int id, int monete){
 
     }
 
-    public void nuovoMessaggio(String messaggio) {
+    //friendly
+    void updateAiutantiGiocatore(int aiutanti){
+            aiutantiGiocatore.setText(aiutanti+"");
+    }
+
+    //TODO
+    public void updateAiutantiAvversari(int id, int aiutanti) {
+
+    }
+
+    //friendly
+    void updatePuntiVittoriaGiocatore(int punti) {
+        puntiVittoriaGiocatore.setText(punti+"");
+    }
+
+    //TODO
+    public void updatePuntiVittoriaAvversario(int id, int punti) {
+
+    }
+
+    //friendly
+    void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori){
+
+    }
+
+    //friendly
+    void nuovoMessaggio(String messaggio) {
         areaNotifiche.appendText(messaggio+"\n");
     }
 
     //permette di firare eventi al root pane dall'esterno
-    public Parent getRootPane(){
+    //friendly
+    Parent getRootPane(){
         return rootPane;
     }
 

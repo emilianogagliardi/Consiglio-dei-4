@@ -15,7 +15,7 @@ class LoggerRMI extends UnicastRemoteObject implements InterfacciaLoggerRMI {
 
     @Override
     public void login(InterfacciaView view) {
-            server.addView(view);
+        server.addView(view);
     }
 
     @Override
