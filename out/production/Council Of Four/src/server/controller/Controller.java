@@ -98,6 +98,7 @@ public class Controller implements Runnable, InterfacciaController {
 
 
                 //INIZIO FASE VENDITA MARKET
+                comunicaATutti("Inizia la fase di vendita del market");
                 do {
                     //si passa al giocatore successivo
                     giocatoreCorrente = giocatoriOnline.prossimo();
@@ -116,6 +117,7 @@ public class Controller implements Runnable, InterfacciaController {
 
 
                 //INIZIO FASE ACQUISTO MARKET
+                comunicaATutti("Inizia la fase di acquisto del market");
                 vetrinaMarket = new VetrinaMarket();
                 ScatolaIdGiocatori scatolaIdGiocatori = new ScatolaIdGiocatori();
                 do {
@@ -252,6 +254,16 @@ public class Controller implements Runnable, InterfacciaController {
         views.forEach((InterfacciaView view) -> {
             try {
                 if (view.getIdGiocatore() != giocatoreCorrente.getId())
+                    view.mostraMessaggio(messaggio);
+            } catch (RemoteException exc) {
+                exc.printStackTrace();
+            }
+        });
+    }
+
+    private void comunicaATutti(String messaggio){
+        views.forEach((InterfacciaView view) -> {
+            try {
                     view.mostraMessaggio(messaggio);
             } catch (RemoteException exc) {
                 exc.printStackTrace();
