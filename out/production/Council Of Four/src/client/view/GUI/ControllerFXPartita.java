@@ -20,10 +20,7 @@ import javafx.scene.text.Font;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     private int idGiocatore;
@@ -57,6 +54,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaImmaginiCarte();
         //il giocatore non può scrivere in area notifiche
         areaNotifiche.setEditable(false);
+        inizializzaImmaginiBalconiDiLegno();
     }
 
     //l'algoritmo di caricamento deve essere eguito sullo show, nel momento il cui si conosce già quale deve essere l'immagine da mostrare
@@ -84,15 +82,30 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         cartaMontagnaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_montagna.jpg")));
     }
 
+    private void inizializzaImmaginiBalconiDiLegno(){
+        Image img = new Image(getClass().getClassLoader().getResourceAsStream("balcone_legno.png"));
+        double altezzaRelativaBalcone = 0.5;
+        HBox[] balconi = {balconeCosta, balconeMontagna, balconeRe, balconeCollina};
+        Arrays.stream(balconi).forEach((HBox balcone) -> {
+            ImageView imageView = new ImageView(img);
+            imageView.setFitWidth(((ImageView)balcone.getChildren().get(0)).getFitWidth()*balcone.getChildren().size());
+            imageView.setFitHeight(((ImageView)balcone.getChildren().get(0)).getFitHeight()*altezzaRelativaBalcone);
+            imageView.setX(balcone.getLayoutX());
+            double y = balcone.getLayoutY() + (1-altezzaRelativaBalcone) *((ImageView)balcone.getChildren().get(0)).getFitHeight();
+            imageView.setY(y);
+            anchorInScroll.getChildren().add(imageView);
+        });
+    }
+
     public void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) {
         boolean isBalconeRe = IdBalcone.valueOf(idBalcone).equals(IdBalcone.RE);
         List<Node> nodi = scegliBalcone(idBalcone).getChildren();
         List<ImageView> imageViewConsiglieri = new ArrayList<>();
         nodi.forEach(nodo -> imageViewConsiglieri.add((ImageView) nodo));
-        imageViewConsiglieri.get(0).setImage(scegliImmagine(colore1, isBalconeRe));
-        imageViewConsiglieri.get(1).setImage(scegliImmagine(colore2, isBalconeRe));
-        imageViewConsiglieri.get(2).setImage(scegliImmagine(colore3, isBalconeRe));
-        imageViewConsiglieri.get(3).setImage(scegliImmagine(colore4, isBalconeRe));
+        imageViewConsiglieri.get(0).setImage(scegliImmagineConsigliere(colore1, isBalconeRe));
+        imageViewConsiglieri.get(1).setImage(scegliImmagineConsigliere(colore2, isBalconeRe));
+        imageViewConsiglieri.get(2).setImage(scegliImmagineConsigliere(colore3, isBalconeRe));
+        imageViewConsiglieri.get(3).setImage(scegliImmagineConsigliere(colore4, isBalconeRe));
     }
 
     //metodo di utility per update balcone, sceglie il balcone in base all'id
@@ -113,34 +126,11 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //metodo di utility per update balcone, sceglie l'immagine in base al colore
     //true se balcone del re
-    private Image scegliImmagine(String colore, boolean isBalconeRe) {
+    private Image scegliImmagineConsigliere(String colore, boolean isBalconeRe) {
         String nomeImg = "consigliere_" + colore.toLowerCase();
         if(isBalconeRe) nomeImg += "_re";
         nomeImg += ".png";
-        return new Image(getClass().getClassLoader().getResourceAsStream(nomeImg));/*
-        switch (Colore.valueOf(colore)) {
-            case ARANCIONE:
-                image = new Image(getClass().getClassLoader().getResourceAsStream("consigliere_arancione.png"));
-                break;
-            case AZZURRO:
-                image = new Image(getClass().getClassLoader().getResourceAsStream("consigliere_azzurro.png"));
-                break;
-            case BIANCO:
-                image = new Image(getClass().getClassLoader().getResourceAsStream("consigliere_bianco.png"));
-                break;
-            case NERO:
-                image = new Image(getClass().getClassLoader().getResourceAsStream("consigliere_nero.png"));
-                break;
-            case ROSA:
-                image = new Image(getClass().getClassLoader().getResourceAsStream("consigliere_rosa.png"));
-                break;
-            case VIOLA:
-                image = new Image(getClass().getClassLoader().getResourceAsStream("consigliere_viola.png"));
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-        return image;*/
+        return new Image(getClass().getClassLoader().getResourceAsStream(nomeImg));
     }
 
 
