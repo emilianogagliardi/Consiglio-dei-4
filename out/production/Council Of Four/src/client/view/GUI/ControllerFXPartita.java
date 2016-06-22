@@ -1,6 +1,5 @@
 package client.view.GUI;
 
-import classicondivise.Colore;
 import classicondivise.IdBalcone;
 import classicondivise.bonus.*;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
@@ -10,11 +9,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -27,7 +28,7 @@ import java.util.ResourceBundle;
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     private int idGiocatore;
     @FXML
-    private AnchorPane rootPane;
+    private AnchorPane rootPane, anchorInScroll;
     @FXML
     private ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
     @FXML
@@ -44,6 +45,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        rootPane.setBackground(new Background(new BackgroundImage(new Image(getClass().getClassLoader().getResourceAsStream("sfondo.jpg")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         try {
             idGiocatore = GUIView.getInstance().getIdGiocatore();
         } catch (RemoteException | SingletonNonInizializzatoException e) {
@@ -83,13 +85,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     public void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) {
+        boolean isBalconeRe = IdBalcone.valueOf(idBalcone).equals(IdBalcone.RE);
         List<Node> nodi = scegliBalcone(idBalcone).getChildren();
         List<ImageView> imageViewConsiglieri = new ArrayList<>();
         nodi.forEach(nodo -> imageViewConsiglieri.add((ImageView) nodo));
-        imageViewConsiglieri.get(0).setImage(scegliImmagine(colore1));
-        imageViewConsiglieri.get(1).setImage(scegliImmagine(colore2));
-        imageViewConsiglieri.get(2).setImage(scegliImmagine(colore3));
-        imageViewConsiglieri.get(3).setImage(scegliImmagine(colore4));
+        imageViewConsiglieri.get(0).setImage(scegliImmagine(colore1, isBalconeRe));
+        imageViewConsiglieri.get(1).setImage(scegliImmagine(colore2, isBalconeRe));
+        imageViewConsiglieri.get(2).setImage(scegliImmagine(colore3, isBalconeRe));
+        imageViewConsiglieri.get(3).setImage(scegliImmagine(colore4, isBalconeRe));
     }
 
     //metodo di utility per update balcone, sceglie il balcone in base all'id
@@ -109,8 +112,12 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     //metodo di utility per update balcone, sceglie l'immagine in base al colore
-    private Image scegliImmagine(String colore) {
-        Image image;
+    //true se balcone del re
+    private Image scegliImmagine(String colore, boolean isBalconeRe) {
+        String nomeImg = "consigliere_" + colore.toLowerCase();
+        if(isBalconeRe) nomeImg += "_re";
+        nomeImg += ".png";
+        return new Image(getClass().getClassLoader().getResourceAsStream(nomeImg));/*
         switch (Colore.valueOf(colore)) {
             case ARANCIONE:
                 image = new Image(getClass().getClassLoader().getResourceAsStream("consigliere_arancione.png"));
@@ -133,7 +140,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             default:
                 throw new IllegalArgumentException();
         }
-        return image;
+        return image;*/
     }
 
 
@@ -144,6 +151,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         HBox hBoxBonus;
         Class c = this.getClass();
         try {
+            //ottiene l'attributo "bonusNomecittà" di this.getClass, per evitare uno switch case di 15 case.
             Field fieldHBox = c.getDeclaredField("bonus" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1).toLowerCase());
             hBoxBonus = (HBox) fieldHBox.get(this);
             List<Node> nodi = hBoxBonus.getChildren();
@@ -156,15 +164,22 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             int i = 0;
             while (!(bonus instanceof NullBonus)){
                 if (bonus instanceof BonusAiutanti) {
-                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
+                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
+                    scriviNumeroBonus(((BonusAiutanti) bonus).getNumeroAiutanti(), hBoxBonus, immagini.get(i));
                 }else if(bonus instanceof BonusMonete) {
-                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png")));
+                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png")));
+                    scriviNumeroBonus(((BonusMonete) bonus).getNumeroMonete(), hBoxBonus, immagini.get(i));
                 }else if(bonus instanceof BonusAvanzaPercorsoNobiltà) {
-                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_percorsonobilta.png")));
+                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_percorsonobilta.png")));
+                    scriviNumeroBonus(((BonusAvanzaPercorsoNobiltà) bonus).getNumeroPosti(), hBoxBonus, immagini.get(i));
                 }else if(bonus instanceof BonusRipetiAzionePrincipale) {
-                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_ripetiazione.png")));
+                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_ripetiazione.png")));
                 }else if(bonus instanceof BonusPescaCartaPolitica) {
-                    ((ImageView) immagini.get(i)).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_cartapolitica.png")));
+                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_cartapolitica.png")));
+                    scriviNumeroBonus(((BonusPescaCartaPolitica) bonus).getNumeroCarte(), hBoxBonus, immagini.get(i));
+                }else if(bonus instanceof BonusPuntiVittoria){
+                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_puntivittoria.png")));
+                    scriviNumeroBonus(((BonusPuntiVittoria) bonus).getPuntiVittoria(), hBoxBonus, immagini.get(i));
                 }
                 bonus = ((RealBonus) bonus).getDecoratedBonus();
                 i++;
@@ -180,11 +195,27 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     public void nuovoMessaggio(String messaggio) {
-        areaNotifiche.appendText(messaggio);
+        areaNotifiche.appendText(messaggio+"\n");
     }
 
     //permette di firare eventi al root pane dall'esterno
     public Parent getRootPane(){
         return rootPane;
+    }
+
+    private void scriviNumeroBonus(int numero, HBox hBox, ImageView immagine) {
+        double x = hBox.getLayoutX();
+        double y = hBox.getLayoutY();
+        x += immagine.getLayoutX();
+        y += immagine.getLayoutY();
+        x += immagine.getFitWidth()/2;
+        y += immagine.getFitHeight()/2;
+        Label label = new Label(numero+"");
+        Font font = new Font(15);
+        label.setTextFill(Color.WHITESMOKE);
+        label.setFont(font);
+        anchorInScroll.getChildren().add(label);
+        label.setLayoutX(x);
+        label.setLayoutY(y);
     }
 }

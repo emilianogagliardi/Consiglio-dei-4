@@ -33,7 +33,7 @@
                            <children>
                               <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="683.0" prefWidth="1000.0" style="-fx-background-color: GREEN;">
                                  <content>
-                                    <AnchorPane>
+                                    <AnchorPane fx:id="anchorInScroll">
                                        <children>
                                           <ImageView fx:id="immagineMappa" fitHeight="650.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
                                           <Button layoutX="157.0" layoutY="550.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="79.0" text="Button" />
@@ -45,134 +45,134 @@
                                           <ImageView fx:id="cartaCollinaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="396.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaMontagnaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="742.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaCostaCoperta" fitHeight="85.0" fitWidth="79.0" layoutX="74.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
-                                          <HBox fx:id="balconeCosta" layoutX="90.0" layoutY="509.0" prefHeight="40.0" prefWidth="200.0">
+                                          <HBox fx:id="balconeCosta" layoutX="204.0" layoutY="503.0" prefHeight="45.0" prefWidth="120.0">
                                              <children>
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" layoutX="70.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
-                                          <HBox fx:id="balconeCollina" layoutX="424.0" layoutY="509.0" prefHeight="40.0" prefWidth="200.0">
+                                          <HBox fx:id="balconeCollina" layoutX="526.0" layoutY="493.0" prefHeight="45.0" prefWidth="120.0">
                                              <children>
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="44.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
-                                          <HBox fx:id="balconeMontagna" layoutX="777.0" layoutY="509.0" prefHeight="40.0" prefWidth="200.0">
+                                          <HBox fx:id="balconeMontagna" layoutX="864.0" layoutY="493.0" prefHeight="45.0" prefWidth="120.0">
                                              <children>
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
-                                          <HBox fx:id="balconeRe" layoutX="551.0" layoutY="392.0" prefHeight="40.0" prefWidth="200.0">
+                                          <HBox fx:id="balconeRe" layoutX="221.0" layoutY="19.0" prefHeight="45.0" prefWidth="120.0">
                                              <children>
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="45.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusArkon" layoutX="46.0" layoutY="64.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusBurgen" layoutX="38.0" layoutY="245.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusCastrum" layoutX="219.0" layoutY="115.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusDorful" layoutX="202.0" layoutY="277.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusEsti" layoutX="85.0" layoutY="397.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusFramek" layoutX="378.0" layoutY="88.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusGraden" layoutX="389.0" layoutY="237.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusIndur" layoutX="554.0" layoutY="89.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusHellar" layoutX="415.0" layoutY="379.0" prefHeight="30.0" prefWidth="92.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusKultos" layoutX="733.0" layoutY="88.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusLyram" layoutX="708.0" layoutY="242.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusNaris" layoutX="881.0" layoutY="175.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusMerkatim" layoutX="698.0" layoutY="397.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox fx:id="bonusOsium" layoutX="879.0" layoutY="348.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                           <HBox id="emporiArkon" layoutX="99.0" layoutY="164.0" prefHeight="25.0" prefWidth="100.0">
@@ -207,7 +207,7 @@
                                                 <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
-                                          <HBox id="emporiEsti" layoutX="134.0" layoutY="481.0" prefHeight="25.0" prefWidth="100.0">
+                                          <HBox id="emporiEsti" layoutX="114.0" layoutY="475.0" prefHeight="25.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
                                                 <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
@@ -298,8 +298,8 @@
                                           <HBox fx:id="bonusJuvelar" layoutX="554.0" layoutY="281.0" prefHeight="30.0" prefWidth="90.0">
                                              <children>
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="40.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
                                        </children>
