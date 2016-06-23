@@ -1,8 +1,9 @@
 package server.model;
 
 import classicondivise.carte.Carta;
-import java.util.NoSuchElementException;
-import java.util.Queue;
+import com.sun.xml.internal.bind.v2.util.CollisionCheckStack;
+
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import static java.util.Arrays.asList;
 import static java.util.Collections.shuffle;
@@ -15,7 +16,7 @@ public class Mazzo <T extends Carta> {
         mazzo.add(carta);
     }
 
-    public void addCarte(Queue<T> carte) {
+    public void addCarte(Collection<T> carte) {
         mazzo.addAll(carte);
     }
 
@@ -27,7 +28,14 @@ public class Mazzo <T extends Carta> {
     }
 
     public void mischia(){
-        shuffle(asList(mazzo.toArray())); //shuffle è un metodo static di Collections a cui si può passare in input solo un oggetto di tipo List
+        List<Object> listaObject = Arrays.asList(mazzo.toArray());
+        ArrayList<T> listaT = new ArrayList<T>();
+        listaObject.forEach((Object o) -> {
+            listaT.add((T) o);
+        });
+        shuffle(listaT); //shuffle è un metodo static di Collections a cui si può passare in input solo un oggetto di tipo List
+        this.mazzo = new LinkedBlockingQueue<T>();
+        this.addCarte(listaT);
     }
 
     public boolean isEmpty() {
