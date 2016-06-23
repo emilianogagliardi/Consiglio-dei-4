@@ -360,6 +360,16 @@
                                                 </Label>
                                              </children>
                                           </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="imageViewEmpori" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                                <Label fx:id="emporiGiocatore" prefHeight="100.0" prefWidth="92.0" text="..." textAlignment="CENTER">
+                                                   <font>
+                                                      <Font name="Avenir Black" size="57.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children></AnchorPane>
@@ -380,7 +390,7 @@
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -470,6 +480,22 @@
                                  </font>
                               </Label>
                               <Label fx:id="numCarteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font size="70.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="imgTabellaEmpori" fitHeight="80.0" fitWidth="80.0" layoutX="410.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" />
+                              <Label fx:id="numEmporiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="70.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="numEmporiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font size="70.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="numEmporiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="3">
                                  <font>
                                     <Font size="70.0" />
                                  </font>

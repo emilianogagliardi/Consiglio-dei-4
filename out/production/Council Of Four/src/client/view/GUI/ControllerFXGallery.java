@@ -68,7 +68,6 @@ public class ControllerFXGallery extends GestoreFlussoFinestra implements Initia
                     setterMappa = ComunicazioneSceltaMappaRMI.getInstance();
                 }
                 int id = immagini.getPosizioneCorrente();
-                GUIView.getInstance().setIdMappa(id); //setta la mappa nel client
                 setterMappa.comunicaSceltaMappa(id);  //setta la mappa nel server
             }catch(SingletonNonInizializzatoException ex) {
                 ex.printStackTrace();

@@ -42,9 +42,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HBox emporiArkon, emporiBurgen, emporiCastrum, emporiDorful, emporiEsti, emporiFramek, emporiGraden, emporiIndur,
             emporiHellar, emporiKultos, emporiLyram, emporiNaris, emporiMerkatim, emporiOsium;
     @FXML
-    private ImageView imageViewMonete, imageViewAiutanti, imageViewPunti, imgTabellaPunti, imgTabellaMonete, imgTabellaAiutanti, imgTabellaNCarte;
+    private ImageView imageViewMonete, imageViewAiutanti, imageViewPunti, imageViewEmpori, imgTabellaPunti, imgTabellaMonete, imgTabellaAiutanti, imgTabellaNCarte, imgTabellaEmpori;
     @FXML
-    private Label moneteGiocatore, puntiVittoriaGiocatore, aiutantiGiocatore;
+    private Label moneteGiocatore, puntiVittoriaGiocatore, aiutantiGiocatore, emporiGiocatore;
     @FXML
     private Label labelId1Giocatore, labelId2Giocatore, labelId3Giocatore;
     @FXML
@@ -55,11 +55,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private Label aiutantiAvversario1, aiutantiAvversario2, aiutantiAvversario3;
     @FXML
     private Label numCarteAvversario1, numCarteAvversario2, numCarteAvversario3;
+    @FXML
+    private Label numEmporiAvversario1, numEmporiAvversario2, numEmporiAvversario3;
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelAiutanti = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelPunti = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelNCarte = new HashMap<>();
+    private HashMap<Integer, Label> idAvversarioLabelNEmpori = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,33 +79,32 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     private void inizializzaHashMap(){
         //inizializza
-        rootPane.addEventHandler(ShowViewGiocoEvent.SHOW_IMAGE, new EventHandler<ShowViewGiocoEvent>() {
-            @Override
-            public void handle(ShowViewGiocoEvent event) {
-                try {
-                    int myId = GUIView.getInstance().getIdGiocatore();
-                    Integer[] tuttiGliIdArray = {0, 1, 2, 3};
-                    ArrayList<Integer> tuttiGliId = new ArrayList<>(3);
-                    Arrays.stream(tuttiGliIdArray).filter((Integer id) -> id != myId).forEach(id -> tuttiGliId.add(id));
-                    labelId1Giocatore.setText("Giocatore" + tuttiGliId.get(0));
-                    labelId2Giocatore.setText("Giocatore" + tuttiGliId.get(1));
-                    labelId3Giocatore.setText("Giocatore" + tuttiGliId.get(2));
-                    idAvversarioLabelMonete.put(tuttiGliId.get(0), moneteAvversario1);
-                    idAvversarioLabelMonete.put(tuttiGliId.get(1), moneteAvversario2);
-                    idAvversarioLabelMonete.put(tuttiGliId.get(2), moneteAvversario3);
-                    idAvversarioLabelPunti.put(tuttiGliId.get(0), puntiAvversario1);
-                    idAvversarioLabelPunti.put(tuttiGliId.get((1)), puntiAvversario2);
-                    idAvversarioLabelPunti.put(tuttiGliId.get(2), puntiAvversario3);
-                    idAvversarioLabelAiutanti.put(tuttiGliId.get(0),aiutantiAvversario1);
-                    idAvversarioLabelAiutanti.put(tuttiGliId.get(1),aiutantiAvversario2);
-                    idAvversarioLabelAiutanti.put(tuttiGliId.get(2),aiutantiAvversario3);
-                    idAvversarioLabelNCarte.put(tuttiGliId.get(0),numCarteAvversario1);
-                    idAvversarioLabelNCarte.put(tuttiGliId.get(1),numCarteAvversario2);
-                    idAvversarioLabelNCarte.put(tuttiGliId.get(2),numCarteAvversario3);
-                    System.out.println(idAvversarioLabelAiutanti);
-                } catch (SingletonNonInizializzatoException | RemoteException e) {
-                    e.printStackTrace();
-                }
+        rootPane.addEventHandler(ShowViewGiocoEvent.SHOW_IMAGE, event -> {
+            try {
+                int myId = GUIView.getInstance().getIdGiocatore();
+                Integer[] tuttiGliIdArray = {0, 1, 2, 3};
+                ArrayList<Integer> tuttiGliId = new ArrayList<>(3);
+                Arrays.stream(tuttiGliIdArray).filter((Integer id) -> id != myId).forEach(id -> tuttiGliId.add(id));
+                labelId1Giocatore.setText("Giocatore" + tuttiGliId.get(0));
+                labelId2Giocatore.setText("Giocatore" + tuttiGliId.get(1));
+                labelId3Giocatore.setText("Giocatore" + tuttiGliId.get(2));
+                idAvversarioLabelMonete.put(tuttiGliId.get(0), moneteAvversario1);
+                idAvversarioLabelMonete.put(tuttiGliId.get(1), moneteAvversario2);
+                idAvversarioLabelMonete.put(tuttiGliId.get(2), moneteAvversario3);
+                idAvversarioLabelPunti.put(tuttiGliId.get(0), puntiAvversario1);
+                idAvversarioLabelPunti.put(tuttiGliId.get((1)), puntiAvversario2);
+                idAvversarioLabelPunti.put(tuttiGliId.get(2), puntiAvversario3);
+                idAvversarioLabelAiutanti.put(tuttiGliId.get(0),aiutantiAvversario1);
+                idAvversarioLabelAiutanti.put(tuttiGliId.get(1),aiutantiAvversario2);
+                idAvversarioLabelAiutanti.put(tuttiGliId.get(2),aiutantiAvversario3);
+                idAvversarioLabelNCarte.put(tuttiGliId.get(0),numCarteAvversario1);
+                idAvversarioLabelNCarte.put(tuttiGliId.get(1),numCarteAvversario2);
+                idAvversarioLabelNCarte.put(tuttiGliId.get(2),numCarteAvversario3);
+                idAvversarioLabelNEmpori.put(tuttiGliId.get(0),numEmporiAvversario1);
+                idAvversarioLabelNEmpori.put(tuttiGliId.get(1),numEmporiAvversario2);
+                idAvversarioLabelNEmpori.put(tuttiGliId.get(2),numEmporiAvversario3);
+            } catch (SingletonNonInizializzatoException | RemoteException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -135,12 +137,15 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         Image monete = new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png"));
         Image aiutanti = new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png"));
         Image punti = new Image(getClass().getClassLoader().getResourceAsStream("bonus_puntivittoria.png"));
+        Image empori = new Image(getClass().getClassLoader().getResourceAsStream("icona_emporio.png"));
         imageViewAiutanti.setImage(aiutanti);
         imgTabellaAiutanti.setImage(aiutanti);
         imageViewMonete.setImage(monete);
         imgTabellaMonete.setImage(monete);
         imageViewPunti.setImage(punti);
         imgTabellaPunti.setImage(punti);
+        imgTabellaEmpori.setImage(empori);
+        imageViewEmpori.setImage(empori);
         imgTabellaNCarte.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_cartapolitica.png")));
     }
 
@@ -282,6 +287,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             imgViews.add(img);
         });
         imgViews.forEach(imageView -> hBoxPolitica.getChildren().add(imageView));
+    }
+
+    void updateEmporiGiocatore(int numEmpori) {
+        emporiGiocatore.setText(numEmpori+"");
+    }
+
+    void updateEMporiAvversario(int id, int numEmpori) {
+        idAvversarioLabelNEmpori.get(id).setText(numEmpori+"");
     }
 
     //friendly

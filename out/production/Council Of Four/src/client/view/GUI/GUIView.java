@@ -150,7 +150,8 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) throws RemoteException{
-
+        if (idGiocatore == this.getIdGiocatore()) Platform.runLater(() ->controllerFXPartita.updateEmporiGiocatore(num));
+        else Platform.runLater(() -> controllerFXPartita.updateEMporiAvversario(idGiocatore, num));
     }
 
     @Override
