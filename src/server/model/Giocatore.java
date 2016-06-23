@@ -1,16 +1,13 @@
 package server.model;
-import classicondivise.bonus.Bonus;
-import classicondivise.bonus.BonusPuntiVittoria;
 import classicondivise.carte.Carta;
 import classicondivise.carte.CartaPermessoCostruzione;
+import interfaccecondivise.InterfacciaView;
 import server.model.carte.*;
 import server.model.eccezioni.AiutantiNonSufficientiException;
 import server.model.eccezioni.MoneteNonSufficientiException;
-import interfaccecondivise.InterfacciaView;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Giocatore extends Observable {

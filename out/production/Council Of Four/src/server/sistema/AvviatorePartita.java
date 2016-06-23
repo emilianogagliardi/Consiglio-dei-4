@@ -37,7 +37,7 @@ public class AvviatorePartita implements Runnable {
     @Override
     public void run() {
         Properties pro = sceltaMappa();
-        Partita nuovaPartita = creaPartita(pro);
+        Partita nuovaPartita = creaPartita(pro); //crea l'ambiente della partita senza aggiungere i giocatori
         ArrayList<SocketPollingController> socketPollingControllers = new ArrayList<>();
         if (!Thread.currentThread().isInterrupted()) {
             try {
@@ -49,9 +49,13 @@ public class AvviatorePartita implements Runnable {
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
                 String chiaveController = PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + numeroBindRegistry ;
                 registry.bind(chiaveController, controller);
-                for(InterfacciaView view : proxyViews) {
+                for(InterfacciaView view : proxyViews) { //non uso espressione lambda perchè dovrei innestare un try catch che è già fatto
                     view.iniziaAGiocare(idMappa);
                 }
+                //vengono aggiunti i giocatori alla partita, in modo che le update vadano a buon fine, perchè
+                //le view conoscono già il proprio id
+                ArrayList<Giocatore> giocatori = creaGiocatori(nuovaPartita);
+                giocatori.forEach(nuovaPartita::addGiocatore);
                 executors.submit(controller);
             }catch (RemoteException | AlreadyBoundException e){
                 System.out.println("impossibile bindare controller");
@@ -67,6 +71,7 @@ public class AvviatorePartita implements Runnable {
         }
     }
 
+    //crea l'ambiente della partita senza aggiungere i giocatori
     private Partita creaPartita(Properties pro){
         Partita partita = new Partita(proxyViews);
         partita.aggiungiAiutanti(CostantiModel.NUM_AIUTANTI);
@@ -80,8 +85,6 @@ public class AvviatorePartita implements Runnable {
         partita.setMazzoCartePolitica(creaMazzoCartePolitica());
         partita.setMazzoCartePremioRe(creaMazzoCartePremioRe());
         partita.setCarteBonusColoreCittà(creaMazzoBonusColoreCittà());
-        ArrayList<Giocatore> giocatori = creaGiocatori(partita);
-        giocatori.forEach(partita::addGiocatore);
         return partita;
     }
 
@@ -411,3 +414,5 @@ public class AvviatorePartita implements Runnable {
         }
     }
 }
+
+

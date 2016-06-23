@@ -20,6 +20,7 @@ import javafx.scene.text.Font;
 
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
@@ -41,9 +42,24 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HBox emporiArkon, emporiBurgen, emporiCastrum, emporiDorful, emporiEsti, emporiFramek, emporiGraden, emporiIndur,
             emporiHellar, emporiKultos, emporiLyram, emporiNaris, emporiMerkatim, emporiOsium;
     @FXML
-    private ImageView imageViewMonete, imageViewAiutanti, imageViewPunti;
+    private ImageView imageViewMonete, imageViewAiutanti, imageViewPunti, imgTabellaPunti, imgTabellaMonete, imgTabellaAiutanti, imgTabellaNCarte;
     @FXML
     private Label moneteGiocatore, puntiVittoriaGiocatore, aiutantiGiocatore;
+    @FXML
+    private Label labelId1Giocatore, labelId2Giocatore, labelId3Giocatore;
+    @FXML
+    private Label puntiAvversario1, puntiAvversario2, puntiAvversario3;
+    @FXML
+    private Label moneteAvversario1, moneteAvversario2, moneteAvversario3;
+    @FXML
+    private Label aiutantiAvversario1, aiutantiAvversario2, aiutantiAvversario3;
+    @FXML
+    private Label numCarteAvversario1, numCarteAvversario2, numCarteAvversario3;
+    //utility
+    private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
+    private HashMap<Integer, Label> idAvversarioLabelAiutanti = new HashMap<>();
+    private HashMap<Integer, Label> idAvversarioLabelPunti = new HashMap<>();
+    private HashMap<Integer, Label> idAvversarioLabelNCarte = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,13 +69,46 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaImmaginiCarte();
         //il giocatore non può scrivere in area notifiche
         areaNotifiche.setEditable(false);
-        inizializzaImmaginiRisorseGiocatore();
+        inizializzaImmaginiRisorseGiocatori();
         inizializzaImmaginiBalconiDiLegno();
+        inizializzaHashMap();
+    }
+
+    private void inizializzaHashMap(){
+        //inizializza
+        rootPane.addEventHandler(ShowViewGiocoEvent.SHOW_IMAGE, new EventHandler<ShowViewGiocoEvent>() {
+            @Override
+            public void handle(ShowViewGiocoEvent event) {
+                try {
+                    int myId = GUIView.getInstance().getIdGiocatore();
+                    Integer[] tuttiGliIdArray = {0, 1, 2, 3};
+                    ArrayList<Integer> tuttiGliId = new ArrayList<>(3);
+                    Arrays.stream(tuttiGliIdArray).filter((Integer id) -> id != myId).forEach(id -> tuttiGliId.add(id));
+                    labelId1Giocatore.setText("Giocatore" + tuttiGliId.get(0));
+                    labelId2Giocatore.setText("Giocatore" + tuttiGliId.get(1));
+                    labelId3Giocatore.setText("Giocatore" + tuttiGliId.get(2));
+                    idAvversarioLabelMonete.put(tuttiGliId.get(0), moneteAvversario1);
+                    idAvversarioLabelMonete.put(tuttiGliId.get(1), moneteAvversario2);
+                    idAvversarioLabelMonete.put(tuttiGliId.get(2), moneteAvversario3);
+                    idAvversarioLabelPunti.put(tuttiGliId.get(0), puntiAvversario1);
+                    idAvversarioLabelPunti.put(tuttiGliId.get((1)), puntiAvversario2);
+                    idAvversarioLabelPunti.put(tuttiGliId.get(2), puntiAvversario3);
+                    idAvversarioLabelAiutanti.put(tuttiGliId.get(0),aiutantiAvversario1);
+                    idAvversarioLabelAiutanti.put(tuttiGliId.get(1),aiutantiAvversario2);
+                    idAvversarioLabelAiutanti.put(tuttiGliId.get(2),aiutantiAvversario3);
+                    idAvversarioLabelNCarte.put(tuttiGliId.get(0),numCarteAvversario1);
+                    idAvversarioLabelNCarte.put(tuttiGliId.get(1),numCarteAvversario2);
+                    idAvversarioLabelNCarte.put(tuttiGliId.get(2),numCarteAvversario3);
+                    System.out.println(idAvversarioLabelAiutanti);
+                } catch (SingletonNonInizializzatoException | RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     //l'algoritmo di caricamento deve essere eguito sullo show, nel momento il cui si conosce già quale deve essere l'immagine da mostrare
     private void inizializzaImmagineMappa(){
-        //inizializza
         rootPane.addEventHandler(ShowViewGiocoEvent.SHOW_IMAGE, new EventHandler<ShowViewGiocoEvent>(){
             @Override
             public void handle(ShowViewGiocoEvent event) {
@@ -77,15 +126,22 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     private void inizializzaImmaginiCarte() {
-        cartaCollinaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_collina.jpg")));
-        cartaCostaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_costa.jpg")));
-        cartaMontagnaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_montagna.jpg")));
+        cartaCollinaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_collina.png")));
+        cartaCostaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_costa.png")));
+        cartaMontagnaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_montagna.png")));
     }
 
-    private void inizializzaImmaginiRisorseGiocatore() {
-        imageViewAiutanti.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
-        imageViewMonete.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png")));
-        imageViewPunti.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_puntivittoria.png")));
+    private void inizializzaImmaginiRisorseGiocatori() {
+        Image monete = new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png"));
+        Image aiutanti = new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png"));
+        Image punti = new Image(getClass().getClassLoader().getResourceAsStream("bonus_puntivittoria.png"));
+        imageViewAiutanti.setImage(aiutanti);
+        imgTabellaAiutanti.setImage(aiutanti);
+        imageViewMonete.setImage(monete);
+        imgTabellaMonete.setImage(monete);
+        imageViewPunti.setImage(punti);
+        imgTabellaPunti.setImage(punti);
+        imgTabellaNCarte.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_cartapolitica.png")));
     }
 
     private void inizializzaImmaginiBalconiDiLegno(){
@@ -190,10 +246,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         moneteGiocatore.setText(monete+"");
     }
 
-    //TODO
     //friendly
     void updateMoneteAvversario(int id, int monete){
-
+        idAvversarioLabelMonete.get(id).setText(monete+"");
     }
 
     //friendly
@@ -201,10 +256,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             aiutantiGiocatore.setText(aiutanti+"");
     }
 
-    //TODO
     //friendly
     void updateAiutantiAvversari(int id, int aiutanti) {
-
+        idAvversarioLabelAiutanti.get(id).setText(aiutanti+"");
     }
 
     //friendly
@@ -212,10 +266,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         puntiVittoriaGiocatore.setText(punti+"");
     }
 
-    //TODO
     //friendly
     void updatePuntiVittoriaAvversario(int id, int punti) {
-
+        idAvversarioLabelPunti.get(id).setText(punti+"");
     }
 
     //friendly
@@ -232,8 +285,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     //friendly
-    void updateCartePoliticaAvversri(int id, int numCarte){
-
+    void updateCartePoliticaAvversari(int id, int numCarte){
+        idAvversarioLabelNCarte.get(id).setText(numCarte+"");
     }
 
     //friendly

@@ -80,9 +80,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) throws RemoteException{
-        if(idGiocatore == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaGiocatore(punti));
-        else Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaAvversario(idGiocatore, punti));
+    public void updatePuntiVittoriaGiocatore(int id, int punti) throws RemoteException{
+        if(id == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaGiocatore(punti));
+        else Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaAvversario(id, punti));
     }
 
     @Override
@@ -91,14 +91,14 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void updateMonete(int idGiocatore, int monete) throws RemoteException {
-        if(idGiocatore==this.getIdGiocatore()) controllerFXPartita.updateMoneteGiocatore(monete);
-        else Platform.runLater(() -> controllerFXPartita.updateMoneteAvversario(idGiocatore, monete));
+    public void updateMonete(int id, int monete) throws RemoteException {
+        if(id==this.getIdGiocatore()) controllerFXPartita.updateMoneteGiocatore(monete);
+        else Platform.runLater(() -> controllerFXPartita.updateMoneteAvversario(id, monete));
     }
 
     @Override
     public void updateCartePoliticaAvversari(int idGiocatore, int numCarte) throws RemoteException {
-
+        Platform.runLater(() -> controllerFXPartita.updateCartePoliticaAvversari(idGiocatore, numCarte));
     }
 
     @Override
@@ -117,9 +117,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void updateAiutanti(int idGiocatore, int numAiutanti) throws RemoteException{
-        if(idGiocatore == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updateAiutantiGiocatore(numAiutanti));
-        else Platform.runLater(() -> controllerFXPartita.updateAiutantiAvversari(idGiocatore, numAiutanti));
+    public void updateAiutanti(int id, int numAiutanti) throws RemoteException{
+        if(id == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updateAiutantiGiocatore(numAiutanti));
+        else Platform.runLater(() -> controllerFXPartita.updateAiutantiAvversari(id, numAiutanti));
     }
 
     @Override
