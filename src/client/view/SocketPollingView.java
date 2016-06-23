@@ -19,7 +19,7 @@ public class SocketPollingView implements Runnable {
     ObjectInputStream ois;
     private volatile boolean running = true;
 
-    public SocketPollingView(GUIView view, ObjectInputStream ois) {
+    public SocketPollingView(InterfacciaView view, ObjectInputStream ois) {
         this.view = view;
         this.ois = ois;
     }
