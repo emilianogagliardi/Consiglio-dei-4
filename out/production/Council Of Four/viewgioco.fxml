@@ -320,14 +320,14 @@
                                  <children>
                                     <VBox layoutX="21.0" layoutY="14.0" prefHeight="683.0" prefWidth="179.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <ScrollPane hbarPolicy="NEVER" prefHeight="189.0" prefWidth="179.0">
-                                            <content>
-                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                                            </content>
+                                          <ScrollPane hbarPolicy="ALWAYS" prefHeight="129.0" prefWidth="179.0" vbarPolicy="NEVER">
+                                             <content>
+                                                <HBox fx:id="hBoxPolitica" prefHeight="169.0" prefWidth="200.0" />
+                                             </content>
                                           </ScrollPane>
-                                          <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                                          <ScrollPane hbarPolicy="NEVER" prefHeight="128.0" prefWidth="179.0">
                                             <content>
-                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                                              <AnchorPane fx:id="anchorPermesso" minHeight="0.0" minWidth="0.0" prefHeight="129.0" prefWidth="200.0" />
                                             </content>
                                           </ScrollPane>
                                           <HBox prefHeight="100.0" prefWidth="200.0">

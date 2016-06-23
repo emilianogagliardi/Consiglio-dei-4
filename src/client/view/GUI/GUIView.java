@@ -6,6 +6,7 @@ import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaView;
+import javafx.application.Platform;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -80,19 +81,19 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) throws RemoteException{
-        if(idGiocatore == this.getIdGiocatore()) controllerFXPartita.updatePuntiVittoriaGiocatore(punti);
-        else controllerFXPartita.updatePuntiVittoriaAvversario(idGiocatore, punti);
+        if(idGiocatore == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaGiocatore(punti));
+        else Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaAvversario(idGiocatore, punti));
     }
 
     @Override
     public void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) throws RemoteException{
-        controllerFXPartita.updateBalcone(idBalcone, colore1, colore2, colore3, colore4);
+        Platform.runLater(() -> controllerFXPartita.updateBalcone(idBalcone, colore1, colore2, colore3, colore4));
     }
 
     @Override
     public void updateMonete(int idGiocatore, int monete) throws RemoteException {
         if(idGiocatore==this.getIdGiocatore()) controllerFXPartita.updateMoneteGiocatore(monete);
-        else controllerFXPartita.updateMoneteAvversario(idGiocatore, monete);
+        else Platform.runLater(() -> controllerFXPartita.updateMoneteAvversario(idGiocatore, monete));
     }
 
     @Override
@@ -102,7 +103,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateCartePoliticaProprie(List<String> carte) throws RemoteException {
-
+        Platform.runLater(() -> controllerFXPartita.updateCartePoliticaGiocatore(carte));
     }
 
     @Override
@@ -117,8 +118,8 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateAiutanti(int idGiocatore, int numAiutanti) throws RemoteException{
-        if(idGiocatore == this.getIdGiocatore()) controllerFXPartita.updateAiutantiGiocatore(numAiutanti);
-        else controllerFXPartita.updateAiutantiAvversari(idGiocatore, numAiutanti);
+        if(idGiocatore == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updateAiutantiGiocatore(numAiutanti));
+        else Platform.runLater(() -> controllerFXPartita.updateAiutantiAvversari(idGiocatore, numAiutanti));
     }
 
     @Override
@@ -138,12 +139,12 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) throws RemoteException{
-        controllerFXPartita.updateEmporiCittà(nomeCittà, idGiocatori);
+        Platform.runLater(() -> controllerFXPartita.updateEmporiCittà(nomeCittà, idGiocatori));
     }
 
     @Override
     public void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException {
-        controllerFXPartita.updateBonusCittà(nomeCittà, bonus);
+        Platform.runLater(() -> controllerFXPartita.updateBonusCittà(nomeCittà, bonus));
     }
 
 
@@ -151,8 +152,6 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) throws RemoteException{
 
     }
-
-
 
     @Override
     public void updatePosizioneRe(String città) throws RemoteException {
@@ -171,7 +170,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void mostraMessaggio(String messaggio) {
-        controllerFXPartita.nuovoMessaggio(messaggio);
+        Platform.runLater(() -> controllerFXPartita.nuovoMessaggio(messaggio));
     }
 
     @Override

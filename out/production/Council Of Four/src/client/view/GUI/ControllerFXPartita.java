@@ -26,6 +26,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private AnchorPane rootPane, anchorInScroll;
     @FXML
+    private HBox hBoxPolitica;
+    @FXML
     private ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
     @FXML
     private HBox balconeRe, balconeCollina, balconeCosta, balconeMontagna;
@@ -189,7 +191,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     //TODO
-    public void updateMoneteAvversario(int id, int monete){
+    //friendly
+    void updateMoneteAvversario(int id, int monete){
 
     }
 
@@ -199,7 +202,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     //TODO
-    public void updateAiutantiAvversari(int id, int aiutanti) {
+    //friendly
+    void updateAiutantiAvversari(int id, int aiutanti) {
 
     }
 
@@ -209,7 +213,26 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     //TODO
-    public void updatePuntiVittoriaAvversario(int id, int punti) {
+    //friendly
+    void updatePuntiVittoriaAvversario(int id, int punti) {
+
+    }
+
+    //friendly
+    void updateCartePoliticaGiocatore(List<String> carte){
+        if (!hBoxPolitica.getChildren().isEmpty()) hBoxPolitica.getChildren().remove(0, hBoxPolitica.getChildren().size());
+        ArrayList<ImageView> imgViews = new ArrayList<>();
+        carte.forEach(colore ->{
+            ImageView img = new ImageView();
+            String nomeFile = "politica_"+colore.toLowerCase()+".png";
+            img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
+            imgViews.add(img);
+        });
+        imgViews.forEach(imageView -> hBoxPolitica.getChildren().add(imageView));
+    }
+
+    //friendly
+    void updateCartePoliticaAvversri(int id, int numCarte){
 
     }
 
@@ -220,7 +243,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //friendly
     void nuovoMessaggio(String messaggio) {
-        areaNotifiche.appendText(messaggio+"\n");
+        areaNotifiche.appendText(messaggio);
+        areaNotifiche.appendText("\n");
     }
 
     //permette di firare eventi al root pane dall'esterno

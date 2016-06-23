@@ -298,6 +298,7 @@ public class AvviatorePartita implements Runnable {
                 mazzo.addCarta(new CartaPolitica(colore));
             }
         });
+
         mazzo.mischia();
         return mazzo;
     }

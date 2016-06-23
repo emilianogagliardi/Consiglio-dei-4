@@ -24,6 +24,7 @@
       <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/bonus" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/empori" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/sfondi" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/clientResources/immagini/cartepolitica" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
