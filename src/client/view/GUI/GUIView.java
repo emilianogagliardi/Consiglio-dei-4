@@ -108,7 +108,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateCartePermessoRegione(String regione, CartaPermessoCostruzione c1, CartaPermessoCostruzione c2)  throws RemoteException{
-
+        Platform.runLater(() -> controllerFXPartita.updateCartePermessoRegione(regione, c1, c2));
     }
 
     @Override
@@ -151,7 +151,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     @Override
     public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) throws RemoteException{
         if (idGiocatore == this.getIdGiocatore()) Platform.runLater(() ->controllerFXPartita.updateEmporiGiocatore(num));
-        else Platform.runLater(() -> controllerFXPartita.updateEMporiAvversario(idGiocatore, num));
+        else Platform.runLater(() -> controllerFXPartita.updateEmporiAvversario(idGiocatore, num));
     }
 
     @Override

@@ -2,7 +2,9 @@ package client.view.GUI;
 
 import classicondivise.IdBalcone;
 import classicondivise.bonus.*;
+import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
+import client.view.GUI.utility.CreatoreCartaPermesso;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -30,6 +33,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HBox hBoxPolitica;
     @FXML
     private ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
+    @FXML
+    private StackPane cartaCosta1, cartaCosta2, cartaCollina1, cartaCollina2, cartaMontagna1, cartaMontagna2;
     @FXML
     private HBox balconeRe, balconeCollina, balconeCosta, balconeMontagna;
     @FXML
@@ -57,6 +62,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private Label numCarteAvversario1, numCarteAvversario2, numCarteAvversario3;
     @FXML
     private Label numEmporiAvversario1, numEmporiAvversario2, numEmporiAvversario3;
+    @FXML
+    private ImageView percorsoNobilta;
+
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelAiutanti = new HashMap<>();
@@ -74,6 +82,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         areaNotifiche.setEditable(false);
         inizializzaImmaginiRisorseGiocatori();
         inizializzaImmaginiBalconiDiLegno();
+        inizializzaPercorsoNobiltà();
         inizializzaHashMap();
     }
 
@@ -131,6 +140,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         cartaCollinaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_collina.png")));
         cartaCostaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_costa.png")));
         cartaMontagnaCoperta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("retro_carta_montagna.png")));
+    }
+
+    private void inizializzaPercorsoNobiltà() {
+        percorsoNobilta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta.png")));
     }
 
     private void inizializzaImmaginiRisorseGiocatori() {
@@ -285,6 +298,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             String nomeFile = "politica_"+colore.toLowerCase()+".png";
             img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
             imgViews.add(img);
+
         });
         imgViews.forEach(imageView -> hBoxPolitica.getChildren().add(imageView));
     }
@@ -293,7 +307,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         emporiGiocatore.setText(numEmpori+"");
     }
 
-    void updateEMporiAvversario(int id, int numEmpori) {
+    void updateEmporiAvversario(int id, int numEmpori) {
         idAvversarioLabelNEmpori.get(id).setText(numEmpori+"");
     }
 
@@ -305,6 +319,22 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     //friendly
     void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori){
 
+    }
+
+    //friendly
+    void updateCartePermessoRegione(String regione, CartaPermessoCostruzione carta1, CartaPermessoCostruzione carta2) {
+        //get degli attributi di questa classe cartaRegione1 e cartaRegione2
+        try {
+            Field fieldPane1 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 1);
+            StackPane pane1 = (StackPane) fieldPane1.get(this);
+            Field fieldPane2 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 2);
+            StackPane pane2 = (StackPane) fieldPane2.get(this);
+            CreatoreCartaPermesso creatoreCartaPermesso = new CreatoreCartaPermesso();
+            creatoreCartaPermesso.creaPermit(carta1, pane1);
+            creatoreCartaPermesso.creaPermit(carta2, pane2);
+        }catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     //friendly

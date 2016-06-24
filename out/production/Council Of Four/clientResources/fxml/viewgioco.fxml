@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -38,13 +39,7 @@
                                  <content>
                                     <AnchorPane fx:id="anchorInScroll">
                                        <children>
-                                          <ImageView fx:id="immagineMappa" fitHeight="650.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
-                                          <Button layoutX="157.0" layoutY="550.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="79.0" text="Button" />
-                                          <Button layoutX="241.0" layoutY="550.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="79.0" text="Button" />
-                                          <Button layoutX="481.0" layoutY="550.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="79.0" text="Button" />
-                                          <Button layoutX="566.0" layoutY="550.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="79.0" text="Button" />
-                                          <Button layoutX="824.0" layoutY="550.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="79.0" text="Button" />
-                                          <Button layoutX="908.0" layoutY="550.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="79.0" text="Button" />
+                                          <ImageView fx:id="immagineMappa" fitHeight="650.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0"/>
                                           <ImageView fx:id="cartaCollinaCoperta" fitHeight="106.0" fitWidth="86.0" layoutX="392.0" layoutY="544.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaMontagnaCoperta" fitHeight="84.0" fitWidth="79.0" layoutX="744.0" layoutY="551.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="cartaCostaCoperta" fitHeight="97.0" fitWidth="81.0" layoutX="71.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true" />
@@ -305,6 +300,12 @@
                                                 <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="60.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
+                                          <StackPane fx:id="cartaCosta1" layoutX="158.0" layoutY="550.0" prefHeight="84.0" prefWidth="75.0" />
+                                          <StackPane fx:id="cartaCosta2" layoutX="239.0" layoutY="549.0" prefHeight="86.0" prefWidth="75.0" />
+                                          <StackPane fx:id="cartaCollina1" layoutX="477.0" layoutY="552.0" prefHeight="84.0" prefWidth="68.0" />
+                                          <StackPane fx:id="cartaCollina2" layoutX="551.0" layoutY="553.0" prefHeight="81.0" prefWidth="75.0" />
+                                          <StackPane fx:id="cartaMontagna1" layoutX="827.0" layoutY="554.0" prefHeight="82.0" prefWidth="72.0" />
+                                          <StackPane fx:id="cartaMontagna2" layoutX="907.0" layoutY="552.0" prefHeight="82.0" prefWidth="72.0" />
                                        </children>
                                        <padding>
                                           <Insets left="10.0" />
@@ -379,129 +380,133 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Gioco">
+          <Tab fx:id="tabGioco" text="Gioco">
                <content>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                  <ScrollPane fx:id="scrollGioco" prefHeight="200.0" prefWidth="200.0">
                      <content>
-                        <GridPane prefHeight="813.0" prefWidth="1303.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <AnchorPane fx:id="anchorGioco">
                            <children>
-                              <ImageView fx:id="imgTabellaPunti" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                              <ImageView fx:id="imgTabellaMonete" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                              <ImageView fx:id="imgTabellaAiutanti" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
-                              <ImageView fx:id="imgTabellaNCarte" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
-                              <Label fx:id="labelId1Giocatore" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="labelId2Giocatore" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="labelId3Giocatore" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="puntiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="puntiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="puntiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="moneteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="moneteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="moneteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="aiutantiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="aiutantiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="aiutantiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="numCarteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="numCarteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="numCarteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fx:id="imgTabellaEmpori" fitHeight="80.0" fitWidth="80.0" layoutX="410.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" />
-                              <Label fx:id="numEmporiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="numEmporiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="numEmporiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font size="70.0" />
-                                 </font>
-                              </Label>
+                              <GridPane fx:id="gridGioco" prefHeight="813.0" prefWidth="1303.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <ImageView fx:id="imgTabellaPunti" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                                    <ImageView fx:id="imgTabellaMonete" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                                    <ImageView fx:id="imgTabellaAiutanti" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
+                                    <ImageView fx:id="imgTabellaNCarte" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
+                                    <Label fx:id="labelId1Giocatore" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelId2Giocatore" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelId3Giocatore" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="puntiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="puntiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="puntiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="moneteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="moneteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="moneteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="aiutantiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="aiutantiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="aiutantiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="numCarteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="numCarteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="numCarteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fx:id="imgTabellaEmpori" fitHeight="80.0" fitWidth="80.0" layoutX="410.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" />
+                                    <Label fx:id="numEmporiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="numEmporiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="numEmporiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="70.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fx:id="percorsoNobilta" fitHeight="491.0" fitWidth="1283.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4" />
+                                 </children>
+                              </GridPane>
                            </children>
-                        </GridPane>
+                        </AnchorPane>
                      </content>
                   </ScrollPane>
                </content>
