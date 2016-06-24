@@ -113,7 +113,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateCartePermessoGiocatore(int idGiocatore, List<CartaPermessoCostruzione> mano) throws RemoteException{
-
+        Platform.runLater(() -> controllerFXPartita.updateCartePermessoGiocatore(idGiocatore, mano));
     }
 
     @Override
@@ -171,7 +171,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void mostraMessaggio(String messaggio) {
-        Platform.runLater(() -> controllerFXPartita.nuovoMessaggio(messaggio));
+        controllerFXPartita.nuovoMessaggio(messaggio);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package client.view.GUI;
 
 import classicondivise.IdBalcone;
-import classicondivise.bonus.*;
+import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
-import client.view.GUI.utility.CreatoreCartaPermesso;
+import client.view.GUI.utility.UtilityGUI;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,8 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -30,7 +28,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private AnchorPane rootPane, anchorInScroll;
     @FXML
-    private HBox hBoxPolitica;
+    private HBox hBoxPolitica, hBoxPermit;
     @FXML
     private ImageView immagineMappa, cartaCollinaCoperta, cartaMontagnaCoperta, cartaCostaCoperta;
     @FXML
@@ -63,6 +61,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private Label numEmporiAvversario1, numEmporiAvversario2, numEmporiAvversario3;
     @FXML
+    private HBox cartePermitAvversario1, cartePermitAvversario2, cartePermitAvversario3;
+    @FXML
     private ImageView percorsoNobilta;
 
     //utility
@@ -71,6 +71,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HashMap<Integer, Label> idAvversarioLabelPunti = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelNCarte = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelNEmpori = new HashMap<>();
+    private HashMap<Integer, HBox> idAvversarioHBoxhCartePermit = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -112,6 +113,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                 idAvversarioLabelNEmpori.put(tuttiGliId.get(0),numEmporiAvversario1);
                 idAvversarioLabelNEmpori.put(tuttiGliId.get(1),numEmporiAvversario2);
                 idAvversarioLabelNEmpori.put(tuttiGliId.get(2),numEmporiAvversario3);
+                idAvversarioHBoxhCartePermit.put(tuttiGliId.get(0), cartePermitAvversario1);
+                idAvversarioHBoxhCartePermit.put(tuttiGliId.get(1), cartePermitAvversario2);
+                idAvversarioHBoxhCartePermit.put(tuttiGliId.get(2), cartePermitAvversario3);
             } catch (SingletonNonInizializzatoException | RemoteException e) {
                 e.printStackTrace();
             }
@@ -214,46 +218,15 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
 
-
-    //TODO
     public void updateBonusCittà(String nomeCittà, Bonus bonus){
-        Comparator<Node> piuADestra = (Node n1, Node n2) -> ((Double)n2.getLayoutX()).compareTo(n1.getLayoutX());
         HBox hBoxBonus;
         Class c = this.getClass();
         try {
             //ottiene l'attributo "bonusNomecittà" di this.getClass, per evitare uno switch case di 15 case.
             Field fieldHBox = c.getDeclaredField("bonus" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1).toLowerCase());
             hBoxBonus = (HBox) fieldHBox.get(this);
-            List<Node> nodi = hBoxBonus.getChildren();
-            //parte ad inserire le immagini dall'ultimo elemento dell'hbox, per questioni grafiche
-            List<ImageView> immagini = new ArrayList<>();
-            immagini.add((ImageView) nodi.get(0));
-            immagini.add((ImageView) nodi.get(1));
-            immagini.add((ImageView) nodi.get(2));
-            immagini.sort(piuADestra);
-            int i = 0;
-            while (!(bonus instanceof NullBonus)){
-                if (bonus instanceof BonusAiutanti) {
-                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
-                    scriviNumeroBonus(((BonusAiutanti) bonus).getNumeroAiutanti(), hBoxBonus, immagini.get(i));
-                }else if(bonus instanceof BonusMonete) {
-                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_monete.png")));
-                    scriviNumeroBonus(((BonusMonete) bonus).getNumeroMonete(), hBoxBonus, immagini.get(i));
-                }else if(bonus instanceof BonusAvanzaPercorsoNobiltà) {
-                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_percorsonobilta.png")));
-                    scriviNumeroBonus(((BonusAvanzaPercorsoNobiltà) bonus).getNumeroPosti(), hBoxBonus, immagini.get(i));
-                }else if(bonus instanceof BonusRipetiAzionePrincipale) {
-                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_ripetiazione.png")));
-                }else if(bonus instanceof BonusPescaCartaPolitica) {
-                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_cartapolitica.png")));
-                    scriviNumeroBonus(((BonusPescaCartaPolitica) bonus).getNumeroCarte(), hBoxBonus, immagini.get(i));
-                }else if(bonus instanceof BonusPuntiVittoria){
-                    immagini.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_puntivittoria.png")));
-                    scriviNumeroBonus(((BonusPuntiVittoria) bonus).getPuntiVittoria(), hBoxBonus, immagini.get(i));
-                }
-                bonus = ((RealBonus) bonus).getDecoratedBonus();
-                i++;
-            }
+            UtilityGUI utility = new UtilityGUI();
+            utility.addImmaginiBonus(hBoxBonus, 30, 30, 15, bonus);
         }catch (NoSuchFieldException | IllegalAccessException e){
             e.printStackTrace();
         }
@@ -298,7 +271,6 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             String nomeFile = "politica_"+colore.toLowerCase()+".png";
             img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
             imgViews.add(img);
-
         });
         imgViews.forEach(imageView -> hBoxPolitica.getChildren().add(imageView));
     }
@@ -329,10 +301,26 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             StackPane pane1 = (StackPane) fieldPane1.get(this);
             Field fieldPane2 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 2);
             StackPane pane2 = (StackPane) fieldPane2.get(this);
-            CreatoreCartaPermesso creatoreCartaPermesso = new CreatoreCartaPermesso();
-            creatoreCartaPermesso.creaPermit(carta1, pane1);
-            creatoreCartaPermesso.creaPermit(carta2, pane2);
+            UtilityGUI utilityGUI = new UtilityGUI();
+            utilityGUI.creaPermit(carta1, 90, 75, pane1);
+            utilityGUI.creaPermit(carta2, 90, 75, pane2);
         }catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void updateCartePermessoGiocatore(int id, List<CartaPermessoCostruzione> carte){
+        HBox hBox;
+        try {
+            if (id == GUIView.getInstance().getIdGiocatore()) hBox = hBoxPermit;
+            else hBox = idAvversarioHBoxhCartePermit.get(id);
+            UtilityGUI utility = new UtilityGUI();
+            carte.forEach(carta -> {
+                StackPane stackPane = new StackPane();
+                utility.creaPermit(carta, 90, 75, stackPane);
+                hBox.getChildren().add(stackPane);
+            });
+        }catch(SingletonNonInizializzatoException | RemoteException e){
             e.printStackTrace();
         }
     }
@@ -347,21 +335,5 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     //friendly
     Parent getRootPane(){
         return rootPane;
-    }
-
-    private void scriviNumeroBonus(int numero, HBox hBox, ImageView immagine) {
-        double x = hBox.getLayoutX();
-        double y = hBox.getLayoutY();
-        x += immagine.getLayoutX();
-        y += immagine.getLayoutY();
-        x += immagine.getFitWidth()/2;
-        y += immagine.getFitHeight()/2;
-        Label label = new Label(numero+"");
-        Font font = new Font(15);
-        label.setTextFill(Color.WHITESMOKE);
-        label.setFont(font);
-        anchorInScroll.getChildren().add(label);
-        label.setLayoutX(x);
-        label.setLayoutY(y);
     }
 }
