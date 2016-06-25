@@ -1,5 +1,6 @@
 package client.view.GUI;
 
+import classicondivise.Colore;
 import classicondivise.IdBalcone;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
@@ -63,7 +64,11 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private HBox cartePermitAvversario1, cartePermitAvversario2, cartePermitAvversario3;
     @FXML
-    private ImageView percorsoNobilta;
+    private ImageView consigliereArancioneGioco, consigliereAzzurroGioco, consigliereBiancoGioco, consigliereNeroGioco, consigliereRosaGioco, consigliereViolaGioco;
+    @FXML
+    private Label numeroConsiglieriArancioneGioco, numeroConsiglieriAzzurroGioco, numeroConsiglieriBiancoGioco, numeroConsiglieriNeroGioco, numeroConsiglieriRosaGioco, numeroConsiglieriViolaGioco;
+    @FXML
+    private StackPane percorsoNobilta1, percorsoNobilta2;
 
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
@@ -82,6 +87,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         //il giocatore non può scrivere in area notifiche
         areaNotifiche.setEditable(false);
         inizializzaImmaginiRisorseGiocatori();
+        inizializzaImmaginiConsieglieriGioco();
         inizializzaImmaginiBalconiDiLegno();
         inizializzaPercorsoNobiltà();
         inizializzaHashMap();
@@ -147,7 +153,12 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     private void inizializzaPercorsoNobiltà() {
-        percorsoNobilta.setImage(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta.png")));
+        ImageView p1 = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta1.png")));
+        ImageView p2 = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta2.png")));
+        p1.setFitHeight(180);
+        p2.setFitHeight(180);
+        percorsoNobilta1.getChildren().add(p1);
+        percorsoNobilta2.getChildren().add(p2);
     }
 
     private void inizializzaImmaginiRisorseGiocatori() {
@@ -164,6 +175,15 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         imgTabellaEmpori.setImage(empori);
         imageViewEmpori.setImage(empori);
         imgTabellaNCarte.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_cartapolitica.png")));
+    }
+
+    private void inizializzaImmaginiConsieglieriGioco(){
+        consigliereArancioneGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_arancione.png")));
+        consigliereAzzurroGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_azzurro.png")));
+        consigliereBiancoGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_bianco.png")));
+        consigliereNeroGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_nero.png")));
+        consigliereRosaGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_rosa.png")));
+        consigliereViolaGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_viola.png")));
     }
 
     private void inizializzaImmaginiBalconiDiLegno(){
@@ -309,6 +329,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         }
     }
 
+    //friendly
     void updateCartePermessoGiocatore(int id, List<CartaPermessoCostruzione> carte){
         HBox hBox;
         try {
@@ -323,6 +344,19 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         }catch(SingletonNonInizializzatoException | RemoteException e){
             e.printStackTrace();
         }
+    }
+
+    //friendly
+    void updateConsiglieriGioco(List<String> colori){
+        HashMap<Colore, Label> labelColoreNumeroConsiglieri = new HashMap<>();
+        labelColoreNumeroConsiglieri.put(Colore.ARANCIONE, numeroConsiglieriArancioneGioco);
+        labelColoreNumeroConsiglieri.put(Colore.AZZURRO, numeroConsiglieriAzzurroGioco);
+        labelColoreNumeroConsiglieri.put(Colore.BIANCO, numeroConsiglieriBiancoGioco);
+        labelColoreNumeroConsiglieri.put(Colore.NERO, numeroConsiglieriNeroGioco);
+        labelColoreNumeroConsiglieri.put(Colore.ROSA, numeroConsiglieriRosaGioco);
+        labelColoreNumeroConsiglieri.put(Colore.VIOLA, numeroConsiglieriViolaGioco);
+        labelColoreNumeroConsiglieri.forEach((colore, label) -> label.setText("0"));
+        colori.stream().forEach((String colore) -> labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).setText((Integer.parseInt(labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).getText())+1)+""));
     }
 
     //friendly

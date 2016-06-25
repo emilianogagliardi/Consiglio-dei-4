@@ -313,7 +313,9 @@
                                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
                                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <ImageView fx:id="imgTabellaPunti" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
@@ -411,10 +413,75 @@
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fx:id="percorsoNobilta" fitHeight="491.0" fitWidth="1283.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4" />
-                                    <HBox fx:id="cartePermitAvversario1" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                                    <HBox fx:id="cartePermitAvversario2" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                                    <HBox fx:id="cartePermitAvversario3" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                    <ScrollPane vbarPolicy="NEVER" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                                       <content>
+                                          <HBox fx:id="cartePermitAvversario1" prefHeight="100.0" prefWidth="200.0" />
+                                       </content>
+                                    </ScrollPane>
+                                    <ScrollPane vbarPolicy="NEVER" GridPane.columnIndex="6" GridPane.rowIndex="2">
+                                       <content>
+                                          <HBox fx:id="cartePermitAvversario2" prefHeight="100.0" prefWidth="200.0" />
+                                       </content>
+                                    </ScrollPane>
+                                    <ScrollPane vbarPolicy="NEVER" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                                       <content>
+                                          <HBox fx:id="cartePermitAvversario3" prefHeight="100.0" prefWidth="200.0" />
+                                       </content>
+                                    </ScrollPane>
+                                    <StackPane fx:id="percorsoNobilta1" prefHeight="188.0" prefWidth="116.0" GridPane.rowIndex="5" />
+                                    <StackPane fx:id="percorsoNobilta2" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="6" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                       <children>
+                                          <ImageView fx:id="consigliereArancioneGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Label fx:id="numeroConsiglieriArancioneGioco" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliereBiancoGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                                <Label fx:id="numeroConsiglieriBiancoGioco" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliereNeroGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                                <Label fx:id="numeroConsiglieriNeroGioco" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliereRosaGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                                <Label fx:id="numeroConsiglieriRosaGioco" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fx:id="consigliereViolaGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                                <Label fx:id="numeroConsiglieriViolaGioco" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="330.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <children>
+                                          <ImageView fx:id="consigliereAzzurroGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Label fx:id="numeroConsiglieriAzzurroGioco" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </GridPane>
                            </children>

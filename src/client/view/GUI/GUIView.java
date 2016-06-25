@@ -129,7 +129,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateRiservaConsiglieri(List<String> coloriConsiglieri) throws RemoteException{
-
+        Platform.runLater(() -> controllerFXPartita.updateConsiglieriGioco(coloriConsiglieri));
     }
 
     @Override

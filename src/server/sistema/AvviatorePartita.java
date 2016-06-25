@@ -75,16 +75,17 @@ public class AvviatorePartita implements Runnable {
     private Partita creaPartita(Properties pro){
         Partita partita = new Partita(proxyViews);
         partita.aggiungiAiutanti(CostantiModel.NUM_AIUTANTI);
-        partita.setRiservaConsiglieri(creaRiservaConsiglieri());
+        ArrayList<Consigliere> riserva = creaRiservaConsiglieri();
         HashSet<Città> tutteLeCittà = creaCittàDaFile(pro);
         creaSentieriCittàDaFile(pro, tutteLeCittà);
-        partita.setRegioni(creaRegioni(pro, tutteLeCittà, partita.getRiservaConsiglieri()));
-        partita.setBalconeDelConsiglioRe(creaBalcone(IdBalcone.RE, partita.getRiservaConsiglieri()));
+        partita.setRegioni(creaRegioni(pro, tutteLeCittà, riserva));
+        partita.setBalconeDelConsiglioRe(creaBalcone(IdBalcone.RE, riserva));
         partita.setRe(creaRe(tutteLeCittà));
         partita.setPercorsoDellaNobiltà(creaPercorsoNobiltà());
         partita.setMazzoCartePolitica(creaMazzoCartePolitica());
         partita.setMazzoCartePremioRe(creaMazzoCartePremioRe());
         partita.setCarteBonusColoreCittà(creaMazzoBonusColoreCittà());
+        partita.setRiservaConsiglieri(riserva);
         return partita;
     }
 

@@ -59,7 +59,6 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public void run() {
-        
         giocatoriOnline = new GiocatoriOnline();
         partita.getGiocatori().forEach((Giocatore giocatore) -> {
             giocatoriOnline.aggiungiGiocatore(giocatore);
