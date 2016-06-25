@@ -26,7 +26,7 @@ public class CostantiModel {
     public static final int MIN_VALORE_SOTTOBONUS = 1;
     public static final int PUNTI_VITTORIA_BONUS_REGIONE = 10;
     public static final String CITTÀ_RE = "JUVELAR";
-    public static final double PERCENTUALE_BONUS_PERCORSO_NOBILTA = 0.3;
+    public static final double PERCENTUALE_BONUS_PERCORSO_NOBILTA = 0.6;
     public static final int PUNTI_BONUS_COLORE_CITTA_ORO = 20;
     public static final int PUNTI_BONUS_COLORE_CITTA_ARGENTO = 12;
     public static final int PUNTI_BONUS_COLORE_CITTA_BRONZO = 8;
