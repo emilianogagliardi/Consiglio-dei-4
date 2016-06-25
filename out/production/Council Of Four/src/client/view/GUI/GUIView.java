@@ -175,6 +175,11 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
+    public void updateBonusPercorsoNobilta(List<Bonus> percorso) throws RemoteException {
+        Platform.runLater(() -> controllerFXPartita.updateBonusNobilta(percorso));
+    }
+
+    @Override
     public void vendi() throws RemoteException {
 
     }
