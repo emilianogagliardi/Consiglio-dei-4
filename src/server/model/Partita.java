@@ -1,15 +1,19 @@
 package server.model;
 
-import classicondivise.bonus.Bonus;
 import classicondivise.NomeCittà;
-import classicondivise.bonus.BonusPuntiVittoria;
-import server.model.carte.*;
-import server.model.eccezioni.*;
+import classicondivise.bonus.Bonus;
 import interfaccecondivise.InterfacciaView;
+import server.model.carte.CartaBonusColoreCittà;
+import server.model.carte.CartaPolitica;
+import server.model.carte.CartaPremioDelRe;
+import server.model.eccezioni.NumeroMassimoGiocatoriRaggiuntoException;
 import server.sistema.CostantiSistema;
 
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import static server.model.CostantiModel.*;
 
@@ -100,6 +104,7 @@ public class Partita extends Observable {
     public void setPercorsoDellaNobiltà(List<Bonus> percorsoDellaNobiltà){
         if(this.percorsoDellaNobiltà == null) {
             this.percorsoDellaNobiltà = percorsoDellaNobiltà;
+            updateViewPercorsoNobiltà();
         }
     }
 
@@ -213,6 +218,16 @@ public class Partita extends Observable {
         super.notifyViews((InterfacciaView view) -> {
             try {
                 view.updateRiservaConsiglieri(coloriConsiglieri);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void updateViewPercorsoNobiltà() {
+        super.notifyViews((InterfacciaView view) -> {
+            try {
+                view.updateBonusPercorsoNobilta(percorsoDellaNobiltà);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
