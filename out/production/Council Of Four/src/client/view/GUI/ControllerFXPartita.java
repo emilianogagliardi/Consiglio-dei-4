@@ -68,7 +68,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private Label numeroConsiglieriArancioneGioco, numeroConsiglieriAzzurroGioco, numeroConsiglieriBiancoGioco, numeroConsiglieriNeroGioco, numeroConsiglieriRosaGioco, numeroConsiglieriViolaGioco;
     @FXML
-    private StackPane percorsoNobilta1, percorsoNobilta2;
+    private ImageView percorsoNobilta1, percorsoNobilta2;
 
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
@@ -153,12 +153,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     private void inizializzaPercorsoNobiltà() {
-        ImageView p1 = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta1.png")));
-        ImageView p2 = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta2.png")));
-        p1.setFitHeight(180);
-        p2.setFitHeight(180);
-        percorsoNobilta1.getChildren().add(p1);
-        percorsoNobilta2.getChildren().add(p2);
+        percorsoNobilta1.setImage(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta1.png")));
+        percorsoNobilta2.setImage(new Image(getClass().getClassLoader().getResourceAsStream("percorso_nobilta2.png")));
     }
 
     private void inizializzaImmaginiRisorseGiocatori() {
@@ -201,7 +197,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         });
     }
 
-    public void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) {
+    void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) {
         boolean isBalconeRe = IdBalcone.valueOf(idBalcone).equals(IdBalcone.RE);
         List<Node> nodi = scegliBalcone(idBalcone).getChildren();
         List<ImageView> imageViewConsiglieri = new ArrayList<>();
@@ -357,6 +353,21 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         labelColoreNumeroConsiglieri.put(Colore.VIOLA, numeroConsiglieriViolaGioco);
         labelColoreNumeroConsiglieri.forEach((colore, label) -> label.setText("0"));
         colori.stream().forEach((String colore) -> labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).setText((Integer.parseInt(labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).getText())+1)+""));
+    }
+
+    //friendly
+    void updateBonusNobilta(List<Bonus> bonus) {
+        UtilityGUI utilityGUI = new UtilityGUI();
+        int i = 0;
+        for (Bonus b : bonus) {
+            try {
+                Field fieldHBox = getClass().getDeclaredField("bonusNobilta"+i);
+                HBox boxBonus = (HBox) fieldHBox.get(this);
+                utilityGUI.addImmaginiBonus(boxBonus, 30, 30, 15, b);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //friendly

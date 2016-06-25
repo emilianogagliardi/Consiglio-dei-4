@@ -10,12 +10,9 @@ import client.ComunicazioneSceltaMappaSocket;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
-import jdk.nashorn.internal.runtime.regexp.joni.ScanEnvironment;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -182,6 +179,11 @@ public class CLIView implements InterfacciaView, Remote {
     @Override
     public void mostraMessaggio(String messaggio) throws RemoteException {
         System.out.println(messaggio);
+    }
+
+    @Override
+    public void updateBonusPercorsoNobilta(List<Bonus> percorso) throws RemoteException {
+
     }
 
     @Override

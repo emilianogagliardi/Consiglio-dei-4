@@ -3,8 +3,8 @@ package server.proxyView;
 import classicondivise.ComunicazioneView;
 import classicondivise.VetrinaMarket;
 import classicondivise.bonus.Bonus;
-import interfaccecondivise.InterfacciaView;
 import classicondivise.carte.CartaPermessoCostruzione;
+import interfaccecondivise.InterfacciaView;
 import server.sistema.AvviatorePartita;
 
 import java.io.IOException;
@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 import java.util.List;
 
 ;
@@ -329,6 +328,11 @@ public class SocketProxyView implements InterfacciaView {
         } catch (IOException exc){
             exc.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateBonusPercorsoNobilta(List<Bonus> percorso) throws RemoteException {
+
     }
 
     @Override
