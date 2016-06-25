@@ -19,7 +19,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Scanner;
 
-public class CLIView implements InterfacciaView, Remote {
+class CLIView implements InterfacciaView, Remote {
     String connectionType;
     ComunicazioneSceltaMappa setterMappa;
     InterfacciaLoggerRMI loggerRMI;
@@ -27,6 +27,7 @@ public class CLIView implements InterfacciaView, Remote {
     ObjectInputStream ois;
     Scanner in;
     boolean fineTurno;
+    int idGiocatore;
 
     public CLIView(String connectionType){
         try {
@@ -41,12 +42,12 @@ public class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void setIdGiocatore(int idGiocatore) throws RemoteException {
-
+        this.idGiocatore = idGiocatore;
     }
 
     @Override
     public int getIdGiocatore() throws RemoteException {
-        return 0;
+        return idGiocatore;
     }
 
     public void setLoggerRMI(InterfacciaLoggerRMI loggerRMI) {
@@ -78,9 +79,6 @@ public class CLIView implements InterfacciaView, Remote {
         } catch (SingletonNonInizializzatoException exc) {
             exc.printStackTrace();
         }
-
-
-
     }
 
     @Override
@@ -170,35 +168,17 @@ public class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void eseguiTurno() throws RemoteException {
-        String inputLine;
-
-        do{
-            System.out.println("Che cosa vuoi fare?");
-            System.out.println("1: Vedere le informazioni della partita");
-            System.out.println("2: Eseguire un'azione");
-            System.out.println("Scrivi esci per uscire");
-            inputLine = in.nextLine();
-            switch (inputLine) {
-                case "1":
-                    break;
-                case "2":
-                    break;
-                case "esci":
-                    break;
-                default:
-                    break;
-            }
-        } while (!fineTurno);
+       new Thread(EseguiTurno.getIstanza()).start();
     }
 
     @Override
     public void fineTurno() throws RemoteException {
-        this.fineTurno = true;
+        //this.fineTurno = true;
     }
 
     @Override
     public void mostraMessaggio(String messaggio) throws RemoteException {
-
+        System.out.println(messaggio);
     }
 
     @Override
@@ -218,6 +198,11 @@ public class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
+
+    }
+
+    @Override
+    public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
 
     }
 

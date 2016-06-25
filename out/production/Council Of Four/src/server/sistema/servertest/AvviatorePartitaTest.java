@@ -162,6 +162,11 @@ public class AvviatorePartitaTest {
             public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
             }
+
+            @Override
+            public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
+
+            }
         }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
         //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         avviatorePartita = new AvviatorePartita(proxyViews, 0);
