@@ -215,6 +215,21 @@
                                           <StackPane fx:id="cartaCollina2" layoutX="551.0" layoutY="553.0" prefHeight="81.0" prefWidth="75.0" />
                                           <StackPane fx:id="cartaMontagna1" layoutX="827.0" layoutY="554.0" prefHeight="82.0" prefWidth="72.0" />
                                           <StackPane fx:id="cartaMontagna2" layoutX="907.0" layoutY="552.0" prefHeight="82.0" prefWidth="72.0" />
+                                          <ImageView fx:id="aRe" fitHeight="45.0" fitWidth="46.0" layoutX="108.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="cRe" fitHeight="45.0" fitWidth="46.0" layoutX="269.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="bRe" fitHeight="45.0" fitWidth="46.0" layoutX="101.0" layoutY="281.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="eRe" fitHeight="45.0" fitWidth="46.0" layoutX="152.0" layoutY="435.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="dRe" fitHeight="45.0" fitWidth="46.0" layoutX="262.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="fRe" fitHeight="45.0" fitWidth="46.0" layoutX="437.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="gRe" fitHeight="45.0" fitWidth="46.0" layoutX="457.0" layoutY="286.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="hRe" fitHeight="45.0" fitWidth="46.0" layoutX="481.0" layoutY="405.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="jRe" fitHeight="68.0" fitWidth="74.0" layoutX="612.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="iRe" fitHeight="45.0" fitWidth="46.0" layoutX="621.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="mRe" fitHeight="45.0" fitWidth="46.0" layoutX="759.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="lRe" fitHeight="45.0" fitWidth="46.0" layoutX="775.0" layoutY="284.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="kRe" fitHeight="45.0" fitWidth="46.0" layoutX="802.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="nRe" fitHeight="45.0" fitWidth="46.0" layoutX="937.0" layoutY="217.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="oRe" fitHeight="45.0" fitWidth="46.0" layoutX="937.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                        <padding>
                                           <Insets left="10.0" />

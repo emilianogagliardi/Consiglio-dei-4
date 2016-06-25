@@ -72,6 +72,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private ImageView percorsoNobilta1, percorsoNobilta2;
     @FXML
+    private ImageView aRe, bRe, cRe, dRe, eRe, fRe, gRe, hRe, iRe, jRe, kRe, lRe, mRe, nRe, oRe;
+    @FXML
     private VBox pedinePos0, pedinePos1, pedinePos2, pedinePos3, pedinePos4, pedinePos5, pedinePos6, pedinePos7, pedinePos8, pedinePos9, pedinePos10, pedinePos11, pedinePos12, pedinePos13, pedinePos14, pedinePos15, pedinePos16, pedinePos17, pedinePos18, pedinePos19, pedinePos20;
     @FXML
     private HBox bonusNobilta0, bonusNobilta1, bonusNobilta2, bonusNobilta3, bonusNobilta4, bonusNobilta5, bonusNobilta6, bonusNobilta7, bonusNobilta8, bonusNobilta9, bonusNobilta10, bonusNobilta11, bonusNobilta12, bonusNobilta13, bonusNobilta14, bonusNobilta15, bonusNobilta16, bonusNobilta17, bonusNobilta18, bonusNobilta19, bonusNobilta20;
@@ -429,6 +431,18 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     //friendly
     void updatePosizionePercorsoNobilta(int id, int pos){
         renderNobilita.update(idGiocatoreColore.get(id), pos);
+    }
+
+    //friendly
+    void updateRe(String citta) {
+        try {
+            Field fieldImg = getClass().getDeclaredField(citta.substring(0,1).toLowerCase()+"Re");
+            ImageView img = (ImageView) fieldImg.get(this);
+            img.setImage(new Image(getClass().getClassLoader().getResourceAsStream("re.png")));
+            img.setFitWidth(80);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     //friendly

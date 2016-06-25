@@ -156,7 +156,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updatePosizioneRe(String città) throws RemoteException {
-
+        Platform.runLater(() -> controllerFXPartita.updateRe(città));
     }
 
     @Override
