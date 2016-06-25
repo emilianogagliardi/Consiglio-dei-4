@@ -230,6 +230,11 @@
                                  <children>
                                     <VBox layoutX="21.0" layoutY="14.0" prefHeight="683.0" prefWidth="179.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
+                                          <Label fx:id="nomeGiocatore" prefHeight="39.0" prefWidth="179.0" text="GiocatoreX">
+                                             <font>
+                                                <Font size="23.0" />
+                                             </font>
+                                          </Label>
                                           <ScrollPane hbarPolicy="ALWAYS" prefHeight="129.0" prefWidth="179.0" vbarPolicy="NEVER">
                                              <content>
                                                 <HBox fx:id="hBoxPolitica" prefHeight="110.0" prefWidth="200.0" />
@@ -337,78 +342,78 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="puntiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label fx:id="puntiAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="puntiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Label fx:id="puntiAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="puntiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <Label fx:id="puntiAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="moneteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <Label fx:id="moneteAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="moneteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <Label fx:id="moneteAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="moneteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <Label fx:id="moneteAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="aiutantiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <Label fx:id="aiutantiAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="aiutantiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                    <Label fx:id="aiutantiAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="aiutantiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                    <Label fx:id="aiutantiAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numCarteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <Label fx:id="numCarteAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numCarteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                    <Label fx:id="numCarteAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numCarteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                    <Label fx:id="numCarteAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="4" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
                                     <ImageView fx:id="imgTabellaEmpori" fitHeight="80.0" fitWidth="80.0" layoutX="410.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" />
-                                    <Label fx:id="numEmporiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                    <Label fx:id="numEmporiAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numEmporiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                                    <Label fx:id="numEmporiAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="5" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numEmporiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                                    <Label fx:id="numEmporiAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="5" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
@@ -494,6 +499,17 @@
                                           <HBox fx:id="bonusNobilta9" layoutX="1001.0" layoutY="57.0" prefHeight="33.0" prefWidth="53.0" />
                                           <HBox fx:id="bonusNobilta10" layoutX="1110.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
                                           <HBox fx:id="bonusNobilta5" layoutX="571.0" layoutY="58.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <VBox fx:id="pedinePos0" layoutX="45.0" layoutY="87.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos1" layoutX="150.0" layoutY="87.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos2" layoutX="257.0" layoutY="91.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos3" layoutX="367.0" layoutY="91.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos4" layoutX="472.0" layoutY="87.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos5" layoutX="586.0" layoutY="92.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos6" layoutX="692.0" layoutY="94.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos7" layoutX="799.0" layoutY="92.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos8" layoutX="901.0" layoutY="93.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos9" layoutX="1012.0" layoutY="88.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos10" layoutX="1123.0" layoutY="81.0" prefHeight="71.0" prefWidth="54.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane GridPane.rowIndex="6">
@@ -509,8 +525,24 @@
                                           <HBox fx:id="bonusNobilta18" layoutX="739.0" layoutY="52.0" prefHeight="33.0" prefWidth="53.0" />
                                           <HBox fx:id="bonusNobilta19" layoutX="849.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
                                           <HBox fx:id="bonusNobilta20" layoutX="951.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <VBox fx:id="pedinePos11" layoutX="31.0" layoutY="88.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos12" layoutX="139.0" layoutY="89.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos13" layoutX="235.0" layoutY="89.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos14" layoutX="332.0" layoutY="86.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos15" layoutX="434.0" layoutY="82.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos16" layoutX="547.0" layoutY="85.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos17" layoutX="655.0" layoutY="83.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos18" layoutX="759.0" layoutY="84.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos19" layoutX="854.0" layoutY="85.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos20" layoutX="971.0" layoutY="81.0" prefHeight="71.0" prefWidth="54.0" />
                                        </children>
                                     </AnchorPane>
+                                    <HBox layoutX="110.0" layoutY="330.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
+                                       <children>
+                                          <ImageView fx:id="aiutanteGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Label fx:id="numeroAiutantiPartita" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </GridPane>
                            </children>

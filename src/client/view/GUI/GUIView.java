@@ -124,7 +124,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateRiservaAiutanti(int numAiutanti) throws RemoteException{
-
+        Platform.runLater(() -> controllerFXPartita.updateAiutantiGioco(numAiutanti));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updatePercorsoNobiltà(int idGiocatore, int posizione) throws RemoteException{
-
+        Platform.runLater(() -> controllerFXPartita.updatePosizionePercorsoNobilta(idGiocatore, posizione));
     }
 
     @Override
@@ -175,7 +175,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
-    public void updateBonusPercorsoNobilta(List<Bonus> percorso) throws RemoteException {
+    public void updateBonusPercorsoNobiltà(List<Bonus> percorso) throws RemoteException {
         Platform.runLater(() -> controllerFXPartita.updateBonusNobilta(percorso));
     }
 
@@ -192,10 +192,5 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     @Override
     public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
-    }
-
-    @Override
-    public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
-        
     }
 }

@@ -270,11 +270,6 @@ public class ControllerTest {
             }
 
             @Override
-            public void updateBonusPercorsoNobilta(List<Bonus> percorso) throws RemoteException {
-
-            }
-
-            @Override
             public void vendi() throws RemoteException {
 
             }
@@ -409,11 +404,6 @@ public class ControllerTest {
 
             @Override
             public void mostraMessaggio(String messaggio) {
-
-            }
-
-            @Override
-            public void updateBonusPercorsoNobilta(List<Bonus> percorso) throws RemoteException {
 
             }
 

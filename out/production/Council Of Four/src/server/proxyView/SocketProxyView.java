@@ -331,11 +331,6 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void updateBonusPercorsoNobilta(List<Bonus> percorso) throws RemoteException {
-
-    }
-
-    @Override
     public void vendi() throws RemoteException {
 
     }

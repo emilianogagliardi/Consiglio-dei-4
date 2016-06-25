@@ -2,6 +2,7 @@ package client.view.GUI.utility;
 
 import classicondivise.bonus.*;
 import classicondivise.carte.CartaPermessoCostruzione;
+import client.view.GUI.ColoreGiocatore;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -80,5 +81,19 @@ public class UtilityGUI {
         stackPane.getChildren().add(label);
         StackPane.clearConstraints(label);
         StackPane.setAlignment(label, Pos.CENTER);
+    }
+
+    public static Color convertiColore(ColoreGiocatore coloreGiocatore){
+        switch (coloreGiocatore){
+            case ROSSO:
+                return Color.RED;
+            case GIALLO:
+                return Color.YELLOW;
+            case VERDE:
+                return Color.GREEN;
+            case BLU:
+                return Color.BLUE;
+            default: throw new IllegalArgumentException();
+        }
     }
 }

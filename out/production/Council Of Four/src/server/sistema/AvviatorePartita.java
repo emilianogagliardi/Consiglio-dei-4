@@ -341,6 +341,7 @@ public class AvviatorePartita implements Runnable {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+            partita.decrementaAiutanti(CostantiModel.AIUTANTI_INIZIALI_GIIOCATORI[i]);
             Giocatore giocatore = new Giocatore(idGiocatore, CostantiModel.MONETE_INIZIALI_GIOCATORI[i], CostantiModel.AIUTANTI_INIZIALI_GIIOCATORI[i], proxyViews);
             for (int j = 0; j < CostantiModel.NUM_CARTE_POLITICA_INIZIALI_GIOCATORE; j++) {
                 giocatore.addCarta(partita.ottieniCartaPolitica());
