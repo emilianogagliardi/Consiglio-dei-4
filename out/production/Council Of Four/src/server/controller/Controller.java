@@ -37,10 +37,6 @@ public class Controller implements Runnable, InterfacciaController {
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
         this.partita = partita;
         this.views = views;
-        giocatoriOnline = new GiocatoriOnline();
-        partita.getGiocatori().forEach((Giocatore giocatore) -> {
-            giocatoriOnline.aggiungiGiocatore(giocatore);
-        });
         azioniPrincipaliDisponibili = 0;
         azioneVeloceEseguita= false;
         //creo una mappaBalconi come struttura di supporto
@@ -63,6 +59,11 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public void run() {
+        
+        giocatoriOnline = new GiocatoriOnline();
+        partita.getGiocatori().forEach((Giocatore giocatore) -> {
+            giocatoriOnline.aggiungiGiocatore(giocatore);
+        });
         InterfacciaView viewCorrente;
         try{
             //inizio il ciclo dei turni

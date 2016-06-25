@@ -171,7 +171,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void mostraMessaggio(String messaggio) {
-        controllerFXPartita.nuovoMessaggio(messaggio);
+        Platform.runLater(() -> controllerFXPartita.nuovoMessaggio(messaggio));
     }
 
     @Override
