@@ -13,10 +13,12 @@ public class SocketPollingController implements Runnable {
     private Socket socket;
     private Controller controller;
     private volatile boolean running = true;
+    private ObjectInputStream ois;
 
-    public SocketPollingController(Socket socket, Controller controller) {
+    public SocketPollingController(Socket socket, Controller controller, ObjectInputStream ois) {
         this.socket = socket;
         this.controller = controller;
+        this.ois = ois;
     }
 
     public void termina(){
@@ -30,7 +32,7 @@ public class SocketPollingController implements Runnable {
 
     @Override
     public void run() {
-        try (ObjectInputStream ois = new ObjectInputStream(socket.getInputStream())) {
+        try {
             String inputLine, idBalcone, coloreConsigliereDaRiserva, stringaNomeCittà, regione, coloreConsigliere;
             int numeroCarta;
             List<String> nomiColoriCartePolitica;

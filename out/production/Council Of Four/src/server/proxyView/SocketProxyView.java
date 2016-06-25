@@ -23,11 +23,11 @@ public class SocketProxyView implements InterfacciaView {
     private AvviatorePartita avviatorePartita;
     private int idGiocatore;
 
-    public SocketProxyView(Socket socket){
+    public SocketProxyView(Socket socket, ObjectInputStream ois){
         this.socket = socket;
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
-            ois = new ObjectInputStream(socket.getInputStream());
+            this.ois = ois;
         } catch (IOException exc) {
             exc.printStackTrace();
         }
@@ -36,6 +36,8 @@ public class SocketProxyView implements InterfacciaView {
     public Socket getSocket() {
         return socket;
     }
+
+    public ObjectInputStream getOis(){return ois;}
 
     @Override
     public void setIdGiocatore(int idGiocatore) {

@@ -4,6 +4,7 @@ import interfaccecondivise.InterfacciaView;
 import server.proxyView.SocketProxyView;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
@@ -23,6 +24,7 @@ public class Server {
     private ScheduledExecutorService scheduler;
     private ScheduledFuture<?> timeout;
     private int numeroChiaviCorrente;
+    private ObjectInputStream ois;
 
     public Server() {
         proxyViews = new ArrayList<>();
@@ -55,7 +57,8 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 //comunica al client qual è il suo id e aggiunge la proxy view associata
                 synchronized ((Object) idCorrente) {
-                    addView(new SocketProxyView(socket));
+                    ois = new ObjectInputStream(socket.getInputStream());
+                    addView(new SocketProxyView(socket, ois));
                 }
             }catch (IOException e){
                 System.out.println("impossibile creare socket da server socket");

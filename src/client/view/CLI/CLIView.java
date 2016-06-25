@@ -7,10 +7,13 @@ import classicondivise.carte.CartaPermessoCostruzione;
 import client.ComunicazioneSceltaMappa;
 import client.ComunicazioneSceltaMappaRMI;
 import client.ComunicazioneSceltaMappaSocket;
+import client.view.SocketProxyController;
 import client.view.eccezioni.SingletonNonInizializzatoException;
+import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.rmi.Remote;
@@ -28,8 +31,10 @@ class CLIView implements InterfacciaView, Remote {
     Scanner in;
     boolean fineTurno;
     int idGiocatore;
+    EseguiTurno istanza;
+    InterfacciaController controller;
 
-    public CLIView(String connectionType){
+    CLIView(String connectionType){
         try {
             in = new Scanner(System.in);
             this.connectionType = connectionType;
@@ -50,13 +55,22 @@ class CLIView implements InterfacciaView, Remote {
         return idGiocatore;
     }
 
-    public void setLoggerRMI(InterfacciaLoggerRMI loggerRMI) {
+    void setLoggerRMI(InterfacciaLoggerRMI loggerRMI) {
         this.loggerRMI = loggerRMI;
     }
 
-    public void setObjectStream(ObjectOutputStream oos, ObjectInputStream ois) {
+    void setObjectStream(ObjectOutputStream oos, ObjectInputStream ois) {
         this.oos = oos;
         this.ois = ois;
+    }
+
+    void initController(){
+        //TODO: Se socket fai una cosa, se RMI fanne un'altra
+        try {
+            controller = new SocketProxyController(oos);
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 
     @Override
@@ -168,12 +182,14 @@ class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void eseguiTurno() throws RemoteException {
-       new Thread(EseguiTurno.getIstanza()).start();
+        istanza = EseguiTurno.getIstanza();
+        istanza.setSocketProxyController(controller);
+        new Thread(istanza).start();
     }
 
     @Override
     public void fineTurno() throws RemoteException {
-        //this.fineTurno = true;
+        istanza.stop();
     }
 
     @Override

@@ -196,6 +196,6 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
-        
+
     }
 }
