@@ -21,7 +21,6 @@ public class CLIApplication {
         String input;
         Socket socket;
 
-
         System.out.println("Specifica il tipo di connessione che vuoi utilizzare. Socket (S) o RMI (R)");
         input = in.nextLine();
         if (input.equals("S")){

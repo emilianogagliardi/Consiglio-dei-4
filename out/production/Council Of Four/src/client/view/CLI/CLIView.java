@@ -19,7 +19,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Scanner;
 
-public class CLIView implements InterfacciaView, Remote {
+class CLIView implements InterfacciaView, Remote {
     String connectionType;
     ComunicazioneSceltaMappa setterMappa;
     InterfacciaLoggerRMI loggerRMI;
@@ -198,6 +198,11 @@ public class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
+
+    }
+
+    @Override
+    public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
 
     }
 

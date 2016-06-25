@@ -98,14 +98,14 @@ public class Partita extends Observable {
         else if(this.regioni == null) {
             this.regioni = regioni;
         }
-
     }
 
     public void setPercorsoDellaNobiltà(List<Bonus> percorsoDellaNobiltà){
         if(this.percorsoDellaNobiltà == null) {
             this.percorsoDellaNobiltà = percorsoDellaNobiltà;
-            updateViewPercorsoNobiltà();
+            updateViewBonusPercorsoNobiltà();
         }
+
     }
 
     public void addCartePoliticaScartate(ArrayList<CartaPolitica> nuoveCarteScartate){
@@ -224,10 +224,11 @@ public class Partita extends Observable {
         });
     }
 
-    private void updateViewPercorsoNobiltà() {
+
+    private void updateViewBonusPercorsoNobiltà(){
         super.notifyViews((InterfacciaView view) -> {
             try {
-                view.updateBonusPercorsoNobilta(percorsoDellaNobiltà);
+                view.updateBonusPercorsoNobiltà(this.percorsoDellaNobiltà);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

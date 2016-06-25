@@ -39,6 +39,7 @@ public class SocketPollingView implements Runnable {
             List<Integer> idGiocatori;
             ComunicazioneView comunicazioneView;
             Bonus bonus;
+            List<Bonus> percorsoNobiltà;
             while (running) {
                 try{
                     inputLine = (String) ois.readObject();
@@ -114,6 +115,10 @@ public class SocketPollingView implements Runnable {
                             idGiocatore = ois.readInt();
                             posizione = ois.readInt();
                             view.updatePercorsoNobiltà(idGiocatore, posizione);
+                            break;
+                        case UPDATE_BONUS_PERCORSO_NOBILTA:
+                            percorsoNobiltà = (List<Bonus>) ois.readObject();
+                            view.updateBonusPercorsoNobiltà(percorsoNobiltà);
                             break;
                         case UPDATE_EMPORI_CITTA:
                             nomeCittà = (String) ois.readObject();

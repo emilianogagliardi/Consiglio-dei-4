@@ -193,4 +193,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
     }
+
+    @Override
+    public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
+        
+    }
 }

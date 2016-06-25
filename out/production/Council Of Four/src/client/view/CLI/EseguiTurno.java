@@ -3,7 +3,7 @@ package client.view.CLI;
 
 import java.util.Scanner;
 
-public class EseguiTurno implements Runnable {
+class EseguiTurno implements Runnable {
     private Scanner in;
     private static EseguiTurno istanza;
     private boolean fine;
