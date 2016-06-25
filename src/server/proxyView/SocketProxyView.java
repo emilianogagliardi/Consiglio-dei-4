@@ -345,4 +345,16 @@ public class SocketProxyView implements InterfacciaView {
     public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
     }
+
+    @Override
+    public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
+        try {
+            oos.writeObject(ComunicazioneView.UPDATE_BONUS_PERCORSO_NOBILTA.toString());
+            oos.flush();
+            oos.writeObject(percorsoNobiltà);
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
+    }
 }
