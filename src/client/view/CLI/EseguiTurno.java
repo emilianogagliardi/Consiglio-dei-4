@@ -1,6 +1,7 @@
 package client.view.CLI;
 
 
+import classicondivise.IdBalcone;
 import client.view.SocketProxyController;
 import interfaccecondivise.InterfacciaController;
 import server.model.NomeRegione;
@@ -24,20 +25,20 @@ class EseguiTurno implements Runnable {
         } else return istanza;
     }
 
-    void setSocketProxyController(InterfacciaController controller){
+    void setController(InterfacciaController controller){
         this.controller = controller;
     }
 
     @Override
     public void run() {
-        String inputLine, regione;
+        String inputLine, idBalcone, coloreConsigliere;
         fine = false;
         try {
             do {
                 System.out.println("Che cosa vuoi fare?");
                 System.out.println("1: Vedere informazioni partita");
                 System.out.println("2: Esegui azione");
-                System.out.println("logut");
+                System.out.println("3: Abbandona la partita");
 
                 inputLine = in.nextLine();
                 switch (inputLine) {
@@ -82,6 +83,60 @@ class EseguiTurno implements Runnable {
                                                 break;
                                         }
                                         break;
+                                    case "3":
+                                        System.out.println("Inserisci il nome della regione del balcone (CT, CL o M) oppure RE per il balcone del re");
+                                        System.out.println("Poi inserisci il colore del consigliere che vuoi prelevare dalla riserva: viola (V), azzurro (AZ), nero (N), rosa (R), arancione (AR) o bianco (B)");
+                                        inputLine = in.nextLine();
+                                        switch (inputLine) {
+                                            case "CT":
+                                                idBalcone = IdBalcone.COSTA.toString();
+                                                break;
+                                            case "CL":
+                                                idBalcone = IdBalcone.COLLINA.toString();
+                                                break;
+                                            case "M":
+                                                idBalcone = IdBalcone.MONTAGNA.toString();
+                                                break;
+                                            case "RE":
+                                                idBalcone = IdBalcone.RE.toString();
+                                                break;
+                                            default:
+                                                idBalcone = "";
+                                                break;
+                                        }
+                                        inputLine = in.nextLine();
+                                        switch (inputLine) {
+                                            case "V":
+                                               coloreConsigliere = "VIOLA";
+                                                break;
+                                            case "AZ":
+                                                coloreConsigliere = "AZZURRO";
+                                                break;
+                                            case "N":
+                                                coloreConsigliere = "NERO";
+                                                break;
+                                            case "R":
+                                                coloreConsigliere = "ROSA";
+                                                break;
+                                            case "AR":
+                                                coloreConsigliere = "ARANCIONE";
+                                                break;
+                                            case "B":
+                                                coloreConsigliere = "BIANCO";
+                                                break;
+                                            default:
+                                                coloreConsigliere = "";
+                                                break;
+                                        }
+                                        if (!fine) {
+                                            controller.mandareAiutanteEleggereConsigliere(idBalcone, coloreConsigliere);
+                                        }
+                                        break;
+                                    case "4":
+                                        if (!fine) {
+                                            controller.compiereAzionePrincipaleAggiuntiva();
+                                        }
+                                        break;
                                     default:
                                         break;
                                 }
@@ -94,7 +149,8 @@ class EseguiTurno implements Runnable {
                                 break;
                         }
                         break;
-                    case "logout":
+                    case "3":
+                        //TODO: logout
                         fine = true;
                         break;
                 }

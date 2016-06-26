@@ -7,6 +7,7 @@ import classicondivise.carte.CartaPermessoCostruzione;
 import client.ComunicazioneSceltaMappa;
 import client.ComunicazioneSceltaMappaRMI;
 import client.ComunicazioneSceltaMappaSocket;
+import client.view.CostantiClient;
 import client.view.SocketProxyController;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
@@ -16,23 +17,25 @@ import interfaccecondivise.InterfacciaView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Scanner;
 
 class CLIView implements InterfacciaView, Remote {
-    String connectionType;
-    ComunicazioneSceltaMappa setterMappa;
-    InterfacciaLoggerRMI loggerRMI;
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
-    Scanner in;
-    boolean fineTurno;
-    int idGiocatore;
-    EseguiTurno istanza;
-    InterfacciaController controller;
+    private String connectionType;
+    private InterfacciaLoggerRMI loggerRMI;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    private Scanner in;
+    private boolean fineTurno;
+    private int idGiocatore;
+    private EseguiTurno istanza;
+    private InterfacciaController controller;
 
     CLIView(String connectionType){
         try {
@@ -64,40 +67,27 @@ class CLIView implements InterfacciaView, Remote {
         this.ois = ois;
     }
 
-    void initController(){
-        //TODO: Se socket fai una cosa, se RMI fanne un'altra
-        try {
-            controller = new SocketProxyController(oos);
-        } catch (IOException exc){
-            exc.printStackTrace();
-        }
-    }
-
     @Override
     public void scegliMappa() throws RemoteException {
-        try {
-            if (connectionType.equals("R")) {
-                ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
-                setterMappa = ComunicazioneSceltaMappaRMI.getInstance();
-                System.out.println("Inserisci il numero di mappa che vuoi utilizzare");
-                int id = in.nextInt();
-                setterMappa.comunicaSceltaMappa(id);
-            } else if (connectionType.equals("S")) {
-                ComunicazioneSceltaMappaSocket.init(oos);
-                setterMappa = ComunicazioneSceltaMappaSocket.getInstance();
-                System.out.println("Inserisci il numero di mappa che vuoi utilizzare");
-                int id = in.nextInt();
-                setterMappa.comunicaSceltaMappa(id);
-
-            }
-        } catch (SingletonNonInizializzatoException exc) {
-            exc.printStackTrace();
-        }
+        new Thread(new ScegliMappa(connectionType, loggerRMI, oos)).start();
     }
 
     @Override
     public void iniziaAGiocare(int idMappa) throws RemoteException {
-
+        if (connectionType.equals("S")) {
+            try {
+                controller = new SocketProxyController(oos);
+            } catch (IOException exc){
+                exc.printStackTrace();
+            }
+        } else if (connectionType.equals("R")) {
+            try {
+                Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
+                controller = (InterfacciaController) registry.lookup(loggerRMI.getChiaveController());
+            } catch (RemoteException | NotBoundException exc) {
+                exc.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -183,7 +173,7 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void eseguiTurno() throws RemoteException {
         istanza = EseguiTurno.getIstanza();
-        istanza.setSocketProxyController(controller);
+        istanza.setController(controller);
         new Thread(istanza).start();
     }
 

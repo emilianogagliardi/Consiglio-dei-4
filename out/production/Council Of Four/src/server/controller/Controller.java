@@ -463,8 +463,8 @@ public class Controller implements Runnable, InterfacciaController {
             return false;
         }
         giocatoreCorrente.guadagnaAiutanti(aiutanti);
-        comunicaAGiocatoreCorrente("Hai guadagnato " + aiutanti + " aiutanti");
-        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha guadagnato " + aiutanti);
+        comunicaAGiocatoreCorrente("Hai guadagnato " + aiutanti + ((aiutanti == 1) ? " aiutante" : " aiutanti"));
+        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha guadagnato " + aiutanti + ((aiutanti == 1) ? " aiutante" : " aiutanti"));
         azioneVeloceEseguita = true;
         return true;
     }
@@ -519,6 +519,7 @@ public class Controller implements Runnable, InterfacciaController {
             return false;
         }
         azioniPrincipaliDisponibili++;
+        comunicaAGiocatoreCorrente("Puoi eseguire un'azione principale aggiuntiva!");
         azioneVeloceEseguita = true;
         return true;
     }
