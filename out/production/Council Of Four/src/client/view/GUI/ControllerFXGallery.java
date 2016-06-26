@@ -58,7 +58,6 @@ public class ControllerFXGallery extends GestoreFlussoFinestra implements Initia
         });
     }
 
-    //TODO da gestire in socket e RMI
     private void setAzioneBottoneConferma() {
         bottoneConferma.setOnAction(e -> {
             try {

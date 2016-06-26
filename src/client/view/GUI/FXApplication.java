@@ -1,6 +1,7 @@
 package client.view.GUI;
 
 import client.view.eccezioni.SingletonNonInizializzatoException;
+import interfaccecondivise.InterfacciaController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,15 +11,17 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class FXApplication extends Application {
-    private Stage finestraAttuale;
+    private Stage finestraPrincipale;
+    private Stage finestraSecodaria;
     private boolean isSocketClient;
     private Scene scenaGioco;
+    private Scene scenaMossa;
 
     @Override
     public void start(Stage primaryStage) throws IOException{
         GUIView.initGUIView(this);
         initScenaPartita();
-        finestraAttuale = primaryStage;
+        finestraPrincipale = primaryStage;
         setFinestraDaFXML("login.fxml");
     }
 
@@ -28,10 +31,10 @@ public class FXApplication extends Application {
         Parent root =  loader.load(getClass().getResource("/"+nomeFile).openStream());
         GestoreFlussoFinestra controllerFX = loader.getController();
         controllerFX.setApplication(this);
-        finestraAttuale.setTitle("Council Of Four");
-        finestraAttuale.setResizable(false);
-        finestraAttuale.setScene(new Scene(root));
-        finestraAttuale.show();
+        finestraPrincipale.setTitle("Council Of Four");
+        finestraPrincipale.setResizable(false);
+        finestraPrincipale.setScene(new Scene(root));
+        finestraPrincipale.show();
     }
 
     private void initScenaPartita() throws IOException {
@@ -46,14 +49,39 @@ public class FXApplication extends Application {
         }
     }
 
-    public void showSceltaMappa() throws IOException {
+    void initControllerMosse(InterfacciaController controller) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        Parent root = loader.load(getClass().getResource("/mosse.fxml").openStream());
+        ControllerFXMosse controllerFXMosse = loader.getController();
+        controllerFXMosse.setController(controller);
+        scenaMossa = new Scene(root);
+        try{
+            GUIView.getInstance().setControllerFXMosse(controllerFXMosse);
+        }catch (SingletonNonInizializzatoException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void passaAControllerMosse(){
+        finestraSecodaria = new Stage();
+        finestraSecodaria.setTitle("Scegli la tua mossa");
+        finestraSecodaria.setScene(scenaMossa);
+        finestraSecodaria.initOwner(finestraPrincipale);
+        finestraSecodaria.show();
+    }
+
+    void fineMossa(){
+        finestraSecodaria.close();
+    }
+
+    void showSceltaMappa() throws IOException {
         setFinestraDaFXML("mappegallery.fxml");
     }
 
-    public void showFinestraGioco() throws IOException {
-        finestraAttuale.setScene(scenaGioco);
-        finestraAttuale.setResizable(true);
-        finestraAttuale.show();
+    void showFinestraGioco() throws IOException {
+        finestraPrincipale.setScene(scenaGioco);
+        finestraPrincipale.setResizable(true);
+        finestraPrincipale.show();
     }
 
     void setIsSocketClient(boolean isSocketClient){

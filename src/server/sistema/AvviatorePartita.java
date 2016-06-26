@@ -48,6 +48,8 @@ public class AvviatorePartita implements Runnable {
                 controller.setSocketPollingControllers(socketPollingControllers);
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
                 String chiaveController = PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + numeroBindRegistry ;
+                //todo togliere questa riga
+                System.out.println(chiaveController);
                 registry.bind(chiaveController, controller);
                 for(InterfacciaView view : proxyViews) { //non uso espressione lambda perchè dovrei innestare un try catch che è già fatto
                     view.iniziaAGiocare(idMappa);

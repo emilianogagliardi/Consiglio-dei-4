@@ -3,13 +3,20 @@ package client.view.GUI;
 import classicondivise.VetrinaMarket;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
+import client.view.CostantiClient;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.eccezioni.SingletonNonInizializzatoException;
+import interfaccecondivise.InterfacciaController;
+import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
 import javafx.application.Platform;
 
+import java.io.IOException;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
@@ -43,10 +50,10 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
         return instance;
     }
 
-    protected static void setControllerFXPartita(ControllerFXPartita controller) {
+    static void setControllerFXPartita(ControllerFXPartita controller) {
         controllerFXPartita = controller;
     }
-
+    static void setControllerFXMosse(ControllerFXMosse controller) {controllerFXMosse = controller;}
     protected static void setIdMappa(int id){idMappa = id;}
 
     protected static int getIdMappa(){return idMappa;}
@@ -70,6 +77,20 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     @Override
     public void iniziaAGiocare(int idMappa) throws RemoteException {
         this.setIdMappa(idMappa);
+        //se il client è rmi, ora può gettare il controller dal registry del server perchè la partita è pronta
+        if (!super.getApplication().isSocketClient()){
+            Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
+            InterfacciaLoggerRMI loggerRMI = null;
+            try {
+                loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
+                InterfacciaController controller = (InterfacciaController) registry.lookup(loggerRMI.getChiaveController());
+                super.getApplication().initControllerMosse(controller);
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         controllerFXPartita.getRootPane().fireEvent(new ShowViewGiocoEvent());
         super.showFinestraGioco();
     }
@@ -161,12 +182,12 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void eseguiTurno() throws RemoteException {
-
+        Platform.runLater(() ->super.getApplication().passaAControllerMosse());
     }
 
     @Override
     public void fineTurno() throws RemoteException {
-
+        Platform.runLater(() -> super.getApplication().fineMossa());
     }
 
     @Override
