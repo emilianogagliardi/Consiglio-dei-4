@@ -1,9 +1,5 @@
 package client.view.GUI;
 
-import javafx.application.Platform;
-
-import java.io.IOException;
-
 /*
 classe che contiene un riferimento alla javafx application (FlussoView), in grado di assegnare una nuova finestra principale
  */
@@ -15,7 +11,7 @@ public abstract class GestoreFlussoFinestra{
     }
 
     public FXApplication getApplication(){return application;}
-
+/*
     public void showSceltaMappa(){
         Platform.runLater(() -> {
             try {
@@ -35,4 +31,5 @@ public abstract class GestoreFlussoFinestra{
             }
         });
     }
+    */
 }

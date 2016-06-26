@@ -71,7 +71,13 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void scegliMappa()throws RemoteException {
-        super.showSceltaMappa();
+        Platform.runLater(() -> {
+            try {
+                super.getApplication().showSceltaMappa();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -92,7 +98,13 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
             }
         }
         controllerFXPartita.getRootPane().fireEvent(new ShowViewGiocoEvent());
-        super.showFinestraGioco();
+        Platform.runLater(() -> {
+            try {
+                super.getApplication().showFinestraGioco();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
