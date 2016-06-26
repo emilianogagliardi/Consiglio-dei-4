@@ -29,7 +29,7 @@ public class CLIApplication {
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 CLIView cliView = new CLIView("S");
-                cliView.setObjectStream(oos, ois);
+                cliView.setObjectStream(oos);
                 new Thread(new SocketPollingView(cliView, ois)).start(); //necessario alla comunicazione server -> client
             } catch (IOException exc) {
                 exc.printStackTrace();

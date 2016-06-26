@@ -30,7 +30,6 @@ class CLIView implements InterfacciaView, Remote {
     private String connectionType;
     private InterfacciaLoggerRMI loggerRMI;
     private ObjectOutputStream oos;
-    private ObjectInputStream ois;
     private Scanner in;
     private boolean fineTurno;
     private int idGiocatore;
@@ -62,9 +61,8 @@ class CLIView implements InterfacciaView, Remote {
         this.loggerRMI = loggerRMI;
     }
 
-    void setObjectStream(ObjectOutputStream oos, ObjectInputStream ois) {
+    void setObjectStream(ObjectOutputStream oos) {
         this.oos = oos;
-        this.ois = ois;
     }
 
     @Override
