@@ -215,6 +215,21 @@
                                           <StackPane fx:id="cartaCollina2" layoutX="551.0" layoutY="553.0" prefHeight="81.0" prefWidth="75.0" />
                                           <StackPane fx:id="cartaMontagna1" layoutX="827.0" layoutY="554.0" prefHeight="82.0" prefWidth="72.0" />
                                           <StackPane fx:id="cartaMontagna2" layoutX="907.0" layoutY="552.0" prefHeight="82.0" prefWidth="72.0" />
+                                          <ImageView fx:id="aRe" fitHeight="45.0" fitWidth="46.0" layoutX="108.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="cRe" fitHeight="45.0" fitWidth="46.0" layoutX="269.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="bRe" fitHeight="45.0" fitWidth="46.0" layoutX="101.0" layoutY="281.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="eRe" fitHeight="45.0" fitWidth="46.0" layoutX="152.0" layoutY="435.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="dRe" fitHeight="45.0" fitWidth="46.0" layoutX="262.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="fRe" fitHeight="45.0" fitWidth="46.0" layoutX="437.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="gRe" fitHeight="45.0" fitWidth="46.0" layoutX="457.0" layoutY="286.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="hRe" fitHeight="45.0" fitWidth="46.0" layoutX="481.0" layoutY="405.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="jRe" fitHeight="68.0" fitWidth="74.0" layoutX="612.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="iRe" fitHeight="45.0" fitWidth="46.0" layoutX="621.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="mRe" fitHeight="45.0" fitWidth="46.0" layoutX="759.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="lRe" fitHeight="45.0" fitWidth="46.0" layoutX="775.0" layoutY="284.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="kRe" fitHeight="45.0" fitWidth="46.0" layoutX="802.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="nRe" fitHeight="45.0" fitWidth="46.0" layoutX="937.0" layoutY="217.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="oRe" fitHeight="45.0" fitWidth="46.0" layoutX="937.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                        <padding>
                                           <Insets left="10.0" />
@@ -230,6 +245,11 @@
                                  <children>
                                     <VBox layoutX="21.0" layoutY="14.0" prefHeight="683.0" prefWidth="179.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
+                                          <Label fx:id="nomeGiocatore" prefHeight="39.0" prefWidth="179.0" text="GiocatoreX">
+                                             <font>
+                                                <Font size="23.0" />
+                                             </font>
+                                          </Label>
                                           <ScrollPane hbarPolicy="ALWAYS" prefHeight="129.0" prefWidth="179.0" vbarPolicy="NEVER">
                                              <content>
                                                 <HBox fx:id="hBoxPolitica" prefHeight="110.0" prefWidth="200.0" />
@@ -337,78 +357,78 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="puntiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label fx:id="puntiAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="puntiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Label fx:id="puntiAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="puntiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <Label fx:id="puntiAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="moneteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <Label fx:id="moneteAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="moneteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <Label fx:id="moneteAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="moneteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <Label fx:id="moneteAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="aiutantiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <Label fx:id="aiutantiAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="aiutantiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                    <Label fx:id="aiutantiAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="aiutantiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                    <Label fx:id="aiutantiAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numCarteAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <Label fx:id="numCarteAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numCarteAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                    <Label fx:id="numCarteAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numCarteAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                    <Label fx:id="numCarteAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="4" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
                                     <ImageView fx:id="imgTabellaEmpori" fitHeight="80.0" fitWidth="80.0" layoutX="410.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" />
-                                    <Label fx:id="numEmporiAvversario1" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                    <Label fx:id="numEmporiAvversario1" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numEmporiAvversario2" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                                    <Label fx:id="numEmporiAvversario2" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="5" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="numEmporiAvversario3" prefHeight="80.0" prefWidth="100.0" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                                    <Label fx:id="numEmporiAvversario3" prefHeight="80.0" prefWidth="100.0" text="X" GridPane.columnIndex="5" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="70.0" />
                                        </font>
@@ -483,34 +503,61 @@
                                     <AnchorPane GridPane.rowIndex="5">
                                        <children>
                                           <ImageView fx:id="percorsoNobilta1" fitHeight="208.0" fitWidth="1281.0" pickOnBounds="true" preserveRatio="true" />
-                                          <HBox fx:id="bonusNobilta0" layoutX="46.0" layoutY="47.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta1" layoutX="155.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta2" layoutX="263.0" layoutY="54.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta3" layoutX="367.0" layoutY="56.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta4" layoutX="476.0" layoutY="56.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta6" layoutX="692.0" layoutY="55.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta7" layoutX="800.0" layoutY="55.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta8" layoutX="907.0" layoutY="54.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta9" layoutX="1008.0" layoutY="60.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta10" layoutX="1119.0" layoutY="49.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta5" layoutX="583.0" layoutY="59.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta0" layoutX="31.0" layoutY="50.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta1" layoutX="142.0" layoutY="49.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta2" layoutX="253.0" layoutY="54.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta3" layoutX="360.0" layoutY="57.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta4" layoutX="465.0" layoutY="56.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta6" layoutX="678.0" layoutY="55.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta7" layoutX="792.0" layoutY="55.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta8" layoutX="896.0" layoutY="55.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta9" layoutX="1001.0" layoutY="57.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta10" layoutX="1110.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta5" layoutX="571.0" layoutY="58.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <VBox fx:id="pedinePos0" layoutX="45.0" layoutY="87.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos1" layoutX="150.0" layoutY="87.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos2" layoutX="257.0" layoutY="91.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos3" layoutX="367.0" layoutY="91.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos4" layoutX="472.0" layoutY="87.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos5" layoutX="586.0" layoutY="92.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos6" layoutX="692.0" layoutY="94.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos7" layoutX="799.0" layoutY="92.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos8" layoutX="901.0" layoutY="93.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos9" layoutX="1012.0" layoutY="88.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos10" layoutX="1123.0" layoutY="81.0" prefHeight="71.0" prefWidth="54.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane GridPane.rowIndex="6">
                                        <children>
                                           <ImageView fx:id="percorsoNobilta2" fitHeight="206.0" fitWidth="1282.0" pickOnBounds="true" preserveRatio="true" />
-                                          <HBox fx:id="bonusNobilta11" layoutX="28.0" layoutY="49.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta12" layoutX="134.0" layoutY="52.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta13" layoutX="237.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta14" layoutX="332.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta15" layoutX="439.0" layoutY="48.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta16" layoutX="541.0" layoutY="50.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta17" layoutX="652.0" layoutY="49.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta18" layoutX="758.0" layoutY="50.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta19" layoutX="864.0" layoutY="48.0" prefHeight="33.0" prefWidth="53.0" />
-                                          <HBox fx:id="bonusNobilta20" layoutX="964.0" layoutY="50.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta11" layoutX="15.0" layoutY="50.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta12" layoutX="120.0" layoutY="52.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta13" layoutX="225.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta14" layoutX="318.0" layoutY="52.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta15" layoutX="427.0" layoutY="49.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta16" layoutX="533.0" layoutY="48.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta17" layoutX="635.0" layoutY="52.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta18" layoutX="739.0" layoutY="52.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta19" layoutX="849.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <HBox fx:id="bonusNobilta20" layoutX="951.0" layoutY="53.0" prefHeight="33.0" prefWidth="53.0" />
+                                          <VBox fx:id="pedinePos11" layoutX="31.0" layoutY="88.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos12" layoutX="139.0" layoutY="89.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos13" layoutX="235.0" layoutY="89.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos14" layoutX="332.0" layoutY="86.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos15" layoutX="434.0" layoutY="82.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos16" layoutX="547.0" layoutY="85.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos17" layoutX="655.0" layoutY="83.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos18" layoutX="759.0" layoutY="84.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos19" layoutX="854.0" layoutY="85.0" prefHeight="71.0" prefWidth="54.0" />
+                                          <VBox fx:id="pedinePos20" layoutX="971.0" layoutY="81.0" prefHeight="71.0" prefWidth="54.0" />
                                        </children>
                                     </AnchorPane>
+                                    <HBox layoutX="110.0" layoutY="330.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
+                                       <children>
+                                          <ImageView fx:id="aiutanteGioco" fitHeight="50.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Label fx:id="numeroAiutantiPartita" prefHeight="51.0" prefWidth="65.0" text="Label" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </GridPane>
                            </children>

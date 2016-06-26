@@ -12,6 +12,7 @@ public class Re extends Observable {
     public Re (Città città, ArrayList<InterfacciaView> views) {
         super(views);
         this.città = Objects.requireNonNull(città);
+        updateViewPosizione();
     }
 
     public Città getCittà(){return città;}

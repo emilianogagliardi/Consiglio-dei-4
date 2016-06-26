@@ -5,6 +5,7 @@ import classicondivise.IdBalcone;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
+import client.view.GUI.utility.RenderPercorsoNobilta;
 import client.view.GUI.utility.UtilityGUI;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
@@ -19,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -50,7 +52,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private Label moneteGiocatore, puntiVittoriaGiocatore, aiutantiGiocatore, emporiGiocatore;
     @FXML
-    private Label labelId1Giocatore, labelId2Giocatore, labelId3Giocatore;
+    private Label labelId1Giocatore, labelId2Giocatore, labelId3Giocatore, nomeGiocatore;
     @FXML
     private Label puntiAvversario1, puntiAvversario2, puntiAvversario3;
     @FXML
@@ -64,11 +66,17 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     @FXML
     private HBox cartePermitAvversario1, cartePermitAvversario2, cartePermitAvversario3;
     @FXML
-    private ImageView consigliereArancioneGioco, consigliereAzzurroGioco, consigliereBiancoGioco, consigliereNeroGioco, consigliereRosaGioco, consigliereViolaGioco;
+    private ImageView consigliereArancioneGioco, consigliereAzzurroGioco, consigliereBiancoGioco, consigliereNeroGioco, consigliereRosaGioco, consigliereViolaGioco, aiutanteGioco;
     @FXML
-    private Label numeroConsiglieriArancioneGioco, numeroConsiglieriAzzurroGioco, numeroConsiglieriBiancoGioco, numeroConsiglieriNeroGioco, numeroConsiglieriRosaGioco, numeroConsiglieriViolaGioco;
+    private Label numeroConsiglieriArancioneGioco, numeroConsiglieriAzzurroGioco, numeroConsiglieriBiancoGioco, numeroConsiglieriNeroGioco, numeroConsiglieriRosaGioco, numeroConsiglieriViolaGioco, numeroAiutantiPartita;
     @FXML
     private ImageView percorsoNobilta1, percorsoNobilta2;
+    @FXML
+    private ImageView aRe, bRe, cRe, dRe, eRe, fRe, gRe, hRe, iRe, jRe, kRe, lRe, mRe, nRe, oRe;
+    @FXML
+    private VBox pedinePos0, pedinePos1, pedinePos2, pedinePos3, pedinePos4, pedinePos5, pedinePos6, pedinePos7, pedinePos8, pedinePos9, pedinePos10, pedinePos11, pedinePos12, pedinePos13, pedinePos14, pedinePos15, pedinePos16, pedinePos17, pedinePos18, pedinePos19, pedinePos20;
+    @FXML
+    private HBox bonusNobilta0, bonusNobilta1, bonusNobilta2, bonusNobilta3, bonusNobilta4, bonusNobilta5, bonusNobilta6, bonusNobilta7, bonusNobilta8, bonusNobilta9, bonusNobilta10, bonusNobilta11, bonusNobilta12, bonusNobilta13, bonusNobilta14, bonusNobilta15, bonusNobilta16, bonusNobilta17, bonusNobilta18, bonusNobilta19, bonusNobilta20;
 
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
@@ -77,6 +85,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HashMap<Integer, Label> idAvversarioLabelNCarte = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelNEmpori = new HashMap<>();
     private HashMap<Integer, HBox> idAvversarioHBoxhCartePermit = new HashMap<>();
+    private RenderPercorsoNobilta renderNobilita;
+
+    //identifica id e colore giocatore
+    private HashMap<Integer, ColoreGiocatore> idGiocatoreColore;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,20 +102,49 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaImmaginiConsieglieriGioco();
         inizializzaImmaginiBalconiDiLegno();
         inizializzaPercorsoNobiltà();
-        inizializzaHashMap();
+        inizializzaRenderNobilta();
+        inizializzaHashMapNomi();
+        inizializzaIdGiocatoreColore();
     }
 
-    private void inizializzaHashMap(){
+    private void inizializzaRenderNobilta(){
+        List<VBox> pedineNobilta = new ArrayList<>();
+        for (int i = 0; i <= 20; i++){
+            try {
+                Field fieldVBox = getClass().getDeclaredField("pedinePos"+i);
+                VBox vBox = (VBox) fieldVBox.get(this);
+                pedineNobilta.add(vBox);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        renderNobilita = new RenderPercorsoNobilta(pedineNobilta);
+    }
+
+    private void inizializzaIdGiocatoreColore(){
+        idGiocatoreColore = new HashMap<>();
+        idGiocatoreColore.put(0, ColoreGiocatore.ROSSO);
+        idGiocatoreColore.put(1, ColoreGiocatore.BLU);
+        idGiocatoreColore.put(2, ColoreGiocatore.GIALLO);
+        idGiocatoreColore.put(3, ColoreGiocatore.VERDE);
+    }
+
+    private void inizializzaHashMapNomi(){
         //inizializza
         rootPane.addEventHandler(ShowViewGiocoEvent.SHOW_IMAGE, event -> {
             try {
                 int myId = GUIView.getInstance().getIdGiocatore();
                 Integer[] tuttiGliIdArray = {0, 1, 2, 3};
                 ArrayList<Integer> tuttiGliId = new ArrayList<>(3);
+                nomeGiocatore.setText("Giocatore"+myId);
+                nomeGiocatore.setTextFill(UtilityGUI.convertiColore(idGiocatoreColore.get(myId)));
                 Arrays.stream(tuttiGliIdArray).filter((Integer id) -> id != myId).forEach(id -> tuttiGliId.add(id));
                 labelId1Giocatore.setText("Giocatore" + tuttiGliId.get(0));
+                labelId1Giocatore.setTextFill(UtilityGUI.convertiColore(idGiocatoreColore.get(tuttiGliId.get(0))));
                 labelId2Giocatore.setText("Giocatore" + tuttiGliId.get(1));
+                labelId2Giocatore.setTextFill(UtilityGUI.convertiColore(idGiocatoreColore.get(tuttiGliId.get(1))));
                 labelId3Giocatore.setText("Giocatore" + tuttiGliId.get(2));
+                labelId3Giocatore.setTextFill(UtilityGUI.convertiColore(idGiocatoreColore.get(tuttiGliId.get(2))));
                 idAvversarioLabelMonete.put(tuttiGliId.get(0), moneteAvversario1);
                 idAvversarioLabelMonete.put(tuttiGliId.get(1), moneteAvversario2);
                 idAvversarioLabelMonete.put(tuttiGliId.get(2), moneteAvversario3);
@@ -180,6 +221,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         consigliereNeroGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_nero.png")));
         consigliereRosaGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_rosa.png")));
         consigliereViolaGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("consigliere_viola.png")));
+        aiutanteGioco.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
     }
 
     private void inizializzaImmaginiBalconiDiLegno(){
@@ -306,7 +348,18 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //friendly
     void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori){
-
+        try {
+            Field fieldHBox = getClass().getDeclaredField("empori" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1));
+            HBox box = (HBox) fieldHBox.get(this);
+            idGiocatori.forEach((Integer id) ->{
+                ImageView imgView = (ImageView) box.getChildren().get(id);
+                ColoreGiocatore colore = idGiocatoreColore.get(id);
+                String nomeFile = "emporio_"+colore.toString().toLowerCase() + ".png";
+                imgView.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
+            });
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     //friendly
@@ -355,6 +408,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         colori.stream().forEach((String colore) -> labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).setText((Integer.parseInt(labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).getText())+1)+""));
     }
 
+    void updateAiutantiGioco(int aiutanti) {
+        numeroAiutantiPartita.setText(aiutanti+"");
+    }
+
     //friendly
     void updateBonusNobilta(List<Bonus> bonus) {
         UtilityGUI utilityGUI = new UtilityGUI();
@@ -367,6 +424,24 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
+            i++;
+        }
+    }
+
+    //friendly
+    void updatePosizionePercorsoNobilta(int id, int pos){
+        renderNobilita.update(idGiocatoreColore.get(id), pos);
+    }
+
+    //friendly
+    void updateRe(String citta) {
+        try {
+            Field fieldImg = getClass().getDeclaredField(citta.substring(0,1).toLowerCase()+"Re");
+            ImageView img = (ImageView) fieldImg.get(this);
+            img.setImage(new Image(getClass().getClassLoader().getResourceAsStream("re.png")));
+            img.setFitWidth(80);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
