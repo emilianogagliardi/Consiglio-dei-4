@@ -73,7 +73,7 @@ public class SocketProxyController implements InterfacciaController {
             oos.flush();
             oos.writeObject(città);
             oos.flush();
-        } catch (IOException exc){
+        } catch (IOException exc) {
             return false;
         }
         return true;
@@ -99,7 +99,7 @@ public class SocketProxyController implements InterfacciaController {
         try {
             oos.writeObject(ComunicazioneController.INGAGGIARE_AIUTANTE.toString());
             oos.flush();
-        } catch (IOException exc){
+        } catch (IOException exc) {
             return false;
         }
         return true;
@@ -163,8 +163,6 @@ public class SocketProxyController implements InterfacciaController {
     public boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException {
         return false;
     }
-
-
 
     @Override
     public void logout() throws RemoteException {

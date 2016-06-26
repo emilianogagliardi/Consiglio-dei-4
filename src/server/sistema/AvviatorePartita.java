@@ -43,7 +43,7 @@ public class AvviatorePartita implements Runnable {
             try {
                 Controller controller = new Controller(nuovaPartita, proxyViews);
                 //crea i socketPolling per il controller
-                proxyViews.stream().filter((InterfacciaView view) -> view instanceof SocketProxyView).forEach((InterfacciaView view) -> socketPollingControllers.add(new SocketPollingController(((SocketProxyView)view).getSocket(), controller)));
+                proxyViews.stream().filter((InterfacciaView view) -> view instanceof SocketProxyView).forEach((InterfacciaView view) -> socketPollingControllers.add(new SocketPollingController(((SocketProxyView)view).getSocket(), controller, ((SocketProxyView)view).getOis())));
                 socketPollingControllers.forEach((SocketPollingController runnable) -> {new Thread(runnable).start();});
                 controller.setSocketPollingControllers(socketPollingControllers);
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);

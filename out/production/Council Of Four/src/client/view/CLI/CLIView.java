@@ -7,29 +7,36 @@ import classicondivise.carte.CartaPermessoCostruzione;
 import client.ComunicazioneSceltaMappa;
 import client.ComunicazioneSceltaMappaRMI;
 import client.ComunicazioneSceltaMappaSocket;
+import client.view.CostantiClient;
+import client.view.SocketProxyController;
 import client.view.eccezioni.SingletonNonInizializzatoException;
+import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Scanner;
 
 class CLIView implements InterfacciaView, Remote {
-    String connectionType;
-    ComunicazioneSceltaMappa setterMappa;
-    InterfacciaLoggerRMI loggerRMI;
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
-    Scanner in;
-    boolean fineTurno;
-    int idGiocatore;
+    private String connectionType;
+    private InterfacciaLoggerRMI loggerRMI;
+    private ObjectOutputStream oos;
+    private Scanner in;
+    private boolean fineTurno;
+    private int idGiocatore;
+    private EseguiTurno istanza;
+    private InterfacciaController controller;
 
-    public CLIView(String connectionType){
+    CLIView(String connectionType){
         try {
             in = new Scanner(System.in);
             this.connectionType = connectionType;
@@ -50,40 +57,35 @@ class CLIView implements InterfacciaView, Remote {
         return idGiocatore;
     }
 
-    public void setLoggerRMI(InterfacciaLoggerRMI loggerRMI) {
+    void setLoggerRMI(InterfacciaLoggerRMI loggerRMI) {
         this.loggerRMI = loggerRMI;
     }
 
-    public void setObjectStream(ObjectOutputStream oos, ObjectInputStream ois) {
+    void setObjectStream(ObjectOutputStream oos) {
         this.oos = oos;
-        this.ois = ois;
     }
 
     @Override
     public void scegliMappa() throws RemoteException {
-        try {
-            if (connectionType.equals("R")) {
-                ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
-                setterMappa = ComunicazioneSceltaMappaRMI.getInstance();
-                System.out.println("Inserisci il numero di mappa che vuoi utilizzare");
-                int id = in.nextInt();
-                setterMappa.comunicaSceltaMappa(id);
-            } else if (connectionType.equals("S")) {
-                ComunicazioneSceltaMappaSocket.init(oos);
-                setterMappa = ComunicazioneSceltaMappaSocket.getInstance();
-                System.out.println("Inserisci il numero di mappa che vuoi utilizzare");
-                int id = in.nextInt();
-                setterMappa.comunicaSceltaMappa(id);
-
-            }
-        } catch (SingletonNonInizializzatoException exc) {
-            exc.printStackTrace();
-        }
+        new Thread(new ScegliMappa(connectionType, loggerRMI, oos)).start();
     }
 
     @Override
     public void iniziaAGiocare(int idMappa) throws RemoteException {
-
+        if (connectionType.equals("S")) {
+            try {
+                controller = new SocketProxyController(oos);
+            } catch (IOException exc){
+                exc.printStackTrace();
+            }
+        } else if (connectionType.equals("R")) {
+            try {
+                Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
+                controller = (InterfacciaController) registry.lookup(loggerRMI.getChiaveController());
+            } catch (RemoteException | NotBoundException exc) {
+                exc.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -168,12 +170,14 @@ class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void eseguiTurno() throws RemoteException {
-       new Thread(EseguiTurno.getIstanza()).start();
+        istanza = EseguiTurno.getIstanza();
+        istanza.setController(controller);
+        new Thread(istanza).start();
     }
 
     @Override
     public void fineTurno() throws RemoteException {
-        //this.fineTurno = true;
+        istanza.stop();
     }
 
     @Override
