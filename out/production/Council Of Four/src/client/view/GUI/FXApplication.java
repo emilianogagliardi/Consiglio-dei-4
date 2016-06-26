@@ -1,5 +1,6 @@
 package client.view.GUI;
 
+import classicondivise.IdBalcone;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
 import javafx.application.Application;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class FXApplication extends Application {
+    InterfacciaController controller;
     private Stage finestraPrincipale;
     private Stage finestraSecodaria;
     private boolean isSocketClient;
@@ -23,6 +25,10 @@ public class FXApplication extends Application {
         initScenaPartita();
         finestraPrincipale = primaryStage;
         setFinestraDaFXML("login.fxml");
+    }
+
+    void setController(InterfacciaController controller){
+        this.controller = controller;
     }
 
     private void setFinestraDaFXML(String nomeFile) throws IOException{
@@ -42,36 +48,12 @@ public class FXApplication extends Application {
         Parent root = loader.load(getClass().getResource("/viewgioco.fxml").openStream());
         scenaGioco = new Scene(root);
         ControllerFXPartita controllerFXPartita = loader.getController();
+        controllerFXPartita.setApplication(this);
         try {
             GUIView.getInstance().setControllerFXPartita(controllerFXPartita);
         } catch (SingletonNonInizializzatoException e) {
             e.printStackTrace();
         }
-    }
-
-    void initControllerMosse(InterfacciaController controller) throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/mosse.fxml").openStream());
-        ControllerFXMosse controllerFXMosse = loader.getController();
-        controllerFXMosse.setController(controller);
-        scenaMossa = new Scene(root);
-        try{
-            GUIView.getInstance().setControllerFXMosse(controllerFXMosse);
-        }catch (SingletonNonInizializzatoException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void passaAControllerMosse(){
-        finestraSecodaria = new Stage();
-        finestraSecodaria.setTitle("Scegli la tua mossa");
-        finestraSecodaria.setScene(scenaMossa);
-        finestraSecodaria.initOwner(finestraPrincipale);
-        finestraSecodaria.show();
-    }
-
-    void fineMossa(){
-        finestraSecodaria.close();
     }
 
     void showSceltaMappa() throws IOException {
@@ -82,6 +64,65 @@ public class FXApplication extends Application {
         finestraPrincipale.setScene(scenaGioco);
         finestraPrincipale.setResizable(true);
         finestraPrincipale.show();
+    }
+
+    void showMossaAcquistaPermesso(){
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getClassLoader().getResource("acquistapermesso.fxml"));
+            scenaMossa = new Scene(root);
+            finestraSecodaria = new Stage();
+            finestraSecodaria.setScene(scenaMossa);
+            finestraSecodaria.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void showMossaCostruzioneEmporio(){
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getClassLoader().getResource("costruzioneconpermit.fxml"));
+            scenaMossa = new Scene(root);
+            finestraSecodaria = new Stage();
+            finestraSecodaria.setScene(scenaMossa);
+            finestraSecodaria.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void showMossaEleggiConsigliere(IdBalcone balcone){
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getClassLoader().getResource("eleggiconsigliere.fxml").openStream());
+            ControllerFXEleggiConsigliere controllerFXEleggiConsigliere = loader.getController();
+            controllerFXEleggiConsigliere.setController(controller);
+            controllerFXEleggiConsigliere.setBalcone(balcone);
+            scenaMossa = new Scene(root);
+            finestraSecodaria = new Stage();
+            finestraSecodaria.setScene(scenaMossa);
+            finestraSecodaria.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void showMossaCostruzioneRe(){
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getClassLoader().getResource("costruzionere.fxml"));
+            scenaMossa = new Scene(root);
+            finestraSecodaria = new Stage();
+            finestraSecodaria.setScene(scenaMossa);
+            finestraSecodaria.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void chiudiFinestraSecondaria(){
+        if (finestraSecodaria.isShowing()) finestraSecodaria.close();
     }
 
     void setIsSocketClient(boolean isSocketClient){

@@ -89,7 +89,7 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             ComunicazioneSceltaMappaSocket.init(oos);
             //il controller nel server non è ancora pronto, ma si può comunque inizializzare il proxy tramite l'oos
             SocketProxyController controller = new SocketProxyController(oos);
-            super.getApplication().initControllerMosse(controller);
+            super.getApplication().setController(controller);
             super.getApplication().setIsSocketClient(true);
         }catch(IOException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
@@ -109,7 +109,6 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
             loggerRMI.login(GUIView.getInstance()); //passa la view per rendere possibile la comunicazione server -> client
             ComunicazioneSceltaMappaRMI.init(loggerRMI.getChiaveSceltaMappa());
-            //ottiene il controller
             super.getApplication().setIsSocketClient(false);
         }catch( NotBoundException | IOException | SingletonNonInizializzatoException e){
             e.printStackTrace();

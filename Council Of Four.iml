@@ -39,5 +39,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.controlsfx:controlsfx-samples:8.20.7" level="project" />
   </component>
 </module>

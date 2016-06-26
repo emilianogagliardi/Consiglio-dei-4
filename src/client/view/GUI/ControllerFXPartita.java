@@ -8,12 +8,17 @@ import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.GUI.utility.RenderPercorsoNobilta;
 import client.view.GUI.utility.UtilityGUI;
 import client.view.GiocatoreView;
+import client.view.RiservaPartitaView;
 import client.view.eccezioni.SingletonNonInizializzatoException;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -22,7 +27,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -78,7 +86,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private VBox pedinePos0, pedinePos1, pedinePos2, pedinePos3, pedinePos4, pedinePos5, pedinePos6, pedinePos7, pedinePos8, pedinePos9, pedinePos10, pedinePos11, pedinePos12, pedinePos13, pedinePos14, pedinePos15, pedinePos16, pedinePos17, pedinePos18, pedinePos19, pedinePos20;
     @FXML
     private HBox bonusNobilta0, bonusNobilta1, bonusNobilta2, bonusNobilta3, bonusNobilta4, bonusNobilta5, bonusNobilta6, bonusNobilta7, bonusNobilta8, bonusNobilta9, bonusNobilta10, bonusNobilta11, bonusNobilta12, bonusNobilta13, bonusNobilta14, bonusNobilta15, bonusNobilta16, bonusNobilta17, bonusNobilta18, bonusNobilta19, bonusNobilta20;
-
+    @FXML
+    private Button bottoneAiuto;
+    @FXML
+    private ImageView posizioneRe;
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelAiutanti = new HashMap<>();
@@ -87,9 +98,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HashMap<Integer, Label> idAvversarioLabelNEmpori = new HashMap<>();
     private HashMap<Integer, HBox> idAvversarioHBoxhCartePermit = new HashMap<>();
     private RenderPercorsoNobilta renderNobilita;
-
     //identifica id e colore giocatore
     private HashMap<Integer, ColoreGiocatore> idGiocatoreColore;
+    //popover per guidare il giocatore
+    private PopOver popEleggiConsigliere, popCostruisciEmporio, popCostruisciEmporioRe, popAcquistaPermesso, popCambiareTessere, popIngaggiareAiutante;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -106,6 +118,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaRenderNobilta();
         inizializzaHashMapNomi();
         inizializzaIdGiocatoreColore();
+        inizializzaBottoneAiuto();
     }
 
     private void inizializzaRenderNobilta(){
@@ -120,6 +133,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             }
         }
         renderNobilita = new RenderPercorsoNobilta(pedineNobilta);
+    }
+
+    private void inizializzaBottoneAiuto(){
+        inizializzaPopOver();
+        bottoneAiuto.setOnMouseClicked(event -> {
+            if (popAcquistaPermesso.isShowing()) nascondiPopOver();
+            else mostraPopOver();
+        });
     }
 
     private void inizializzaIdGiocatoreColore(){
@@ -168,6 +189,15 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                 e.printStackTrace();
             }
         });
+    }
+
+    private void inizializzaPopOver(){
+        popAcquistaPermesso = new PopOver(new Label("Clicca su una carta permesso per\ncominciare la fase di acquisto"));
+        popCostruisciEmporioRe = new PopOver(new Label("Clicca sul re per costruire \nun emporio tramite l'aiuto del re"));
+        popCostruisciEmporio = new PopOver(new Label("Clicca per utilizzare una carta\npermesso e costruire un emporio"));
+        popEleggiConsigliere = new PopOver(new Label("Clicca per eleggere un consigliere\nguadgnando 4 monete o mandare un\n aiutante ad eleggere un consigliere"));
+        popCambiareTessere = new PopOver(new Label("Clicca su un mazzo per \ncambiare le carte permesso"));
+        popIngaggiareAiutante = new PopOver(new Label("Clicca per ingaggiare un aiutante\no usare tre aiutanti per compiere\nun'azione principale aggiuntiva"));
     }
 
     //l'algoritmo di caricamento deve essere eguito sullo show, nel momento il cui si conosce già quale deve essere l'immagine da mostrare
@@ -406,6 +436,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //friendly
     void updateConsiglieriGioco(List<String> colori){
+        RiservaPartitaView.getInstance().setConsiglieri(colori);
         HashMap<Colore, Label> labelColoreNumeroConsiglieri = new HashMap<>();
         labelColoreNumeroConsiglieri.put(Colore.ARANCIONE, numeroConsiglieriArancioneGioco);
         labelColoreNumeroConsiglieri.put(Colore.AZZURRO, numeroConsiglieriAzzurroGioco);
@@ -418,6 +449,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     void updateAiutantiGioco(int aiutanti) {
+        //memorizza il numero di aiutanti nel pool della partita
+        RiservaPartitaView.getInstance().setAiutanti(aiutanti);
         numeroAiutantiPartita.setText(aiutanti+"");
     }
 
@@ -449,6 +482,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             ImageView img = (ImageView) fieldImg.get(this);
             img.setImage(new Image(getClass().getClassLoader().getResourceAsStream("re.png")));
             img.setFitWidth(80);
+            posizioneRe = img;
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -460,9 +494,52 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         areaNotifiche.appendText("\n");
     }
 
+    //friendly
+    void eseguiTurno(){
+        balconeCollina.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COLLINA)));
+        balconeMontagna.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.MONTAGNA)));
+        balconeCosta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COSTA)));
+        balconeRe.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.RE)));
+    }
+
+    void fineTurno(){
+    }
+
+    private void mostraPopOver(){
+        popAcquistaPermesso.show(cartaCollina2);
+        popCostruisciEmporioRe.show(posizioneRe);
+        popCostruisciEmporio.show(hBoxPermit);
+        popEleggiConsigliere.show(balconeCosta);
+        popCambiareTessere.show(cartaCostaCoperta);
+        popIngaggiareAiutante.show(imageViewAiutanti);
+    }
+
+    private void nascondiPopOver(){
+        popAcquistaPermesso.hide();
+        popCostruisciEmporioRe.hide();
+        popCostruisciEmporio.hide();
+        popEleggiConsigliere.hide();
+        popCambiareTessere.hide();
+        popIngaggiareAiutante.hide();
+    }
+
     //permette di firare eventi al root pane dall'esterno
     //friendly
     Parent getRootPane(){
         return rootPane;
+    }
+
+    //mosse
+    private void showFinestraConsigliere(IdBalcone idBalcone){
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getClassLoader().getResource("eleggiconsigliere.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

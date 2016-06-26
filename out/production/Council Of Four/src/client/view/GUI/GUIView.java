@@ -30,7 +30,6 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     private static int idGiocatore;
     private static int idMappa;
     private static GUIView instance;
-    private static ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
     private static ControllerFXPartita controllerFXPartita; //utilizzato per le update
 
     private GUIView(FXApplication application) throws RemoteException {
@@ -53,7 +52,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     static void setControllerFXPartita(ControllerFXPartita controller) {
         controllerFXPartita = controller;
     }
-    static void setControllerFXMosse(ControllerFXMosse controller) {controllerFXMosse = controller;}
+
     protected static void setIdMappa(int id){idMappa = id;}
 
     protected static int getIdMappa(){return idMappa;}
@@ -90,7 +89,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
             try {
                 loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
                 InterfacciaController controller = (InterfacciaController) registry.lookup(loggerRMI.getChiaveController());
-                super.getApplication().initControllerMosse(controller);
+                super.getApplication().setController(controller);
             } catch (NotBoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -194,12 +193,12 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void eseguiTurno() throws RemoteException {
-        Platform.runLater(() ->super.getApplication().passaAControllerMosse());
+        Platform.runLater(() ->controllerFXPartita.eseguiTurno());
     }
 
     @Override
     public void fineTurno() throws RemoteException {
-        Platform.runLater(() -> super.getApplication().fineMossa());
+        //Platform.runLater(() -> controllerFXPartita.fineTurno());
     }
 
     @Override
