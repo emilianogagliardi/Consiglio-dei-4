@@ -7,6 +7,7 @@ import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.GUI.utility.RenderPercorsoNobilta;
 import client.view.GUI.utility.UtilityGUI;
+import client.view.GiocatoreView;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -302,7 +303,9 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //friendly
     void updateAiutantiGiocatore(int aiutanti){
-            aiutantiGiocatore.setText(aiutanti+"");
+        aiutantiGiocatore.setText(aiutanti+"");
+        //memorizza informazioni
+        GiocatoreView.getInstance().setAiutanti(aiutanti);
     }
 
     //friendly
@@ -322,6 +325,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //friendly
     void updateCartePoliticaGiocatore(List<String> carte){
+        //memorizza le informazioni sulle carte
+        GiocatoreView.getInstance().setCartePolitica(carte);
         if (!hBoxPolitica.getChildren().isEmpty()) hBoxPolitica.getChildren().remove(0, hBoxPolitica.getChildren().size());
         ArrayList<ImageView> imgViews = new ArrayList<>();
         carte.forEach(colore ->{
@@ -382,7 +387,11 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     void updateCartePermessoGiocatore(int id, List<CartaPermessoCostruzione> carte){
         HBox hBox;
         try {
-            if (id == GUIView.getInstance().getIdGiocatore()) hBox = hBoxPermit;
+            if (id == GUIView.getInstance().getIdGiocatore()) {
+                hBox = hBoxPermit;
+                //memorizza informazione sulle carte
+                GiocatoreView.getInstance().setCartePermesso(carte);
+            }
             else hBox = idAvversarioHBoxhCartePermit.get(id);
             UtilityGUI utility = new UtilityGUI();
             carte.forEach(carta -> {
