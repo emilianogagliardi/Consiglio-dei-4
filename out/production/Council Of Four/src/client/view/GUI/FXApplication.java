@@ -121,6 +121,20 @@ public class FXApplication extends Application {
         }
     }
 
+    void showMossaCambiaCarte(IdBalcone regione){
+        FXMLLoader loader = new FXMLLoader();
+        try{
+            Parent root = loader.load(getClass().getClassLoader().getResource("cambiacarte.fxml").openStream());
+            ControllerFXCambiaCarte controllerFXCambiaCarte = loader.getController();
+            controllerFXCambiaCarte.setController(controller);
+            controllerFXCambiaCarte.setRegione(regione);
+            controllerFXCambiaCarte.setApplication(this);
+            setUpFinestraSecondaria(root);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
     private void setUpFinestraSecondaria(Parent root){
         chiudiFinestraSecondaria();
         scenaMossa = new Scene(root);
