@@ -98,6 +98,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private EventHandler<MouseEvent> eAcquistaCollina = event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COLLINA));
     private EventHandler<MouseEvent> eAcquistaMontagna = event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.MONTAGNA));
     private EventHandler<MouseEvent> eCostruisciRe = event -> Platform.runLater(() -> super.getApplication().showMossaCostruzioneRe());
+    private EventHandler<MouseEvent> eCostruisciPermesso = event -> Platform.runLater(() -> super.getApplication().showMossaCostruzioneEmporio());
 
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
@@ -459,6 +460,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                     w = 75;
                     //memorizza informazione sulle carte
                     GiocatoreView.getInstance().setCartePermesso(carte);
+                    hBox.getChildren().clear();
                     carte.forEach(carta -> {
                         StackPane stackPane = new StackPane();
                         utility.creaPermit(carta, h, w, stackPane, false);
@@ -567,6 +569,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         cartaMontagnaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
         //per costruzione con aiuto del re
         posizioneRe.addEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
+        //per costruzione con permesso
+        hBoxPermit.addEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciPermesso);
     }
 
     void fineTurno(){
@@ -580,6 +584,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         cartaMontagnaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
         cartaCollinaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
         posizioneRe.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
+        hBoxPermit.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciPermesso);
     }
 
     private void mostraPopOver(){
