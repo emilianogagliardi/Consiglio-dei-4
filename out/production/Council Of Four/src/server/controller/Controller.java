@@ -32,6 +32,9 @@ public class Controller implements Runnable, InterfacciaController {
     private ArrayList<SocketPollingController> socketPollingControllers;
     private GiocatoriOnline giocatoriOnline;
     private VetrinaMarket vetrinaMarket;
+    private boolean faseTurno;
+    private boolean faseVenditaMarket;
+    private boolean faseAcquistoMarket;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
@@ -69,6 +72,7 @@ public class Controller implements Runnable, InterfacciaController {
             while(!partitaTerminata()){
 
                 //INIZIO TURNO
+                faseTurno = true;
                 do {
                     //si passa al giocatore successivo
                     giocatoreCorrente = giocatoriOnline.prossimo();
@@ -95,8 +99,9 @@ public class Controller implements Runnable, InterfacciaController {
                         exc.printStackTrace();
                     }
                 } while (giocatoriOnline.haProssimo());
+                faseTurno = false;
 
-
+                faseVenditaMarket = true;
                 //INIZIO FASE VENDITA MARKET
                 comunicaATutti("Inizia la fase di vendita del market");
                 do {
@@ -114,8 +119,9 @@ public class Controller implements Runnable, InterfacciaController {
                         exc.printStackTrace();
                     }
                 } while (giocatoriOnline.haProssimo());
+                faseVenditaMarket = false;
 
-
+                faseAcquistoMarket = true;
                 //INIZIO FASE ACQUISTO MARKET
                 comunicaATutti("Inizia la fase di acquisto del market");
                 vetrinaMarket = new VetrinaMarket();
@@ -134,7 +140,7 @@ public class Controller implements Runnable, InterfacciaController {
                     }
 
                 } while (!scatolaIdGiocatori.èVuota());
-
+                faseAcquistoMarket = false;
             }
             socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
         } catch (RemoteException exc){
@@ -198,6 +204,7 @@ public class Controller implements Runnable, InterfacciaController {
                 num = ((BonusAvanzaPercorsoNobiltà) bonus).getNumeroPosti();
                 giocatoreCorrente.avanzaPercorsoNobiltà(num);
                 comunicaBonus(num + " passi in avanti sul percorso della nobiltà!");
+                assegnaBonus(partita.getPercorsoDellaNobiltà().get(num));
             }
             else if(bonus instanceof BonusMonete){
                 num = ((BonusMonete) bonus).getNumeroMonete();
@@ -273,6 +280,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean eleggereConsigliere(String idBalcone, String coloreConsigliereDaRiserva)  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (!azionePrincipaleDisponibile()) {
             comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
@@ -303,6 +314,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean acquistareTesseraPermessoCostruzione(String idBalconeRegione, List<String> nomiColoriCartePolitica, int numeroCarta)  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (!azionePrincipaleDisponibile()) {
             comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
@@ -358,6 +373,10 @@ public class Controller implements Runnable, InterfacciaController {
     }
     @Override
     public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà)  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (!azionePrincipaleDisponibile()) {
             comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
@@ -388,6 +407,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione)  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (!azionePrincipaleDisponibile()) {
             comunicaAGiocatoreCorrente("Non hai più azioni principali disponibili!");
             return false;
@@ -438,6 +461,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean ingaggiareAiutante()  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (azioneVeloceEseguita) {
             comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
@@ -471,6 +498,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean cambiareTesserePermessoCostruzione(String regione)  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (azioneVeloceEseguita) {
             comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
@@ -487,6 +518,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere)  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (azioneVeloceEseguita) {
             comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
@@ -509,6 +544,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean compiereAzionePrincipaleAggiuntiva()  throws RemoteException{
+        if (!faseTurno){
+            comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
+            return false;
+        }
         if (azioneVeloceEseguita) {
             comunicaAGiocatoreCorrente("Hai già eseguito un'azione veloce!");
             return false;
@@ -526,6 +565,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean vendiCartePermesso(List<CartaPermessoCostruzione> cartePermesso, int prezzo) throws RemoteException {
+        if (!faseVenditaMarket){
+            comunicaAGiocatoreCorrente("Non puoi vendere in questo momento!");
+            return false;
+        }
         HashMap<CartaPermessoCostruzione, Integer> mappaCarteVendibili = Utility.listToHashMap(cartePermesso);
         HashMap<CartaPermessoCostruzione, Integer> mappaCarteGiocatore = Utility.listToHashMap(giocatoreCorrente.getManoCartePermessoCostruzione());
         if (Utility.hashMapContainsAllWithDuplicates(mappaCarteGiocatore, mappaCarteVendibili)) {
@@ -541,6 +584,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean vendiCartePolitica(List<String> cartePolitica, int prezzo) throws RemoteException {
+        if (!faseVenditaMarket){
+            comunicaAGiocatoreCorrente("Non puoi vendere in questo momento!");
+            return false;
+        }
         HashMap<String, Integer> mappaCarteVendibili = Utility.listToHashMap(cartePolitica);
         List<String> manoColoriCartePolitica = new ArrayList<>();
         giocatoreCorrente.getManoCartePolitica().forEach((CartaPolitica carta) ->{
@@ -560,6 +607,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException {
+        if (!faseVenditaMarket){
+            comunicaAGiocatoreCorrente("Non puoi vendere in questo momento!");
+            return false;
+        }
         if (giocatoreCorrente.getAiutanti() - numeroAiutanti < 0) {
             comunicaAGiocatoreCorrente("Non hai abbastanza aiutanti!");
             return false;
@@ -571,6 +622,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException {
+        if (!faseAcquistoMarket){
+            comunicaAGiocatoreCorrente("Non puoi acquistare in questo momento!");
+            return false;
+        }
         int costoTotale = 0;
         for (Vendibile vendibile : vendibili) {
             costoTotale += vendibile.getPrezzo();

@@ -36,6 +36,10 @@ public class Partita extends Observable {
         giocatori = new ArrayList<>(CostantiSistema.NUM_GOCATORI_MAX);
     }
 
+    public List<Bonus> getPercorsoDellaNobiltà(){
+        return this.percorsoDellaNobiltà;
+    }
+
     public NomeCittà getCittàRe(){
         return re.getCittà().getNome();
     }
@@ -117,7 +121,10 @@ public class Partita extends Observable {
             this.mazzoCartePolitica = mazzoCartePolitica;
     }
 
-    public CartaPolitica ottieniCartaPolitica(){
+    public CartaPolitica ottieniCartaPolitica() {
+        if (mazzoCartePolitica.isEmpty()) {
+            this.mazzoCartePolitica = this.cartePoliticaScartate;
+        }
         return mazzoCartePolitica.ottieniCarta();
     }
 
