@@ -205,6 +205,11 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updateMonete(int idGiocatore, int monete) throws RemoteException {
         mappaMonete.put(idGiocatore, monete);
+        if (idGiocatore == this.idGiocatore) {
+            System.out.println("Monete: " + monete);
+        } else {
+            System.out.println("Monete giocatore " + idGiocatore + ": " + monete);
+        }
     }
 
     @Override
@@ -234,6 +239,11 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updateAiutanti(int idGiocatore, int numAiutanti) throws RemoteException {
         mappaAiutantiGiocatori.put(idGiocatore, numAiutanti);
+        if (idGiocatore == this.idGiocatore) {
+            System.out.println("Aiutanti: " + numAiutanti);
+        } else {
+            System.out.println("Aiutanti giocatore " + idGiocatore + ": " + numAiutanti);
+        }
     }
 
     @Override
@@ -275,6 +285,7 @@ class CLIView implements InterfacciaView, Remote {
     public void eseguiTurno() throws RemoteException {
         istanza = EseguiTurno.getIstanza();
         istanza.setController(controller);
+        istanza.setCLIView(this);
         new Thread(istanza).start();
     }
 
