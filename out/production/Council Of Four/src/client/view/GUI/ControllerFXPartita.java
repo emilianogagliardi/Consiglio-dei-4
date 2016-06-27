@@ -98,6 +98,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private EventHandler<MouseEvent> eAcquistaCollina = event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COLLINA));
     private EventHandler<MouseEvent> eAcquistaMontagna = event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.MONTAGNA));
     private EventHandler<MouseEvent> eCostruisciRe = event -> Platform.runLater(() -> super.getApplication().showMossaCostruzioneRe());
+    private EventHandler<MouseEvent> eCostruisciPermesso = event -> Platform.runLater(() -> super.getApplication().showMossaCostruzioneEmporio());
+    private EventHandler<MouseEvent> eCambiaCarteCosta = event -> Platform.runLater(() -> super.getApplication().showMossaCambiaCarte(IdBalcone.COSTA));
+    private EventHandler<MouseEvent> eCambiaCarteCollina = event -> Platform.runLater(() -> super.getApplication().showMossaCambiaCarte(IdBalcone.COLLINA));
+    private EventHandler<MouseEvent> eCambiaCarteMontagna = event -> Platform.runLater(() -> super.getApplication().showMossaCambiaCarte(IdBalcone.MONTAGNA));
 
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
@@ -459,22 +463,20 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                     w = 75;
                     //memorizza informazione sulle carte
                     GiocatoreView.getInstance().setCartePermesso(carte);
-                    carte.forEach(carta -> {
-                        StackPane stackPane = new StackPane();
-                        utility.creaPermit(carta, h, w, stackPane, false);
-                        hBox.getChildren().add(stackPane);
-                    });
+                    hBox.getChildren().clear();
                 } else{
                     hBox = idAvversarioHBoxhCartePermit.get(id);
                     hBox.getChildren().clear();
                     h = 60;
                     w = 50;
-                    carte.forEach(carta -> {
+                }
+                carte.forEach(carta -> {
+                    if (carta.isVisibile()) {
                         StackPane stackPane = new StackPane();
                         utility.creaPermit(carta, h, w, stackPane, false);
                         hBox.getChildren().add(stackPane);
-                    });
-                }
+                    }
+                });
             } catch (SingletonNonInizializzatoException | RemoteException e) {
                 e.printStackTrace();
             }
@@ -561,12 +563,21 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         balconeMontagna.addEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiMontagna);
         balconeCosta.addEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiCosta);
         balconeRe.addEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiRe);
-        //per acquisto carte permesso
-        cartaCostaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
-        cartaCollinaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
-        cartaMontagnaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
+        //per cambiare carte permesso
+        cartaCostaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eCambiaCarteCosta);
+        cartaCollinaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eCambiaCarteCollina);
+        cartaMontagnaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eCambiaCarteMontagna);
+        //per acquistare tessera permesso
+        cartaCosta1.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
+        cartaCosta2.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
+        cartaMontagna1.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
+        cartaMontagna2.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
+        cartaCollina1.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
+        cartaCollina2.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
         //per costruzione con aiuto del re
         posizioneRe.addEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
+        //per costruzione con permesso
+        hBoxPermit.addEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciPermesso);
     }
 
     void fineTurno(){
@@ -576,10 +587,17 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         balconeCosta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiCosta);
         balconeMontagna.removeEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiMontagna);
         balconeRe.removeEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiRe);
-        cartaCostaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
-        cartaMontagnaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
-        cartaCollinaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
+        cartaCostaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCambiaCarteCosta);
+        cartaMontagnaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCambiaCarteMontagna);
+        cartaCollinaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCambiaCarteCollina);
+        cartaCosta1.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
+        cartaCosta2.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
+        cartaMontagna1.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
+        cartaMontagna2.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
+        cartaCollina1.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
+        cartaCollina2.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
         posizioneRe.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
+        hBoxPermit.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciPermesso);
     }
 
     private void mostraPopOver(){

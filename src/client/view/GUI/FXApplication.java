@@ -84,7 +84,10 @@ public class FXApplication extends Application {
     void showMossaCostruzioneEmporio(){
         FXMLLoader loader = new FXMLLoader();
         try {
-            Parent root = loader.load(getClass().getClassLoader().getResource("costruzioneconpermit.fxml"));
+            Parent root = loader.load(getClass().getClassLoader().getResource("costruzionepermesso.fxml").openStream());
+            ControllerFXCostruzionePermesso controllerFXCostruzionePermesso = loader.getController();
+            controllerFXCostruzionePermesso.setController(controller);
+            controllerFXCostruzionePermesso.setApplication(this);
             setUpFinestraSecondaria(root);
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,6 +117,20 @@ public class FXApplication extends Application {
             controllerFxCostruzioneRe.setApplication(this);
             setUpFinestraSecondaria(root);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void showMossaCambiaCarte(IdBalcone regione){
+        FXMLLoader loader = new FXMLLoader();
+        try{
+            Parent root = loader.load(getClass().getClassLoader().getResource("cambiacarte.fxml").openStream());
+            ControllerFXCambiaCarte controllerFXCambiaCarte = loader.getController();
+            controllerFXCambiaCarte.setController(controller);
+            controllerFXCambiaCarte.setRegione(regione);
+            controllerFXCambiaCarte.setApplication(this);
+            setUpFinestraSecondaria(root);
+        }catch(IOException e){
             e.printStackTrace();
         }
     }
