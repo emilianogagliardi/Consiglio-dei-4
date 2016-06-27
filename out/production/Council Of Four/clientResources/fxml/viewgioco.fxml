@@ -90,126 +90,21 @@
                                           <HBox fx:id="bonusMerkatim" layoutX="698.0" layoutY="397.0" prefHeight="30.0" prefWidth="90.0" />
                                           <HBox fx:id="bonusOsium" layoutX="879.0" layoutY="348.0" prefHeight="30.0" prefWidth="90.0" />
                                            <HBox fx:id="bonusJuvelar" layoutX="554.0" layoutY="281.0" prefHeight="30.0" prefWidth="90.0" />
-                                          <HBox id="emporiArkon" layoutX="99.0" layoutY="164.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiCastrum" layoutX="243.0" layoutY="212.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiBurgen" layoutX="73.0" layoutY="328.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiDorful" layoutX="241.0" layoutY="361.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiEsti" layoutX="114.0" layoutY="475.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiFramek" layoutX="422.0" layoutY="187.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiIndur" layoutX="602.0" layoutY="187.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiGraden" layoutX="429.0" layoutY="335.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiJuvelar" layoutX="586.0" layoutY="380.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiHellar" layoutX="435.0" layoutY="462.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiMerkatim" layoutX="668.0" layoutY="490.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiLyram" layoutX="736.0" layoutY="339.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiOsium" layoutX="893.0" layoutY="444.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiNaris" layoutX="896.0" layoutY="271.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="emporiKultos" layoutX="755.0" layoutY="178.0" prefHeight="25.0" prefWidth="100.0">
-                                             <children>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                                             </children>
-                                          </HBox>
+                                          <HBox fx:id="emporiArkon" layoutX="99.0" layoutY="164.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiCastrum" layoutX="243.0" layoutY="212.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiBurgen" layoutX="73.0" layoutY="328.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiDorful" layoutX="241.0" layoutY="361.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiEsti" layoutX="114.0" layoutY="475.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiFramek" layoutX="422.0" layoutY="187.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiIndur" layoutX="602.0" layoutY="187.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiGraden" layoutX="429.0" layoutY="335.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiJuvelar" layoutX="586.0" layoutY="380.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiHellar" layoutX="435.0" layoutY="462.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiMerkatim" layoutX="668.0" layoutY="490.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiLyram" layoutX="736.0" layoutY="339.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiOsium" layoutX="893.0" layoutY="444.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiNaris" layoutX="896.0" layoutY="271.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiKultos" layoutX="755.0" layoutY="178.0" prefHeight="25.0" prefWidth="100.0" />
                                           <StackPane fx:id="cartaCosta1" layoutX="158.0" layoutY="550.0" prefHeight="84.0" prefWidth="75.0" />
                                           <StackPane fx:id="cartaCosta2" layoutX="239.0" layoutY="549.0" prefHeight="86.0" prefWidth="75.0" />
                                           <StackPane fx:id="cartaCollina1" layoutX="477.0" layoutY="552.0" prefHeight="84.0" prefWidth="68.0" />
@@ -231,6 +126,7 @@
                                           <ImageView fx:id="kRe" fitHeight="68.0" fitWidth="74.0" layoutX="788.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="nRe" fitHeight="68.0" fitWidth="74.0" layoutX="912.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="oRe" fitHeight="68.0" fitWidth="74.0" layoutX="925.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Button fx:id="btnPassaTurno" layoutX="957.0" layoutY="20.0" mnemonicParsing="false" text="Passa turno" />
                                        </children>
                                        <padding>
                                           <Insets left="10.0" />

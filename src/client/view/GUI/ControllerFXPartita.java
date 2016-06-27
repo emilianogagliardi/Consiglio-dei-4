@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -51,7 +52,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             bonusHellar, bonusKultos, bonusLyram, bonusNaris, bonusMerkatim, bonusOsium, bonusJuvelar;
     @FXML
     private HBox emporiArkon, emporiBurgen, emporiCastrum, emporiDorful, emporiEsti, emporiFramek, emporiGraden, emporiIndur,
-            emporiHellar, emporiKultos, emporiLyram, emporiNaris, emporiMerkatim, emporiOsium;
+            emporiHellar, emporiKultos, emporiLyram, emporiNaris, emporiMerkatim, emporiOsium, emporiJuvelar;
     @FXML
     private ImageView imageViewMonete, imageViewAiutanti, imageViewPunti, imageViewEmpori, imgTabellaPunti, imgTabellaMonete, imgTabellaAiutanti, imgTabellaNCarte, imgTabellaEmpori;
     @FXML
@@ -86,6 +87,18 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private Button bottoneAiuto;
     @FXML
     private ImageView posizioneRe;
+    @FXML
+    private Button btnPassaTurno;
+
+    private EventHandler<MouseEvent> eEleggiCollina = event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COLLINA));
+    private EventHandler<MouseEvent> eEleggiMontagna = event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.MONTAGNA));
+    private EventHandler<MouseEvent> eEleggiCosta = event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COSTA));
+    private EventHandler<MouseEvent> eEleggiRe = event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.RE));
+    private EventHandler<MouseEvent> eAcquistaCosta = event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COSTA));
+    private EventHandler<MouseEvent> eAcquistaCollina = event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COLLINA));
+    private EventHandler<MouseEvent> eAcquistaMontagna = event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.MONTAGNA));
+    private EventHandler<MouseEvent> eCostruisciRe = event -> Platform.runLater(() -> super.getApplication().showMossaCostruzioneRe());
+
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelAiutanti = new HashMap<>();
@@ -101,6 +114,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        posizioneRe = jRe;
         //assegna l'handler di mostra mappa all'evento di start del gioco
         inizializzaImmagineMappa();
         //inizializza le immagini di retro delle carte permit
@@ -115,6 +129,11 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaHashMapNomi();
         inizializzaIdGiocatoreColore();
         inizializzaBottoneAiuto();
+        inizializzaBottonePassaTurno();
+    }
+
+    private void inizializzaBottonePassaTurno(){
+        btnPassaTurno.setOnMouseClicked(event -> super.getApplication().passaTurno());
     }
 
     private void inizializzaRenderNobilta(){
@@ -392,13 +411,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori){
         Platform.runLater(() -> {
             try {
-                Field fieldHBox = getClass().getDeclaredField("empori" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1));
+                String nomeAttributo = "empori" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1).toLowerCase();
+                Field fieldHBox = getClass().getDeclaredField(nomeAttributo);
                 HBox box = (HBox) fieldHBox.get(this);
+                box.getChildren().clear();
                 idGiocatori.forEach((Integer id) -> {
-                    ImageView imgView = (ImageView) box.getChildren().get(id);
                     ColoreGiocatore colore = idGiocatoreColore.get(id);
                     String nomeFile = "emporio_" + colore.toString().toLowerCase() + ".png";
-                    imgView.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
+                    box.getChildren().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile))));
                 });
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -513,6 +533,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     void updateRe(String citta) {
         Platform.runLater(() -> {
             try {
+                posizioneRe.setImage(null);
                 Field fieldImg = getClass().getDeclaredField(citta.substring(0, 1).toLowerCase() + "Re");
                 ImageView img = (ImageView) fieldImg.get(this);
                 img.setImage(new Image(getClass().getClassLoader().getResourceAsStream("re.png")));
@@ -534,19 +555,31 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //friendly
     void eseguiTurno(){
+        btnPassaTurno.setDisable(false);
         //per elezione di consiglieri
-        balconeCollina.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COLLINA)));
-        balconeMontagna.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.MONTAGNA)));
-        balconeCosta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COSTA)));
-        balconeRe.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.RE)));
+        balconeCollina.addEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiCollina);
+        balconeMontagna.addEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiMontagna);
+        balconeCosta.addEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiCosta);
+        balconeRe.addEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiRe);
         //per acquisto carte permesso
-        cartaCostaCoperta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COSTA)));
-        cartaCollinaCoperta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COLLINA)));
-        cartaMontagnaCoperta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.MONTAGNA)));
+        cartaCostaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
+        cartaCollinaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
+        cartaMontagnaCoperta.addEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
+        //per costruzione con aiuto del re
+        posizioneRe.addEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
     }
 
     void fineTurno(){
+        btnPassaTurno.setDisable(true);
         Platform.runLater(() -> super.getApplication().chiudiFinestraSecondaria());
+        balconeCollina.removeEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiCollina);
+        balconeCosta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiCosta);
+        balconeMontagna.removeEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiMontagna);
+        balconeRe.removeEventHandler(MouseEvent.MOUSE_CLICKED, eEleggiRe);
+        cartaCostaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCosta);
+        cartaMontagnaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaMontagna);
+        cartaCollinaCoperta.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
+        posizioneRe.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
     }
 
     private void mostraPopOver(){

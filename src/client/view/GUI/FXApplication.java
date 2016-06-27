@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 public class FXApplication extends Application {
     InterfacciaController controller;
@@ -74,10 +75,7 @@ public class FXApplication extends Application {
             controllerFXAcquistaPermesso.setController(controller);
             controllerFXAcquistaPermesso.setApplication(this);
             controllerFXAcquistaPermesso.setRegione(regione);
-            scenaMossa = new Scene(root);
-            finestraSecodaria = new Stage();
-            finestraSecodaria.setScene(scenaMossa);
-            finestraSecodaria.show();
+            setUpFinestraSecondaria(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,10 +85,7 @@ public class FXApplication extends Application {
         FXMLLoader loader = new FXMLLoader();
         try {
             Parent root = loader.load(getClass().getClassLoader().getResource("costruzioneconpermit.fxml"));
-            scenaMossa = new Scene(root);
-            finestraSecodaria = new Stage();
-            finestraSecodaria.setScene(scenaMossa);
-            finestraSecodaria.show();
+            setUpFinestraSecondaria(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,10 +99,7 @@ public class FXApplication extends Application {
             controllerFXEleggiConsigliere.setController(controller);
             controllerFXEleggiConsigliere.setBalcone(balcone);
             controllerFXEleggiConsigliere.setApplication(this);
-            scenaMossa = new Scene(root);
-            finestraSecodaria = new Stage();
-            finestraSecodaria.setScene(scenaMossa);
-            finestraSecodaria.show();
+            setUpFinestraSecondaria(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,18 +108,35 @@ public class FXApplication extends Application {
     void showMossaCostruzioneRe(){
         FXMLLoader loader = new FXMLLoader();
         try {
-            Parent root = loader.load(getClass().getClassLoader().getResource("costruzionere.fxml"));
-            scenaMossa = new Scene(root);
-            finestraSecodaria = new Stage();
-            finestraSecodaria.setScene(scenaMossa);
-            finestraSecodaria.show();
+            Parent root = loader.load(getClass().getClassLoader().getResource("costruzionere.fxml").openStream());
+            ControllerFxCostruzioneRe controllerFxCostruzioneRe = loader.getController();
+            controllerFxCostruzioneRe.setController(controller);
+            controllerFxCostruzioneRe.setApplication(this);
+            setUpFinestraSecondaria(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void setUpFinestraSecondaria(Parent root){
+        chiudiFinestraSecondaria();
+        scenaMossa = new Scene(root);
+        finestraSecodaria = new Stage();
+        finestraSecodaria.setScene(scenaMossa);
+        finestraSecodaria.show();
+    }
+
     void chiudiFinestraSecondaria(){
         if (finestraSecodaria != null && finestraSecodaria.isShowing()) finestraSecodaria.close();
+    }
+
+    void passaTurno(){
+        chiudiFinestraSecondaria();
+        try {
+            controller.passaTurno();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     void setIsSocketClient(boolean isSocketClient){

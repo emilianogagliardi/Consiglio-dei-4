@@ -35,13 +35,9 @@
          <children>
             <Label layoutX="33.0" layoutY="20.0" prefHeight="39.0" prefWidth="418.0" text="Scegli fino a quattro carte politica per soddisfare il consiglio" />
             <ScrollPane hbarPolicy="ALWAYS" layoutX="59.0" layoutY="75.0" prefHeight="157.0" prefWidth="482.0" vbarPolicy="NEVER">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="142.0" prefWidth="480.0">
-                     <children>
-                        <HBox fx:id="hBoxPolitica" layoutX="123.0" layoutY="21.0" prefHeight="142.0" prefWidth="480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
+               <content>
+                  <HBox fx:id="hBoxPolitica" prefHeight="140.0" prefWidth="480.0" />
+               </content>
             </ScrollPane>
             <Label fx:id="labelMessaggioMonete" layoutX="94.0" layoutY="242.0" text="Il soddisfacimento del consiglio richiede un supplemento in monete" />
          </children>

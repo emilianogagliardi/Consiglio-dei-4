@@ -176,6 +176,7 @@ public class SocketProxyView implements InterfacciaView {
         }
     }
 
+
     @Override
     public void updateCartePermessoGiocatore(int idGiocatore, List<CartaPermessoCostruzione> manoCartePermessoCostruzione) {
         try {
