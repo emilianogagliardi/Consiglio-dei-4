@@ -1,6 +1,8 @@
 package classicondivise.carte;
 
-public abstract class Carta {
+import java.io.Serializable;
+
+public abstract class Carta implements Serializable{
     private boolean visibile = true; //una carta con visibile = true significa che è scoperta
 
 

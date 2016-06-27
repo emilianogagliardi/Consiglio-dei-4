@@ -135,6 +135,36 @@ public class FXApplication extends Application {
         }
     }
 
+    void showMossaOttieniAiutantoOMossa(){
+        FXMLLoader loader = new FXMLLoader();
+        try{
+            Parent root = loader.load(getClass().getClassLoader().getResource("aiutantiomossa.fxml").openStream());
+            ControllerFXAiutantiOMossa controllerFXAiutantiOMossa= loader.getController();
+            controllerFXAiutantiOMossa.setController(controller);
+            controllerFXAiutantiOMossa.setApplication(this);
+            setUpFinestraSecondaria(root);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    void showFinestraVendi(){
+        FXMLLoader loader = new FXMLLoader();
+        try{
+            Parent root = loader.load(getClass().getClassLoader().getResource("vendi.fxml").openStream());
+            ControllerFXVendi controllerFXVendi = loader.getController();
+            controllerFXVendi.setController(controller);
+            controllerFXVendi.setApplication(this);
+            setUpFinestraSecondaria(root);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    void showFinestraCompra(){
+
+    }
+
     private void setUpFinestraSecondaria(Parent root){
         chiudiFinestraSecondaria();
         scenaMossa = new Scene(root);

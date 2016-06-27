@@ -6,7 +6,8 @@ import classicondivise.NomeCittà;
 import java.io.Serializable;
 import java.util.HashSet;
 
-public class CartaPermessoCostruzione extends CartaConBonus implements Serializable{
+public class
+CartaPermessoCostruzione extends CartaConBonus implements Serializable{
     private HashSet<NomeCittà> città = new HashSet<>(1);
 
     public CartaPermessoCostruzione (Bonus bonus, HashSet<NomeCittà> città){ //le città devono appartenere alla regione cui appartiene il mazzo di carte permesso
@@ -26,4 +27,5 @@ public class CartaPermessoCostruzione extends CartaConBonus implements Serializa
     public HashSet<NomeCittà> getCittà(){
         return città;
     }
+
 }

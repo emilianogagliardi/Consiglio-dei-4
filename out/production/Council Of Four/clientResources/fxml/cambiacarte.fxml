@@ -7,12 +7,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="141.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GUI.ControllerFXCambiaCarte">
    <children>
-      <Label fx:id="label" layoutX="185.0" layoutY="26.0" text="Label">
+      <Label fx:id="label" layoutX="13.0" layoutY="14.0" prefHeight="69.0" prefWidth="400.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
       <Button fx:id="btnConferma" layoutX="313.0" layoutY="90.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" text="Ok" />
-      <Button fx:id="btnAnnulla" layoutX="233.0" layoutY="90.0" mnemonicParsing="false" text="Annulla" />
    </children>
 </AnchorPane>
