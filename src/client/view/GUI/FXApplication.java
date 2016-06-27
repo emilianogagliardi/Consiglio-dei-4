@@ -99,6 +99,7 @@ public class FXApplication extends Application {
             ControllerFXEleggiConsigliere controllerFXEleggiConsigliere = loader.getController();
             controllerFXEleggiConsigliere.setController(controller);
             controllerFXEleggiConsigliere.setBalcone(balcone);
+            controllerFXEleggiConsigliere.setApplication(this);
             scenaMossa = new Scene(root);
             finestraSecodaria = new Stage();
             finestraSecodaria.setScene(scenaMossa);

@@ -4,6 +4,7 @@ import classicondivise.Colore;
 import classicondivise.IdBalcone;
 import client.view.RiservaPartitaView;
 import interfaccecondivise.InterfacciaController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -26,7 +27,7 @@ public class ControllerFXEleggiConsigliere extends GestoreFlussoFinestra impleme
     private IdBalcone balcone;
     private ToggleGroup toggleGroup;
     @FXML
-    private RadioButton btn1, btn2, btn3, btn4, btn5, btn6;
+    private RadioButton btn1, btn2, btn3, btn4, btn5, btn6, comeAzionePrincipale, comeAzioneVeloce;
     @FXML
     private Button bottoneConferma;
 
@@ -58,7 +59,17 @@ public class ControllerFXEleggiConsigliere extends GestoreFlussoFinestra impleme
         btn5.setToggleGroup(toggleGroup);
         btn6.setToggleGroup(toggleGroup);
         setAzioneBottoni();
+        inizializzaBottoniTipoMossa();
         inizializzaBtnConferma();
+    }
+
+    private void  inizializzaBottoniTipoMossa(){
+        comeAzionePrincipale.setOnMouseClicked(event -> {
+            comeAzioneVeloce.setSelected(false);
+        });
+        comeAzioneVeloce.setOnMouseClicked(event -> {
+            comeAzionePrincipale.setSelected(false);
+        });
     }
 
     private void setAzioneBottoni(){
@@ -83,25 +94,31 @@ public class ControllerFXEleggiConsigliere extends GestoreFlussoFinestra impleme
     private void inizializzaBtnConferma(){
         bottoneConferma.setOnMouseClicked(event -> {
             RadioButton premuto = (RadioButton) toggleGroup.getSelectedToggle();
-            Colore colore = null;
-            if (premuto.equals(btn1))
-                colore = Colore.ARANCIONE;
-            else if (premuto.equals(btn2))
-                colore = Colore.AZZURRO;
-            else if (premuto.equals(btn3))
-                colore = Colore.BIANCO;
-            else if (premuto.equals(btn4))
-                colore = Colore.NERO;
-            else if (premuto.equals(btn5))
-                colore = Colore.ROSA;
-            else if (premuto.equals(btn6))
-                colore = Colore.VIOLA;
-            try {
-                controller.eleggereConsigliere(balcone.toString(), colore.toString());
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            if(premuto != null){
+                Colore colore = null;
+                if (premuto.equals(btn1))
+                    colore = Colore.ARANCIONE;
+                else if (premuto.equals(btn2))
+                    colore = Colore.AZZURRO;
+                else if (premuto.equals(btn3))
+                    colore = Colore.BIANCO;
+                else if (premuto.equals(btn4))
+                    colore = Colore.NERO;
+                else if (premuto.equals(btn5))
+                    colore = Colore.ROSA;
+                else if (premuto.equals(btn6))
+                    colore = Colore.VIOLA;
+                if(comeAzionePrincipale.isSelected() || comeAzioneVeloce.isSelected()) {
+                    try {
+                        if (comeAzionePrincipale.isSelected())
+                            controller.eleggereConsigliere(balcone.toString(), colore.toString());
+                        else controller.mandareAiutanteEleggereConsigliere(balcone.toString(), colore.toString());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(() -> super.getApplication().chiudiFinestraSecondaria());
+                }
             }
-            super.getApplication().chiudiFinestraSecondaria();
         });
     }
 

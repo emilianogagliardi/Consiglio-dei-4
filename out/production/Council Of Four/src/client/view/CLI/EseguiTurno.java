@@ -173,7 +173,7 @@ class EseguiTurno implements Runnable {
 
     private String inserimentoCittà(){
         String inputLine, città;
-        System.out.println("Inserisci l'iniziale maiuscola del nome della città: \nARKON,\n" +
+        System.out.println("Inserisci l'iniziale maiuscola del nome della città: \n    ARKON,\n" +
                 "    BURGEN,\n" +
                 "    CASTRUM,\n" +
                 "    DORFUL,\n" +
@@ -185,7 +185,7 @@ class EseguiTurno implements Runnable {
                 "    JUVELAR,\n" +
                 "    KULTOS,\n" +
                 "    LYRAM,\n" +
-                "    MERKATIM," +
+                "    MERKATIM,\n" +
                 "    NARIS,\n" +
                 "    OSIUM.\n");
         inputLine = in.nextLine();
