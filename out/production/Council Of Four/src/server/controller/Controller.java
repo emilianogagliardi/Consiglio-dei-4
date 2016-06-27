@@ -426,7 +426,10 @@ public class Controller implements Runnable, InterfacciaController {
             comunicaAGiocatoreCorrente("La città scelta non è collegata a quella dove risiede attualmente il Re!");
             return false;
         }
+
         int moneteDaPagare = distanza * CostantiModel.MONETE_PER_STRADA;
+        List<ColoreCartaPolitica> coloriCartePolitica = nomiColoriCartePolitica.stream().map(ColoreCartaPolitica::valueOf).collect(Collectors.toList());
+        moneteDaPagare += moneteDaPagareSoddisfaConsiglio(coloriCartePolitica);
         if (giocatoreCorrente.getMonete() - moneteDaPagare < 0 ) {
             comunicaAGiocatoreCorrente("Non hai abbastanza monete per costruire un emporio in questa città!");
             return false;
