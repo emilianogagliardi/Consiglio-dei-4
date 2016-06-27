@@ -30,7 +30,6 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     private static int idGiocatore;
     private static int idMappa;
     private static GUIView instance;
-    private static ControllerFXMosse controllerFXMosse; //utilizzato per le mosse
     private static ControllerFXPartita controllerFXPartita; //utilizzato per le update
 
     private GUIView(FXApplication application) throws RemoteException {
@@ -53,7 +52,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     static void setControllerFXPartita(ControllerFXPartita controller) {
         controllerFXPartita = controller;
     }
-    static void setControllerFXMosse(ControllerFXMosse controller) {controllerFXMosse = controller;}
+
     protected static void setIdMappa(int id){idMappa = id;}
 
     protected static int getIdMappa(){return idMappa;}
@@ -90,7 +89,7 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
             try {
                 loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);
                 InterfacciaController controller = (InterfacciaController) registry.lookup(loggerRMI.getChiaveController());
-                super.getApplication().initControllerMosse(controller);
+                super.getApplication().setController(controller);
             } catch (NotBoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -114,102 +113,102 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void updatePuntiVittoriaGiocatore(int id, int punti) throws RemoteException{
-        if(id == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaGiocatore(punti));
-        else Platform.runLater(() -> controllerFXPartita.updatePuntiVittoriaAvversario(id, punti));
+        if(id == this.getIdGiocatore()) controllerFXPartita.updatePuntiVittoriaGiocatore(punti);
+        else controllerFXPartita.updatePuntiVittoriaAvversario(id, punti);
     }
 
     @Override
     public void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) throws RemoteException{
-        Platform.runLater(() -> controllerFXPartita.updateBalcone(idBalcone, colore1, colore2, colore3, colore4));
+        controllerFXPartita.updateBalcone(idBalcone, colore1, colore2, colore3, colore4);
     }
 
     @Override
     public void updateMonete(int id, int monete) throws RemoteException {
         if(id==this.getIdGiocatore()) controllerFXPartita.updateMoneteGiocatore(monete);
-        else Platform.runLater(() -> controllerFXPartita.updateMoneteAvversario(id, monete));
+        else controllerFXPartita.updateMoneteAvversario(id, monete);
     }
 
     @Override
     public void updateCartePoliticaAvversari(int idGiocatore, int numCarte) throws RemoteException {
-        Platform.runLater(() -> controllerFXPartita.updateCartePoliticaAvversari(idGiocatore, numCarte));
+        controllerFXPartita.updateCartePoliticaAvversari(idGiocatore, numCarte);
     }
 
     @Override
     public void updateCartePoliticaProprie(List<String> carte) throws RemoteException {
-        Platform.runLater(() -> controllerFXPartita.updateCartePoliticaGiocatore(carte));
+        controllerFXPartita.updateCartePoliticaGiocatore(carte);
     }
 
     @Override
     public void updateCartePermessoRegione(String regione, CartaPermessoCostruzione c1, CartaPermessoCostruzione c2)  throws RemoteException{
-        Platform.runLater(() -> controllerFXPartita.updateCartePermessoRegione(regione, c1, c2));
+        controllerFXPartita.updateCartePermessoRegione(regione, c1, c2);
     }
 
     @Override
     public void updateCartePermessoGiocatore(int idGiocatore, List<CartaPermessoCostruzione> mano) throws RemoteException{
-        Platform.runLater(() -> controllerFXPartita.updateCartePermessoGiocatore(idGiocatore, mano));
+        controllerFXPartita.updateCartePermessoGiocatore(idGiocatore, mano);
     }
 
     @Override
     public void updateAiutanti(int id, int numAiutanti) throws RemoteException{
-        if(id == this.getIdGiocatore()) Platform.runLater(() -> controllerFXPartita.updateAiutantiGiocatore(numAiutanti));
-        else Platform.runLater(() -> controllerFXPartita.updateAiutantiAvversari(id, numAiutanti));
+        if(id == this.getIdGiocatore()) controllerFXPartita.updateAiutantiGiocatore(numAiutanti);
+        else controllerFXPartita.updateAiutantiAvversari(id, numAiutanti);
     }
 
     @Override
     public void updateRiservaAiutanti(int numAiutanti) throws RemoteException{
-        Platform.runLater(() -> controllerFXPartita.updateAiutantiGioco(numAiutanti));
+        controllerFXPartita.updateAiutantiGioco(numAiutanti);
     }
 
     @Override
     public void updateRiservaConsiglieri(List<String> coloriConsiglieri) throws RemoteException{
-        Platform.runLater(() -> controllerFXPartita.updateConsiglieriGioco(coloriConsiglieri));
+        controllerFXPartita.updateConsiglieriGioco(coloriConsiglieri);
     }
 
     @Override
     public void updatePercorsoNobiltà(int idGiocatore, int posizione) throws RemoteException{
-        Platform.runLater(() -> controllerFXPartita.updatePosizionePercorsoNobilta(idGiocatore, posizione));
+        controllerFXPartita.updatePosizionePercorsoNobilta(idGiocatore, posizione);
     }
 
     @Override
     public void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) throws RemoteException{
-        Platform.runLater(() -> controllerFXPartita.updateEmporiCittà(nomeCittà, idGiocatori));
+        controllerFXPartita.updateEmporiCittà(nomeCittà, idGiocatori);
     }
 
     @Override
     public void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException {
-        Platform.runLater(() -> controllerFXPartita.updateBonusCittà(nomeCittà, bonus));
+        controllerFXPartita.updateBonusCittà(nomeCittà, bonus);
     }
 
 
     @Override
     public void updateEmporiDisponibiliGiocatore(int idGiocatore, int num) throws RemoteException{
-        if (idGiocatore == this.getIdGiocatore()) Platform.runLater(() ->controllerFXPartita.updateEmporiGiocatore(num));
-        else Platform.runLater(() -> controllerFXPartita.updateEmporiAvversario(idGiocatore, num));
+        if (idGiocatore == this.getIdGiocatore()) controllerFXPartita.updateEmporiGiocatore(num);
+        else controllerFXPartita.updateEmporiAvversario(idGiocatore, num);
     }
 
     @Override
     public void updatePosizioneRe(String città) throws RemoteException {
-        Platform.runLater(() -> controllerFXPartita.updateRe(città));
+        controllerFXPartita.updateRe(città);
     }
 
     @Override
     public void eseguiTurno() throws RemoteException {
-        Platform.runLater(() ->super.getApplication().passaAControllerMosse());
+        controllerFXPartita.eseguiTurno();
     }
 
     @Override
     public void fineTurno() throws RemoteException {
-        Platform.runLater(() -> super.getApplication().fineMossa());
+        controllerFXPartita.fineTurno();
     }
 
     @Override
     public void mostraMessaggio(String messaggio) {
-        Platform.runLater(() -> controllerFXPartita.nuovoMessaggio(messaggio));
+        controllerFXPartita.nuovoMessaggio(messaggio);
     }
 
     @Override
     public void updateBonusPercorsoNobiltà(List<Bonus> percorso) throws RemoteException {
-        Platform.runLater(() -> controllerFXPartita.updateBonusNobilta(percorso));
+        controllerFXPartita.updateBonusNobilta(percorso);
     }
 
     @Override

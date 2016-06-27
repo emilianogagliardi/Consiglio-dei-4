@@ -8,12 +8,17 @@ import client.view.GUI.customevent.ShowViewGiocoEvent;
 import client.view.GUI.utility.RenderPercorsoNobilta;
 import client.view.GUI.utility.UtilityGUI;
 import client.view.GiocatoreView;
+import client.view.RiservaPartitaView;
 import client.view.eccezioni.SingletonNonInizializzatoException;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -22,7 +27,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -78,7 +86,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private VBox pedinePos0, pedinePos1, pedinePos2, pedinePos3, pedinePos4, pedinePos5, pedinePos6, pedinePos7, pedinePos8, pedinePos9, pedinePos10, pedinePos11, pedinePos12, pedinePos13, pedinePos14, pedinePos15, pedinePos16, pedinePos17, pedinePos18, pedinePos19, pedinePos20;
     @FXML
     private HBox bonusNobilta0, bonusNobilta1, bonusNobilta2, bonusNobilta3, bonusNobilta4, bonusNobilta5, bonusNobilta6, bonusNobilta7, bonusNobilta8, bonusNobilta9, bonusNobilta10, bonusNobilta11, bonusNobilta12, bonusNobilta13, bonusNobilta14, bonusNobilta15, bonusNobilta16, bonusNobilta17, bonusNobilta18, bonusNobilta19, bonusNobilta20;
-
+    @FXML
+    private Button bottoneAiuto;
+    @FXML
+    private ImageView posizioneRe;
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
     private HashMap<Integer, Label> idAvversarioLabelAiutanti = new HashMap<>();
@@ -87,9 +98,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private HashMap<Integer, Label> idAvversarioLabelNEmpori = new HashMap<>();
     private HashMap<Integer, HBox> idAvversarioHBoxhCartePermit = new HashMap<>();
     private RenderPercorsoNobilta renderNobilita;
-
     //identifica id e colore giocatore
     private HashMap<Integer, ColoreGiocatore> idGiocatoreColore;
+    //popover per guidare il giocatore
+    private PopOver popEleggiConsigliere, popCostruisciEmporio, popCostruisciEmporioRe, popAcquistaPermesso, popCambiareTessere, popIngaggiareAiutante;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -106,6 +118,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaRenderNobilta();
         inizializzaHashMapNomi();
         inizializzaIdGiocatoreColore();
+        inizializzaBottoneAiuto();
     }
 
     private void inizializzaRenderNobilta(){
@@ -120,6 +133,14 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
             }
         }
         renderNobilita = new RenderPercorsoNobilta(pedineNobilta);
+    }
+
+    private void inizializzaBottoneAiuto(){
+        inizializzaPopOver();
+        bottoneAiuto.setOnMouseClicked(event -> {
+            if (popAcquistaPermesso.isShowing()) nascondiPopOver();
+            else mostraPopOver();
+        });
     }
 
     private void inizializzaIdGiocatoreColore(){
@@ -168,6 +189,15 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                 e.printStackTrace();
             }
         });
+    }
+
+    private void inizializzaPopOver(){
+        popAcquistaPermesso = new PopOver(new Label("Clicca su una carta permesso per\ncominciare la fase di acquisto"));
+        popCostruisciEmporioRe = new PopOver(new Label("Clicca sul re per costruire \nun emporio tramite l'aiuto del re"));
+        popCostruisciEmporio = new PopOver(new Label("Clicca per utilizzare una carta\npermesso e costruire un emporio"));
+        popEleggiConsigliere = new PopOver(new Label("Clicca per eleggere un consigliere\nguadgnando 4 monete o mandare un\n aiutante ad eleggere un consigliere"));
+        popCambiareTessere = new PopOver(new Label("Clicca su un mazzo per \ncambiare le carte permesso"));
+        popIngaggiareAiutante = new PopOver(new Label("Clicca per ingaggiare un aiutante\no usare tre aiutanti per compiere\nun'azione principale aggiuntiva"));
     }
 
     //l'algoritmo di caricamento deve essere eguito sullo show, nel momento il cui si conosce già quale deve essere l'immagine da mostrare
@@ -241,14 +271,16 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     }
 
     void updateBalcone(String idBalcone, String colore1, String colore2, String colore3, String colore4) {
-        boolean isBalconeRe = IdBalcone.valueOf(idBalcone).equals(IdBalcone.RE);
-        List<Node> nodi = scegliBalcone(idBalcone).getChildren();
-        List<ImageView> imageViewConsiglieri = new ArrayList<>();
-        nodi.forEach(nodo -> imageViewConsiglieri.add((ImageView) nodo));
-        imageViewConsiglieri.get(0).setImage(scegliImmagineConsigliere(colore1, isBalconeRe));
-        imageViewConsiglieri.get(1).setImage(scegliImmagineConsigliere(colore2, isBalconeRe));
-        imageViewConsiglieri.get(2).setImage(scegliImmagineConsigliere(colore3, isBalconeRe));
-        imageViewConsiglieri.get(3).setImage(scegliImmagineConsigliere(colore4, isBalconeRe));
+        Platform.runLater(() -> {
+            boolean isBalconeRe = IdBalcone.valueOf(idBalcone).equals(IdBalcone.RE);
+            List<Node> nodi = scegliBalcone(idBalcone).getChildren();
+            List<ImageView> imageViewConsiglieri = new ArrayList<>();
+            nodi.forEach(nodo -> imageViewConsiglieri.add((ImageView) nodo));
+            imageViewConsiglieri.get(0).setImage(scegliImmagineConsigliere(colore1, isBalconeRe));
+            imageViewConsiglieri.get(1).setImage(scegliImmagineConsigliere(colore2, isBalconeRe));
+            imageViewConsiglieri.get(2).setImage(scegliImmagineConsigliere(colore3, isBalconeRe));
+            imageViewConsiglieri.get(3).setImage(scegliImmagineConsigliere(colore4, isBalconeRe));
+        });
     }
 
     //metodo di utility per update balcone, sceglie il balcone in base all'id
@@ -278,191 +310,269 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
 
     public void updateBonusCittà(String nomeCittà, Bonus bonus){
-        HBox hBoxBonus;
-        Class c = this.getClass();
-        try {
-            //ottiene l'attributo "bonusNomecittà" di this.getClass, per evitare uno switch case di 15 case.
-            Field fieldHBox = c.getDeclaredField("bonus" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1).toLowerCase());
-            hBoxBonus = (HBox) fieldHBox.get(this);
-            UtilityGUI utility = new UtilityGUI();
-            utility.addImmaginiBonus(hBoxBonus, 30, 30, 15, bonus);
-        }catch (NoSuchFieldException | IllegalAccessException e){
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            HBox hBoxBonus;
+            Class c = this.getClass();
+            try {
+                //ottiene l'attributo "bonusNomecittà" di this.getClass, per evitare uno switch case di 15 case.
+                Field fieldHBox = c.getDeclaredField("bonus" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1).toLowerCase());
+                hBoxBonus = (HBox) fieldHBox.get(this);
+                UtilityGUI utility = new UtilityGUI();
+                utility.addImmaginiBonus(hBoxBonus, 30, 30, 15, bonus);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     //friendly
     void updateMoneteGiocatore(int monete) {
-        moneteGiocatore.setText(monete+"");
+        Platform.runLater(() ->moneteGiocatore.setText(monete+""));
     }
 
     //friendly
     void updateMoneteAvversario(int id, int monete){
-        idAvversarioLabelMonete.get(id).setText(monete+"");
+        Platform.runLater(() ->idAvversarioLabelMonete.get(id).setText(monete+""));
     }
 
     //friendly
     void updateAiutantiGiocatore(int aiutanti){
-        aiutantiGiocatore.setText(aiutanti+"");
-        //memorizza informazioni
-        GiocatoreView.getInstance().setAiutanti(aiutanti);
+        Platform.runLater(() -> {
+            try {
+                aiutantiGiocatore.setText(aiutanti + "");
+            } catch (Exception e) {
+                System.out.println("lanciata un eccezione in uupdate miei aiutanti");
+            }
+            //memorizza informazioni
+            GiocatoreView.getInstance().setAiutanti(aiutanti);
+        });
     }
 
     //friendly
     void updateAiutantiAvversari(int id, int aiutanti) {
-        idAvversarioLabelAiutanti.get(id).setText(aiutanti+"");
+        Platform.runLater(() -> idAvversarioLabelAiutanti.get(id).setText(aiutanti+""));
     }
 
     //friendly
     void updatePuntiVittoriaGiocatore(int punti) {
-        puntiVittoriaGiocatore.setText(punti+"");
+        Platform.runLater(() -> puntiVittoriaGiocatore.setText(punti+""));
     }
 
     //friendly
     void updatePuntiVittoriaAvversario(int id, int punti) {
-        idAvversarioLabelPunti.get(id).setText(punti+"");
+        Platform.runLater(() -> idAvversarioLabelPunti.get(id).setText(punti+""));
     }
 
     //friendly
     void updateCartePoliticaGiocatore(List<String> carte){
-        //memorizza le informazioni sulle carte
-        GiocatoreView.getInstance().setCartePolitica(carte);
-        if (!hBoxPolitica.getChildren().isEmpty()) hBoxPolitica.getChildren().remove(0, hBoxPolitica.getChildren().size());
-        ArrayList<ImageView> imgViews = new ArrayList<>();
-        carte.forEach(colore ->{
-            ImageView img = new ImageView();
-            String nomeFile = "politica_"+colore.toLowerCase()+".png";
-            img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
-            imgViews.add(img);
+        Platform.runLater(() -> {
+            ;
+            //memorizza le informazioni sulle carte
+            GiocatoreView.getInstance().setCartePolitica(carte);
+            if (!hBoxPolitica.getChildren().isEmpty())
+                hBoxPolitica.getChildren().remove(0, hBoxPolitica.getChildren().size());
+            ArrayList<ImageView> imgViews = new ArrayList<>();
+            carte.forEach(colore -> {
+                ImageView img = new ImageView();
+                String nomeFile = "politica_" + colore.toLowerCase() + ".png";
+                img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
+                imgViews.add(img);
+            });
+            imgViews.forEach(imageView -> hBoxPolitica.getChildren().add(imageView));
         });
-        imgViews.forEach(imageView -> hBoxPolitica.getChildren().add(imageView));
     }
 
     void updateEmporiGiocatore(int numEmpori) {
-        emporiGiocatore.setText(numEmpori+"");
+        Platform.runLater(() ->emporiGiocatore.setText(numEmpori+""));
     }
 
     void updateEmporiAvversario(int id, int numEmpori) {
-        idAvversarioLabelNEmpori.get(id).setText(numEmpori+"");
+        Platform.runLater(() -> idAvversarioLabelNEmpori.get(id).setText(numEmpori+""));
     }
 
     //friendly
     void updateCartePoliticaAvversari(int id, int numCarte){
-        idAvversarioLabelNCarte.get(id).setText(numCarte+"");
+        Platform.runLater(() -> idAvversarioLabelNCarte.get(id).setText(numCarte+""));
     }
 
     //friendly
     void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori){
-        try {
-            Field fieldHBox = getClass().getDeclaredField("empori" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1));
-            HBox box = (HBox) fieldHBox.get(this);
-            idGiocatori.forEach((Integer id) ->{
-                ImageView imgView = (ImageView) box.getChildren().get(id);
-                ColoreGiocatore colore = idGiocatoreColore.get(id);
-                String nomeFile = "emporio_"+colore.toString().toLowerCase() + ".png";
-                imgView.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
-            });
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            try {
+                Field fieldHBox = getClass().getDeclaredField("empori" + nomeCittà.substring(0, 1).toUpperCase() + nomeCittà.substring(1));
+                HBox box = (HBox) fieldHBox.get(this);
+                idGiocatori.forEach((Integer id) -> {
+                    ImageView imgView = (ImageView) box.getChildren().get(id);
+                    ColoreGiocatore colore = idGiocatoreColore.get(id);
+                    String nomeFile = "emporio_" + colore.toString().toLowerCase() + ".png";
+                    imgView.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
+                });
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     //friendly
     void updateCartePermessoRegione(String regione, CartaPermessoCostruzione carta1, CartaPermessoCostruzione carta2) {
-        //get degli attributi di questa classe cartaRegione1 e cartaRegione2
-        try {
-            Field fieldPane1 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 1);
-            StackPane pane1 = (StackPane) fieldPane1.get(this);
-            Field fieldPane2 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 2);
-            StackPane pane2 = (StackPane) fieldPane2.get(this);
-            UtilityGUI utilityGUI = new UtilityGUI();
-            utilityGUI.creaPermit(carta1, 90, 75, pane1);
-            utilityGUI.creaPermit(carta2, 90, 75, pane2);
-        }catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            //get degli attributi di questa classe cartaRegione1 e cartaRegione2
+            try {
+                Field fieldPane1 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 1);
+                StackPane pane1 = (StackPane) fieldPane1.get(this);
+                Field fieldPane2 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 2);
+                StackPane pane2 = (StackPane) fieldPane2.get(this);
+                UtilityGUI utilityGUI = new UtilityGUI();
+                utilityGUI.creaPermit(carta1, 90, 75, pane1);
+                utilityGUI.creaPermit(carta2, 90, 75, pane2);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     //friendly
     void updateCartePermessoGiocatore(int id, List<CartaPermessoCostruzione> carte){
-        HBox hBox;
-        try {
-            if (id == GUIView.getInstance().getIdGiocatore()) {
-                hBox = hBoxPermit;
-                //memorizza informazione sulle carte
-                GiocatoreView.getInstance().setCartePermesso(carte);
+        Platform.runLater(() -> {
+            HBox hBox;
+            try {
+                if (id == GUIView.getInstance().getIdGiocatore()) {
+                    hBox = hBoxPermit;
+                    //memorizza informazione sulle carte
+                    GiocatoreView.getInstance().setCartePermesso(carte);
+                } else hBox = idAvversarioHBoxhCartePermit.get(id);
+                UtilityGUI utility = new UtilityGUI();
+                carte.forEach(carta -> {
+                    StackPane stackPane = new StackPane();
+                    utility.creaPermit(carta, 90, 75, stackPane);
+                    hBox.getChildren().add(stackPane);
+                });
+            } catch (SingletonNonInizializzatoException | RemoteException e) {
+                e.printStackTrace();
             }
-            else hBox = idAvversarioHBoxhCartePermit.get(id);
-            UtilityGUI utility = new UtilityGUI();
-            carte.forEach(carta -> {
-                StackPane stackPane = new StackPane();
-                utility.creaPermit(carta, 90, 75, stackPane);
-                hBox.getChildren().add(stackPane);
-            });
-        }catch(SingletonNonInizializzatoException | RemoteException e){
-            e.printStackTrace();
-        }
+        });
     }
 
     //friendly
     void updateConsiglieriGioco(List<String> colori){
-        HashMap<Colore, Label> labelColoreNumeroConsiglieri = new HashMap<>();
-        labelColoreNumeroConsiglieri.put(Colore.ARANCIONE, numeroConsiglieriArancioneGioco);
-        labelColoreNumeroConsiglieri.put(Colore.AZZURRO, numeroConsiglieriAzzurroGioco);
-        labelColoreNumeroConsiglieri.put(Colore.BIANCO, numeroConsiglieriBiancoGioco);
-        labelColoreNumeroConsiglieri.put(Colore.NERO, numeroConsiglieriNeroGioco);
-        labelColoreNumeroConsiglieri.put(Colore.ROSA, numeroConsiglieriRosaGioco);
-        labelColoreNumeroConsiglieri.put(Colore.VIOLA, numeroConsiglieriViolaGioco);
-        labelColoreNumeroConsiglieri.forEach((colore, label) -> label.setText("0"));
-        colori.stream().forEach((String colore) -> labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).setText((Integer.parseInt(labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).getText())+1)+""));
+        Platform.runLater(() -> {
+            RiservaPartitaView.getInstance().setConsiglieri(colori);
+            HashMap<Colore, Label> labelColoreNumeroConsiglieri = new HashMap<>();
+            labelColoreNumeroConsiglieri.put(Colore.ARANCIONE, numeroConsiglieriArancioneGioco);
+            labelColoreNumeroConsiglieri.put(Colore.AZZURRO, numeroConsiglieriAzzurroGioco);
+            labelColoreNumeroConsiglieri.put(Colore.BIANCO, numeroConsiglieriBiancoGioco);
+            labelColoreNumeroConsiglieri.put(Colore.NERO, numeroConsiglieriNeroGioco);
+            labelColoreNumeroConsiglieri.put(Colore.ROSA, numeroConsiglieriRosaGioco);
+            labelColoreNumeroConsiglieri.put(Colore.VIOLA, numeroConsiglieriViolaGioco);
+            labelColoreNumeroConsiglieri.forEach((colore, label) -> label.setText("0"));
+            colori.stream().forEach((String colore) -> labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).setText((Integer.parseInt(labelColoreNumeroConsiglieri.get(Colore.valueOf(colore)).getText()) + 1) + ""));
+        });
     }
 
     void updateAiutantiGioco(int aiutanti) {
-        numeroAiutantiPartita.setText(aiutanti+"");
+        Platform.runLater(() -> {
+            //memorizza il numero di aiutanti nel pool della partita
+            RiservaPartitaView.getInstance().setAiutanti(aiutanti);
+            numeroAiutantiPartita.setText(aiutanti + "");
+        });
     }
 
     //friendly
     void updateBonusNobilta(List<Bonus> bonus) {
-        UtilityGUI utilityGUI = new UtilityGUI();
-        int i = 0;
-        for (Bonus b : bonus) {
-            try {
-                Field fieldHBox = getClass().getDeclaredField("bonusNobilta"+i);
-                HBox boxBonus = (HBox) fieldHBox.get(this);
-                utilityGUI.addImmaginiBonus(boxBonus, 30, 30, 15, b);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+        Platform.runLater(() -> {
+            UtilityGUI utilityGUI = new UtilityGUI();
+            int i = 0;
+            for (Bonus b : bonus) {
+                try {
+                    Field fieldHBox = getClass().getDeclaredField("bonusNobilta" + i);
+                    HBox boxBonus = (HBox) fieldHBox.get(this);
+                    utilityGUI.addImmaginiBonus(boxBonus, 30, 30, 15, b);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                i++;
             }
-            i++;
-        }
+        });
     }
 
     //friendly
     void updatePosizionePercorsoNobilta(int id, int pos){
-        renderNobilita.update(idGiocatoreColore.get(id), pos);
+        Platform.runLater(() -> renderNobilita.update(idGiocatoreColore.get(id), pos));
     }
 
     //friendly
     void updateRe(String citta) {
-        try {
-            Field fieldImg = getClass().getDeclaredField(citta.substring(0,1).toLowerCase()+"Re");
-            ImageView img = (ImageView) fieldImg.get(this);
-            img.setImage(new Image(getClass().getClassLoader().getResourceAsStream("re.png")));
-            img.setFitWidth(80);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            try {
+                Field fieldImg = getClass().getDeclaredField(citta.substring(0, 1).toLowerCase() + "Re");
+                ImageView img = (ImageView) fieldImg.get(this);
+                img.setImage(new Image(getClass().getClassLoader().getResourceAsStream("re.png")));
+                img.setFitWidth(80);
+                posizioneRe = img;
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     //friendly
     void nuovoMessaggio(String messaggio) {
-        areaNotifiche.appendText(messaggio);
-        areaNotifiche.appendText("\n");
+        Platform.runLater(()-> {
+            areaNotifiche.appendText(messaggio);
+            areaNotifiche.appendText("\n");
+        });
+    }
+
+    //friendly
+    void eseguiTurno(){
+        balconeCollina.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COLLINA)));
+        balconeMontagna.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.MONTAGNA)));
+        balconeCosta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COSTA)));
+        balconeRe.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.RE)));
+    }
+
+    void fineTurno(){
+    }
+
+    private void mostraPopOver(){
+        Platform.runLater(() -> {
+            popAcquistaPermesso.show(cartaCollina2);
+            popCostruisciEmporioRe.show(posizioneRe);
+            popCostruisciEmporio.show(hBoxPermit);
+            popEleggiConsigliere.show(balconeCosta);
+            popCambiareTessere.show(cartaCostaCoperta);
+            popIngaggiareAiutante.show(imageViewAiutanti);
+        });
+    }
+
+    private void nascondiPopOver(){
+        Platform.runLater(() -> {
+            popAcquistaPermesso.hide();
+            popCostruisciEmporioRe.hide();
+            popCostruisciEmporio.hide();
+            popEleggiConsigliere.hide();
+            popCambiareTessere.hide();
+            popIngaggiareAiutante.hide();
+        });
     }
 
     //permette di firare eventi al root pane dall'esterno
     //friendly
     Parent getRootPane(){
         return rootPane;
+    }
+
+    //mosse
+    private void showFinestraConsigliere(IdBalcone idBalcone){
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getClassLoader().getResource("eleggiconsigliere.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
