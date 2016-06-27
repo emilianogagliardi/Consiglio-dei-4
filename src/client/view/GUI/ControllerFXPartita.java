@@ -13,11 +13,9 @@ import client.view.eccezioni.SingletonNonInizializzatoException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -27,10 +25,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -198,6 +194,10 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         popEleggiConsigliere = new PopOver(new Label("Clicca per eleggere un consigliere\nguadgnando 4 monete o mandare un\n aiutante ad eleggere un consigliere"));
         popCambiareTessere = new PopOver(new Label("Clicca su un mazzo per \ncambiare le carte permesso"));
         popIngaggiareAiutante = new PopOver(new Label("Clicca per ingaggiare un aiutante\no usare tre aiutanti per compiere\nun'azione principale aggiuntiva"));
+        popAcquistaPermesso.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+        popEleggiConsigliere.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+        popCambiareTessere.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+        popIngaggiareAiutante.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
     }
 
     //l'algoritmo di caricamento deve essere eguito sullo show, nel momento il cui si conosce già quale deve essere l'immagine da mostrare
@@ -366,19 +366,12 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     //friendly
     void updateCartePoliticaGiocatore(List<String> carte){
         Platform.runLater(() -> {
-            ;
             //memorizza le informazioni sulle carte
             GiocatoreView.getInstance().setCartePolitica(carte);
             if (!hBoxPolitica.getChildren().isEmpty())
                 hBoxPolitica.getChildren().remove(0, hBoxPolitica.getChildren().size());
-            ArrayList<ImageView> imgViews = new ArrayList<>();
-            carte.forEach(colore -> {
-                ImageView img = new ImageView();
-                String nomeFile = "politica_" + colore.toLowerCase() + ".png";
-                img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(nomeFile)));
-                imgViews.add(img);
-            });
-            imgViews.forEach(imageView -> hBoxPolitica.getChildren().add(imageView));
+            UtilityGUI utilityGUI = new UtilityGUI();
+            utilityGUI.addPoliticaInHBox(hBoxPolitica, carte);
         });
     }
 
@@ -423,8 +416,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                 Field fieldPane2 = getClass().getDeclaredField("carta" + regione.substring(0, 1).toUpperCase() + regione.substring(1).toLowerCase() + 2);
                 StackPane pane2 = (StackPane) fieldPane2.get(this);
                 UtilityGUI utilityGUI = new UtilityGUI();
-                utilityGUI.creaPermit(carta1, 90, 75, pane1);
-                utilityGUI.creaPermit(carta2, 90, 75, pane2);
+                utilityGUI.creaPermit(carta1, 90, 75, pane1, true);
+                utilityGUI.creaPermit(carta2, 90, 75, pane2, true);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -435,23 +428,39 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     void updateCartePermessoGiocatore(int id, List<CartaPermessoCostruzione> carte){
         Platform.runLater(() -> {
             HBox hBox;
+            double h;
+            double w;
+            UtilityGUI utility = new UtilityGUI();
             try {
                 if (id == GUIView.getInstance().getIdGiocatore()) {
                     hBox = hBoxPermit;
+                    hBox.getChildren().clear();
+                    h = 90;
+                    w = 75;
                     //memorizza informazione sulle carte
                     GiocatoreView.getInstance().setCartePermesso(carte);
-                } else hBox = idAvversarioHBoxhCartePermit.get(id);
-                UtilityGUI utility = new UtilityGUI();
-                carte.forEach(carta -> {
-                    StackPane stackPane = new StackPane();
-                    utility.creaPermit(carta, 90, 75, stackPane);
-                    hBox.getChildren().add(stackPane);
-                });
+                    carte.forEach(carta -> {
+                        StackPane stackPane = new StackPane();
+                        utility.creaPermit(carta, h, w, stackPane, false);
+                        hBox.getChildren().add(stackPane);
+                    });
+                } else{
+                    hBox = idAvversarioHBoxhCartePermit.get(id);
+                    hBox.getChildren().clear();
+                    h = 60;
+                    w = 50;
+                    carte.forEach(carta -> {
+                        StackPane stackPane = new StackPane();
+                        utility.creaPermit(carta, h, w, stackPane, false);
+                        hBox.getChildren().add(stackPane);
+                    });
+                }
             } catch (SingletonNonInizializzatoException | RemoteException e) {
                 e.printStackTrace();
             }
         });
     }
+
 
     //friendly
     void updateConsiglieriGioco(List<String> colori){
@@ -525,13 +534,19 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
 
     //friendly
     void eseguiTurno(){
+        //per elezione di consiglieri
         balconeCollina.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COLLINA)));
         balconeMontagna.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.MONTAGNA)));
         balconeCosta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.COSTA)));
         balconeRe.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaEleggiConsigliere(IdBalcone.RE)));
+        //per acquisto carte permesso
+        cartaCostaCoperta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COSTA)));
+        cartaCollinaCoperta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.COLLINA)));
+        cartaMontagnaCoperta.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().showMossaAcquistaPermesso(IdBalcone.MONTAGNA)));
     }
 
     void fineTurno(){
+        Platform.runLater(() -> super.getApplication().chiudiFinestraSecondaria());
     }
 
     private void mostraPopOver(){
@@ -560,19 +575,5 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     //friendly
     Parent getRootPane(){
         return rootPane;
-    }
-
-    //mosse
-    private void showFinestraConsigliere(IdBalcone idBalcone){
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        try {
-            Parent root = loader.load(getClass().getClassLoader().getResource("eleggiconsigliere.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

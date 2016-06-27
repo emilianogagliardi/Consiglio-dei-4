@@ -185,6 +185,7 @@ public class SocketProxyView implements InterfacciaView {
             oos.flush();
             oos.writeObject(manoCartePermessoCostruzione);
             oos.flush();
+            oos.reset();
         } catch (IOException exc){
             exc.printStackTrace();
         }

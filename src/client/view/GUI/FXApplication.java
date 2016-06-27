@@ -66,10 +66,14 @@ public class FXApplication extends Application {
         finestraPrincipale.show();
     }
 
-    void showMossaAcquistaPermesso(){
+    void showMossaAcquistaPermesso(IdBalcone regione){
         FXMLLoader loader = new FXMLLoader();
         try {
-            Parent root = loader.load(getClass().getClassLoader().getResource("acquistapermesso.fxml"));
+            Parent root = loader.load(getClass().getClassLoader().getResource("acquistapermesso.fxml").openStream());
+            ControllerFXAcquistaPermesso controllerFXAcquistaPermesso = loader.getController();
+            controllerFXAcquistaPermesso.setController(controller);
+            controllerFXAcquistaPermesso.setApplication(this);
+            controllerFXAcquistaPermesso.setRegione(regione);
             scenaMossa = new Scene(root);
             finestraSecodaria = new Stage();
             finestraSecodaria.setScene(scenaMossa);
@@ -123,7 +127,7 @@ public class FXApplication extends Application {
     }
 
     void chiudiFinestraSecondaria(){
-        if (finestraSecodaria.isShowing()) finestraSecodaria.close();
+        if (finestraSecodaria != null && finestraSecodaria.isShowing()) finestraSecodaria.close();
     }
 
     void setIsSocketClient(boolean isSocketClient){
