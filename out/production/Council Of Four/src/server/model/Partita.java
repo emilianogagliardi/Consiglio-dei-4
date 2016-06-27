@@ -154,12 +154,8 @@ public class Partita extends Observable {
         //updateViewCarteBonusColoreCittà();
     }
 
-    public HashSet<CartaBonusColoreCittà> getCarteBonusColoreCittà(){
-        return carteBonusColoreCittà;
-    }
 
     public CartaBonusColoreCittà ottieniCartaBonusColoreCittà(ColoreCittà coloreCittà) throws NoSuchElementException{
-        CartaBonusColoreCittà cartaBonusColoreCittàDaRestituire;
         for(CartaBonusColoreCittà carta : carteBonusColoreCittà)
             if (carta.getColore().equals(coloreCittà)) {
                 carteBonusColoreCittà.remove(carta);
@@ -174,8 +170,6 @@ public class Partita extends Observable {
         }
         updateViewRiservaConsiglieri();
     }
-
-    public ArrayList<Consigliere> getRiservaConsiglieri() {return riservaConsiglieri;}
 
     public Consigliere ottieniConsigliereDaRiserva(ColoreConsigliere coloreConsigliereDaRestituire) throws NoSuchElementException{
         Consigliere consigliereDaRestituire;

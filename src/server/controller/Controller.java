@@ -358,16 +358,20 @@ public class Controller implements Runnable, InterfacciaController {
                 try {
                     giocatoreCorrente.pagaMonete(moneteDaPagare);
                 } catch (MoneteNonSufficientiException exc) {
+                    comunicaAGiocatoreCorrente("Non hai abbastanza monete per eseguire la mossa!");
                     return false;
                 }
                 if (!supplier.get()) {
+                    comunicaAGiocatoreCorrente("La scelta non è valida!");
                     return false;
                 }
                 return true;
             } else {
+                comunicaAGiocatoreCorrente("Le carte politica scelte non sono valide!");
                 return false;
             }
         }
+        comunicaAGiocatoreCorrente("Non puoi soddisfare il consiglio!");
         return false;
 
     }
@@ -422,7 +426,10 @@ public class Controller implements Runnable, InterfacciaController {
             comunicaAGiocatoreCorrente("La città scelta non è collegata a quella dove risiede attualmente il Re!");
             return false;
         }
+
         int moneteDaPagare = distanza * CostantiModel.MONETE_PER_STRADA;
+        List<ColoreCartaPolitica> coloriCartePolitica = nomiColoriCartePolitica.stream().map(ColoreCartaPolitica::valueOf).collect(Collectors.toList());
+        moneteDaPagare += moneteDaPagareSoddisfaConsiglio(coloriCartePolitica);
         if (giocatoreCorrente.getMonete() - moneteDaPagare < 0 ) {
             comunicaAGiocatoreCorrente("Non hai abbastanza monete per costruire un emporio in questa città!");
             return false;
@@ -439,7 +446,6 @@ public class Controller implements Runnable, InterfacciaController {
             return false;
         }
         if (!acquistareTesseraPermesso("RE", nomiColoriCartePolitica, () -> true)){
-            comunicaAGiocatoreCorrente("Non puoi acquistare una tessera permesso di costruzione!");
             return false;
         }
 
@@ -451,11 +457,13 @@ public class Controller implements Runnable, InterfacciaController {
         try {
             giocatoreCorrente.pagaMonete(moneteDaPagare);
         } catch (MoneteNonSufficientiException exc){
+            comunicaAGiocatoreCorrente("Non hai abbastanza monete per eseguire la mossa!");
             return false;
         }
         partita.getRe().setPosizione(cittàCostruzione);
         decrementaAzioniPrincipaliDisponibili();
         comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha costruito nella città  di " + cittàCostruzione);
+        comunicaAGiocatoreCorrente("Hai costruito nella città  di " + cittàCostruzione);
         return true;
     }
 
@@ -754,18 +762,16 @@ public class Controller implements Runnable, InterfacciaController {
         }
         int numeroAiutanti = CostantiModel.NUMERO_AIUTANTI_PAGARE_EMPORIO * cittàCostruzione.getNumeroEmporiCostruiti();
         try {
-
             giocatoreCorrente.pagaAiutanti(numeroAiutanti);
         } catch (AiutantiNonSufficientiException exc){
             comunicaAGiocatoreCorrente("Ti servono " + numeroAiutanti + " per cotruire in questa città!");
             return false;
         }
 
-
         cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
-        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " ha costruito un emporio nella città di" + cittàCostruzione);
 
         assegnaBonus(cittàCostruzione.getBonus());
+
         //ora utilizzo un algortimo di esplorazione dei grafi per ricevere i bonus delle città adiacenti dove è presente un emporio del giocatore corrente
         cittàCollegateRitornate = grafoCittà.bfs(cittàCostruzione, (cittàAdiacente, cittàCollegate) -> {
             if (cittàAdiacente.giàCostruito(giocatoreCorrente)) {
