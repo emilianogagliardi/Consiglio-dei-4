@@ -378,10 +378,12 @@ class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void logOut() throws RemoteException {
-        try{
-            oos.close();
-        } catch (IOException exc){
-            exc.printStackTrace();
+        if (connectionType.equals("S")) {
+            try{
+                oos.close();
+            } catch (IOException exc){
+                exc.printStackTrace();
+            }
         }
     }
 

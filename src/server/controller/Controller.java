@@ -903,10 +903,10 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public void logout() throws RemoteException {
+        comunicaAGiocatoreCorrente("Sei offline!");
+        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " è offline!");
         getViewGiocatoreCorrente().logOut();
         Giocatore giocatoreOffline = giocatoreCorrente;
-        comunicaAdAltriGiocatori("Giocatore " + giocatoreOffline.getId() + " è offline!");
-        comunicaAGiocatoreCorrente("Sei offline!");
         for (Iterator<InterfacciaView> iterator = views.iterator(); iterator.hasNext(); ) {
             InterfacciaView view = iterator.next();
             if (view.getIdGiocatore() == giocatoreOffline.getId()) {
