@@ -4,8 +4,10 @@ package client.view.CLI;
 import classicondivise.Colore;
 import classicondivise.IdBalcone;
 import classicondivise.NomeCittà;
+import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.SocketProxyController;
 import interfaccecondivise.InterfacciaController;
+import server.model.Città;
 import server.model.NomeRegione;
 
 import java.rmi.RemoteException;
@@ -19,6 +21,7 @@ class EseguiTurno implements Runnable {
     private static EseguiTurno istanza;
     private volatile boolean fine;
     private InterfacciaController controller;
+    private CLIView cliView;
 
     private EseguiTurno(){
         in = new Scanner(System.in);
@@ -34,12 +37,16 @@ class EseguiTurno implements Runnable {
         this.controller = controller;
     }
 
+    void setCLIView(CLIView cliView){
+        this.cliView = cliView;
+    }
+
     @Override
     public void run() {
         String inputLine;
         fine = false;
         do {
-            System.out.println("Che cosa vuoi fare?");
+            System.out.println("\nChe cosa vuoi fare?");
             System.out.println("1: Vedere informazioni partita");
             System.out.println("2: Esegui azione");
             System.out.println("3: Abbandona la partita");
@@ -47,6 +54,7 @@ class EseguiTurno implements Runnable {
             inputLine = in.nextLine();
             switch (inputLine) {
                 case "1":
+
                     break;
                 case "2":
                     System.out.println("Vuoi eseguire un'azione veloce o principale? (V) o (P)");
@@ -73,6 +81,7 @@ class EseguiTurno implements Runnable {
 
     private void sceltaAzioneVeloce(){
         String inputLine;
+        int monete, aiutanti;
         System.out.println("Scegli un'azione veloce");
         System.out.println("1: Ingaggiare un aiutante");
         System.out.println("2: Cambiare le tessere permesso di costruzione");
@@ -129,6 +138,7 @@ class EseguiTurno implements Runnable {
         String inputLine, idBalcone, coloreConsigliereRiserva, cittàCostruzione;
         int numeroCartaPermesso;
         List<String> listaCartePolitica;
+        CartaPermessoCostruzione cartaPermessoCostruzione;
         System.out.println("Scegli un'azione principale");
         System.out.println("1: Eleggere un consigliere");
         System.out.println("2: Acquistare una tessera permesso di costruzione");
@@ -154,7 +164,13 @@ class EseguiTurno implements Runnable {
                     }
                     break;
                 case "3":
-
+                    if (!fine) {
+                        cartaPermessoCostruzione = inserimentoCartaPermessoCostruzione();
+                        if (cartaPermessoCostruzione == null){
+                            break;
+                        }
+                        controller.costruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, inserimentoCittà());
+                    }
                     break;
                 case "4":
                     listaCartePolitica = inserimentoCartePolitica();
@@ -169,6 +185,34 @@ class EseguiTurno implements Runnable {
         } catch (RemoteException exc) {
             exc.printStackTrace();
         }
+    }
+
+    private CartaPermessoCostruzione inserimentoCartaPermessoCostruzione(){
+        int i = 0, input;
+        List<CartaPermessoCostruzione> lista;
+        try{
+            lista = cliView.getMappaCartePermessoCostruzioneGiocatori().get(cliView.getIdGiocatore());
+            if (lista.size() == 0) {
+                System.out.println("Non hai carte permesso di costruzione!");
+                return null;
+            }
+            System.out.println("Scegli la carta permesso che vuoi utilizzare oppure scrivi un numero non presente in lista per annullare la mossa\n");
+            for (CartaPermessoCostruzione cartaPermessoCostruzione : lista){
+                i++;
+                System.out.print(i + ":");
+                for (NomeCittà nomeCittà : cartaPermessoCostruzione.getCittà()){
+                    System.out.print(" " + nomeCittà);
+                }
+                System.out.print("\n");
+            }
+            input = in.nextInt() - 1;
+            if (input >= 0 && input <= (lista.size() - 1)) {
+                return lista.get(input);
+            }
+        } catch (RemoteException exc){
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     private String inserimentoCittà(){

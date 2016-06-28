@@ -454,6 +454,7 @@ public class Controller implements Runnable, InterfacciaController {
             comunicaAGiocatoreCorrente("Non puoi costruire un emporio!");
             return false;
         }
+        moneteDaPagare = distanza * CostantiModel.MONETE_PER_STRADA;
         try {
             giocatoreCorrente.pagaMonete(moneteDaPagare);
         } catch (MoneteNonSufficientiException exc){
