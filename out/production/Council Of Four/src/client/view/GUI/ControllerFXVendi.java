@@ -87,6 +87,7 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
                 vendiAiutanti();
                 vendiPolitica();
                 vendiPermit();
+                super.getApplication().chiudiFinestraSecondaria();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

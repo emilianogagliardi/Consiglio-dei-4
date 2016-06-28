@@ -288,12 +288,13 @@ public class AvviatorePartita implements Runnable {
     private List<Bonus> creaPercorsoNobiltà () {
         List<Bonus> percorso = new ArrayList<>(CostantiModel.MAX_POS_NOBILTA);
         Random random = new Random();
-        for(int i = 0; i < CostantiModel.MAX_POS_NOBILTA; i++){
+        for(int i = 0; i < CostantiModel.MAX_POS_NOBILTA - 1; i++){
             if(random.nextDouble() < CostantiModel.PERCENTUALE_BONUS_PERCORSO_NOBILTA){
                 percorso.add(creaBonus());
             }
             else percorso.add(NullBonus.getInstance());
         }
+        percorso.add(new BonusPuntiVittoria(20, NullBonus.getInstance()));
         return percorso;
     }
 

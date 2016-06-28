@@ -1,6 +1,7 @@
 package client.view.GUI;
 
 import classicondivise.IdBalcone;
+import classicondivise.Vendibile;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
 import javafx.application.Application;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class FXApplication extends Application {
     private InterfacciaController controller;
@@ -162,13 +164,14 @@ public class FXApplication extends Application {
         }
     }
 
-    void showFinestraCompra(){
+    void showFinestraCompra(List<Vendibile> oggettiInVendita){
         FXMLLoader loader = new FXMLLoader();
         try{
             Parent root = loader.load(getClass().getClassLoader().getResource("vetrina.fxml").openStream());
             controllerFXVetrina = loader.getController();
             controllerFXVetrina.setController(controller);
             controllerFXVetrina.setApplication(this);
+            controllerFXVetrina.setVetrina(oggettiInVendita);
             setUpFinestraSecondaria(root);
         }catch(IOException e){
             e.printStackTrace();
