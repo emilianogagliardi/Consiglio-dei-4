@@ -192,7 +192,6 @@ public class Controller implements Runnable, InterfacciaController {
                     comunicaATutti("!!!!!!!!!!!!!!!Ha vinto giocatore " + giocatore.getId() + "!!!!!!!!!!!!!!!");
                 }
             }
-            socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
         } catch (RemoteException exc){
             exc.printStackTrace();
         }
@@ -904,8 +903,21 @@ public class Controller implements Runnable, InterfacciaController {
 
     @Override
     public void logout() throws RemoteException {
-        giocatoriOnline.eliminaGiocatore(giocatoreCorrente.getId());
-        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " è offline!");
+        getViewGiocatoreCorrente().logOut();
+        Giocatore giocatoreOffline = giocatoreCorrente;
+        comunicaAdAltriGiocatori("Giocatore " + giocatoreOffline.getId() + " è offline!");
+        comunicaAGiocatoreCorrente("Sei offline!");
+        for (Iterator<InterfacciaView> iterator = views.iterator(); iterator.hasNext(); ) {
+            InterfacciaView view = iterator.next();
+            if (view.getIdGiocatore() == giocatoreOffline.getId()) {
+                iterator.remove();
+            }
+        }
+        synchronized (this) {
+            notify();
+        }
+        giocatoriOnline.aggiungiGiocatoreDaEliminare(giocatoreOffline.getId());
+
     }
 
     private boolean giocatoreRestituisciAiutantiARiserva(int aiutanti){
@@ -1053,9 +1065,11 @@ public class Controller implements Runnable, InterfacciaController {
     private class GiocatoriOnline {
         private ArrayList<Giocatore> giocatoriOnline;
         private int posizione;
+        private ArrayList<Giocatore> giocatoriDaEliminare;
 
         GiocatoriOnline(){
             this.giocatoriOnline = new ArrayList<>();
+            this.giocatoriDaEliminare = new ArrayList<>();
             posizione = -1;
         }
 
@@ -1069,17 +1083,37 @@ public class Controller implements Runnable, InterfacciaController {
             if (this.haProssimo()) {
                 return giocatoriOnline.get(++posizione);
             } else {
+                eliminaGiocatoriOffline();
                 posizione = 0;
                 return giocatoriOnline.get(posizione);
             }
         }
 
-        synchronized void eliminaGiocatore(int idGiocatore){
+        synchronized void aggiungiGiocatoreDaEliminare(int idGiocatore){
+            giocatoriOnline.forEach((Giocatore giocatore) -> {
+                if (giocatore.getId() == idGiocatore) {
+                    giocatoriDaEliminare.add(giocatore);
+                }
+            });
+        }
+
+        private synchronized void eliminaGiocatoriOffline(){
+            giocatoriDaEliminare.forEach((Giocatore giocatore) -> {
+                for (Iterator<Giocatore> iterator = giocatoriOnline.iterator(); iterator.hasNext(); ){
+                    Giocatore giocatoreOnline = iterator.next();
+                    if (giocatoreOnline.getId() == giocatore.getId()) {
+                        iterator.remove();
+                    }
+                }
+            });
+            giocatoriDaEliminare = new ArrayList<>();
+
+            /*
             giocatoriOnline.forEach((Giocatore giocatore) -> {
                 if (giocatore.getId() == idGiocatore) {
                     giocatoriOnline.remove(giocatore);
                 }
-            });
+            });*/
         }
 
         synchronized void aggiungiGiocatore(Giocatore giocatore){

@@ -21,15 +21,6 @@ public class SocketPollingController implements Runnable {
         this.ois = ois;
     }
 
-    public void termina(){
-        try {
-            this.socket.close();
-        } catch (IOException exc) {
-            exc.printStackTrace();
-        }
-        running = false;
-    }
-
     @Override
     public void run() {
         try {
@@ -95,6 +86,11 @@ public class SocketPollingController implements Runnable {
                             break;
                         case COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA:
                             controller.compiereAzionePrincipaleAggiuntiva();
+                            break;
+                        case LOGOUT:
+                            controller.logout();
+                            ois.close();
+                            running = false;
                             break;
                         default:
                             break;

@@ -51,7 +51,7 @@ class EseguiTurno implements Runnable {
                 System.out.println("1: Vedere informazioni partita");
                 System.out.println("2: Esegui azione");
                 System.out.println("3: Passa turno");
-                System.out.println("4: Abbandona la partita");
+                System.out.println("4: logout");
 
                 do {
                     inputLine = in.nextLine();
@@ -81,7 +81,10 @@ class EseguiTurno implements Runnable {
                         }
                         break;
                     case "4":
-                        //TODO: logout
+                        in.close();
+                        if (!fine) {
+                            controller.logout();
+                        }
                         fine = true;
                         break;
                 }

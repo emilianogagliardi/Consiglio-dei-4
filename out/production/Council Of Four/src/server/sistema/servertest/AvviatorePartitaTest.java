@@ -159,6 +159,11 @@ public class AvviatorePartitaTest {
             }
 
             @Override
+            public void logOut() throws RemoteException {
+
+            }
+
+            @Override
             public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
 
             }

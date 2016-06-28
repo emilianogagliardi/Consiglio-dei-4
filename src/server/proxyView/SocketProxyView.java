@@ -346,6 +346,16 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
+    public void logOut() throws RemoteException {
+        try{
+            oos.writeObject(ComunicazioneView.LOGOUT.toString());
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
+    }
+
+    @Override
     public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
         try {
             oos.writeObject(ComunicazioneView.UPDATE_BONUS_PERCORSO_NOBILTA.toString());

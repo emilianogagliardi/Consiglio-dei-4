@@ -11,6 +11,7 @@ import client.ComunicazioneSceltaMappa;
 import client.ComunicazioneSceltaMappaRMI;
 import client.ComunicazioneSceltaMappaSocket;
 import client.view.CostantiClient;
+import client.view.SocketPollingView;
 import client.view.SocketProxyController;
 import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
@@ -33,8 +34,6 @@ class CLIView implements InterfacciaView, Remote {
     private String connectionType;
     private InterfacciaLoggerRMI loggerRMI;
     private ObjectOutputStream oos;
-    private Scanner in;
-    private boolean fineTurno;
     private int idGiocatore;
     private EseguiTurno istanza;
     private InterfacciaController controller;
@@ -57,9 +56,7 @@ class CLIView implements InterfacciaView, Remote {
 
     CLIView(String connectionType){
         try {
-            in = new Scanner(System.in);
             this.connectionType = connectionType;
-            fineTurno = true;
             UnicastRemoteObject.exportObject(this, 0);
             mappaPuntiVittoria = new HashMap<>();
             mappaBalconi = new HashMap<>();
@@ -80,7 +77,7 @@ class CLIView implements InterfacciaView, Remote {
         }
     }
 
-    public HashMap<String, List<String>> getMappaBalconi() {
+    HashMap<String, List<String>> getMappaBalconi() {
         return mappaBalconi;
     }
 
@@ -92,7 +89,7 @@ class CLIView implements InterfacciaView, Remote {
         return mappaCartePoliticaAvversari;
     }
 
-    public List<String> getManoCartePolitica() {
+    List<String> getManoCartePolitica() {
         return manoCartePolitica;
     }
 
@@ -100,7 +97,7 @@ class CLIView implements InterfacciaView, Remote {
         return mappaCartePermessoRegione;
     }
 
-    public HashMap<Integer, List<CartaPermessoCostruzione>> getMappaCartePermessoCostruzioneGiocatori() {
+    HashMap<Integer, List<CartaPermessoCostruzione>> getMappaCartePermessoCostruzioneGiocatori() {
         return mappaCartePermessoCostruzioneGiocatori;
     }
 
@@ -377,6 +374,15 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
 
+    }
+
+    @Override
+    public void logOut() throws RemoteException {
+        try{
+            oos.close();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 
     @Override

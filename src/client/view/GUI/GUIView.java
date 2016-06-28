@@ -226,4 +226,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     }
 
+    @Override
+    public void logOut() throws RemoteException {
+
+    }
+
 }
