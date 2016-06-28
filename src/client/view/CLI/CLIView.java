@@ -279,6 +279,7 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updatePosizioneRe(String nomeCittà) throws RemoteException {
         posizioneRe = nomeCittà;
+        System.out.println("Posizione re: " + nomeCittà);
     }
 
     @Override

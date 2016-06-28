@@ -213,10 +213,14 @@ public class Controller implements Runnable, InterfacciaController {
                 comunicaBonus(num + " monete!");
             }
             else if(bonus instanceof BonusPescaCartaPolitica){
-                num = ((BonusPescaCartaPolitica) bonus).getNumeroCarte();
-                for (int i = 0; i < num; i++)
-                    giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
-                comunicaBonus(num + " pescate di carte politica");
+                try{
+                    num = ((BonusPescaCartaPolitica) bonus).getNumeroCarte();
+                    for (int i = 0; i < num; i++)
+                        giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
+                    comunicaBonus(num + " pescate di carte politica");
+                } catch (NoSuchElementException exc){
+                    comunicaAGiocatoreCorrente("Non sono disponibili carte politica!");
+                }
             }
             else if(bonus instanceof BonusPuntiVittoria){
                 num = ((BonusPuntiVittoria) bonus).getPuntiVittoria();
@@ -920,9 +924,13 @@ public class Controller implements Runnable, InterfacciaController {
                     return false;
             return valoreDaRitornare;
         })) { //corpo dell'if
-            assegnaBonus(partita.ottieniCartaBonusColoreCittà(cittàCostruzione.getColore()).getBonus());
-            comunicaAGiocatoreCorrente("Complimenti! Hai ottenuto una tessera bonus colore città per aver costruito in tutte le città del colore " + cittàCostruzione.getColore());
-            comunicaAGiocatoreCorrente("Giocatore " + giocatoreCorrente.getId() + " ha ottenuto una tessera bonus colore città per aver costruito in tutte le città del colore " + cittàCostruzione.getColore());
+            try {
+                assegnaBonus(partita.ottieniCartaBonusColoreCittà(cittàCostruzione.getColore()).getBonus());
+                comunicaAGiocatoreCorrente("Complimenti! Hai ottenuto una tessera bonus colore città per aver costruito in tutte le città del colore " + cittàCostruzione.getColore());
+                comunicaAGiocatoreCorrente("Giocatore " + giocatoreCorrente.getId() + " ha ottenuto una tessera bonus colore città per aver costruito in tutte le città del colore " + cittàCostruzione.getColore());
+            } catch (NoSuchElementException exc){
+                comunicaAGiocatoreCorrente("Hai costruito in tutte le città di uno stesso colore ma la carta bonus colore città non è disponibile!");
+            }
         }
         //verifico se il giocatore ha costruito empori in tutte le città della stessa regione
         if (grafoCittà.dfs((Città cittàAdiacente, Boolean valoreDaRitornare) -> { //codice metodo apply di BiFunction
@@ -933,9 +941,13 @@ public class Controller implements Runnable, InterfacciaController {
             }
             return valoreDaRitornare;
         })) { //corpo dell'if
-            assegnaBonus(regione.ottieniCartaBonusRegione().getBonus());
-            comunicaAGiocatoreCorrente("Complimenti! Hai ottenuto una tessera bonus regione per aver costruito in tutte le città della regione " + cittàCostruzione.getNomeRegione());
-            comunicaAGiocatoreCorrente("Giocatore " + giocatoreCorrente.getId() + " ha ottenuto una tessera bonus regione per aver costruito in tutte le città della regione " + cittàCostruzione.getNomeRegione());
+            try{
+                assegnaBonus(regione.ottieniCartaBonusRegione().getBonus());
+                comunicaAGiocatoreCorrente("Complimenti! Hai ottenuto una tessera bonus regione per aver costruito in tutte le città della regione " + cittàCostruzione.getNomeRegione());
+                comunicaAGiocatoreCorrente("Giocatore " + giocatoreCorrente.getId() + " ha ottenuto una tessera bonus regione per aver costruito in tutte le città della regione " + cittàCostruzione.getNomeRegione());
+            } catch (NoSuchElementException exc){
+                comunicaAGiocatoreCorrente("Hai costruito in tutte le città di una regione ma la carta bonus regione non è disponibile!");
+            }
         }
         return true;
     }

@@ -47,10 +47,12 @@ public class Regione extends Observable{
 
     public NomeRegione getNome() { return nomeRegione; }
 
-    public CartaBonusRegione ottieniCartaBonusRegione(){
+    public CartaBonusRegione ottieniCartaBonusRegione() throws NoSuchElementException {
         CartaBonusRegione cartaBonusRegioneDaRitornare = this.cartaBonusRegione;
         this.cartaBonusRegione = null;
-        //updateViewCarteBonusRegione();
+        if (cartaBonusRegioneDaRitornare == null) {
+            throw new NoSuchElementException();
+        }
         return cartaBonusRegioneDaRitornare;
     }
 

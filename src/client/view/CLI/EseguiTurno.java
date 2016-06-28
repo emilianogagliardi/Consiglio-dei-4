@@ -45,40 +45,50 @@ class EseguiTurno implements Runnable {
     public void run() {
         String inputLine;
         fine = false;
-        do {
-            System.out.println("\nChe cosa vuoi fare?");
-            System.out.println("1: Vedere informazioni partita");
-            System.out.println("2: Esegui azione");
-            System.out.println("3: Abbandona la partita");
-
+        try{
             do {
-                inputLine = in.nextLine();
-            } while (inputLine.equals(""));
-            switch (inputLine) {
-                case "1":
+                System.out.println("\nChe cosa vuoi fare?");
+                System.out.println("1: Vedere informazioni partita");
+                System.out.println("2: Esegui azione");
+                System.out.println("3: Passa turno");
+                System.out.println("4: Abbandona la partita");
 
-                    break;
-                case "2":
-                    System.out.println("Vuoi eseguire un'azione veloce o principale? (V) o (P)");
-
+                do {
                     inputLine = in.nextLine();
-                    switch (inputLine) {
-                        case "V":
-                            sceltaAzioneVeloce();
-                            break;
-                        case "P":
-                            sceltaAzionePrincipale();
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case "3":
-                    //TODO: logout
-                    fine = true;
-                    break;
-            }
-        } while (!fine);
+                } while (inputLine.equals(""));
+                switch (inputLine) {
+                    case "1":
+
+                        break;
+                    case "2":
+                        System.out.println("Vuoi eseguire un'azione veloce o principale? (V) o (P)");
+
+                        inputLine = in.nextLine();
+                        switch (inputLine) {
+                            case "V":
+                                sceltaAzioneVeloce();
+                                break;
+                            case "P":
+                                sceltaAzionePrincipale();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case "3":
+                        if (!fine) {
+                            controller.passaTurno();
+                        }
+                        break;
+                    case "4":
+                        //TODO: logout
+                        fine = true;
+                        break;
+                }
+            } while (!fine);
+        } catch (RemoteException exc){
+            exc.printStackTrace();
+        }
     }
 
     private void sceltaAzioneVeloce(){
@@ -181,6 +191,16 @@ class EseguiTurno implements Runnable {
                     }
                     break;
                 case "4":
+                    System.out.println("Balcone del re:");
+                    for (String colore : cliView.getMappaBalconi().get("RE")) {
+                        System.out.print(" " + colore);
+                    }
+                    System.out.println();
+                    System.out.println("Carte politica:");
+                    for (String colore : cliView.getManoCartePolitica()) {
+                        System.out.print(" " + colore);
+                    }
+                    System.out.println();
                     listaCartePolitica = inserimentoCartePolitica();
                     cittàCostruzione = inserimentoCittà();
                     if (!fine) {
