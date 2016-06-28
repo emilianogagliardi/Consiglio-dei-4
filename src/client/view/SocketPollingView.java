@@ -1,9 +1,9 @@
 package client.view;
 
+import classicondivise.ComunicazioneView;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
-import classicondivise.ComunicazioneView;
-import client.view.GUI.GUIView;
 import interfaccecondivise.InterfacciaView;
 
 import java.io.IOException;
@@ -148,6 +148,16 @@ public class SocketPollingView implements Runnable {
                         case MOSTRA_MESSAGGIO:
                             messaggio = (String) ois.readObject();
                             view.mostraMessaggio(messaggio);
+                            break;
+                        case COMPRA:
+                            view.compra();
+                            break;
+                        case VENDI:
+                            view.vendi();
+                            break;
+                        case UPDATE_VETRINA:
+                            List<Vendibile> inVendita = (List<Vendibile>) ois.readObject();
+                            view.updateVetrinaMarket(inVendita);
                             break;
                         default:
                             break;

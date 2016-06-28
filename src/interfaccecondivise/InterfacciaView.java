@@ -1,6 +1,6 @@
 package interfaccecondivise;
 
-import classicondivise.VetrinaMarket;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
 
@@ -41,5 +41,5 @@ public interface InterfacciaView extends Remote {
     void updateBonusPercorsoNobiltà(List<Bonus> percorso)throws RemoteException;
     void vendi() throws RemoteException;
     void compra() throws RemoteException;
-    void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException;
+    void updateVetrinaMarket(List<Vendibile> oggettiInVendita) throws RemoteException;
 }

@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class FXApplication extends Application {
-    InterfacciaController controller;
+    private InterfacciaController controller;
+    private ControllerFXVetrina controllerFXVetrina;
     private Stage finestraPrincipale;
     private Stage finestraSecodaria;
     private boolean isSocketClient;
@@ -162,7 +163,16 @@ public class FXApplication extends Application {
     }
 
     void showFinestraCompra(){
-
+        FXMLLoader loader = new FXMLLoader();
+        try{
+            Parent root = loader.load(getClass().getClassLoader().getResource("vetrina.fxml").openStream());
+            controllerFXVetrina = loader.getController();
+            controllerFXVetrina.setController(controller);
+            controllerFXVetrina.setApplication(this);
+            setUpFinestraSecondaria(root);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void setUpFinestraSecondaria(Parent root){
@@ -170,6 +180,7 @@ public class FXApplication extends Application {
         scenaMossa = new Scene(root);
         finestraSecodaria = new Stage();
         finestraSecodaria.setScene(scenaMossa);
+        finestraSecodaria.setAlwaysOnTop(true);
         finestraSecodaria.show();
     }
 
@@ -191,6 +202,8 @@ public class FXApplication extends Application {
     }
 
     boolean isSocketClient(){return isSocketClient;}
+
+    ControllerFXVetrina getControllerFXVetrina(){return controllerFXVetrina;}
 
     public static void main(String[] args) {
         launch(args);

@@ -2,6 +2,7 @@ package server.sistema;
 
 
 import classicondivise.ComunicazioneController;
+import classicondivise.Vendibile;
 import server.controller.Controller;
 import classicondivise.carte.CartaPermessoCostruzione;
 
@@ -34,7 +35,7 @@ public class SocketPollingController implements Runnable {
     public void run() {
         try {
             String inputLine, idBalcone, coloreConsigliereDaRiserva, stringaNomeCittà, regione, coloreConsigliere;
-            int numeroCarta;
+            int numeroCarta, prezzo;
             List<String> nomiColoriCartePolitica;
             CartaPermessoCostruzione cartaPermessoCostruzione;
             while (running) {
@@ -95,6 +96,22 @@ public class SocketPollingController implements Runnable {
                             break;
                         case COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA:
                             controller.compiereAzionePrincipaleAggiuntiva();
+                            break;
+                        case VENDI_AIUTANTI:
+                            break;
+                        case VENDI_CARTE_PERMESSO:
+                            prezzo = Integer.valueOf((Integer) ois.readObject());
+                            List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) ois.readObject();
+                            controller.vendiCartePermesso(cartePermesso, prezzo);
+                            break;
+                        case VENDI_CARTE_POLITICA:
+                            prezzo = Integer.valueOf((Integer) ois.readObject());
+                            List<String> cartePolitica = (List<String>) ois.readObject();
+                            controller.vendiCartePolitica(cartePolitica, prezzo);
+                            break;
+                        case COMPRA_VENDIBILI:
+                            List<Vendibile> vendibili = (List<Vendibile>) ois.readObject();
+                            controller.compraVendibili(vendibili);
                             break;
                         default:
                             break;

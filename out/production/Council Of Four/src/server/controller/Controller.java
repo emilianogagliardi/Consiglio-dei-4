@@ -673,6 +673,13 @@ public class Controller implements Runnable, InterfacciaController {
                 default:
                     break;
             }
+            views.forEach(view -> {
+                try {
+                    view.updateVetrinaMarket(vetrinaMarket.getVendibili());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            });
         }
         return false;
     }

@@ -231,7 +231,7 @@ class EseguiTurno implements Runnable {
                 "    LYRAM,\n" +
                 "    MERKATIM,\n" +
                 "    NARIS,\n" +
-                "    OSIUM.\n");
+                "    OSIUM.");
         inputLine = in.nextLine();
         switch (inputLine) {
             case "A":

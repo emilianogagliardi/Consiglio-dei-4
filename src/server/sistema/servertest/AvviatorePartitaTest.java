@@ -1,12 +1,15 @@
 import classicondivise.NomeCittà;
-import classicondivise.VetrinaMarket;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
+import classicondivise.bonus.NullBonus;
+import classicondivise.carte.CartaPermessoCostruzione;
 import interfaccecondivise.InterfacciaView;
 import org.junit.Before;
 import org.junit.Test;
-import server.model.*;
-import classicondivise.bonus.NullBonus;
-import classicondivise.carte.CartaPermessoCostruzione;
+import server.model.Città;
+import server.model.ColoreCittà;
+import server.model.NomeRegione;
+import server.model.Partita;
 import server.sistema.AvviatorePartita;
 
 import java.io.FileInputStream;
@@ -154,7 +157,7 @@ public class AvviatorePartitaTest {
             }
 
             @Override
-            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
+            public void updateVetrinaMarket(List<Vendibile> vetrinaMarket) throws RemoteException {
 
             }
 
