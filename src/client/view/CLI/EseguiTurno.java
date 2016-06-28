@@ -51,7 +51,9 @@ class EseguiTurno implements Runnable {
             System.out.println("2: Esegui azione");
             System.out.println("3: Abbandona la partita");
 
-            inputLine = in.nextLine();
+            do {
+                inputLine = in.nextLine();
+            } while (inputLine.equals(""));
             switch (inputLine) {
                 case "1":
 
@@ -89,7 +91,9 @@ class EseguiTurno implements Runnable {
         System.out.println("4: Compiere un'azione principale aggiuntiva");
 
         try {
-            inputLine = in.nextLine();
+            do {
+                inputLine = in.nextLine();
+            } while (inputLine.equals(""));
             switch (inputLine) {
                 case "1":
                     if (!fine)
@@ -97,7 +101,9 @@ class EseguiTurno implements Runnable {
                     break;
                 case "2":
                     System.out.println("Inserisci il nome della regione di cui vuoi cambiare le carte permesso di costruzione: COSTA(CT) o COLLINA(CL) o MONTAGNA(M)");
-                    inputLine = in.nextLine();
+                    do {
+                        inputLine = in.nextLine();
+                    } while (inputLine.equals(""));
                     switch (inputLine) {
                         case "CT":
                             if (!fine)
@@ -146,7 +152,9 @@ class EseguiTurno implements Runnable {
         System.out.println("4: Costruire un emporio con l'aiuto del re");
 
         try {
-            inputLine = in.nextLine();
+            do {
+                inputLine = in.nextLine();
+            } while (inputLine.equals(""));
             switch (inputLine) {
                 case "1":
                     idBalcone = inserimentoIdBalcone();
@@ -232,7 +240,9 @@ class EseguiTurno implements Runnable {
                 "    MERKATIM,\n" +
                 "    NARIS,\n" +
                 "    OSIUM.");
-        inputLine = in.nextLine();
+        do {
+            inputLine = in.nextLine();
+        } while (inputLine.equals(""));
         switch (inputLine) {
             case "A":
                 città = NomeCittà.ARKON.toString();
@@ -289,7 +299,9 @@ class EseguiTurno implements Runnable {
     private String inserimentoIdBalcone(){
         String inputLine, idBalcone;
         System.out.println("Inserisci il nome della regione del balcone (CT, CL o M) oppure RE per il balcone del re dove desideri inserire il consigliere");
-        inputLine = in.nextLine();
+        do {
+            inputLine = in.nextLine();
+        } while (inputLine.equals(""));
         switch (inputLine) {
             case "CT":
                 idBalcone = IdBalcone.COSTA.toString();
@@ -313,7 +325,9 @@ class EseguiTurno implements Runnable {
     private String inserimentoConsigliereRiserva() {
         System.out.println("Inserisci il colore del consigliere che vuoi prelevare dalla riserva: viola (V), azzurro (AZ), nero (N), rosa (R), arancione (AR) o bianco (B)");
         String inputLine, coloreConsigliere;
-        inputLine = in.nextLine();
+        do {
+            inputLine = in.nextLine();
+        } while (inputLine.equals(""));
         switch (inputLine) {
             case "V":
                 coloreConsigliere = Colore.VIOLA.toString();
@@ -345,7 +359,9 @@ class EseguiTurno implements Runnable {
         String inputLine;
         ArrayList<String> lista = new ArrayList<>();
         do{
-            inputLine = in.nextLine();
+            do {
+                inputLine = in.nextLine();
+            } while (inputLine.equals(""));
             switch (inputLine) {
                 case "V":
                     lista.add(Colore.VIOLA.toString());

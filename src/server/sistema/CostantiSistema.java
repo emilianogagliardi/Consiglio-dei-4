@@ -7,6 +7,6 @@ public class CostantiSistema {
     public static final int NUM_GIOCATORI_TIMEOUT = 2;
     public static final int NUM_GOCATORI_MAX = 4;
     public static final int TIMEOUT_2_GIOCATORI = 15;//20; //secondi
-    public static final long TIMEOUT_TURNO = 60*1000; //millisecondi
+    public static final long TIMEOUT_TURNO = 60*10*1000; //60*1000; //millisecondi
 
 }
