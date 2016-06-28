@@ -14,6 +14,7 @@ import server.sistema.CostantiSistema;
 import server.sistema.SocketPollingController;
 import server.sistema.Utility;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -142,10 +143,85 @@ public class Controller implements Runnable, InterfacciaController {
                 } while (!scatolaIdGiocatori.èVuota());
                 faseAcquistoMarket = false;
             }
-            //TODO: COMUNICA VINCITORE
+            ArrayList<Integer> puntiVittoriaGiocatori = new ArrayList<>();
+            ArrayList<Giocatore> giocatori = partita.getGiocatori();
+            for (Giocatore giocatore : giocatori){
+                puntiVittoriaGiocatori.add(giocatore.getPuntiVittoria());
+            }
+            int primo = Collections.max(puntiVittoriaGiocatori);
+            int contatorePrimi = 0;
+            for (Giocatore giocatore : giocatori) {
+                if (giocatore.getPuntiVittoria() == primo) {
+                    contatorePrimi++;
+                }
+            }
+            for (int i = 0; i < contatorePrimi; i++) {
+                puntiVittoriaGiocatori.remove(primo);
+            }
+            if (puntiVittoriaGiocatori.size() == 0) {
+                assegnaPuntiVittoria(contatorePrimi, primo, 0, 0);
+            } else{
+                int secondo = Collections.max(puntiVittoriaGiocatori);
+                int contatoreSecondi = 0;
+                for (Giocatore giocatore : giocatori) {
+                    if (giocatore.getPuntiVittoria() == secondo) {
+                        contatoreSecondi++;
+                    }
+                }
+                assegnaPuntiVittoria(contatorePrimi, primo, contatoreSecondi, secondo);
+            }
+
+            ArrayList<Integer> numeroCartePermesso = new ArrayList<>();
+            for (Giocatore giocatore : giocatori){
+                numeroCartePermesso.add(giocatore.getManoCartePermessoCostruzione().size());
+            }
+            int maxNumCartePermeesso = Collections.max(numeroCartePermesso);
+            for (Giocatore giocatore : giocatori) {
+                if (giocatore.getManoCartePermessoCostruzione().size() == maxNumCartePermeesso) {
+                    giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_MAGGIOR_NUMERO_TESSERE_PERMESSO);
+                }
+            }
+
+            ArrayList<Integer> puntiVittoriaGiocatoriFinali = new ArrayList<>();
+            for (Giocatore giocatore : giocatori) {
+                puntiVittoriaGiocatoriFinali.add(giocatore.getPuntiVittoria());
+            }
+            int puntiVittoriaMax = Collections.max(puntiVittoriaGiocatoriFinali);
+            for (Giocatore giocatore : giocatori){
+                if (giocatore.getPuntiVittoria() == puntiVittoriaMax) {
+                    comunicaATutti("!!!!!!!!!!!!!!!Ha vinto giocatore " + giocatore.getId() + "!!!!!!!!!!!!!!!");
+                }
+            }
             socketPollingControllers.forEach((SocketPollingController thread) -> {thread.termina();});
         } catch (RemoteException exc){
             exc.printStackTrace();
+        }
+    }
+
+    private void assegnaPuntiVittoria(int numPrimi, int puntiPrimo, int numSecondi, int puntiSecondo) {
+        ArrayList<Giocatore> giocatori = partita.getGiocatori();
+        if (numPrimi > 1) {
+            for (Giocatore giocatore : giocatori) {
+                if (giocatore.getPuntiVittoria() == puntiPrimo) {
+                    giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_PRIMO_PERCORSO_NOBILTA);
+                }
+            }
+        } else {
+            if (numSecondi != 0) {
+                for (Giocatore giocatore : giocatori) {
+                    if (giocatore.getPuntiVittoria() == puntiSecondo) {
+                        giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_SECONDO_PERCORSO_NOBILTA);
+                    } else if (giocatore.getPuntiVittoria() == puntiPrimo) {
+                        giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_PRIMO_PERCORSO_NOBILTA);
+                    }
+                }
+            } else {
+                for (Giocatore giocatore : giocatori) {
+                   if (giocatore.getPuntiVittoria() == puntiPrimo) {
+                        giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_PRIMO_PERCORSO_NOBILTA);
+                    }
+                }
+            }
         }
     }
 
@@ -213,10 +289,14 @@ public class Controller implements Runnable, InterfacciaController {
                 comunicaBonus(num + " monete!");
             }
             else if(bonus instanceof BonusPescaCartaPolitica){
-                num = ((BonusPescaCartaPolitica) bonus).getNumeroCarte();
-                for (int i = 0; i < num; i++)
-                    giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
-                comunicaBonus(num + " pescate di carte politica");
+                try{
+                    num = ((BonusPescaCartaPolitica) bonus).getNumeroCarte();
+                    for (int i = 0; i < num; i++)
+                        giocatoreCorrente.addCarta(partita.ottieniCartaPolitica());
+                    comunicaBonus(num + " pescate di carte politica");
+                } catch (NoSuchElementException exc){
+                    comunicaAGiocatoreCorrente("Non sono disponibili carte politica!");
+                }
             }
             else if(bonus instanceof BonusPuntiVittoria){
                 num = ((BonusPuntiVittoria) bonus).getPuntiVittoria();
@@ -453,7 +533,6 @@ public class Controller implements Runnable, InterfacciaController {
         if (controlliCostruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, stringaNomeCittà)) {
             NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
             if (costruisciEmporio(nomeCittà)) {
-                giocatoreCorrente.decrementaEmporiDisponibili();
                 giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
                 cartaPermessoCostruzione.setVisibile(false);
                 giocatoreCorrente.addCarta(cartaPermessoCostruzione);  //riassegno al giocatore la stessa carta coperta
@@ -900,6 +979,11 @@ public class Controller implements Runnable, InterfacciaController {
         }
 
         cittàCostruzione.costruisciEmporio(new Emporio(giocatoreCorrente.getId()));
+        giocatoreCorrente.decrementaEmporiDisponibili();
+        if (giocatoreCorrente.getEmporiDisponibili() == 0){
+            giocatoreCorrente.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_COSTRUZIONE_ULTIMO_EMPORIO);
+            comunicaAGiocatoreCorrente("Hai guadagnato 3 punti vittoria per essere stato il primo giocatore ad utilizzare tutti gli empori!");
+        }
 
         assegnaBonus(cittàCostruzione.getBonus());
 

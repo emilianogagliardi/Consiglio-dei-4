@@ -199,8 +199,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     private void assegnaPuntiVittoria(int numPrimi, int puntiPrimo, int numSecondi, int puntiSecondo) {
-        ArrayList<Giocatore> giocatori = new ArrayList<>();
-        giocatori = partita.getGiocatori();
+        ArrayList<Giocatore> giocatori = partita.getGiocatori();
         if (numPrimi > 1) {
             for (Giocatore giocatore : giocatori) {
                 if (giocatore.getPuntiVittoria() == puntiPrimo) {

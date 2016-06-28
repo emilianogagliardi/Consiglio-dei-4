@@ -1,8 +1,10 @@
 package client.view.CLI;
 
 
+import classicondivise.NomeCittà;
 import classicondivise.VetrinaMarket;
 import classicondivise.bonus.Bonus;
+import classicondivise.bonus.NullBonus;
 import classicondivise.carte.Carta;
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.ComunicazioneSceltaMappa;
@@ -14,6 +16,7 @@ import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
+import server.model.Città;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -186,6 +189,11 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updatePuntiVittoriaGiocatore(int idGiocatore, int punti) throws RemoteException {
         mappaPuntiVittoria.put(idGiocatore, punti);
+        if (idGiocatore == this.idGiocatore) {
+            System.out.println("Punti vittoria: " + punti);
+        } else {
+            System.out.println("Punti vittoria giocatore " + idGiocatore + ": " + punti);
+        }
     }
 
     public HashMap<Integer, Integer> getMappaPuntiVittoria() {
@@ -200,6 +208,11 @@ class CLIView implements InterfacciaView, Remote {
         lista.add(colore3);
         lista.add(colore4);
         mappaBalconi.put(idBalcone, lista);
+        System.out.println("Balcone " + idBalcone + ":");
+        System.out.print("  " + colore1);
+        System.out.print("  " + colore2);
+        System.out.print("  " + colore3);
+        System.out.println("  " + colore4);
     }
 
     @Override
@@ -215,12 +228,18 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updateCartePoliticaAvversari(int idGiocatore, int numCarte) throws RemoteException {
         mappaCartePoliticaAvversari.put(idGiocatore, numCarte);
+        System.out.println("Numero carte politica giocatore " + idGiocatore + ": " + numCarte);
     }
 
     @Override
     public void updateCartePoliticaProprie(List<String> carte) throws RemoteException {
         manoCartePolitica.clear();
         manoCartePolitica.addAll(carte);
+        System.out.println("Carte politica: ");
+        for (String colore : carte) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
     }
 
     @Override
@@ -229,11 +248,44 @@ class CLIView implements InterfacciaView, Remote {
         lista.add(c1);
         lista.add(c2);
         mappaCartePermessoRegione.put(regione, lista);
+        System.out.println("Carte permesso regione " + regione + ":");
+        System.out.print("Carta 1:");
+        for (NomeCittà nomeCittà : c1.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        Bonus bonus = c1.getBonus();
+        //TODO: SCRITTURA BONUS
+        System.out.println();
+        System.out.print("Carta 2:");
+        for (NomeCittà nomeCittà : c2.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        bonus = c2.getBonus();
+        //TODO: SCRITTURA BONUS
+        System.out.println();
     }
 
     @Override
     public void updateCartePermessoGiocatore(int idGiocatore, List<CartaPermessoCostruzione> manoCartePermessoCostruzione) throws RemoteException {
         mappaCartePermessoCostruzioneGiocatori.put(idGiocatore, manoCartePermessoCostruzione);
+        if (idGiocatore == this.idGiocatore) {
+            System.out.println("Carte permesso costruzione:");
+            for (CartaPermessoCostruzione carta : manoCartePermessoCostruzione) {
+                for (NomeCittà nomeCittà : carta.getCittà()) {
+                    System.out.print("  " + nomeCittà);
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("Carte permesso giocatore costruzione" + idGiocatore + ":");
+            System.out.println("Carte permesso costruzione:");
+            for (CartaPermessoCostruzione carta : manoCartePermessoCostruzione) {
+                for (NomeCittà nomeCittà : carta.getCittà()) {
+                    System.out.print("  " + nomeCittà);
+                }
+                System.out.println();
+            }
+        }
     }
 
     @Override
@@ -249,16 +301,23 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updateRiservaAiutanti(int numAiutanti) throws RemoteException {
         riservaAiutanti = numAiutanti;
+        System.out.println("Aiutanti in riserva: " + numAiutanti);
     }
 
     @Override
     public void updateRiservaConsiglieri(List<String> coloriConsiglieri) throws RemoteException {
         riservaConsiglieri = coloriConsiglieri;
+        System.out.println("Riserva consiglieri:");
+        for (String colore : coloriConsiglieri) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
     }
 
     @Override
     public void updatePercorsoNobiltà(int idGiocatore, int posizione) throws RemoteException {
         mappaPosizioniPercorsoNobiltà.put(idGiocatore, posizione);
+        System.out.println("Posizione percorso nobiltà giocatore " + idGiocatore + ": " + posizione);
     }
 
     @Override
@@ -274,6 +333,11 @@ class CLIView implements InterfacciaView, Remote {
     @Override
     public void updateEmporiDisponibiliGiocatore(int idGiocatore, int numeroEmporiDisponibili) throws RemoteException {
         mappaEmporiDisponibiliGiocatori.put(idGiocatore, numeroEmporiDisponibili);
+        if (idGiocatore == this.idGiocatore) {
+            System.out.println("Empori disponibili: " + numeroEmporiDisponibili);
+        } else {
+            System.out.println("Empori disponibili giocatore " + idGiocatore + ": " + numeroEmporiDisponibili);
+        }
     }
 
     @Override
