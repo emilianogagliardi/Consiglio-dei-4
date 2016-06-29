@@ -42,6 +42,7 @@ public class SocketProxyController implements InterfacciaController {
             oos.writeObject(coloreConsigliere);
             oos.flush();
         } catch (IOException exc){
+            exc.printStackTrace();
             return false;
         }
         return true;
@@ -59,6 +60,7 @@ public class SocketProxyController implements InterfacciaController {
             oos.writeObject(carta);
             oos.flush();
         } catch (IOException exc){
+            exc.printStackTrace();
             return false;
         }
         return true;
@@ -172,6 +174,11 @@ public class SocketProxyController implements InterfacciaController {
 
     @Override
     public void logout() throws RemoteException {
-
+        try {
+            oos.writeObject(ComunicazioneController.LOGOUT.toString());
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 }

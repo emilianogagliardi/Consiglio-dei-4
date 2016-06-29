@@ -221,4 +221,9 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
         Platform.runLater(() -> super.getApplication().showFinestraCompra(vendibili));
     }
 
+    @Override
+    public void logOut() throws RemoteException {
+
+    }
+
 }

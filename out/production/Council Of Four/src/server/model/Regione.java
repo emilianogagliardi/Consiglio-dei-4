@@ -47,14 +47,16 @@ public class Regione extends Observable{
 
     public NomeRegione getNome() { return nomeRegione; }
 
-    public CartaBonusRegione ottieniCartaBonusRegione(){
+    public CartaBonusRegione ottieniCartaBonusRegione() throws NoSuchElementException {
         CartaBonusRegione cartaBonusRegioneDaRitornare = this.cartaBonusRegione;
         this.cartaBonusRegione = null;
-        //updateViewCarteBonusRegione();
+        if (cartaBonusRegioneDaRitornare == null) {
+            throw new NoSuchElementException();
+        }
         return cartaBonusRegioneDaRitornare;
     }
 
-    public CartaPermessoCostruzione ottieniCartaPermessoCostruzione1(){
+    public CartaPermessoCostruzione ottieniCartaPermessoCostruzione1() throws NoSuchElementException {
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione1;
         cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione1.setVisibile(true);
@@ -66,10 +68,17 @@ public class Regione extends Observable{
             cartaPermessoCostruzione1 = null;
         }
         updateViewCartePermessoCostruzione();
+        if (cartaDaRitornare == null){
+            throw new NoSuchElementException();
+        }
         return cartaDaRitornare;
     }
 
-    public CartaPermessoCostruzione ottieniCartaPermessoCostruzione2(){
+    public boolean cartaPermessoCostruzione1IsNull(){
+        return cartaPermessoCostruzione1 == null;
+    }
+
+    public CartaPermessoCostruzione ottieniCartaPermessoCostruzione2() throws NoSuchElementException{
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione2;
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione2.setVisibile(true);
@@ -81,8 +90,15 @@ public class Regione extends Observable{
             cartaPermessoCostruzione2 = null;
         }
         updateViewCartePermessoCostruzione();
+        if (cartaDaRitornare == null){
+            throw new NoSuchElementException();
+        }
         return cartaDaRitornare;
-}
+    }
+
+    public boolean cartaPermessoCostruzione2IsNull(){
+        return cartaPermessoCostruzione2 == null;
+    }
 
     public void addCittà (Città città) throws IllegalArgumentException{
         if (!città.getNomeRegione().equals(this.getNome()))

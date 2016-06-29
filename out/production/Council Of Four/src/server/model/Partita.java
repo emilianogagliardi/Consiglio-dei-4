@@ -123,7 +123,8 @@ public class Partita extends Observable {
 
     public CartaPolitica ottieniCartaPolitica() {
         if (mazzoCartePolitica.isEmpty()) {
-            this.mazzoCartePolitica = this.cartePoliticaScartate;
+            mazzoCartePolitica = cartePoliticaScartate;
+            cartePoliticaScartate = new Mazzo<>();
         }
         return mazzoCartePolitica.ottieniCarta();
     }

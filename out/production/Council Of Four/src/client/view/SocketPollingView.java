@@ -24,10 +24,6 @@ public class SocketPollingView implements Runnable {
         this.ois = ois;
     }
 
-    public void termina(){ //TODO: il chiamante deve chiamare questo metodo per far terminare il thread
-        running = false;
-    }
-
     @Override
     public void run() {
         try {
@@ -150,12 +146,19 @@ public class SocketPollingView implements Runnable {
                             messaggio = (String) ois.readObject();
                             view.mostraMessaggio(messaggio);
                             break;
+<<<<<<< HEAD
                         case COMPRA:
                             vendibili = (List<Vendibile>) ois.readObject();
                             view.compra(vendibili);
                             break;
                         case VENDI:
                             view.vendi();
+=======
+                        case LOGOUT:
+                            view.logOut();
+                            ois.close();
+                            running = false;
+>>>>>>> a352b7fd2e37d574602694014116efab418f6d3c
                             break;
                         default:
                             break;
