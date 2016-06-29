@@ -152,16 +152,11 @@ public class AvviatorePartitaTest {
             }
 
             @Override
-            public void compra() throws RemoteException {
+            public void compra(List<Vendibile> vendibili) throws RemoteException {
 
             }
 
-            @Override
-            public void updateVetrinaMarket(List<Vendibile> vetrinaMarket) throws RemoteException {
-
-            }
-
-            @Override
+           @Override
             public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
 
             }

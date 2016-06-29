@@ -32,7 +32,7 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
     @FXML
     private ToggleButton acquistaPermit1, acquistaPermit2, acquistaPermit3, acquistaPolitica1, acquistaPolitica2, acquistaPolitica3, acquistaAiutanti1, acquistaAiutanti2, acquistaAiutanti3;
     @FXML
-    private Label prezzoPermit1, prezzoPermit2, prezzoPermit3, prezzoPolitica1, prezzoPolitica2, prezzoPolitica3, prezzoAiutanti1, prezzoAiutanti2, prezzoAiutanti3, aiutanti1, aiutanti2, aiutanti3;;
+    private Label prezzoPermit1, prezzoPermit2, prezzoPermit3, prezzoPolitica1, prezzoPolitica2, prezzoPolitica3, prezzoAiutanti1, prezzoAiutanti2, prezzoAiutanti3, aiutanti1, aiutanti2, aiutanti3;
     @FXML
     private HBox permit1, permit2, permit3, politica1, politica2, politica3;
     @FXML
@@ -168,7 +168,8 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
                 daComprare.add(permitVenduteIdGiocatore.get(idAvversari.get(2)));
             }
             try {
-                controller.compraVendibili(daComprare);
+                controller.compra(daComprare);
+                controller.passaTurno();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

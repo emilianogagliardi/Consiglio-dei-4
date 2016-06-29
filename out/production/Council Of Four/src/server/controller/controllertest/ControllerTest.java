@@ -275,12 +275,7 @@ public class ControllerTest {
             }
 
             @Override
-            public void compra() throws RemoteException {
-
-            }
-
-            @Override
-            public void updateVetrinaMarket(List<Vendibile> inVendita) throws RemoteException {
+            public void compra(List<Vendibile> vendibili) throws RemoteException {
 
             }
 
@@ -413,12 +408,7 @@ public class ControllerTest {
             }
 
             @Override
-            public void compra() throws RemoteException {
-
-            }
-
-            @Override
-            public void updateVetrinaMarket(List<Vendibile> vetrinaMarket) throws RemoteException {
+            public void compra(List<Vendibile> vendibili) throws RemoteException {
 
             }
 

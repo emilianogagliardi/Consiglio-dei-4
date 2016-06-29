@@ -1,10 +1,13 @@
 package client.view.GUI;
 
+import classicondivise.IdVendibile;
+import classicondivise.Vendibile;
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.GUI.utility.UtilityGUI;
 import client.view.GUI.widgetconattributo.ToggleConCartaPermesso;
 import client.view.GUI.widgetconattributo.ToggleConColore;
 import client.view.GiocatoreView;
+import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +39,8 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
     private HBox hBoxPermit, hBoxPolitica;
 
     private InterfacciaController controller;
+
+    private List<Vendibile> oggettiInVendita = new ArrayList<>();
 
     public void setController(InterfacciaController controller){this.controller = controller;}
 
@@ -87,6 +92,10 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
                 vendiAiutanti();
                 vendiPolitica();
                 vendiPermit();
+                if(oggettiInVendita.size() != 0){
+                    controller.vendi(oggettiInVendita);
+                }
+                controller.passaTurno();
                 super.getApplication().chiudiFinestraSecondaria();
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -100,7 +109,12 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
             int numero = Integer.parseInt(numeroAiutanti.getText());
             if(prezzo > 20) prezzo = 20;
             if (prezzo < 0) prezzo = 0;
-            controller.vendiAiutanti(2, 3);
+            try {
+                Vendibile<Integer> aiutantiInVendita = new Vendibile<>(numero, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.AIUTANTI);
+                oggettiInVendita.add(aiutantiInVendita);
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -114,7 +128,12 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
             int prezzo = Integer.parseInt(prezzoPolitica.getText());
             if(prezzo > 20) prezzo = 20;
             if (prezzo < 0) prezzo = 0;
-            controller.vendiCartePolitica(inVendita, prezzo);
+            try {
+                Vendibile<List<String>> politicaInVendita = new Vendibile<>(inVendita, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.CARTE_POLITICA);
+                oggettiInVendita.add(politicaInVendita);
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -128,7 +147,12 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
             int prezzo = Integer.parseInt(prezzoPermit.getText());
             if(prezzo > 20) prezzo = 20;
             if (prezzo < 0) prezzo = 0;
-            controller.vendiCartePermesso(inVendita, prezzo);
+            try {
+                Vendibile<List<CartaPermessoCostruzione>> permitInVendita = new Vendibile<>(inVendita, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.CARTE_PERMESSO_COSTRUZIONE);
+                oggettiInVendita.add(permitInVendita);
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
