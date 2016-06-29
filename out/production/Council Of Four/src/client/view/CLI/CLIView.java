@@ -7,12 +7,10 @@ import classicondivise.bonus.Bonus;
 import classicondivise.NomeCittà;
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.CostantiClient;
-
 import client.view.SocketProxyController;
 import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
-
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -25,7 +23,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 
 class CLIView implements InterfacciaView, Remote {
     private String connectionType;
