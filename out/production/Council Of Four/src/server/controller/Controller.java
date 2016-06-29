@@ -14,7 +14,6 @@ import server.sistema.CostantiSistema;
 import server.sistema.SocketPollingController;
 import server.sistema.Utility;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;

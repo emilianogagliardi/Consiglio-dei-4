@@ -89,7 +89,6 @@ public class SocketPollingController implements Runnable {
                         case COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA:
                             controller.compiereAzionePrincipaleAggiuntiva();
                             break;
-<<<<<<< HEAD
                         case VENDI:
                             vendibili = (List<Vendibile>) ois.readObject();
                             controller.vendi(vendibili);
@@ -97,12 +96,10 @@ public class SocketPollingController implements Runnable {
                         case COMPRA:
                             vendibili = (List<Vendibile>) ois.readObject();
                             controller.compra(vendibili);
-=======
                         case LOGOUT:
                             controller.logout();
                             ois.close();
                             running = false;
->>>>>>> a352b7fd2e37d574602694014116efab418f6d3c
                             break;
                         default:
                             break;

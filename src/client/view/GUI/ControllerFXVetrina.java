@@ -129,7 +129,7 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
                     Label aiutanti = aiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore());
                     aiutanti.setText(String.format("%d", (Integer) oggettoInVendita.getOggetto()));
                     prezzoAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
-                    politicaVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
+                    aiutantiVendutiIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
                     btnAcquistaAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
                     break;
                 default: throw new IllegalArgumentException();
