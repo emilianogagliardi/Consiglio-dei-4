@@ -101,6 +101,7 @@ public class Controller implements Runnable, InterfacciaController {
                 } while (giocatoriOnline.haProssimo());
                 faseTurno = false;
 
+                vetrinaMarket = new VetrinaMarket();
                 faseVenditaMarket = true;
                 //INIZIO FASE VENDITA MARKET
                 comunicaATutti("Inizia la fase di vendita del market");
@@ -124,7 +125,6 @@ public class Controller implements Runnable, InterfacciaController {
                 faseAcquistoMarket = true;
                 //INIZIO FASE ACQUISTO MARKET
                 comunicaATutti("Inizia la fase di acquisto del market");
-                vetrinaMarket = new VetrinaMarket();
                 ScatolaIdGiocatori scatolaIdGiocatori = new ScatolaIdGiocatori();
                 do {
                     giocatoreCorrente = giocatoreDaPartita(scatolaIdGiocatori.pescaNumero());

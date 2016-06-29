@@ -11,7 +11,6 @@ import client.view.SocketProxyController;
 import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.rmi.NotBoundException;

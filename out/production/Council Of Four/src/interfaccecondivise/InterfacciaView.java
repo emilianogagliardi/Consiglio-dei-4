@@ -28,12 +28,6 @@ public interface InterfacciaView extends Remote {
     void updateEmporiCittà(String nomeCittà, List<Integer> idGiocatori) throws RemoteException;
     void updateBonusCittà(String nomeCittà, Bonus bonus) throws RemoteException;
     void updateEmporiDisponibiliGiocatore(int idGiocatore, int numeroEmporiDisponibili) throws RemoteException;
-    /*void updateCarteBonusColoreCittàGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) throws RemoteException;
-    void updateCarteBonusColoreCittàTabellone(HashMap<String, Integer> coloriEPunti) throws RemoteException;
-    void updateCarteBonusReGiocatore(int idGiocatore, HashMap<String, Integer> mapCarte) throws RemoteException;
-    void updateCarteBonusReTabellone(int puntiVIttoriaPrimaCarta) throws RemoteException; //solo la prima carta in vista del mazzo
-    void updateCarteBonusRegioneGiocatore(int idGiocatore, HashMap<String, Integer> carte) throws RemoteException;
-    void updateCarteBonusRegioneTabellone(String nomeRegione, int puntiCarta) throws RemoteException;*/
     void updatePosizioneRe(String nomeCittà) throws RemoteException;
     void eseguiTurno() throws RemoteException;
     void fineTurno() throws RemoteException; //per indicare alla view che è finito il suo turno di gioco o il suo turno di market

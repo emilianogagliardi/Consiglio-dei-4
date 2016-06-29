@@ -32,6 +32,7 @@ public interface InterfacciaController extends Remote, Serializable{ //serializa
 
     boolean compiereAzionePrincipaleAggiuntiva()  throws RemoteException;
 
+
     //market
     boolean vendi(List<Vendibile> vendibili) throws RemoteException;
 
