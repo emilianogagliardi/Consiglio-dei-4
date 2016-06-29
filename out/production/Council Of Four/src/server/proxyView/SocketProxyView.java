@@ -1,7 +1,7 @@
 package server.proxyView;
 
 import classicondivise.ComunicazioneView;
-import classicondivise.VetrinaMarket;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
 import interfaccecondivise.InterfacciaView;
@@ -332,17 +332,24 @@ public class SocketProxyView implements InterfacciaView {
 
     @Override
     public void vendi() throws RemoteException {
-
+        try {
+            oos.writeObject(ComunicazioneView.VENDI.toString());
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void compra() throws RemoteException {
-
-    }
-
-    @Override
-    public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
-
+    public void compra(List<Vendibile> vendibili) throws RemoteException {
+        try {
+            oos.writeObject(ComunicazioneView.COMPRA.toString());
+            oos.flush();
+            oos.writeObject(vendibili);
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

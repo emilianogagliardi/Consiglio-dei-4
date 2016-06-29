@@ -1,6 +1,6 @@
 package client.view.GUI;
 
-import classicondivise.VetrinaMarket;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.CostantiClient;
@@ -213,17 +213,12 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
 
     @Override
     public void vendi() throws RemoteException {
-
+        Platform.runLater(() -> super.getApplication().showFinestraVendi());
     }
 
     @Override
-    public void compra() throws RemoteException {
-
-    }
-
-    @Override
-    public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
-
+    public void compra(List<Vendibile> vendibili) throws RemoteException {
+        Platform.runLater(() -> super.getApplication().showFinestraCompra(vendibili));
     }
 
     @Override

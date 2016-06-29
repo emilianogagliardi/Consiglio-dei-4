@@ -14,7 +14,6 @@ import server.sistema.CostantiSistema;
 import server.sistema.SocketPollingController;
 import server.sistema.Utility;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -130,7 +129,7 @@ public class Controller implements Runnable, InterfacciaController {
                 do {
                     giocatoreCorrente = giocatoreDaPartita(scatolaIdGiocatori.pescaNumero());
                     viewCorrente = getViewGiocatoreCorrente();
-                    viewCorrente.compra();
+                    viewCorrente.compra(vetrinaMarket.getVendibili());
                     try {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
@@ -787,6 +786,110 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+
+    @Override
+    public boolean vendi(List<Vendibile> vendibili){
+        if (!faseVenditaMarket){
+            comunicaAGiocatoreCorrente("Non puoi vendere in questo momento!");
+            return false;
+        }
+        for (Vendibile vendibile : vendibili) {
+            switch (vendibile.getIdVendibile()){
+                case CARTE_PERMESSO_COSTRUZIONE:
+                    List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
+                    HashMap<CartaPermessoCostruzione, Integer> mappaCartePermessoVendibili = Utility.listToHashMap(cartePermesso);
+                    HashMap<CartaPermessoCostruzione, Integer> mappaCartePermessoGiocatore = Utility.listToHashMap(giocatoreCorrente.getManoCartePermessoCostruzione());
+                    if (Utility.hashMapContainsAllWithDuplicates(mappaCartePermessoGiocatore, mappaCartePermessoVendibili)) {
+                            vetrinaMarket.aggiungiVendibile(vendibile);
+                    } else{
+                        comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
+                        return false;
+                    }
+                    break;
+                case CARTE_POLITICA:
+                    List<String> cartePolitica = (List<String>) vendibile.getOggetto();
+                    HashMap<String, Integer> mappaCartePoliticaVendibili = Utility.listToHashMap(cartePolitica);
+                    List<String> manoColoriCartePolitica = new ArrayList<>();
+                    giocatoreCorrente.getManoCartePolitica().forEach((CartaPolitica carta) ->{
+                        manoColoriCartePolitica.add(carta.getColore().toString());
+                    });
+                    HashMap<String, Integer> mappaCartePoliticaGiocatore = Utility.listToHashMap(manoColoriCartePolitica);
+                    if (Utility.hashMapContainsAllWithDuplicates(mappaCartePoliticaGiocatore, mappaCartePoliticaVendibili)) {
+                            vetrinaMarket.aggiungiVendibile(vendibile);
+                    } else{
+                        comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
+                        return false;
+                    }
+                    break;
+                case AIUTANTI:
+                    int numeroAiutanti = (Integer) vendibile.getOggetto();
+                    if (giocatoreCorrente.getAiutanti() - numeroAiutanti < 0) {
+                        comunicaAGiocatoreCorrente("Non hai abbastanza aiutanti!");
+                        return false;
+                    } else {
+                        vetrinaMarket.aggiungiVendibile(vendibile);
+                    }
+                    break;
+                default:
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean compra(List<Vendibile> vendibili) throws RemoteException {
+        if (!faseAcquistoMarket){
+            comunicaAGiocatoreCorrente("Non puoi acquistare in questo momento!");
+            return false;
+        }
+        int costoTotale = 0;
+        for (Vendibile vendibile : vendibili) {
+            costoTotale += vendibile.getPrezzo();
+        }
+        if (giocatoreCorrente.getMonete() - costoTotale < 0) {
+            comunicaAGiocatoreCorrente("Non hai abbastanza monete!");
+            return false;
+        }
+        int idGiocatore;
+        for (Vendibile vendibile :  vendibili) {
+            idGiocatore = vendibile.getIdGiocatore();
+            Giocatore giocatore = getGiocatoreDaPartitaConId(idGiocatore);
+            //rimuovo i vendibili dal giocatore che li ha messi in vendita e dalla vetrina e li aggiungo al giocatore corrente
+            switch (vendibile.getIdVendibile()) {
+                case CARTE_PERMESSO_COSTRUZIONE:
+                    List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
+                    vetrinaMarket.rimuoviVendibile(vendibile);
+                    cartePermesso.forEach((CartaPermessoCostruzione carta) -> {
+                        giocatore.getManoCartePermessoCostruzione().remove(carta);
+                        giocatoreCorrente.addCarta(carta);
+                    });
+                    break;
+                case CARTE_POLITICA:
+                    List<String> cartePolitica = (List<String>) vendibile.getOggetto();
+                    vetrinaMarket.rimuoviVendibile(vendibile);
+                    cartePolitica.forEach((String colore) -> {
+                        CartaPolitica carta = new CartaPolitica(ColoreCartaPolitica.valueOf(colore));
+                        giocatore.getManoCartePolitica().remove(carta);
+                        giocatore.addCarta(carta);
+                    });
+                    break;
+                case AIUTANTI:
+                    try {
+                        int aiutanti = (Integer) vendibile.getOggetto();
+                        getGiocatoreDaPartitaConId(idGiocatore).pagaAiutanti(aiutanti);
+                        vetrinaMarket.rimuoviVendibile(vendibile);
+                        giocatoreCorrente.guadagnaAiutanti(aiutanti);
+                    } catch (AiutantiNonSufficientiException exc){
+                        exc.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return false;
+    }
 
     private Giocatore getGiocatoreDaPartitaConId(int idGiocatore) {
         for (Giocatore giocatore : partita.getGiocatori()) {

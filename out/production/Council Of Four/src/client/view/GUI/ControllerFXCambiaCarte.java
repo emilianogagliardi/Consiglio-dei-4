@@ -2,7 +2,6 @@ package client.view.GUI;
 
 import classicondivise.IdBalcone;
 import interfaccecondivise.InterfacciaController;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,14 +18,14 @@ public class ControllerFXCambiaCarte extends GestoreFlussoFinestra implements In
     private IdBalcone regione;
     private InterfacciaController controller;
     @FXML
-    private Button btnConferma, btnAnnulla;
+    private Button btnConferma;
     @FXML
     private Label label;
 
     public void setRegione(IdBalcone regione){
         if(regione==IdBalcone.RE) throw new IllegalArgumentException();
         this.regione = regione;
-        label.setText("Vuoi rimescolare il mazzo di carte permesso\n di "+ regione.toString().substring(0,1)+ regione.toString().substring(1, regione.toString().length()).toLowerCase() +" e scoprirne due nuove?");
+        label.setText("Vuoi rimescolare il mazzo di carte permesso\n di "+ regione.toString().substring(0,1)+ regione.toString().substring(1, regione.toString().length()).toLowerCase() +" e scoprirne due nuove\n pagando un aiutante?");
     }
 
     public void setController(InterfacciaController controller){this.controller = controller;}
@@ -39,7 +38,7 @@ public class ControllerFXCambiaCarte extends GestoreFlussoFinestra implements In
             }catch (RemoteException e){
                 e.printStackTrace();
             }
+            super.getApplication().chiudiFinestraSecondaria();
         });
-        btnAnnulla.setOnMouseClicked(event -> Platform.runLater(() -> super.getApplication().chiudiFinestraSecondaria()));
     }
 }

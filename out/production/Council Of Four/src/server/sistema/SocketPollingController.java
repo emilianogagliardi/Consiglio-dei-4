@@ -2,6 +2,7 @@ package server.sistema;
 
 
 import classicondivise.ComunicazioneController;
+import classicondivise.Vendibile;
 import server.controller.Controller;
 import classicondivise.carte.CartaPermessoCostruzione;
 
@@ -25,9 +26,10 @@ public class SocketPollingController implements Runnable {
     public void run() {
         try {
             String inputLine, idBalcone, coloreConsigliereDaRiserva, stringaNomeCittà, regione, coloreConsigliere;
-            int numeroCarta;
+            int numeroCarta, prezzo;
             List<String> nomiColoriCartePolitica;
             CartaPermessoCostruzione cartaPermessoCostruzione;
+            List<Vendibile> vendibili;
             while (running) {
                 try {
                     inputLine = (String) ois.readObject();
@@ -87,6 +89,13 @@ public class SocketPollingController implements Runnable {
                         case COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA:
                             controller.compiereAzionePrincipaleAggiuntiva();
                             break;
+                        case VENDI:
+                            vendibili = (List<Vendibile>) ois.readObject();
+                            controller.vendi(vendibili);
+                            break;
+                        case COMPRA:
+                            vendibili = (List<Vendibile>) ois.readObject();
+                            controller.compra(vendibili);
                         case LOGOUT:
                             controller.logout();
                             ois.close();

@@ -25,5 +25,7 @@ public enum ComunicazioneView {
     ESEGUI_TURNO,
     FINE_TURNO,
     MOSTRA_MESSAGGIO,
+    COMPRA,
+    VENDI,
     LOGOUT;
 }

@@ -1,26 +1,18 @@
 package client.view.CLI;
 
 
-import classicondivise.NomeCittà;
-import classicondivise.VetrinaMarket;
+
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
-import classicondivise.bonus.NullBonus;
-import classicondivise.carte.Carta;
+import classicondivise.NomeCittà;
 import classicondivise.carte.CartaPermessoCostruzione;
-import client.ComunicazioneSceltaMappa;
-import client.ComunicazioneSceltaMappaRMI;
-import client.ComunicazioneSceltaMappaSocket;
 import client.view.CostantiClient;
-import client.view.SocketPollingView;
 import client.view.SocketProxyController;
-import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
-import server.model.Città;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -28,7 +20,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 class CLIView implements InterfacciaView, Remote {
     private String connectionType;
@@ -367,14 +361,10 @@ class CLIView implements InterfacciaView, Remote {
     }
 
     @Override
-    public void compra() throws RemoteException {
+    public void compra(List<Vendibile> vendibili) throws RemoteException {
 
     }
 
-    @Override
-    public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
-
-    }
 
     @Override
     public void logOut() throws RemoteException {

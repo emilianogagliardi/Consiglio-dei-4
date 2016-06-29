@@ -33,5 +33,11 @@ public interface InterfacciaController extends Remote, Serializable{ //serializa
     boolean compiereAzionePrincipaleAggiuntiva()  throws RemoteException;
 
 
+    //market
+    boolean vendi(List<Vendibile> vendibili) throws RemoteException;
+
+    boolean compra(List<Vendibile> vendibili) throws RemoteException;
+
+
     void logout() throws RemoteException;
 }

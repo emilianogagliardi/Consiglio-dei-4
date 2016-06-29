@@ -1,9 +1,8 @@
 package interfaccecondivise;
 
-import classicondivise.VetrinaMarket;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
-import server.model.Re;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -41,7 +40,6 @@ public interface InterfacciaView extends Remote {
     void mostraMessaggio(String messaggio) throws RemoteException;
     void updateBonusPercorsoNobiltà(List<Bonus> percorso)throws RemoteException;
     void vendi() throws RemoteException;
-    void compra() throws RemoteException;
-    void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException;
+    void compra(List<Vendibile> vendibili) throws RemoteException;
     void logOut() throws RemoteException;
 }

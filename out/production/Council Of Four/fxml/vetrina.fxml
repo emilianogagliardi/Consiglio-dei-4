@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GUI.ControllerFXVetrina">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+         <children>
+            <Button fx:id="btnConferma" layoutX="100.0" layoutY="17.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="79.0" text="Ok" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+         <children>
+            <ToggleButton fx:id="acquistaPermit3" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoPermit3" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+            <ToggleButton fx:id="acquistaPolitica3" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoPolitica3" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+         <children>
+            <ToggleButton fx:id="acquistaAiutanti3" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoAiutanti3" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+         <children>
+            <ToggleButton fx:id="acquistaPermit2" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoPermit2" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <ToggleButton fx:id="acquistaPolitica2" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoPolitica2" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <children>
+            <ToggleButton fx:id="acquistaAiutanti2" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoAiutanti2" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <ToggleButton fx:id="acquistaPermit1" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoPermit1" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <ToggleButton fx:id="acquistaPolitica1" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoPolitica1" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <ToggleButton fx:id="acquistaAiutanti1" disable="true" layoutX="114.0" layoutY="7.0" mnemonicParsing="false" text="Acquista" />
+            <Label fx:id="prezzoAiutanti1" layoutX="30.0" layoutY="12.0" text="Prezzo: -" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+         <children>
+            <ImageView fx:id="imgAiutante1" fitHeight="80.0" fitWidth="80.0" layoutX="20.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="aiutanti1" layoutX="130.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" text="-">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <children>
+            <ImageView fx:id="imgAiutante2" fitHeight="80.0" fitWidth="80.0" layoutX="20.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="aiutanti2" layoutX="130.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" text="-">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <children>
+            <ImageView fx:id="imgAiutante3" fitHeight="80.0" fitWidth="80.0" layoutX="20.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="aiutanti3" layoutX="130.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" text="-">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <HBox fx:id="permit1" prefHeight="80.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <content>
+            <HBox fx:id="politica1" prefHeight="81.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <content>
+            <HBox fx:id="permit2" prefHeight="80.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <content>
+            <HBox fx:id="politica2" prefHeight="81.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+         <content>
+            <HBox fx:id="permit3" prefHeight="80.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <content>
+            <HBox fx:id="politica3" prefHeight="81.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+   </children>
+</GridPane>

@@ -68,6 +68,7 @@ public class ControllerFXGallery extends GestoreFlussoFinestra implements Initia
                 }
                 int id = immagini.getPosizioneCorrente();
                 setterMappa.comunicaSceltaMappa(id);  //setta la mappa nel server
+                bottoneConferma.setDisable(true);
             }catch(SingletonNonInizializzatoException ex) {
                 ex.printStackTrace();
             }

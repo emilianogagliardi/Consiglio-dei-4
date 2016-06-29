@@ -32,6 +32,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     @FXML
@@ -102,6 +103,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     private EventHandler<MouseEvent> eCambiaCarteCosta = event -> Platform.runLater(() -> super.getApplication().showMossaCambiaCarte(IdBalcone.COSTA));
     private EventHandler<MouseEvent> eCambiaCarteCollina = event -> Platform.runLater(() -> super.getApplication().showMossaCambiaCarte(IdBalcone.COLLINA));
     private EventHandler<MouseEvent> eCambiaCarteMontagna = event -> Platform.runLater(() -> super.getApplication().showMossaCambiaCarte(IdBalcone.MONTAGNA));
+    private EventHandler<MouseEvent> eAiutantiOMossa = event -> Platform.runLater(() -> super.getApplication().showMossaOttieniAiutantoOMossa());
 
     //utility
     private HashMap<Integer, Label> idAvversarioLabelMonete = new HashMap<>();
@@ -134,6 +136,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaIdGiocatoreColore();
         inizializzaBottoneAiuto();
         inizializzaBottonePassaTurno();
+        btnPassaTurno.setDisable(true);
     }
 
     private void inizializzaBottonePassaTurno(){
@@ -361,11 +364,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
     //friendly
     void updateAiutantiGiocatore(int aiutanti){
         Platform.runLater(() -> {
-            try {
-                aiutantiGiocatore.setText(aiutanti + "");
-            } catch (Exception e) {
-                System.out.println("lanciata un eccezione in uupdate miei aiutanti");
-            }
+            aiutantiGiocatore.setText(aiutanti + "");
             //memorizza informazioni
             GiocatoreView.getInstance().setAiutanti(aiutanti);
         });
@@ -462,7 +461,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                     h = 90;
                     w = 75;
                     //memorizza informazione sulle carte
-                    GiocatoreView.getInstance().setCartePermesso(carte);
+                    GiocatoreView.getInstance().setCartePermesso(carte.stream().filter(CartaPermessoCostruzione::isVisibile).collect(Collectors.toList()));
                     hBox.getChildren().clear();
                 } else{
                     hBox = idAvversarioHBoxhCartePermit.get(id);
@@ -578,6 +577,8 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         posizioneRe.addEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
         //per costruzione con permesso
         hBoxPermit.addEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciPermesso);
+        //per ottenere aiutanti o mossa
+        imageViewAiutanti.addEventHandler(MouseEvent.MOUSE_CLICKED, eAiutantiOMossa);
     }
 
     void fineTurno(){
@@ -598,6 +599,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         cartaCollina2.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAcquistaCollina);
         posizioneRe.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciRe);
         hBoxPermit.removeEventHandler(MouseEvent.MOUSE_CLICKED, eCostruisciPermesso);
+        imageViewAiutanti.removeEventHandler(MouseEvent.MOUSE_CLICKED, eAiutantiOMossa);
     }
 
     private void mostraPopOver(){

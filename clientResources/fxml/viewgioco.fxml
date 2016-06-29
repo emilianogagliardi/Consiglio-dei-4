@@ -337,17 +337,17 @@
                                     </Label>
                                     <ScrollPane vbarPolicy="NEVER" GridPane.columnIndex="6" GridPane.rowIndex="1">
                                        <content>
-                                          <HBox fx:id="cartePermitAvversario1" prefHeight="100.0" prefWidth="200.0" />
+                                          <HBox fx:id="cartePermitAvversario1" prefHeight="63.0" prefWidth="173.0" />
                                        </content>
                                     </ScrollPane>
                                     <ScrollPane vbarPolicy="NEVER" GridPane.columnIndex="6" GridPane.rowIndex="2">
                                        <content>
-                                          <HBox fx:id="cartePermitAvversario2" prefHeight="100.0" prefWidth="200.0" />
+                                          <HBox fx:id="cartePermitAvversario2" prefHeight="62.0" prefWidth="173.0" />
                                        </content>
                                     </ScrollPane>
                                     <ScrollPane vbarPolicy="NEVER" GridPane.columnIndex="6" GridPane.rowIndex="3">
                                        <content>
-                                          <HBox fx:id="cartePermitAvversario3" prefHeight="100.0" prefWidth="200.0" />
+                                          <HBox fx:id="cartePermitAvversario3" prefHeight="60.0" prefWidth="173.0" />
                                        </content>
                                     </ScrollPane>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">

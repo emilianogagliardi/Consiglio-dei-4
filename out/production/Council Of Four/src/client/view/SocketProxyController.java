@@ -147,23 +147,29 @@ public class SocketProxyController implements InterfacciaController {
     }
 
     @Override
-    public boolean vendiCartePermesso(List<CartaPermessoCostruzione> cartePermesso, int prezzo) throws RemoteException {
-        return false;
+    public boolean vendi(List<Vendibile> vendibili) throws RemoteException {
+        try{
+            oos.writeObject(ComunicazioneController.VENDI.toString());
+            oos.flush();
+            oos.writeObject(vendibili);
+            oos.flush();
+        }catch(IOException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public boolean vendiCartePolitica(List<String> cartePolitica, int prezzo) throws RemoteException {
-        return false;
-    }
-
-    @Override
-    public boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException {
-        return false;
-    }
-
-    @Override
-    public boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException {
-        return false;
+    public boolean compra(List<Vendibile> vendibili) throws RemoteException {
+        try{
+            oos.writeObject(ComunicazioneController.COMPRA.toString());
+            oos.flush();
+            oos.writeObject(vendibili);
+            oos.flush();
+        }catch(IOException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
