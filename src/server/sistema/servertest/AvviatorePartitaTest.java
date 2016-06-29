@@ -156,21 +156,12 @@ public class AvviatorePartitaTest {
 
             }
 
-<<<<<<< HEAD
-           @Override
-=======
-            @Override
-            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
-
-            }
-
             @Override
             public void logOut() throws RemoteException {
 
             }
 
             @Override
->>>>>>> a352b7fd2e37d574602694014116efab418f6d3c
             public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
 
             }

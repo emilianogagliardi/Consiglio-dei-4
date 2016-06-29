@@ -1,24 +1,18 @@
 package client.view.CLI;
 
 
-<<<<<<< HEAD
+
 import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
-=======
 import classicondivise.NomeCittà;
-import classicondivise.VetrinaMarket;
-import classicondivise.bonus.Bonus;
-import classicondivise.bonus.NullBonus;
-import classicondivise.carte.Carta;
->>>>>>> a352b7fd2e37d574602694014116efab418f6d3c
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.CostantiClient;
-import client.view.SocketPollingView;
+
 import client.view.SocketProxyController;
 import interfaccecondivise.InterfacciaController;
 import interfaccecondivise.InterfacciaLoggerRMI;
 import interfaccecondivise.InterfacciaView;
-import server.model.Città;
+
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -31,7 +25,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
+
 
 class CLIView implements InterfacciaView, Remote {
     private String connectionType;

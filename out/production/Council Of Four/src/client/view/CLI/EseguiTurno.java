@@ -263,13 +263,9 @@ class EseguiTurno implements Runnable {
                 "    MERKATIM,\n" +
                 "    NARIS,\n" +
                 "    OSIUM.");
-<<<<<<< HEAD
-        inputLine = in.nextLine();
-=======
         do {
             inputLine = in.nextLine();
         } while (inputLine.equals(""));
->>>>>>> a352b7fd2e37d574602694014116efab418f6d3c
         switch (inputLine) {
             case "A":
                 città = NomeCittà.ARKON.toString();
