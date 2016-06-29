@@ -71,19 +71,27 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
     }
 
     private void setCartePermit() {
-        UtilityGUI utilityGUI = new UtilityGUI();
-        GiocatoreView.getInstance().getCartePermesso().forEach(carta -> {
-            StackPane stackPane = new StackPane();
-            utilityGUI.creaPermit(carta, 95, 75, stackPane, false);
-            ToggleConCartaPermesso toggleConCartaPermesso = new ToggleConCartaPermesso(carta);
-            toggleConCartaPermesso.setGraphic(stackPane);
-            hBoxPermit.getChildren().add(toggleConCartaPermesso);
-        });
+        if(GiocatoreView.getInstance().getCartePermesso().isEmpty()){
+            hBoxPermit.getChildren().add(new Label("Non possiedi carte permesso"));
+        }else {
+            UtilityGUI utilityGUI = new UtilityGUI();
+            GiocatoreView.getInstance().getCartePermesso().forEach(carta -> {
+                StackPane stackPane = new StackPane();
+                utilityGUI.creaPermit(carta, 95, 75, stackPane, false);
+                ToggleConCartaPermesso toggleConCartaPermesso = new ToggleConCartaPermesso(carta);
+                toggleConCartaPermesso.setGraphic(stackPane);
+                hBoxPermit.getChildren().add(toggleConCartaPermesso);
+            });
+        }
     }
 
     private void setCartePolitica(){
-        UtilityGUI utilityGUI = new UtilityGUI();
-        utilityGUI.addPoliticaInBoxAsToggle(hBoxPolitica, GiocatoreView.getInstance().getCartePolitica());
+        if(GiocatoreView.getInstance().getCartePolitica().isEmpty()){
+            hBoxPolitica.getChildren().add(new Label("Non possiedi carte permesso"));
+        }else {
+            UtilityGUI utilityGUI = new UtilityGUI();
+            utilityGUI.addPoliticaInBoxAsToggle(hBoxPolitica, GiocatoreView.getInstance().getCartePolitica());
+        }
     }
 
     private void setAzioneBtnConferma(){
@@ -138,6 +146,7 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
     }
 
     private void vendiPermit() throws RemoteException{
+        hBoxPermit.getChildren().remove(0);
         List<CartaPermessoCostruzione> inVendita = new ArrayList<>();
         if(hBoxPermit.getChildren().size() != 0){
             hBoxPermit.getChildren().forEach((Node nodo) ->{

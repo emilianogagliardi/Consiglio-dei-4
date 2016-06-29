@@ -183,7 +183,6 @@ public class FXApplication extends Application {
         scenaMossa = new Scene(root);
         finestraSecodaria = new Stage();
         finestraSecodaria.setScene(scenaMossa);
-        finestraSecodaria.setAlwaysOnTop(true);
         finestraSecodaria.show();
     }
 
