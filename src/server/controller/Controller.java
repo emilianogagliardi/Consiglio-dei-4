@@ -29,7 +29,6 @@ public class Controller implements Runnable, InterfacciaController {
     private boolean azioneVeloceEseguita;
     private HashMap<IdBalcone, BalconeDelConsiglio> mappaBalconi;
     private GrafoCittà grafoCittà;
-    private ArrayList<SocketPollingController> socketPollingControllers;
     private GiocatoriOnline giocatoriOnline;
     private VetrinaMarket vetrinaMarket;
     private boolean faseTurno;
@@ -55,10 +54,7 @@ public class Controller implements Runnable, InterfacciaController {
         grafoCittà = new GrafoCittà(cittàPartita);
         UnicastRemoteObject.exportObject(this, 0);
     }
-
-    public void setSocketPollingControllers(ArrayList<SocketPollingController> socketPollingControllers){
-        this.socketPollingControllers = socketPollingControllers;
-    }
+    
 
     @Override
     public void run() {

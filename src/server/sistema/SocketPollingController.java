@@ -96,6 +96,7 @@ public class SocketPollingController implements Runnable {
                         case COMPRA:
                             vendibili = (List<Vendibile>) ois.readObject();
                             controller.compra(vendibili);
+                            break;
                         case LOGOUT:
                             controller.logout();
                             ois.close();
