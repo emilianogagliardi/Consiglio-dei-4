@@ -106,6 +106,10 @@ public class Controller implements Runnable, InterfacciaController {
                     giocatoreCorrente = giocatoriOnline.prossimo();
                     viewCorrente = getViewGiocatoreCorrente();
                     viewCorrente.vendi();
+
+                    comunicaAGiocatoreCorrente("E' il tuo turno di vendita");
+                    comunicaAdAltriGiocatori("E' il turno di vendita di giocatore " + giocatoreCorrente.getId());
+
                     try {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
@@ -126,6 +130,10 @@ public class Controller implements Runnable, InterfacciaController {
                     giocatoreCorrente = giocatoreDaPartita(scatolaIdGiocatori.pescaNumero());
                     viewCorrente = getViewGiocatoreCorrente();
                     viewCorrente.compra(vetrinaMarket.getVendibili());
+
+                    comunicaAGiocatoreCorrente("E' il tuo turno di acquisto");
+                    comunicaAdAltriGiocatori("E' il turno di acquisto di giocatore " + giocatoreCorrente.getId());
+
                     try {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);

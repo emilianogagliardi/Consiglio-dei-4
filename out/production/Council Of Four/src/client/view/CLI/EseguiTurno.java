@@ -54,9 +54,7 @@ class EseguiTurno implements Runnable {
                 System.out.println("3: Passa turno");
                 System.out.println("4: logout");
 
-                do {
-                    inputLine = in.nextLine();
-                } while (inputLine.equals(""));
+                inputLine = in.nextLine();
                 switch (inputLine) {
                     case "1":
 
@@ -80,6 +78,7 @@ class EseguiTurno implements Runnable {
                         if (!fine) {
                             controller.passaTurno();
                         }
+                        fine = true;
                         break;
                     case "4":
                         in.close();
@@ -104,9 +103,7 @@ class EseguiTurno implements Runnable {
         System.out.println("4: Compiere un'azione principale aggiuntiva");
 
         try {
-            do {
-                inputLine = in.nextLine();
-            } while (inputLine.equals(""));
+            inputLine = in.nextLine();
             switch (inputLine) {
                 case "1":
                     if (!fine)
@@ -114,9 +111,7 @@ class EseguiTurno implements Runnable {
                     break;
                 case "2":
                     System.out.println("Inserisci il nome della regione di cui vuoi cambiare le carte permesso di costruzione: COSTA(CT) o COLLINA(CL) o MONTAGNA(M)");
-                    do {
-                        inputLine = in.nextLine();
-                    } while (inputLine.equals(""));
+                    inputLine = in.nextLine();
                     switch (inputLine) {
                         case "CT":
                             if (!fine)
@@ -165,9 +160,7 @@ class EseguiTurno implements Runnable {
         System.out.println("4: Costruire un emporio con l'aiuto del re");
 
         try {
-            do {
-                inputLine = in.nextLine();
-            } while (inputLine.equals(""));
+            inputLine = in.nextLine();
             switch (inputLine) {
                 case "1":
                     idBalcone = inserimentoIdBalcone();
@@ -220,6 +213,7 @@ class EseguiTurno implements Runnable {
 
     private CartaPermessoCostruzione inserimentoCartaPermessoCostruzione(){
         int i = 0, input;
+        String inputLine;
         List<CartaPermessoCostruzione> lista;
         try{
             lista = cliView.getMappaCartePermessoCostruzioneGiocatori().get(cliView.getIdGiocatore());
@@ -236,7 +230,8 @@ class EseguiTurno implements Runnable {
                 }
                 System.out.print("\n");
             }
-            input = in.nextInt() - 1;
+            inputLine = in.nextLine();
+            input =  Integer.parseInt(inputLine) - 1;
             if (input >= 0 && input <= (lista.size() - 1)) {
                 return lista.get(input);
             }
@@ -263,9 +258,7 @@ class EseguiTurno implements Runnable {
                 "    MERKATIM,\n" +
                 "    NARIS,\n" +
                 "    OSIUM.");
-        do {
-            inputLine = in.nextLine();
-        } while (inputLine.equals(""));
+        inputLine = in.nextLine();
         switch (inputLine) {
             case "A":
                 città = NomeCittà.ARKON.toString();
@@ -322,9 +315,7 @@ class EseguiTurno implements Runnable {
     private String inserimentoIdBalcone(){
         String inputLine, idBalcone;
         System.out.println("Inserisci il nome della regione del balcone (CT, CL o M) oppure RE per il balcone del re dove desideri inserire il consigliere");
-        do {
-            inputLine = in.nextLine();
-        } while (inputLine.equals(""));
+        inputLine = in.nextLine();
         switch (inputLine) {
             case "CT":
                 idBalcone = IdBalcone.COSTA.toString();
@@ -348,9 +339,7 @@ class EseguiTurno implements Runnable {
     private String inserimentoConsigliereRiserva() {
         System.out.println("Inserisci il colore del consigliere che vuoi prelevare dalla riserva: viola (V), azzurro (AZ), nero (N), rosa (R), arancione (AR) o bianco (B)");
         String inputLine, coloreConsigliere;
-        do {
-            inputLine = in.nextLine();
-        } while (inputLine.equals(""));
+        inputLine = in.nextLine();
         switch (inputLine) {
             case "V":
                 coloreConsigliere = Colore.VIOLA.toString();
@@ -382,9 +371,7 @@ class EseguiTurno implements Runnable {
         String inputLine;
         ArrayList<String> lista = new ArrayList<>();
         do{
-            do {
-                inputLine = in.nextLine();
-            } while (inputLine.equals(""));
+            inputLine = in.nextLine();
             switch (inputLine) {
                 case "V":
                     lista.add(Colore.VIOLA.toString());
@@ -416,7 +403,7 @@ class EseguiTurno implements Runnable {
 
     private int inserimentoNumeroCartaPermesso(){
         System.out.println("Inserisci il numero di carta permesso: 1 o 2");
-        return in.nextInt();
+        return Integer.parseInt(in.nextLine());
     }
 
     void stop(){
