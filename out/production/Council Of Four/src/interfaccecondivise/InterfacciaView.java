@@ -40,6 +40,5 @@ public interface InterfacciaView extends Remote {
     void mostraMessaggio(String messaggio) throws RemoteException;
     void updateBonusPercorsoNobiltà(List<Bonus> percorso)throws RemoteException;
     void vendi() throws RemoteException;
-    void compra() throws RemoteException;
-    void updateVetrinaMarket(List<Vendibile> oggettiInVendita) throws RemoteException;
+    void compra(List<Vendibile> vendibili) throws RemoteException;
 }

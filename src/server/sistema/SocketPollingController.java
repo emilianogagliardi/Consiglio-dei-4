@@ -38,6 +38,7 @@ public class SocketPollingController implements Runnable {
             int numeroCarta, prezzo;
             List<String> nomiColoriCartePolitica;
             CartaPermessoCostruzione cartaPermessoCostruzione;
+            List<Vendibile> vendibili;
             while (running) {
                 try {
                     inputLine = (String) ois.readObject();
@@ -97,21 +98,13 @@ public class SocketPollingController implements Runnable {
                         case COMPIERE_AZIONE_PRINCIPALE_AGGIUNTIVA:
                             controller.compiereAzionePrincipaleAggiuntiva();
                             break;
-                        case VENDI_AIUTANTI:
+                        case VENDI:
+                            vendibili = (List<Vendibile>) ois.readObject();
+                            controller.vendi(vendibili);
                             break;
-                        case VENDI_CARTE_PERMESSO:
-                            prezzo = Integer.valueOf((Integer) ois.readObject());
-                            List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) ois.readObject();
-                            controller.vendiCartePermesso(cartePermesso, prezzo);
-                            break;
-                        case VENDI_CARTE_POLITICA:
-                            prezzo = Integer.valueOf((Integer) ois.readObject());
-                            List<String> cartePolitica = (List<String>) ois.readObject();
-                            controller.vendiCartePolitica(cartePolitica, prezzo);
-                            break;
-                        case COMPRA_VENDIBILI:
-                            List<Vendibile> vendibili = (List<Vendibile>) ois.readObject();
-                            controller.compraVendibili(vendibili);
+                        case COMPRA:
+                            vendibili = (List<Vendibile>) ois.readObject();
+                            controller.compra(vendibili);
                             break;
                         default:
                             break;

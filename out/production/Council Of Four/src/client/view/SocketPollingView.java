@@ -40,6 +40,7 @@ public class SocketPollingView implements Runnable {
             ComunicazioneView comunicazioneView;
             Bonus bonus;
             List<Bonus> percorsoNobiltà;
+            List<Vendibile> vendibili;
             while (running) {
                 try{
                     inputLine = (String) ois.readObject();
@@ -150,14 +151,11 @@ public class SocketPollingView implements Runnable {
                             view.mostraMessaggio(messaggio);
                             break;
                         case COMPRA:
-                            view.compra();
+                            vendibili = (List<Vendibile>) ois.readObject();
+                            view.compra(vendibili);
                             break;
                         case VENDI:
                             view.vendi();
-                            break;
-                        case UPDATE_VETRINA:
-                            List<Vendibile> inVendita = (List<Vendibile>) ois.readObject();
-                            view.updateVetrinaMarket(inVendita);
                             break;
                         default:
                             break;

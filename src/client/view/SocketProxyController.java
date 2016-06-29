@@ -145,13 +145,11 @@ public class SocketProxyController implements InterfacciaController {
     }
 
     @Override
-    public boolean vendiCartePermesso(List<CartaPermessoCostruzione> cartePermesso, int prezzo) throws RemoteException {
+    public boolean vendi(List<Vendibile> vendibili) throws RemoteException {
         try{
-            oos.writeObject(ComunicazioneController.VENDI_CARTE_PERMESSO.toString());
+            oos.writeObject(ComunicazioneController.VENDI.toString());
             oos.flush();
-            oos.writeInt(prezzo);
-            oos.flush();
-            oos.writeObject(cartePermesso);
+            oos.writeObject(vendibili);
             oos.flush();
         }catch(IOException e) {
             return false;
@@ -160,39 +158,9 @@ public class SocketProxyController implements InterfacciaController {
     }
 
     @Override
-    public boolean vendiCartePolitica(List<String> cartePolitica, int prezzo) throws RemoteException {
+    public boolean compra(List<Vendibile> vendibili) throws RemoteException {
         try{
-            oos.writeObject(ComunicazioneController.VENDI_CARTE_POLITICA.toString());
-            oos.flush();
-            oos.writeInt(prezzo);
-            oos.flush();
-            oos.writeObject(cartePolitica);
-            oos.flush();
-        }catch(IOException e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException {
-        try{
-            oos.writeObject(ComunicazioneController.VENDI_AIUTANTI.toString());
-            oos.flush();
-            oos.writeInt(prezzo);
-            oos.flush();
-            oos.writeInt(numeroAiutanti);
-            oos.flush();
-        }catch(IOException e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException {
-        try{
-            oos.writeObject(ComunicazioneController.COMPRA_VENDIBILI.toString());
+            oos.writeObject(ComunicazioneController.COMPRA.toString());
             oos.flush();
             oos.writeObject(vendibili);
             oos.flush();

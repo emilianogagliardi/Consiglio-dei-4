@@ -105,7 +105,7 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
         inVendita.forEach((Vendibile oggettoInVendita) ->{
             UtilityGUI utilityGUI = new UtilityGUI();
             switch (oggettoInVendita.getIdVendibile()){
-                case CARTA_PERMESSO_COSTRUZIONE:
+                case CARTE_PERMESSO_COSTRUZIONE:
                     List<CartaPermessoCostruzione>  cartePermesso = (List<CartaPermessoCostruzione>) oggettoInVendita.getOggetto();
                     StackPane stackPane = new StackPane();
                     cartePermesso.forEach((cartaPermesso) ->{
@@ -117,7 +117,7 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
                     permitVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
                     btnAcquistaPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
                     break;
-                case CARTA_POLITICA:
+                case CARTE_POLITICA:
                     List<String> cartaPolitica = (List<String>) oggettoInVendita.getOggetto();
                     HBox boxPolitica = politicaIdGiocatore.get(oggettoInVendita.getIdGiocatore());
                     utilityGUI.addPoliticaInHBox(boxPolitica, cartaPolitica);

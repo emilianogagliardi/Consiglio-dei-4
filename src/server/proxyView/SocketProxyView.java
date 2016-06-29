@@ -341,21 +341,11 @@ public class SocketProxyView implements InterfacciaView {
     }
 
     @Override
-    public void compra() throws RemoteException {
+    public void compra(List<Vendibile> vendibili) throws RemoteException {
         try {
             oos.writeObject(ComunicazioneView.COMPRA.toString());
             oos.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void updateVetrinaMarket(List<Vendibile> inVendita) throws RemoteException {
-        try {
-            oos.writeObject(ComunicazioneView.UPDATE_VETRINA.toString());
-            oos.flush();
-            oos.writeObject(inVendita);
+            oos.writeObject(vendibili);
             oos.flush();
         } catch (IOException e) {
             e.printStackTrace();
