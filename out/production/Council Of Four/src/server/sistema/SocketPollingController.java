@@ -11,13 +11,11 @@ import java.net.Socket;
 import java.util.List;
 
 public class SocketPollingController implements Runnable {
-    private Socket socket;
     private Controller controller;
     private volatile boolean running = true;
     private ObjectInputStream ois;
 
-    public SocketPollingController(Socket socket, Controller controller, ObjectInputStream ois) {
-        this.socket = socket;
+    SocketPollingController(Controller controller, ObjectInputStream ois) {
         this.controller = controller;
         this.ois = ois;
     }
@@ -26,7 +24,7 @@ public class SocketPollingController implements Runnable {
     public void run() {
         try {
             String inputLine, idBalcone, coloreConsigliereDaRiserva, stringaNomeCittà, regione, coloreConsigliere;
-            int numeroCarta, prezzo;
+            int numeroCarta, idGiocatore;
             List<String> nomiColoriCartePolitica;
             CartaPermessoCostruzione cartaPermessoCostruzione;
             List<Vendibile> vendibili;
@@ -97,14 +95,14 @@ public class SocketPollingController implements Runnable {
                             vendibili = (List<Vendibile>) ois.readObject();
                             controller.compra(vendibili);
                         case LOGOUT:
-                            controller.logout();
+                            idGiocatore = ois.readInt();
+                            controller.logout(idGiocatore);
                             ois.close();
                             running = false;
                             break;
                         default:
                             break;
                     }
-
                 } catch (ClassNotFoundException exc) {
                     exc.printStackTrace();
                 }

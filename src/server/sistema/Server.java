@@ -61,7 +61,7 @@ public class Server {
                 synchronized ((Object) idCorrente) {
                     ois = new ObjectInputStream(socket.getInputStream());
                     oos = new ObjectOutputStream(socket.getOutputStream());
-                    addView(new SocketProxyView(socket, ois, oos));
+                    addView(new SocketProxyView(ois, oos));
                 }
             }catch (IOException e){
                 System.out.println("impossibile creare socket da server socket");

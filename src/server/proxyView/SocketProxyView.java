@@ -17,20 +17,14 @@ import java.util.List;
 ;
 
 public class SocketProxyView implements InterfacciaView {
-    private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private AvviatorePartita avviatorePartita;
     private int idGiocatore;
 
-    public SocketProxyView(Socket socket, ObjectInputStream ois, ObjectOutputStream oos){
-        this.socket = socket;
+    public SocketProxyView(ObjectInputStream ois, ObjectOutputStream oos){
         this.ois = ois;
         this.oos = oos;
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public ObjectInputStream getOis(){return ois;}

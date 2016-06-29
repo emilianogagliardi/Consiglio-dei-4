@@ -29,7 +29,8 @@ class EseguiTurno implements Runnable {
 
     static EseguiTurno getIstanza(){
         if (istanza == null){
-            return  new EseguiTurno();
+            istanza = new EseguiTurno();
+            return  istanza;
         } else return istanza;
     }
 
@@ -83,7 +84,7 @@ class EseguiTurno implements Runnable {
                     case "4":
                         in.close();
                         if (!fine) {
-                            controller.logout();
+                            controller.logout(cliView.getIdGiocatore());
                         }
                         fine = true;
                         break;
@@ -96,7 +97,6 @@ class EseguiTurno implements Runnable {
 
     private void sceltaAzioneVeloce(){
         String inputLine;
-        int monete, aiutanti;
         System.out.println("Scegli un'azione veloce");
         System.out.println("1: Ingaggiare un aiutante");
         System.out.println("2: Cambiare le tessere permesso di costruzione");

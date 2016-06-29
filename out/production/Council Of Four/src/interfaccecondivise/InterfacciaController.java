@@ -39,5 +39,5 @@ public interface InterfacciaController extends Remote, Serializable{ //serializa
     boolean compra(List<Vendibile> vendibili) throws RemoteException;
 
 
-    void logout() throws RemoteException;
+    void logout(int idGiocatore) throws RemoteException;
 }

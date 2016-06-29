@@ -901,22 +901,48 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public void logout() throws RemoteException {
-        comunicaAGiocatoreCorrente("Sei offline!");
-        comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " è offline!");
-        getViewGiocatoreCorrente().logOut();
-        Giocatore giocatoreOffline = giocatoreCorrente;
+    public void logout(int idGiocatoreOffline) throws RemoteException {
+        if (idGiocatoreOffline < giocatoreCorrente.getId()) {
+            views.forEach((InterfacciaView view) -> {
+                try {
+                    if (view.getIdGiocatore() == idGiocatoreOffline) {
+                        view.mostraMessaggio("Sei offline!");
+                        view.logOut();
+                    } else view.mostraMessaggio("Giocatore " + idGiocatoreOffline + " è offline!");
+                } catch (RemoteException exc) {
+                    exc.printStackTrace();
+                }
+            });
+            giocatoriOnline.aggiungiGiocatoreDaEliminare(idGiocatoreOffline);
+        } else if (idGiocatoreOffline > giocatoreCorrente.getId()) {
+            views.forEach((InterfacciaView view) -> {
+                try {
+                    if (view.getIdGiocatore() == idGiocatoreOffline) {
+                        view.mostraMessaggio("Sei offline!");
+                        view.logOut();
+                    } else view.mostraMessaggio("Giocatore " + idGiocatoreOffline + " è offline!");
+                } catch (RemoteException exc) {
+                    exc.printStackTrace();
+                }
+            });
+            giocatoriOnline.eliminaGiocatore(idGiocatoreOffline);
+        } else {
+            comunicaAGiocatoreCorrente("Sei offline!");
+            comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " è offline!");
+            getViewGiocatoreCorrente().logOut();
+            giocatoriOnline.aggiungiGiocatoreDaEliminare(idGiocatoreOffline);
+        }
         for (Iterator<InterfacciaView> iterator = views.iterator(); iterator.hasNext(); ) {
             InterfacciaView view = iterator.next();
-            if (view.getIdGiocatore() == giocatoreOffline.getId()) {
+            if (view.getIdGiocatore() == idGiocatoreOffline) {
                 iterator.remove();
             }
         }
-        synchronized (this) {
-            notify();
+        if (idGiocatoreOffline == giocatoreCorrente.getId()) {
+            synchronized (this) {
+                notify();
+            }
         }
-        giocatoriOnline.aggiungiGiocatoreDaEliminare(giocatoreOffline.getId());
-
     }
 
     private boolean giocatoreRestituisciAiutantiARiserva(int aiutanti){
@@ -1106,13 +1132,17 @@ public class Controller implements Runnable, InterfacciaController {
                 }
             });
             giocatoriDaEliminare = new ArrayList<>();
+        }
 
-            /*
+        public synchronized void eliminaGiocatore(int idGiocatore){
             giocatoriOnline.forEach((Giocatore giocatore) -> {
-                if (giocatore.getId() == idGiocatore) {
-                    giocatoriOnline.remove(giocatore);
+                for (Iterator<Giocatore> iterator = giocatoriOnline.iterator(); iterator.hasNext(); ){
+                    Giocatore giocatoreOnline = iterator.next();
+                    if (giocatoreOnline.getId() == idGiocatore) {
+                        iterator.remove();
+                    }
                 }
-            });*/
+            });
         }
 
         synchronized void aggiungiGiocatore(Giocatore giocatore){

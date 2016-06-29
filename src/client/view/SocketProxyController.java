@@ -173,9 +173,11 @@ public class SocketProxyController implements InterfacciaController {
     }
 
     @Override
-    public void logout() throws RemoteException {
+    public void logout(int idGiocatore) throws RemoteException {
         try {
             oos.writeObject(ComunicazioneController.LOGOUT.toString());
+            oos.flush();
+            oos.writeInt(idGiocatore);
             oos.flush();
         } catch (IOException exc){
             exc.printStackTrace();
