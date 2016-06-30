@@ -1,5 +1,6 @@
 package classicondivise.carte;
 
+import classicondivise.CostantiCondivise;
 import classicondivise.bonus.Bonus;
 import classicondivise.NomeCittà;
 
@@ -22,6 +23,11 @@ CartaPermessoCostruzione extends CartaConBonus implements Serializable{
         if (!(other instanceof CartaPermessoCostruzione))return false;
         CartaPermessoCostruzione otherCartaPermessoCostruzione = (CartaPermessoCostruzione) other;
         return this.città.containsAll(otherCartaPermessoCostruzione.getCittà());
+    }
+
+    @Override
+    public int hashCode(){
+        return CostantiCondivise.HASH_CODE_CARTE_PERMESSO_COSTRUZIONE;
     }
 
     public HashSet<NomeCittà> getCittà(){

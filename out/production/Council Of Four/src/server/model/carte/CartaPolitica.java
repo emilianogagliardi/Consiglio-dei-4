@@ -1,6 +1,7 @@
 package server.model.carte;
 
 
+import classicondivise.CostantiCondivise;
 import classicondivise.carte.Carta;
 
 import java.util.Objects;
@@ -24,5 +25,10 @@ public class CartaPolitica extends Carta {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return CostantiCondivise.HASH_CODE_CARTA_POLITICA;
     }
 }

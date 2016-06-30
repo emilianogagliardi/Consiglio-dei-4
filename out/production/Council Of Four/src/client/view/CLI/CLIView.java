@@ -28,7 +28,9 @@ class CLIView implements InterfacciaView, Remote {
     private InterfacciaLoggerRMI loggerRMI;
     private ObjectOutputStream oos;
     private int idGiocatore;
-    private EseguiTurno istanza;
+    private EseguiTurno istanzaEseguiTurno;
+    private Vendi istanzaVendi;
+    private Compra istanzaCompra;
     private InterfacciaController controller;
     private HashMap<Integer, Integer> mappaPuntiVittoria;
     private HashMap<String, List<String>> mappaBalconi;
@@ -338,15 +340,13 @@ class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void eseguiTurno() throws RemoteException {
-        istanza = EseguiTurno.getIstanza();
-        istanza.setController(controller);
-        istanza.setCLIView(this);
-        new Thread(istanza).start();
+        istanzaEseguiTurno = new EseguiTurno(controller, this);
+        new Thread(istanzaEseguiTurno).start();
     }
 
     @Override
     public void fineTurno() throws RemoteException {
-        istanza.stop();
+        istanzaEseguiTurno.stop();
     }
 
     @Override
@@ -356,14 +356,15 @@ class CLIView implements InterfacciaView, Remote {
 
     @Override
     public void vendi() throws RemoteException {
-
+        istanzaVendi = new Vendi(controller, this);
+        new Thread(istanzaVendi).start();
     }
 
     @Override
     public void compra(List<Vendibile> vendibili) throws RemoteException {
-
+        istanzaCompra = new Compra(controller, this, vendibili);
+        new Thread(istanzaCompra).start();
     }
-
 
     @Override
     public void logOut() throws RemoteException {

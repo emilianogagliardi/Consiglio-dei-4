@@ -41,4 +41,9 @@ public class Vendibile<T> implements Serializable {
         Vendibile otherVendibile = (Vendibile) other;
         return otherVendibile.getOggetto().equals(this.oggetto);
     }
+
+    @Override
+    public int hashCode(){
+        return CostantiCondivise.HASH_CODE_VENDIBILE;
+    }
 }
