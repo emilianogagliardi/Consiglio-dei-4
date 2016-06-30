@@ -855,6 +855,12 @@ public class Controller implements Runnable, InterfacciaController {
             comunicaAGiocatoreCorrente("Non hai abbastanza monete!");
             return false;
         }
+        try {
+            giocatoreCorrente.pagaMonete(costoTotale);
+        } catch (MoneteNonSufficientiException exc){
+            exc.printStackTrace();
+            return false;
+        }
         int idGiocatore;
         for (Vendibile vendibile :  vendibili) {
             idGiocatore = vendibile.getIdGiocatore();

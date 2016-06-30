@@ -54,7 +54,9 @@ class EseguiTurno implements Runnable {
                 System.out.println("3: Passa turno");
                 System.out.println("4: logout");
 
-                inputLine = in.nextLine();
+                if (in.hasNextLine()) {
+                    inputLine = in.nextLine();
+                } else inputLine = "";
                 switch (inputLine) {
                     case "1":
 
@@ -86,6 +88,8 @@ class EseguiTurno implements Runnable {
                             controller.logout(cliView.getIdGiocatore());
                         }
                         fine = true;
+                        break;
+                    default:
                         break;
                 }
             } while (!fine);
