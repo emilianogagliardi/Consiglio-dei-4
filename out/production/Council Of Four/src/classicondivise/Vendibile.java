@@ -39,7 +39,7 @@ public class Vendibile<T> implements Serializable {
         if (other == this) return true;
         if (!(other instanceof Vendibile)) return false;
         Vendibile otherVendibile = (Vendibile) other;
-        return otherVendibile.getOggetto().equals(this.oggetto);
+        return (otherVendibile.getOggetto().equals(this.oggetto) && (otherVendibile.getIdGiocatore() == this.idGiocatore) && (otherVendibile.getPrezzo() == this.prezzo));
     }
 
     @Override

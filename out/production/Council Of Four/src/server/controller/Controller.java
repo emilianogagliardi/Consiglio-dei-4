@@ -855,51 +855,60 @@ public class Controller implements Runnable, InterfacciaController {
             comunicaAGiocatoreCorrente("Non hai abbastanza monete!");
             return false;
         }
-        try {
-            giocatoreCorrente.pagaMonete(costoTotale);
-        } catch (MoneteNonSufficientiException exc){
-            exc.printStackTrace();
-            return false;
-        }
         int idGiocatore;
-        for (Vendibile vendibile :  vendibili) {
-            idGiocatore = vendibile.getIdGiocatore();
-            Giocatore giocatore = getGiocatoreDaPartitaConId(idGiocatore);
-            //rimuovo i vendibili dal giocatore che li ha messi in vendita e dalla vetrina e li aggiungo al giocatore corrente
-            switch (vendibile.getIdVendibile()) {
-                case CARTE_PERMESSO_COSTRUZIONE:
-                    giocatore.guadagnaMonete(vendibile.getPrezzo());
-                    List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
-                    vetrinaMarket.rimuoviVendibile(vendibile);
-                    cartePermesso.forEach((CartaPermessoCostruzione carta) -> {
-                        giocatore.getManoCartePermessoCostruzione().remove(carta);
-                        giocatoreCorrente.addCarta(carta);
-                    });
-                    break;
-                case CARTE_POLITICA:
-                    giocatore.guadagnaMonete(vendibile.getPrezzo());
-                    List<String> cartePolitica = (List<String>) vendibile.getOggetto();
-                    vetrinaMarket.rimuoviVendibile(vendibile);
-                    cartePolitica.forEach((String colore) -> {
-                        CartaPolitica carta = new CartaPolitica(ColoreCartaPolitica.valueOf(colore));
-                        giocatore.getManoCartePolitica().remove(carta);
-                        giocatore.addCarta(carta);
-                    });
-                    break;
-                case AIUTANTI:
-                    giocatore.guadagnaMonete(vendibile.getPrezzo());
-                    try {
-                        int aiutanti = (Integer) vendibile.getOggetto();
-                        getGiocatoreDaPartitaConId(idGiocatore).pagaAiutanti(aiutanti);
+
+        HashMap<Vendibile, Integer> mappaVendibiliRichiesti = Utility.listToHashMap(vendibili);
+        HashMap<Vendibile, Integer> mappaVendibiliVetrina = Utility.listToHashMap(vetrinaMarket.getVendibili());
+
+        if (Utility.hashMapContainsAllWithDuplicates(mappaVendibiliVetrina, mappaVendibiliRichiesti)) {
+            for (Vendibile vendibile :  vendibili) {
+                idGiocatore = vendibile.getIdGiocatore();
+                Giocatore giocatore = getGiocatoreDaPartitaConId(idGiocatore);
+                //rimuovo i vendibili dal giocatore che li ha messi in vendita e dalla vetrina e li aggiungo al giocatore corrente
+                switch (vendibile.getIdVendibile()) {
+                    case CARTE_PERMESSO_COSTRUZIONE:
                         vetrinaMarket.rimuoviVendibile(vendibile);
-                        giocatoreCorrente.guadagnaAiutanti(aiutanti);
-                    } catch (AiutantiNonSufficientiException exc){
-                        exc.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
+                        giocatore.guadagnaMonete(vendibile.getPrezzo());
+                        List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
+                        cartePermesso.forEach((CartaPermessoCostruzione carta) -> {
+                            giocatore.getManoCartePermessoCostruzione().remove(carta);
+                            giocatoreCorrente.addCarta(carta);
+                        });
+                        break;
+                    case CARTE_POLITICA:
+                        vetrinaMarket.rimuoviVendibile(vendibile);
+                        giocatore.guadagnaMonete(vendibile.getPrezzo());
+                        List<String> cartePolitica = (List<String>) vendibile.getOggetto();
+                        cartePolitica.forEach((String colore) -> {
+                            CartaPolitica carta = new CartaPolitica(ColoreCartaPolitica.valueOf(colore));
+                            giocatore.getManoCartePolitica().remove(carta);
+                            giocatoreCorrente.addCarta(carta);
+                        });
+                        break;
+                    case AIUTANTI:
+                        vetrinaMarket.rimuoviVendibile(vendibile);
+                        giocatore.guadagnaMonete(vendibile.getPrezzo());
+                        try {
+                            int aiutanti = (Integer) vendibile.getOggetto();
+                            giocatore.pagaAiutanti(aiutanti);
+                            giocatoreCorrente.guadagnaAiutanti(aiutanti);
+                        } catch (AiutantiNonSufficientiException exc){
+                            exc.printStackTrace();
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+            try {
+                giocatoreCorrente.pagaMonete(costoTotale);
+            } catch (MoneteNonSufficientiException exc){
+                exc.printStackTrace();
+                return false;
+            }
+        } else {
+            comunicaAGiocatoreCorrente("Uno dei vendibili scelti non è disponibile!");
+            return false;
         }
         return false;
     }

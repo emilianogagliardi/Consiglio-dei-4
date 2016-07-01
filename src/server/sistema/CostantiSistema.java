@@ -6,6 +6,6 @@ public class CostantiSistema {
     public static final String NOME_LOGGER_REG = "logger";
     public static final int NUM_GIOCATORI_TIMEOUT = 2;
     public static final int NUM_GOCATORI_MAX = 4;
-    public static final int TIMEOUT_2_GIOCATORI = 10;//20; //secondi
-    public static final long TIMEOUT_TURNO = 180*1000; //millisecondi
+    public static final int TIMEOUT_2_GIOCATORI = 20;//20; //secondi
+    public static final long TIMEOUT_TURNO = 300*1000; //millisecondi
 }
