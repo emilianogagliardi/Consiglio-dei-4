@@ -46,7 +46,7 @@ class Compra implements Runnable {
                         for (Vendibile vendibile : vendibili) {
                             i++;
                             if (vendibile.getIdGiocatore() == cliView.getIdGiocatore()) {
-                                break;
+                                continue;
                             }
                             switch (vendibile.getIdVendibile()){
                                 case CARTE_PERMESSO_COSTRUZIONE:
