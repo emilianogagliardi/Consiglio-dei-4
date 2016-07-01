@@ -42,6 +42,7 @@ public class SocketProxyController implements InterfacciaController {
             oos.writeObject(coloreConsigliere);
             oos.flush();
         } catch (IOException exc){
+            exc.printStackTrace();
             return false;
         }
         return true;
@@ -59,6 +60,7 @@ public class SocketProxyController implements InterfacciaController {
             oos.writeObject(carta);
             oos.flush();
         } catch (IOException exc){
+            exc.printStackTrace();
             return false;
         }
         return true;
@@ -145,27 +147,40 @@ public class SocketProxyController implements InterfacciaController {
     }
 
     @Override
-    public boolean vendiCartePermesso(List<CartaPermessoCostruzione> cartePermesso, int prezzo) throws RemoteException {
-        return false;
+    public boolean vendi(List<Vendibile> vendibili) throws RemoteException {
+        try{
+            oos.writeObject(ComunicazioneController.VENDI.toString());
+            oos.flush();
+            oos.writeObject(vendibili);
+            oos.flush();
+        }catch(IOException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public boolean vendiCartePolitica(List<String> cartePolitica, int prezzo) throws RemoteException {
-        return false;
+    public boolean compra(List<Vendibile> vendibili) throws RemoteException {
+        try{
+            oos.writeObject(ComunicazioneController.COMPRA.toString());
+            oos.flush();
+            oos.writeObject(vendibili);
+            oos.flush();
+        }catch(IOException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public boolean vendiAiutanti(int numeroAiutanti, int prezzo) throws RemoteException {
-        return false;
-    }
-
-    @Override
-    public boolean compraVendibili(List<Vendibile> vendibili) throws RemoteException {
-        return false;
-    }
-
-    @Override
-    public void logout() throws RemoteException {
-
+    public void logout(int idGiocatore) throws RemoteException {
+        try {
+            oos.writeObject(ComunicazioneController.LOGOUT.toString());
+            oos.flush();
+            oos.writeInt(idGiocatore);
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 }

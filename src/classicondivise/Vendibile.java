@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Vendibile<T> implements Serializable {
     private T oggetto;
-    private int prezzo, idGiocatore;
+    private int prezzo, idGiocatore; //il prezzo è il costo dell'intero vendibile, non di ogni singolo oggetto che lo compone
     private IdVendibile idVendibile;
 
     public Vendibile(T oggetto, int prezzo, int idGiocatore, IdVendibile idVendibile) {
@@ -40,5 +40,10 @@ public class Vendibile<T> implements Serializable {
         if (!(other instanceof Vendibile)) return false;
         Vendibile otherVendibile = (Vendibile) other;
         return otherVendibile.getOggetto().equals(this.oggetto);
+    }
+
+    @Override
+    public int hashCode(){
+        return CostantiCondivise.HASH_CODE_VENDIBILE;
     }
 }

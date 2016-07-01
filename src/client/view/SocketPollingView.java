@@ -1,9 +1,9 @@
 package client.view;
 
+import classicondivise.ComunicazioneView;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
-import classicondivise.ComunicazioneView;
-import client.view.GUI.GUIView;
 import interfaccecondivise.InterfacciaView;
 
 import java.io.IOException;
@@ -24,10 +24,6 @@ public class SocketPollingView implements Runnable {
         this.ois = ois;
     }
 
-    public void termina(){ //TODO: il chiamante deve chiamare questo metodo per far terminare il thread
-        running = false;
-    }
-
     @Override
     public void run() {
         try {
@@ -40,6 +36,7 @@ public class SocketPollingView implements Runnable {
             ComunicazioneView comunicazioneView;
             Bonus bonus;
             List<Bonus> percorsoNobiltà;
+            List<Vendibile> vendibili;
             while (running) {
                 try{
                     inputLine = (String) ois.readObject();
@@ -148,6 +145,18 @@ public class SocketPollingView implements Runnable {
                         case MOSTRA_MESSAGGIO:
                             messaggio = (String) ois.readObject();
                             view.mostraMessaggio(messaggio);
+                            break;
+                        case COMPRA:
+                            vendibili = (List<Vendibile>) ois.readObject();
+                            view.compra(vendibili);
+                            break;
+                        case VENDI:
+                            view.vendi();
+                            break;
+                        case LOGOUT:
+                            view.logOut();
+                            ois.close();
+                            running = false;
                             break;
                         default:
                             break;

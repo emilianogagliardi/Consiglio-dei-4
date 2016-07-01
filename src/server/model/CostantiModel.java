@@ -36,6 +36,12 @@ public class CostantiModel {
     public static final int MONETE_INGAGGIARE_AIUTANTE = 3; //monete da pagare per eseguire la mossa veloce "ingaggiare un aiutante"
     public static final int AIUTANTI_GUADAGNATI_INGAGG_AIUTANTE = 1;
 
+    public static final int PUNTI_VITTORIA_GUADAGNATI_COSTRUZIONE_ULTIMO_EMPORIO = 3;
+    public static final int PUNTI_VITTORIA_GUADAGNATI_PRIMO_PERCORSO_NOBILTA = 5;
+    public static final int PUNTI_VITTORIA_GUADAGNATI_SECONDO_PERCORSO_NOBILTA = 2;
+    public static final int PUNTI_VITTORIA_GUADAGNATI_MAGGIOR_NUMERO_TESSERE_PERMESSO = 3;
+
+
     public static final int AIUTANTI_PAGARE_CAMBIO_TESSERE_PERMESSO = 1; //aiutanti da pagare per effettuare l'azione veloce del cambio delle tessere permesso di una regione
     public static final int AIUTANTI_PAGARE_MANDA_AIUTANTE_ELEGG_CONS = 1; //aiutanti da pagare per effettuare l'azione veloce mandare un aiutante ad eleggere un consigliere
     public static final int AIUTANTI_PAGARE_AZIONE_PRINCIPALE_AGGIUNTIVA = 3; //aiutanti da pagare per compiere un'azione principale aggiuntiva

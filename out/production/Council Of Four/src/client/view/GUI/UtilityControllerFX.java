@@ -23,24 +23,25 @@ public class UtilityControllerFX {
                     selezionati.get(0).setSelected(false);
                     selezionati.remove(0);
                 }
+                if(btn.isSelected()) selezionati.add(btn);
+                else selezionati.remove(btn);
                 switch (selezionati.size()){
                     case 0:
                         labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento in monete");
                         break;
                     case 1:
-                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento di 10 monete, più una per ogni carta jolly");
+                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento\n di 10 monete, più una per ogni carta jolly");
                         break;
                     case 2:
-                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento di 7 monete, più una per ogni carta jolly");
+                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento\n di 7 monete, più una per ogni carta jolly");
                         break;
                     case 3:
-                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento di 4 monete, più una per ogni carta jolly");
+                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento\n di 4 monete, più una per ogni carta jolly");
                         break;
                     case 4:
-                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento di 1 monete, più una per ogni carta jolly");
+                        labelMessaggioMonete.setText("Il soddisfacimento del consiglio richiede un supplemento\n di 0 monete, più una per ogni carta jolly");
                         break;
                 }
-                selezionati.add(btn);
             });
         });
     }

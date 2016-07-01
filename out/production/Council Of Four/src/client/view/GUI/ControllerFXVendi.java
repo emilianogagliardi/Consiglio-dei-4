@@ -1,17 +1,19 @@
 package client.view.GUI;
 
+import classicondivise.IdVendibile;
+import classicondivise.Vendibile;
 import classicondivise.carte.CartaPermessoCostruzione;
 import client.view.GUI.utility.UtilityGUI;
 import client.view.GUI.widgetconattributo.ToggleConCartaPermesso;
-import client.view.GUI.widgetconattributo.ToggleConStringa;
+import client.view.GUI.widgetconattributo.ToggleConColore;
 import client.view.GiocatoreView;
+import client.view.eccezioni.SingletonNonInizializzatoException;
 import interfaccecondivise.InterfacciaController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -28,41 +30,68 @@ import java.util.ResourceBundle;
  */
 public class ControllerFXVendi extends GestoreFlussoFinestra implements Initializable {
     @FXML
-    private Spinner<Integer> numeroAiutanti;
+    private Label numeroAiutanti, prezzoAiutanti, prezzoPolitica, prezzoPermit;
     @FXML
     private ImageView imgAiutanti;
     @FXML
-    private Button btnConferma;
+    private Button btnConferma, btnPiuAiutanti, btnMenoAiutanti, btnPiuPrezzoAiutanti, btnMenoPrezzoAiutanti, btnPiuPrezzoPolitica, btnMenoPrezzoPolitica, btnPiuPrezzoPermit, btnMenoPrezzoPermit;
     @FXML
     private HBox hBoxPermit, hBoxPolitica;
-    @FXML
-    private TextField prezzoAiutanti, prezzoPermit, prezzoPolitca;
 
     private InterfacciaController controller;
+
+    private List<Vendibile> oggettiInVendita = new ArrayList<>();
 
     public void setController(InterfacciaController controller){this.controller = controller;}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        numeroAiutanti.setText(String.format("%d", 0));
+        inizializzaBottoni(btnPiuAiutanti, btnMenoAiutanti, numeroAiutanti, GiocatoreView.getInstance().getAiutanti());
+        inizializzaBottoni(btnPiuPrezzoAiutanti, btnMenoPrezzoAiutanti, prezzoAiutanti, 20);
+        inizializzaBottoni(btnPiuPrezzoPolitica, btnMenoPrezzoPolitica, prezzoPolitica, 20);
+        inizializzaBottoni(btnPiuPrezzoPermit, btnMenoPrezzoPermit, prezzoPermit, 20);
         imgAiutanti.setImage(new Image(getClass().getClassLoader().getResourceAsStream("bonus_aiutante.png")));
         setCartePermit();
         setCartePolitica();
         setAzioneBtnConferma();
     }
 
-    private void setCartePermit() {
-        UtilityGUI utilityGUI = new UtilityGUI();
-        GiocatoreView.getInstance().getCartePermesso().forEach(carta -> {
-            StackPane stackPane = new StackPane();
-            utilityGUI.creaPermit(carta, 95, 75, stackPane, false);
-            ToggleConCartaPermesso toggleConCartaPermesso = new ToggleConCartaPermesso(carta);
-            toggleConCartaPermesso.setGraphic(stackPane);
+    private void inizializzaBottoni(Button btnPiu, Button btnMeno, Label numero, int max){
+        btnPiu.setOnMouseClicked(event -> {
+            if(!(Integer.parseInt(numero.getText()) >= max)){
+                numero.setText(String.format("%d", (Integer.parseInt(numero.getText())+1)));
+            }
+        });
+        btnMeno.setOnMouseClicked(event -> {
+            if(!(Integer.parseInt(numero.getText()) == 0)) {
+                numero.setText(String.format("%d", (Integer.parseInt(numero.getText()) - 1)));
+            }
         });
     }
 
+    private void setCartePermit() {
+        if(GiocatoreView.getInstance().getCartePermesso().isEmpty()){
+            hBoxPermit.getChildren().add(new Label("Non possiedi carte permesso"));
+        }else {
+            UtilityGUI utilityGUI = new UtilityGUI();
+            GiocatoreView.getInstance().getCartePermesso().forEach(carta -> {
+                StackPane stackPane = new StackPane();
+                utilityGUI.creaPermit(carta, 95, 75, stackPane, false);
+                ToggleConCartaPermesso toggleConCartaPermesso = new ToggleConCartaPermesso(carta);
+                toggleConCartaPermesso.setGraphic(stackPane);
+                hBoxPermit.getChildren().add(toggleConCartaPermesso);
+            });
+        }
+    }
+
     private void setCartePolitica(){
-        UtilityGUI utilityGUI = new UtilityGUI();
-        utilityGUI.addPoliticaInBoxAsToggle(hBoxPolitica, GiocatoreView.getInstance().getCartePolitica());
+        if(GiocatoreView.getInstance().getCartePolitica().isEmpty()){
+            hBoxPolitica.getChildren().add(new Label("Non possiedi carte permesso"));
+        }else {
+            UtilityGUI utilityGUI = new UtilityGUI();
+            utilityGUI.addPoliticaInBoxAsToggle(hBoxPolitica, GiocatoreView.getInstance().getCartePolitica());
+        }
     }
 
     private void setAzioneBtnConferma(){
@@ -71,6 +100,11 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
                 vendiAiutanti();
                 vendiPolitica();
                 vendiPermit();
+                if(oggettiInVendita.size() != 0){
+                    controller.vendi(oggettiInVendita);
+                }
+                controller.passaTurno();
+                super.getApplication().chiudiFinestraSecondaria();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -78,13 +112,17 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
     }
 
     private void vendiAiutanti() throws RemoteException {
-        if(!numeroAiutanti.getValue().equals(0)){
+        if(!(Integer.parseInt(numeroAiutanti.getText())==0)){
             int prezzo = Integer.parseInt(prezzoAiutanti.getText());
-            if (prezzo > 20) prezzo = 20;
+            int numero = Integer.parseInt(numeroAiutanti.getText());
+            if(prezzo > 20) prezzo = 20;
             if (prezzo < 0) prezzo = 0;
-            int numero = numeroAiutanti.getValue();
-            if (numero > GiocatoreView.getInstance().getAiutanti()) numero = GiocatoreView.getInstance().getAiutanti();
-            controller.vendiAiutanti(numero, prezzo);
+            try {
+                Vendibile<Integer> aiutantiInVendita = new Vendibile<>(numero, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.AIUTANTI);
+                oggettiInVendita.add(aiutantiInVendita);
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -92,17 +130,23 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
         List<String> inVendita = new ArrayList<>();
         if(hBoxPolitica.getChildren().size() != 0){
             hBoxPolitica.getChildren().forEach((Node nodo) -> {
-                ToggleConStringa toggle = (ToggleConStringa) nodo;
-                if(toggle.isSelected()) inVendita.add(toggle.getStringa());
+                ToggleConColore toggle = (ToggleConColore) nodo;
+                if(toggle.isSelected()) inVendita.add(toggle.getColore());
             });
-            int prezzo = Integer.parseInt(prezzoPolitca.getText());
+            int prezzo = Integer.parseInt(prezzoPolitica.getText());
             if(prezzo > 20) prezzo = 20;
             if (prezzo < 0) prezzo = 0;
-            controller.vendiCartePolitica(inVendita, prezzo);
+            try {
+                Vendibile<List<String>> politicaInVendita = new Vendibile<>(inVendita, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.CARTE_POLITICA);
+                oggettiInVendita.add(politicaInVendita);
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void vendiPermit() throws RemoteException{
+        hBoxPermit.getChildren().remove(0);
         List<CartaPermessoCostruzione> inVendita = new ArrayList<>();
         if(hBoxPermit.getChildren().size() != 0){
             hBoxPermit.getChildren().forEach((Node nodo) ->{
@@ -112,7 +156,12 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
             int prezzo = Integer.parseInt(prezzoPermit.getText());
             if(prezzo > 20) prezzo = 20;
             if (prezzo < 0) prezzo = 0;
-            controller.vendiCartePermesso(inVendita, prezzo);
+            try {
+                Vendibile<List<CartaPermessoCostruzione>> permitInVendita = new Vendibile<>(inVendita, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.CARTE_PERMESSO_COSTRUZIONE);
+                oggettiInVendita.add(permitInVendita);
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

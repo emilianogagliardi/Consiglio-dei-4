@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
-public class ScegliMappa implements Runnable {
+class ScegliMappa implements Runnable {
     private String connectionType;
     private InterfacciaLoggerRMI loggerRMI;
     private ObjectOutputStream oos;

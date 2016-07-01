@@ -151,7 +151,7 @@ public class ControllerTest {
         partita.setRiservaConsiglieri(riservaConsiglieri);
 
         proxyViews = new ArrayList<>();
-        proxyViews.add(new InterfacciaView() {
+        boolean add = proxyViews.add(new InterfacciaView() {
             @Override
             public void setIdGiocatore(int idGiocatore) {
 
@@ -275,12 +275,12 @@ public class ControllerTest {
             }
 
             @Override
-            public void compra() throws RemoteException {
+            public void compra(List<Vendibile> vendibili) throws RemoteException {
 
             }
 
             @Override
-            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
+            public void logOut() throws RemoteException {
 
             }
 
@@ -288,8 +288,8 @@ public class ControllerTest {
             public void updateBonusPercorsoNobiltà(List<Bonus> percorsoNobiltà) throws RemoteException {
 
             }
-        }); //passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
-        //getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
+        });//passo un'implementazione di InterfacciaView al volo con tutti i metodi vuoti tranne scegliMappa e
+//getIdGiocatore che ritornano il valore 1 e 0 rispettivamente
         proxyViews.add(new InterfacciaView() {
             @Override
             public void setIdGiocatore(int idGiocatore) {
@@ -413,12 +413,12 @@ public class ControllerTest {
             }
 
             @Override
-            public void compra() throws RemoteException {
+            public void compra(List<Vendibile> vendibili) throws RemoteException {
 
             }
 
             @Override
-            public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
+            public void logOut() throws RemoteException {
 
             }
 

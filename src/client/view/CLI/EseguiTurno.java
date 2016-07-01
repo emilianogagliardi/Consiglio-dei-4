@@ -18,70 +18,73 @@ import java.util.Scanner;
 
 class EseguiTurno implements Runnable {
     private Scanner in;
-    private static EseguiTurno istanza;
     private volatile boolean fine;
     private InterfacciaController controller;
     private CLIView cliView;
 
-    private EseguiTurno(){
-        in = new Scanner(System.in);
-    }
-
-    static EseguiTurno getIstanza(){
-        if (istanza == null){
-            return  new EseguiTurno();
-        } else return istanza;
-    }
-
-    void setController(InterfacciaController controller){
+    public EseguiTurno(InterfacciaController controller, CLIView cliView){
         this.controller = controller;
-    }
-
-    void setCLIView(CLIView cliView){
         this.cliView = cliView;
+        in = new Scanner(System.in);
     }
 
     @Override
     public void run() {
         String inputLine;
         fine = false;
-        do {
-            System.out.println("\nChe cosa vuoi fare?");
-            System.out.println("1: Vedere informazioni partita");
-            System.out.println("2: Esegui azione");
-            System.out.println("3: Abbandona la partita");
+        try{
+            do {
+                System.out.println("\nChe cosa vuoi fare?");
+                System.out.println("1: Vedere informazioni partita");
+                System.out.println("2: Esegui azione");
+                System.out.println("3: Passa turno");
+                System.out.println("4: logout");
 
-            inputLine = in.nextLine();
-            switch (inputLine) {
-                case "1":
 
-                    break;
-                case "2":
-                    System.out.println("Vuoi eseguire un'azione veloce o principale? (V) o (P)");
+                inputLine = in.nextLine();
+                switch (inputLine) {
+                    case "1":
 
-                    inputLine = in.nextLine();
-                    switch (inputLine) {
-                        case "V":
-                            sceltaAzioneVeloce();
-                            break;
-                        case "P":
-                            sceltaAzionePrincipale();
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case "3":
-                    //TODO: logout
-                    fine = true;
-                    break;
-            }
-        } while (!fine);
+                        break;
+                    case "2":
+                        System.out.println("Vuoi eseguire un'azione veloce o principale? (V) o (P)");
+
+                        inputLine = in.nextLine();
+                        switch (inputLine) {
+                            case "V":
+                                sceltaAzioneVeloce();
+                                break;
+                            case "P":
+                                sceltaAzionePrincipale();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case "3":
+                        if (!fine) {
+                            controller.passaTurno();
+                        }
+                        fine = true;
+                        break;
+                    case "4":
+                        in.close();
+                        if (!fine) {
+                            controller.logout(cliView.getIdGiocatore());
+                        }
+                        fine = true;
+                        break;
+                    default:
+                        break;
+                }
+            } while (!fine);
+        } catch (RemoteException exc){
+            exc.printStackTrace();
+        }
     }
 
     private void sceltaAzioneVeloce(){
         String inputLine;
-        int monete, aiutanti;
         System.out.println("Scegli un'azione veloce");
         System.out.println("1: Ingaggiare un aiutante");
         System.out.println("2: Cambiare le tessere permesso di costruzione");
@@ -118,7 +121,7 @@ class EseguiTurno implements Runnable {
                     break;
                 case "3":
                     if (!fine) {
-                        controller.mandareAiutanteEleggereConsigliere(inserimentoIdBalcone(), inserimentoConsigliereRiserva());
+                        controller.mandareAiutanteEleggereConsigliere(inserimentoIdBalconeEleggereUnConsigliere(), inserimentoConsigliereRiserva());
                     }
                     break;
                 case "4":
@@ -149,14 +152,16 @@ class EseguiTurno implements Runnable {
             inputLine = in.nextLine();
             switch (inputLine) {
                 case "1":
-                    idBalcone = inserimentoIdBalcone();
+                    idBalcone = inserimentoIdBalconeEleggereUnConsigliere();
                     coloreConsigliereRiserva = inserimentoConsigliereRiserva();
                     if (!fine){
                         controller.eleggereConsigliere(idBalcone, coloreConsigliereRiserva);
                     }
                     break;
                 case "2":
-                    idBalcone = inserimentoIdBalcone();
+                    stampaBalconiECartePermesso();
+                    stampaCartePoliticaGiocatore();
+                    idBalcone = inserimentoIdBalconeAcquistareTesseraPermesso();
                     listaCartePolitica = inserimentoCartePolitica();
                     numeroCartaPermesso = inserimentoNumeroCartaPermesso();
                     if (!fine) {
@@ -173,6 +178,16 @@ class EseguiTurno implements Runnable {
                     }
                     break;
                 case "4":
+                    System.out.println("Balcone del re:");
+                    for (String colore : cliView.getMappaBalconi().get("RE")) {
+                        System.out.print(" " + colore);
+                    }
+                    System.out.println();
+                    System.out.println("Carte politica:");
+                    for (String colore : cliView.getManoCartePolitica()) {
+                        System.out.print(" " + colore);
+                    }
+                    System.out.println();
                     listaCartePolitica = inserimentoCartePolitica();
                     cittàCostruzione = inserimentoCittà();
                     if (!fine) {
@@ -187,8 +202,70 @@ class EseguiTurno implements Runnable {
         }
     }
 
+    private void stampaBalconiECartePermesso(){
+        System.out.println("Balconi:");
+        System.out.print("COSTA:");
+        List<String> lista = cliView.getMappaBalconi().get(IdBalcone.COSTA.toString());
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        CartaPermessoCostruzione c1 = cliView.getMappaCartePermessoRegione().get(IdBalcone.COSTA.toString()).get(0);
+        CartaPermessoCostruzione c2 = cliView.getMappaCartePermessoRegione().get(IdBalcone.COSTA.toString()).get(1);
+        System.out.print("  Carta 1:");
+        for (NomeCittà nomeCittà : c1.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        System.out.print("  Carta 2:");
+        for (NomeCittà nomeCittà : c2.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        System.out.println();
+        System.out.print("COLLINA:");
+        lista = cliView.getMappaBalconi().get(IdBalcone.COLLINA.toString());
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        c1 = cliView.getMappaCartePermessoRegione().get(IdBalcone.COLLINA.toString()).get(0);
+        c2 = cliView.getMappaCartePermessoRegione().get(IdBalcone.COLLINA.toString()).get(1);
+        System.out.print("  Carta 1:");
+        for (NomeCittà nomeCittà : c1.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        System.out.print("  Carta 2:");
+        for (NomeCittà nomeCittà : c2.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        System.out.println();
+        System.out.print("MONTAGNA:");
+        lista = cliView.getMappaBalconi().get(IdBalcone.MONTAGNA.toString());
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        c1 = cliView.getMappaCartePermessoRegione().get(IdBalcone.MONTAGNA.toString()).get(0);
+        c2 = cliView.getMappaCartePermessoRegione().get(IdBalcone.MONTAGNA.toString()).get(1);
+        System.out.print("  Carta 1:");
+        for (NomeCittà nomeCittà : c1.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        System.out.print("  Carta 2:");
+        for (NomeCittà nomeCittà : c2.getCittà()) {
+            System.out.print("  " + nomeCittà);
+        }
+        System.out.println();
+    }
+
+    private void stampaCartePoliticaGiocatore(){
+        System.out.println("Carte politica:");
+        List<String> lista = cliView.getManoCartePolitica();
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
+    }
+
     private CartaPermessoCostruzione inserimentoCartaPermessoCostruzione(){
         int i = 0, input;
+        String inputLine;
         List<CartaPermessoCostruzione> lista;
         try{
             lista = cliView.getMappaCartePermessoCostruzioneGiocatori().get(cliView.getIdGiocatore());
@@ -205,7 +282,8 @@ class EseguiTurno implements Runnable {
                 }
                 System.out.print("\n");
             }
-            input = in.nextInt() - 1;
+            inputLine = in.nextLine();
+            input =  Integer.parseInt(inputLine) - 1;
             if (input >= 0 && input <= (lista.size() - 1)) {
                 return lista.get(input);
             }
@@ -286,7 +364,7 @@ class EseguiTurno implements Runnable {
         return città;
     }
 
-    private String inserimentoIdBalcone(){
+    private String inserimentoIdBalconeEleggereUnConsigliere(){
         String inputLine, idBalcone;
         System.out.println("Inserisci il nome della regione del balcone (CT, CL o M) oppure RE per il balcone del re dove desideri inserire il consigliere");
         inputLine = in.nextLine();
@@ -302,6 +380,27 @@ class EseguiTurno implements Runnable {
                 break;
             case "RE":
                 idBalcone = IdBalcone.RE.toString();
+                break;
+            default:
+                idBalcone = "";
+                break;
+        }
+        return idBalcone;
+    }
+
+    private String inserimentoIdBalconeAcquistareTesseraPermesso(){
+        String inputLine, idBalcone;
+        System.out.println("Inserisci il nome della regione del balcone (CT, CL o M) che vuoi soddisfare");
+        inputLine = in.nextLine();
+        switch (inputLine) {
+            case "CT":
+                idBalcone = IdBalcone.COSTA.toString();
+                break;
+            case "CL":
+                idBalcone = IdBalcone.COLLINA.toString();
+                break;
+            case "M":
+                idBalcone = IdBalcone.MONTAGNA.toString();
                 break;
             default:
                 idBalcone = "";
@@ -377,7 +476,7 @@ class EseguiTurno implements Runnable {
 
     private int inserimentoNumeroCartaPermesso(){
         System.out.println("Inserisci il numero di carta permesso: 1 o 2");
-        return in.nextInt();
+        return Integer.parseInt(in.nextLine());
     }
 
     void stop(){

@@ -4,7 +4,7 @@ package classicondivise;
 import java.io.Serializable;
 
 public enum IdVendibile implements Serializable {
-    CARTA_PERMESSO_COSTRUZIONE,
-    CARTA_POLITICA,
+    CARTE_PERMESSO_COSTRUZIONE,
+    CARTE_POLITICA,
     AIUTANTI;
 }

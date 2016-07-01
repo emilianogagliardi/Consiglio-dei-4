@@ -1,7 +1,7 @@
 package server.proxyView;
 
 import classicondivise.ComunicazioneView;
-import classicondivise.VetrinaMarket;
+import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
 import interfaccecondivise.InterfacciaView;
@@ -17,20 +17,14 @@ import java.util.List;
 ;
 
 public class SocketProxyView implements InterfacciaView {
-    private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private AvviatorePartita avviatorePartita;
     private int idGiocatore;
 
-    public SocketProxyView(Socket socket, ObjectInputStream ois, ObjectOutputStream oos){
-        this.socket = socket;
+    public SocketProxyView(ObjectInputStream ois, ObjectOutputStream oos){
         this.ois = ois;
         this.oos = oos;
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public ObjectInputStream getOis(){return ois;}
@@ -332,17 +326,34 @@ public class SocketProxyView implements InterfacciaView {
 
     @Override
     public void vendi() throws RemoteException {
-
+        try {
+            oos.writeObject(ComunicazioneView.VENDI.toString());
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void compra() throws RemoteException {
-
+    public void compra(List<Vendibile> vendibili) throws RemoteException {
+        try {
+            oos.writeObject(ComunicazioneView.COMPRA.toString());
+            oos.flush();
+            oos.writeObject(vendibili);
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void updateVetrinaMarket(VetrinaMarket vetrinaMarket) throws RemoteException {
-
+    public void logOut() throws RemoteException {
+        try{
+            oos.writeObject(ComunicazioneView.LOGOUT.toString());
+            oos.flush();
+        } catch (IOException exc){
+            exc.printStackTrace();
+        }
     }
 
     @Override

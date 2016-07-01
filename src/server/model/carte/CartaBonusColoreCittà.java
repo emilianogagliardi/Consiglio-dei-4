@@ -1,4 +1,5 @@
 package server.model.carte;
+import classicondivise.CostantiCondivise;
 import classicondivise.carte.CartaConBonus;
 import server.model.ColoreCittà;
 import classicondivise.bonus.BonusPuntiVittoria;
@@ -25,5 +26,10 @@ public class CartaBonusColoreCittà extends CartaConBonus {
         }
         CartaBonusColoreCittà altraCartaBonusColoreCittà = (CartaBonusColoreCittà) obj;
         return this.colore.equals(altraCartaBonusColoreCittà.getColore());
+    }
+
+    @Override
+    public int hashCode(){
+        return CostantiCondivise.HASH_CODE_CARTA_BONUS_COLORE_CITTA;
     }
 }

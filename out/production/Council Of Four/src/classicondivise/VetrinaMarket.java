@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VetrinaMarket implements Serializable {
-    List<Vendibile> vendibili;
+    private List<Vendibile> vendibili;
 
     public VetrinaMarket(){
         vendibili = new ArrayList<>();
     }
+
+    public List<Vendibile> getVendibili(){return vendibili;}
 
     public void aggiungiVendibile(Vendibile oggetto){
         vendibili.add(oggetto);
