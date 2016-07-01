@@ -153,6 +153,12 @@ public class SocketPollingView implements Runnable {
                         case VENDI:
                             view.vendi();
                             break;
+                        case FINE_VENDI:
+                            view.fineVendi();
+                            break;
+                        case FINE_COMPRA:
+                            view.fineCompra();
+                            break;
                         case LOGOUT:
                             view.logOut();
                             ois.close();

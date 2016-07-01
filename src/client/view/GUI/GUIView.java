@@ -217,6 +217,16 @@ public class GUIView extends GestoreFlussoFinestra implements InterfacciaView, R
     }
 
     @Override
+    public void fineVendi() throws RemoteException {
+
+    }
+
+    @Override
+    public void fineCompra() throws RemoteException {
+
+    }
+
+    @Override
     public void compra(List<Vendibile> vendibili) throws RemoteException {
         Platform.runLater(() -> super.getApplication().showFinestraCompra(vendibili));
     }

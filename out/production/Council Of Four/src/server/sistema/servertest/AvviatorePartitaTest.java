@@ -152,6 +152,16 @@ public class AvviatorePartitaTest {
             }
 
             @Override
+            public void fineVendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void fineCompra() throws RemoteException {
+
+            }
+
+            @Override
             public void compra(List<Vendibile> vendibili) throws RemoteException {
 
             }

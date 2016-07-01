@@ -128,7 +128,7 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
 
     private void vendiPolitica() throws RemoteException {
         List<String> inVendita = new ArrayList<>();
-        if(hBoxPolitica.getChildren().size() != 0){
+        if(GiocatoreView.getInstance().getCartePolitica().size() != 0){
             hBoxPolitica.getChildren().forEach((Node nodo) -> {
                 ToggleConColore toggle = (ToggleConColore) nodo;
                 if(toggle.isSelected()) inVendita.add(toggle.getColore());
@@ -148,7 +148,7 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
     private void vendiPermit() throws RemoteException{
         hBoxPermit.getChildren().remove(0);
         List<CartaPermessoCostruzione> inVendita = new ArrayList<>();
-        if(hBoxPermit.getChildren().size() != 0){
+        if(GiocatoreView.getInstance().getCartePermesso().size() != 0){
             hBoxPermit.getChildren().forEach((Node nodo) ->{
                 ToggleConCartaPermesso toggle = (ToggleConCartaPermesso) nodo;
                 if (toggle.isSelected()) inVendita.add(toggle.getCarta());

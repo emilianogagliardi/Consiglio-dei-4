@@ -275,6 +275,16 @@ public class ControllerTest {
             }
 
             @Override
+            public void fineVendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void fineCompra() throws RemoteException {
+
+            }
+
+            @Override
             public void compra(List<Vendibile> vendibili) throws RemoteException {
 
             }
@@ -409,6 +419,16 @@ public class ControllerTest {
 
             @Override
             public void vendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void fineVendi() throws RemoteException {
+
+            }
+
+            @Override
+            public void fineCompra() throws RemoteException {
 
             }
 

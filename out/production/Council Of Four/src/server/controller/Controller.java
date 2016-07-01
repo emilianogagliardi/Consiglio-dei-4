@@ -114,7 +114,7 @@ public class Controller implements Runnable, InterfacciaController {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
-                        viewCorrente.fineTurno();
+                        viewCorrente.fineVendi();
 
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
@@ -138,7 +138,7 @@ public class Controller implements Runnable, InterfacciaController {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
-                        viewCorrente.fineTurno();
+                        viewCorrente.fineCompra();
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
@@ -868,6 +868,7 @@ public class Controller implements Runnable, InterfacciaController {
             //rimuovo i vendibili dal giocatore che li ha messi in vendita e dalla vetrina e li aggiungo al giocatore corrente
             switch (vendibile.getIdVendibile()) {
                 case CARTE_PERMESSO_COSTRUZIONE:
+                    giocatore.guadagnaMonete(vendibile.getPrezzo());
                     List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
                     vetrinaMarket.rimuoviVendibile(vendibile);
                     cartePermesso.forEach((CartaPermessoCostruzione carta) -> {
@@ -876,6 +877,7 @@ public class Controller implements Runnable, InterfacciaController {
                     });
                     break;
                 case CARTE_POLITICA:
+                    giocatore.guadagnaMonete(vendibile.getPrezzo());
                     List<String> cartePolitica = (List<String>) vendibile.getOggetto();
                     vetrinaMarket.rimuoviVendibile(vendibile);
                     cartePolitica.forEach((String colore) -> {
@@ -885,6 +887,7 @@ public class Controller implements Runnable, InterfacciaController {
                     });
                     break;
                 case AIUTANTI:
+                    giocatore.guadagnaMonete(vendibile.getPrezzo());
                     try {
                         int aiutanti = (Integer) vendibile.getOggetto();
                         getGiocatoreDaPartitaConId(idGiocatore).pagaAiutanti(aiutanti);
@@ -1109,9 +1112,7 @@ public class Controller implements Runnable, InterfacciaController {
         }
 
         synchronized boolean haProssimo(){
-            if (posizione == (giocatoriOnline.size() - 1)) {
-                return false;
-            } else return true;
+            return !(posizione == (giocatoriOnline.size() - 1));
         }
 
         synchronized Giocatore prossimo(){
@@ -1144,7 +1145,7 @@ public class Controller implements Runnable, InterfacciaController {
             giocatoriDaEliminare = new ArrayList<>();
         }
 
-        public synchronized void eliminaGiocatore(int idGiocatore){
+        synchronized void eliminaGiocatore(int idGiocatore){
             giocatoriOnline.forEach((Giocatore giocatore) -> {
                 for (Iterator<Giocatore> iterator = giocatoriOnline.iterator(); iterator.hasNext(); ){
                     Giocatore giocatoreOnline = iterator.next();

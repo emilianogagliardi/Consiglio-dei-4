@@ -77,7 +77,11 @@ class Compra implements Runnable {
                         }
                         inputLine = in.nextLine();
                         while (!inputLine.equals("fine")) {
-                            input =  Integer.parseInt(inputLine) - 1;
+                            try{
+                                input =  Integer.parseInt(inputLine) - 1;
+                            } catch (NumberFormatException exc){
+                                break;
+                            }
                             if (input >= 0 && input <= (vendibili.size() - 1)) {
                                 vendibiliDaComprare.add(vendibili.get(input));
                             }
