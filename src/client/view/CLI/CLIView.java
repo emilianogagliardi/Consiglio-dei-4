@@ -361,6 +361,16 @@ class CLIView implements InterfacciaView, Remote {
     }
 
     @Override
+    public void fineVendi() throws RemoteException {
+        istanzaVendi.stop();
+    }
+
+    @Override
+    public void fineCompra() throws RemoteException {
+        istanzaCompra.stop();
+    }
+
+    @Override
     public void compra(List<Vendibile> vendibili) throws RemoteException {
         istanzaCompra = new Compra(controller, this, vendibili);
         new Thread(istanzaCompra).start();
