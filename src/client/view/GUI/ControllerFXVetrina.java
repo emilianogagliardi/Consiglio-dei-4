@@ -64,31 +64,40 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
         idAvversari = new ArrayList<>();
         for (int i = 0; i < 4; i++){
             try {
-                if (i != GUIView.getInstance().getIdGiocatore()){
+                if (i != GUIView.getInstance().getIdGiocatore()) {
                     idAvversari.add(i);
                 }
-                permitIdGiocatore.put(idAvversari.get(0), permit1);
-                permitIdGiocatore.put(idAvversari.get(1), permit2);
-                permitIdGiocatore.put(idAvversari.get(2), permit3);
-                politicaIdGiocatore.put(idAvversari.get(0), politica1);
-                politicaIdGiocatore.put(idAvversari.get(1), politica2);
-                politicaIdGiocatore.put(idAvversari.get(2), politica3);
-                aiutantiIdGiocatore.put(idAvversari.get(0), aiutanti1);
-                aiutantiIdGiocatore.put(idAvversari.get(1), aiutanti2);
-                aiutantiIdGiocatore.put(idAvversari.get(2), aiutanti3);
-                btnAcquistaAiutantiIdGiocatore.put(idAvversari.get(0), acquistaAiutanti1);
-                btnAcquistaAiutantiIdGiocatore.put(idAvversari.get(1), acquistaAiutanti2);
-                btnAcquistaAiutantiIdGiocatore.put(idAvversari.get(2), acquistaAiutanti3);
-                btnAcquistaPermitIdGiocatore.put(idAvversari.get(0), acquistaPermit1);
-                btnAcquistaPermitIdGiocatore.put(idAvversari.get(1), acquistaPermit2);
-                btnAcquistaPermitIdGiocatore.put(idAvversari.get(2), acquistaPermit3);
-                btnAcquistaPoliticaIdGiocatore.put(idAvversari.get(0), acquistaPolitica1);
-                btnAcquistaPoliticaIdGiocatore.put(idAvversari.get(1), acquistaPolitica2);
-                btnAcquistaPoliticaIdGiocatore.put(idAvversari.get(2), acquistaPolitica3);
-            } catch (RemoteException | SingletonNonInizializzatoException e) {
+            }catch (RemoteException | SingletonNonInizializzatoException e) {
                 e.printStackTrace();
             }
         }
+        permitIdGiocatore.put(idAvversari.get(0), permit1);
+        permitIdGiocatore.put(idAvversari.get(1), permit2);
+        permitIdGiocatore.put(idAvversari.get(2), permit3);
+        prezzoPermitIdGiocatore.put(idAvversari.get(0), prezzoPermit1);
+        prezzoPermitIdGiocatore.put(idAvversari.get(1), prezzoPermit2);
+        prezzoPermitIdGiocatore.put(idAvversari.get(2), prezzoPermit3);
+        politicaIdGiocatore.put(idAvversari.get(0), politica1);
+        politicaIdGiocatore.put(idAvversari.get(1), politica2);
+        politicaIdGiocatore.put(idAvversari.get(2), politica3);
+        prezzoPoliticaIdGiocatore.put(idAvversari.get(0), prezzoPolitica1);
+        prezzoPoliticaIdGiocatore.put(idAvversari.get(1), prezzoPolitica2);
+        prezzoPoliticaIdGiocatore.put(idAvversari.get(2), prezzoPolitica3);
+        aiutantiIdGiocatore.put(idAvversari.get(0), aiutanti1);
+        aiutantiIdGiocatore.put(idAvversari.get(1), aiutanti2);
+        aiutantiIdGiocatore.put(idAvversari.get(2), aiutanti3);
+        prezzoAiutantiIdGiocatore.put(idAvversari.get(0), prezzoAiutanti1);
+        prezzoAiutantiIdGiocatore.put(idAvversari.get(1), prezzoAiutanti2);
+        prezzoAiutantiIdGiocatore.put(idAvversari.get(2), prezzoAiutanti3);
+        btnAcquistaAiutantiIdGiocatore.put(idAvversari.get(0), acquistaAiutanti1);
+        btnAcquistaAiutantiIdGiocatore.put(idAvversari.get(1), acquistaAiutanti2);
+        btnAcquistaAiutantiIdGiocatore.put(idAvversari.get(2), acquistaAiutanti3);
+        btnAcquistaPermitIdGiocatore.put(idAvversari.get(0), acquistaPermit1);
+        btnAcquistaPermitIdGiocatore.put(idAvversari.get(1), acquistaPermit2);
+        btnAcquistaPermitIdGiocatore.put(idAvversari.get(2), acquistaPermit3);
+        btnAcquistaPoliticaIdGiocatore.put(idAvversari.get(0), acquistaPolitica1);
+        btnAcquistaPoliticaIdGiocatore.put(idAvversari.get(1), acquistaPolitica2);
+        btnAcquistaPoliticaIdGiocatore.put(idAvversari.get(2), acquistaPolitica3);
     }
 
     private void setImmaginiAiutanti(){
@@ -102,39 +111,44 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
         aiutanti1.setText("0");
         aiutanti2.setText("0");
         aiutanti3.setText("0");
-        inVendita.forEach((Vendibile oggettoInVendita) ->{
-            UtilityGUI utilityGUI = new UtilityGUI();
-            switch (oggettoInVendita.getIdVendibile()){
-                case CARTE_PERMESSO_COSTRUZIONE:
-                    List<CartaPermessoCostruzione>  cartePermesso = (List<CartaPermessoCostruzione>) oggettoInVendita.getOggetto();
-                    StackPane stackPane = new StackPane();
-                    cartePermesso.forEach((cartaPermesso) ->{
-                        utilityGUI.creaPermit(cartaPermesso, 80, 66, stackPane, false);
-                        HBox boxPermit = permitIdGiocatore.get(oggettoInVendita.getIdGiocatore());
-                        boxPermit.getChildren().add(stackPane);
-                    });
-                    prezzoPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
-                    permitVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
-                    btnAcquistaPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
-                    break;
-                case CARTE_POLITICA:
-                    List<String> cartaPolitica = (List<String>) oggettoInVendita.getOggetto();
-                    HBox boxPolitica = politicaIdGiocatore.get(oggettoInVendita.getIdGiocatore());
-                    utilityGUI.addPoliticaInHBox(boxPolitica, cartaPolitica);
-                    prezzoPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
-                    politicaVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
-                    btnAcquistaPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
-                    break;
-                case AIUTANTI:
-                    Label aiutanti = aiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore());
-                    aiutanti.setText(String.format("%d", (Integer) oggettoInVendita.getOggetto()));
-                    prezzoAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
-                    aiutantiVendutiIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
-                    btnAcquistaAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
-                    break;
-                default: throw new IllegalArgumentException();
-            }
-        });
+        try {
+            int id = GUIView.getInstance().getIdGiocatore();
+            inVendita.stream().filter((Vendibile oggettoInVendita) -> oggettoInVendita.getIdGiocatore() != id).forEach((Vendibile oggettoInVendita) ->{
+                UtilityGUI utilityGUI = new UtilityGUI();
+                switch (oggettoInVendita.getIdVendibile()){
+                    case CARTE_PERMESSO_COSTRUZIONE:
+                        List<CartaPermessoCostruzione>  cartePermesso = (List<CartaPermessoCostruzione>) oggettoInVendita.getOggetto();
+                        cartePermesso.forEach((cartaPermesso) ->{
+                            StackPane stackPane = new StackPane();
+                            utilityGUI.creaPermit(cartaPermesso, 80, 66, stackPane, false);
+                            HBox boxPermit = permitIdGiocatore.get(oggettoInVendita.getIdGiocatore());
+                            boxPermit.getChildren().add(stackPane);
+                        });
+                        prezzoPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("Prezzo: %d", oggettoInVendita.getPrezzo()));
+                        permitVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
+                        btnAcquistaPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
+                        break;
+                    case CARTE_POLITICA:
+                        List<String> cartaPolitica = (List<String>) oggettoInVendita.getOggetto();
+                        HBox boxPolitica = politicaIdGiocatore.get(oggettoInVendita.getIdGiocatore());
+                        utilityGUI.addPoliticaInHBox(boxPolitica, cartaPolitica);
+                        prezzoPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("Prezzo: %d", oggettoInVendita.getPrezzo()));
+                        politicaVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
+                        btnAcquistaPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
+                        break;
+                    case AIUTANTI:
+                        Label aiutanti = aiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore());
+                        aiutanti.setText(String.format("%d", (Integer) oggettoInVendita.getOggetto()));
+                        prezzoAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("Prezzo: %d", oggettoInVendita.getPrezzo()));
+                        aiutantiVendutiIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
+                        btnAcquistaAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
+                        break;
+                    default: throw new IllegalArgumentException();
+                }
+            });
+        } catch (RemoteException | SingletonNonInizializzatoException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setAzioneBtnConferma(){
@@ -150,22 +164,22 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
                 daComprare.add(aiutantiVendutiIdGiocatore.get(idAvversari.get(2)));
             }
             if(acquistaPermit1.isSelected()){
-                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(0)));
-            }
-            if (acquistaPermit2.isSelected()){
-                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(1)));
-            }
-            if (acquistaPermit3.isSelected()){
-                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(2)));
-            }
-            if(acquistaPolitica1.isSelected()){
                 daComprare.add(permitVenduteIdGiocatore.get(idAvversari.get(0)));
             }
-            if (acquistaPolitica2.isSelected()){
+            if (acquistaPermit2.isSelected()){
                 daComprare.add(permitVenduteIdGiocatore.get(idAvversari.get(1)));
             }
-            if (acquistaPolitica3.isSelected()){
+            if (acquistaPermit3.isSelected()){
                 daComprare.add(permitVenduteIdGiocatore.get(idAvversari.get(2)));
+            }
+            if(acquistaPolitica1.isSelected()){
+                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(0)));
+            }
+            if (acquistaPolitica2.isSelected()){
+                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(1)));
+            }
+            if (acquistaPolitica3.isSelected()){
+                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(2)));
             }
             try {
                 controller.compra(daComprare);

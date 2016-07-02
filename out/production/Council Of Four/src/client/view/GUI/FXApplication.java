@@ -28,6 +28,7 @@ public class FXApplication extends Application {
         GUIView.initGUIView(this);
         initScenaPartita();
         finestraPrincipale = primaryStage;
+        finestraPrincipale.setOnCloseRequest(event -> System.exit(1));
         setFinestraDaFXML("login.fxml");
     }
 
@@ -67,6 +68,15 @@ public class FXApplication extends Application {
     void showFinestraGioco() throws IOException {
         finestraPrincipale.setScene(scenaGioco);
         finestraPrincipale.setResizable(true);
+        finestraPrincipale.setOnCloseRequest(event -> {
+            try {
+                controller.logout(GUIView.getInstance().getIdGiocatore());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (SingletonNonInizializzatoException e) {
+                e.printStackTrace();
+            }
+        });
         finestraPrincipale.show();
     }
 
@@ -183,6 +193,7 @@ public class FXApplication extends Application {
         scenaMossa = new Scene(root);
         finestraSecodaria = new Stage();
         finestraSecodaria.setScene(scenaMossa);
+        finestraSecodaria.initOwner(finestraPrincipale);
         finestraSecodaria.show();
     }
 

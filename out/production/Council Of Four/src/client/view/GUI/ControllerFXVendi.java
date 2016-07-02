@@ -146,7 +146,6 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
     }
 
     private void vendiPermit() throws RemoteException{
-        hBoxPermit.getChildren().remove(0);
         List<CartaPermessoCostruzione> inVendita = new ArrayList<>();
         if(GiocatoreView.getInstance().getCartePermesso().size() != 0){
             hBoxPermit.getChildren().forEach((Node nodo) ->{
