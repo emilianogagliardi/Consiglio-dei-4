@@ -115,6 +115,7 @@
                   <Font size="26.0" />
                </font>
             </Label>
+
          </children>
       </AnchorPane>
       <ScrollPane prefHeight="200.0" prefWidth="200.0">

@@ -128,7 +128,11 @@ class Vendi implements Runnable {
                }
                inputLine = in.nextLine();
                while (!inputLine.equals("fine")) {
-                   input =  Integer.parseInt(inputLine) - 1;
+                   try{
+                       input =  Integer.parseInt(inputLine) - 1;
+                   } catch (NumberFormatException exc){
+                       break;
+                   }
                    if (input >= 0 && input <= (lista.size() - 1)) {
                        cartePermessoCostruzioneDaVendere.add(lista.get(input));
                    }
@@ -137,7 +141,11 @@ class Vendi implements Runnable {
                if (cartePermessoCostruzioneDaVendere.size() != 0) {
                    System.out.print("Scegli il prezzo di vendita: ");
                    inputLine = in.nextLine();
-                   prezzo =  Integer.parseInt(inputLine);
+                   try{
+                       prezzo =  Integer.parseInt(inputLine);
+                   } catch (NumberFormatException exc){
+                       return null;
+                   }
                    vendibili.add(new Vendibile(cartePermessoCostruzioneDaVendere, prezzo, cliView.getIdGiocatore(), IdVendibile.CARTE_PERMESSO_COSTRUZIONE));
                    return vendibili;
                } else return null;
@@ -166,7 +174,11 @@ class Vendi implements Runnable {
             }
             inputLine = in.nextLine();
             while (!inputLine.equals("fine")) {
-                input =  Integer.parseInt(inputLine) - 1;
+                try{
+                    input =  Integer.parseInt(inputLine) - 1;
+                } catch (NumberFormatException exc){
+                    break;
+                }
                 if (input >= 0 && input <= (lista.size() - 1)) {
                     cartePoliticaDaVendere.add(lista.get(input));
                 }
@@ -175,7 +187,11 @@ class Vendi implements Runnable {
             if (cartePoliticaDaVendere.size() != 0) {
                 System.out.print("Scegli il prezzo di vendita: ");
                 inputLine = in.nextLine();
-                prezzo =  Integer.parseInt(inputLine);
+                try{
+                    prezzo =  Integer.parseInt(inputLine);
+                } catch (NumberFormatException exc){
+                    return null;
+                }
                 vendibili.add(new Vendibile(cartePoliticaDaVendere, prezzo, cliView.getIdGiocatore(), IdVendibile.CARTE_POLITICA));
                 return vendibili;
             } else return null;
@@ -197,11 +213,19 @@ class Vendi implements Runnable {
             List<Vendibile> vendibili = new ArrayList<>();
             System.out.println("Scrivi il numero di aiutanti che vuoi vendere:");
             inputLine = in.nextLine();
-            aiutantiDaVendere =  Integer.parseInt(inputLine);
+            try{
+                aiutantiDaVendere =  Integer.parseInt(inputLine);
+            } catch (NumberFormatException exc){
+                return null;
+            }
             if (aiutantiDaVendere != 0) {
                 System.out.print("Scegli il prezzo di vendita: ");
                 inputLine = in.nextLine();
-                prezzo =  Integer.parseInt(inputLine);
+                try{
+                    prezzo =  Integer.parseInt(inputLine);
+                } catch (NumberFormatException exc){
+                    return null;
+                }
                 vendibili.add(new Vendibile(aiutantiDaVendere, prezzo, cliView.getIdGiocatore(), IdVendibile.AIUTANTI));
                 return vendibili;
             } else return null;
