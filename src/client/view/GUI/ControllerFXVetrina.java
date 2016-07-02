@@ -108,44 +108,48 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
     }
 
     public void setVetrina(List<Vendibile> inVendita){
-        System.out.println(inVendita);
         aiutanti1.setText("0");
         aiutanti2.setText("0");
         aiutanti3.setText("0");
-        inVendita.forEach((Vendibile oggettoInVendita) ->{
-            UtilityGUI utilityGUI = new UtilityGUI();
-            switch (oggettoInVendita.getIdVendibile()){
-                case CARTE_PERMESSO_COSTRUZIONE:
-                    List<CartaPermessoCostruzione>  cartePermesso = (List<CartaPermessoCostruzione>) oggettoInVendita.getOggetto();
-                    StackPane stackPane = new StackPane();
-                    cartePermesso.forEach((cartaPermesso) ->{
-                        utilityGUI.creaPermit(cartaPermesso, 80, 66, stackPane, false);
-                        HBox boxPermit = permitIdGiocatore.get(oggettoInVendita.getIdGiocatore());
-                        boxPermit.getChildren().add(stackPane);
-                    });
-                    prezzoPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
-                    permitVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
-                    btnAcquistaPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
-                    break;
-                case CARTE_POLITICA:
-                    List<String> cartaPolitica = (List<String>) oggettoInVendita.getOggetto();
-                    HBox boxPolitica = politicaIdGiocatore.get(oggettoInVendita.getIdGiocatore());
-                    utilityGUI.addPoliticaInHBox(boxPolitica, cartaPolitica);
-                    prezzoPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
-                    politicaVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
-                    btnAcquistaPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
-                    break;
-                case AIUTANTI:
-                    Label aiutanti = aiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore());
-                    System.out.println(aiutanti);
-                    aiutanti.setText(String.format("%d", (Integer) oggettoInVendita.getOggetto()));
-                    prezzoAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
-                    aiutantiVendutiIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
-                    btnAcquistaAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
-                    break;
-                default: throw new IllegalArgumentException();
-            }
-        });
+        try {
+            int id = GUIView.getInstance().getIdGiocatore();
+            inVendita.stream().filter((Vendibile oggettoInVendita) -> oggettoInVendita.getIdGiocatore() != id).forEach((Vendibile oggettoInVendita) ->{
+                UtilityGUI utilityGUI = new UtilityGUI();
+                switch (oggettoInVendita.getIdVendibile()){
+                    case CARTE_PERMESSO_COSTRUZIONE:
+                        List<CartaPermessoCostruzione>  cartePermesso = (List<CartaPermessoCostruzione>) oggettoInVendita.getOggetto();
+                        StackPane stackPane = new StackPane();
+                        cartePermesso.forEach((cartaPermesso) ->{
+                            utilityGUI.creaPermit(cartaPermesso, 80, 66, stackPane, false);
+                            HBox boxPermit = permitIdGiocatore.get(oggettoInVendita.getIdGiocatore());
+                            boxPermit.getChildren().add(stackPane);
+                        });
+                        prezzoPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
+                        permitVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
+                        btnAcquistaPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
+                        break;
+                    case CARTE_POLITICA:
+                        List<String> cartaPolitica = (List<String>) oggettoInVendita.getOggetto();
+                        HBox boxPolitica = politicaIdGiocatore.get(oggettoInVendita.getIdGiocatore());
+                        utilityGUI.addPoliticaInHBox(boxPolitica, cartaPolitica);
+                        prezzoPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
+                        politicaVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
+                        btnAcquistaPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
+                        break;
+                    case AIUTANTI:
+                        Label aiutanti = aiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore());
+                        System.out.println(aiutanti);
+                        aiutanti.setText(String.format("%d", (Integer) oggettoInVendita.getOggetto()));
+                        prezzoAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
+                        aiutantiVendutiIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
+                        btnAcquistaAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
+                        break;
+                    default: throw new IllegalArgumentException();
+                }
+            });
+        } catch (RemoteException | SingletonNonInizializzatoException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setAzioneBtnConferma(){
