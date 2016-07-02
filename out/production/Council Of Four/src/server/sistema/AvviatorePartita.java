@@ -260,7 +260,7 @@ public class AvviatorePartita implements Runnable {
             }
             else percorso.add(NullBonus.getInstance());
         }
-        percorso.add(new BonusPuntiVittoria(CostantiModel.MAX_POS_NOBILTA + 1, NullBonus.getInstance()));
+        percorso.add(new BonusPuntiVittoria(CostantiModel.MAX_POS_NOBILTA, NullBonus.getInstance()));
         return percorso;
     }
 
@@ -391,7 +391,6 @@ public class AvviatorePartita implements Runnable {
         ArrayList<Class> bonusNonUtilizzati = new ArrayList<>();
         for(Class c : tipiBonus){
             bonusNonUtilizzati.add(c);
-            System.out.println(c);
         }
         int numeroSottobonus = CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(CostantiModel.MAX_NUM_SOTTOBONUS_PER_BONUS - CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
         for (int i = 0; i < numeroSottobonus; i++) {
