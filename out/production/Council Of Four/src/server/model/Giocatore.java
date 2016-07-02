@@ -40,9 +40,6 @@ public class Giocatore extends Observable {
         updateViewPercorsoNobiltà();
         updateViewEmporiDisponibili();
         updateViewCartePolitica();
-        //updateViewCarteBonusRegione();
-        //updateViewCarteBonusColoreCittà();
-        //updateViewCartePremioRe();
         updateViewCartePermessoCostruzione();
     }
 
@@ -113,7 +110,6 @@ public class Giocatore extends Observable {
         }
         else if(c instanceof CartaBonusColoreCittà) {
             manoCarteBonusColoreCittà.add((CartaBonusColoreCittà) c);
-            //updateViewCarteBonusColoreCittà();
         }
         else if (c instanceof CartaPermessoCostruzione) {
             manoCartePermessoCostruzione.add((CartaPermessoCostruzione) c);
@@ -121,11 +117,9 @@ public class Giocatore extends Observable {
         }
         else if (c instanceof CartaBonusRegione) {
             manoCarteBonusRegione.add((CartaBonusRegione) c);
-            //updateViewCarteBonusRegione();
         }
         else if (c instanceof CartaPremioDelRe) {
             manoCartePremioDelRe.add((CartaPremioDelRe) c);
-            //updateViewCartePremioRe();
         }
         else throw new IllegalArgumentException();
     }
@@ -145,6 +139,20 @@ public class Giocatore extends Observable {
         return carteScartate;
     }
 
+    public ArrayList<CartaPermessoCostruzione> scartaCartePermessoCostruzione(List<CartaPermessoCostruzione> cartePermessoCostruzione){
+        ArrayList<CartaPermessoCostruzione> carteScartate = new ArrayList<>();
+        for (CartaPermessoCostruzione carta : cartePermessoCostruzione) {
+            for (CartaPermessoCostruzione cartaGiocatore : manoCartePermessoCostruzione) {
+                if (carta.equals(cartaGiocatore)) {
+                    carteScartate.add(cartaGiocatore);
+                    manoCartePermessoCostruzione.remove(cartaGiocatore);
+                    break;
+                }
+            }
+        }
+        updateViewCartePermessoCostruzione();
+        return carteScartate;
+    }
 
     public int getId() {
         return idGiocatore;
@@ -163,8 +171,12 @@ public class Giocatore extends Observable {
         }
     }
 
-    public List<CartaPolitica> getManoCartePolitica() {
-        return manoCartePolitica;
+    public List<ColoreCartaPolitica> getColoriCartePolitica(){
+        List<ColoreCartaPolitica> lista = new ArrayList<>();
+        manoCartePolitica.forEach((CartaPolitica carta) -> {
+            lista.add(carta.getColore());
+        });
+        return lista;
     }
 
     public List<CartaPermessoCostruzione> getManoCartePermessoCostruzione() {
@@ -211,7 +223,7 @@ public class Giocatore extends Observable {
             manoCartePolitica.stream().forEach((CartaPolitica c) -> colori.add(c.getColore().toString()));
             try {
                 if (v.getIdGiocatore() == getId())  v.updateCartePoliticaProprie(colori);
-                else v.updateCartePoliticaAvversari(getId(), getManoCartePolitica().size());
+                else v.updateCartePoliticaAvversari(getId(), manoCartePolitica.size());
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -248,74 +260,6 @@ public class Giocatore extends Observable {
         });
     }
 
-    /*private void updateViewCarteBonusRegione() {
-        HashMap<String, Integer> mapCarte = new HashMap<>();
-        manoCarteBonusRegione.forEach((CartaBonusRegione carta) -> {
-            Bonus bonus = carta.getBonus();
-            int punti;
-            try{
-                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
-                punti = bonusPuntiVittoria.getPuntiVittoria();
-            }catch (ClassCastException e) {
-                System.out.println("la carta bonus regione non ha bonus punti vittoria, impossibile eseguire cast");
-                punti = 0;
-            }
-            mapCarte.put(carta.getNomeRegione().toString(), punti);
-        });
-        super.notifyViews((InterfacciaView v) -> {
-            try {
-                v.updateCarteBonusRegioneGiocatore(getId(), mapCarte);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
-
-    /*private void updateViewCarteBonusColoreCittà (){
-        HashMap<String, Integer> mapCarte = new HashMap<>();
-        manoCarteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
-            Bonus bonus = carta.getBonus();
-            int punti;
-            try{
-                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
-                punti = bonusPuntiVittoria.getPuntiVittoria();
-            }catch (ClassCastException e) {
-                System.out.println("la carta bonus colore città non ha bonus punti vittoria, impossibile eseguire cast");
-                punti = 0;
-            }
-            mapCarte.put(carta.getColore().toString(), punti);
-        });
-        super.notifyViews((InterfacciaView v) -> {
-            try {
-                v.updateCarteBonusColoreCittàGiocatore(getId(), mapCarte);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
-
-    /*private void updateViewCartePremioRe(){
-        HashMap<String, Integer> mapCarte = new HashMap<>();
-        manoCartePremioDelRe.forEach((CartaPremioDelRe carta) -> {
-            Bonus bonus = carta.getBonus();
-            int punti;
-            try{
-                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
-                punti = bonusPuntiVittoria.getPuntiVittoria();
-            }catch (ClassCastException e) {
-                System.out.println("la carta premio del re non ha bonus punti vittoria, impossibile eseguire cast");
-                punti = 0;
-            }
-            mapCarte.put(((Integer)carta.getNumeroOrdine()).toString(), punti);
-        });
-       super.notifyViews((InterfacciaView v) -> {
-           try {
-               v.updateCarteBonusReGiocatore(getId(), mapCarte);
-           } catch (RemoteException e) {
-               e.printStackTrace();
-           }
-       });
-    }*/
 
     private void updateViewCartePermessoCostruzione() {
         super.notifyViews((InterfacciaView v) -> {

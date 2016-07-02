@@ -483,7 +483,7 @@ class EseguiTurno implements Runnable {
         System.out.println("Inserisci il numero di carta permesso: 1 o 2");
         inputLine = in.nextLine();
         try{
-            return Integer.parseInt(inputLine) - 1;
+            return Integer.parseInt(inputLine);
         } catch (NumberFormatException exc){
             return -1;
         }

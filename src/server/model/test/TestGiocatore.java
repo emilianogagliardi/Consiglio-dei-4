@@ -81,15 +81,12 @@ public class TestGiocatore {
 
     @Test
     public void pescaCartaTest(){
-        CartaPolitica cp = new CartaPolitica(ColoreCartaPolitica.ARANCIONE);
         CartaBonusRegione cbr = new CartaBonusRegione(NomeRegione.COSTA, 2);
         CartaBonusColoreCittà cbcc = new CartaBonusColoreCittà(1, ColoreCittà.FERRO);
         CartaPremioDelRe cpr = new CartaPremioDelRe(2);
         HashSet<NomeCittà> città = new HashSet<>();
         città.add(new Città(NomeRegione.COLLINA, NomeCittà.BURGEN, ColoreCittà.BRONZO, NullBonus.getInstance(), new ArrayList<InterfacciaView>()).getNome());
         CartaPermessoCostruzione cpc = new CartaPermessoCostruzione(NullBonus.getInstance(),città);
-        giocatore.addCarta(cp);
-        assertTrue(giocatore.getManoCartePolitica().contains(cp));
         giocatore.addCarta(cbr);
         assertTrue(giocatore.getManoCarteBonusRegione().contains(cbr));
         giocatore.addCarta(cbcc);
@@ -115,10 +112,10 @@ public class TestGiocatore {
         colori.add(ColoreCartaPolitica.ARANCIONE);
         colori.add(ColoreCartaPolitica.AZZURRO);
         g1.scartaCartePolitica(colori);
-        List<CartaPolitica> mano = g1.getManoCartePolitica();
-        assertFalse(mano.contains(new CartaPolitica(ColoreCartaPolitica.AZZURRO)));
-        assertTrue(mano.contains(new CartaPolitica(ColoreCartaPolitica.ARANCIONE)));
-        assertTrue(mano.contains(new CartaPolitica(ColoreCartaPolitica.JOLLY)));
+        List<ColoreCartaPolitica> mano = g1.getColoriCartePolitica();
+        assertFalse(mano.contains(ColoreCartaPolitica.AZZURRO));
+        assertTrue(mano.contains(ColoreCartaPolitica.ARANCIONE));
+        assertTrue(mano.contains(ColoreCartaPolitica.JOLLY));
         assertTrue(mano.size() == 2);
     }
 

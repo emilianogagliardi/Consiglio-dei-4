@@ -269,8 +269,7 @@ class CLIView implements InterfacciaView, Remote {
                 System.out.println();
             }
         } else {
-            System.out.println("Carte permesso giocatore costruzione" + idGiocatore + ":");
-            System.out.println("Carte permesso costruzione:");
+            System.out.println("Carte permesso costruzione giocatore " + idGiocatore + ":");
             for (CartaPermessoCostruzione carta : manoCartePermessoCostruzione) {
                 for (NomeCittà nomeCittà : carta.getCittà()) {
                     System.out.print("  " + nomeCittà);

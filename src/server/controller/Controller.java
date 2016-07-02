@@ -503,8 +503,7 @@ public class Controller implements Runnable, InterfacciaController {
         }
 
         //controllo che il giocatore abbia le carte scelte
-        List<ColoreCartaPolitica> manoColoriCartePoliticaGiocatore = new ArrayList<>();
-        giocatoreCorrente.getManoCartePolitica().forEach((cartaPolitica) -> manoColoriCartePoliticaGiocatore.add(cartaPolitica.getColore()));
+        List<ColoreCartaPolitica> manoColoriCartePoliticaGiocatore = giocatoreCorrente.getColoriCartePolitica();
         List<Colore> arrayListManoColoriGiocatore = manoColoriCartePoliticaGiocatore.stream().map(ColoreCartaPolitica::toColore).collect(Collectors.toList());
         HashMap<Colore, Integer> mappaColoriManoCartePoliticaGiocatore = Utility.listToHashMap(arrayListManoColoriGiocatore);
         HashMap<Colore, Integer> mappaColoriCartePolitica = Utility.listToHashMap(ColoreCartaPolitica.toColore(coloriCartePolitica));
@@ -535,7 +534,9 @@ public class Controller implements Runnable, InterfacciaController {
         if (controlliCostruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, stringaNomeCittà)) {
             NomeCittà nomeCittà = NomeCittà.valueOf(stringaNomeCittà);
             if (costruisciEmporio(nomeCittà)) {
-                giocatoreCorrente.getManoCartePermessoCostruzione().remove(cartaPermessoCostruzione);
+                List<CartaPermessoCostruzione> lista = new ArrayList<>();
+                lista.add(cartaPermessoCostruzione);
+                giocatoreCorrente.scartaCartePermessoCostruzione(lista);
                 cartaPermessoCostruzione.setVisibile(false);
                 giocatoreCorrente.addCarta(cartaPermessoCostruzione);  //riassegno al giocatore la stessa carta coperta
                 decrementaAzioniPrincipaliDisponibili();
@@ -652,8 +653,7 @@ public class Controller implements Runnable, InterfacciaController {
         }
 
         //controllo che il giocatore abbia le carte scelte
-        List<ColoreCartaPolitica> manoColoriCartePoliticaGiocatore = new ArrayList<>();
-        giocatoreCorrente.getManoCartePolitica().forEach((cartaPolitica) -> manoColoriCartePoliticaGiocatore.add(cartaPolitica.getColore()));
+        List<ColoreCartaPolitica> manoColoriCartePoliticaGiocatore = giocatoreCorrente.getColoriCartePolitica();
         List<Colore> arrayListManoColoriGiocatore = manoColoriCartePoliticaGiocatore.stream().map(ColoreCartaPolitica::toColore).collect(Collectors.toList());
         HashMap<Colore, Integer> mappaColoriManoCartePoliticaGiocatore = Utility.listToHashMap(arrayListManoColoriGiocatore);
         HashMap<Colore, Integer> mappaColoriCartePolitica = Utility.listToHashMap(ColoreCartaPolitica.toColore(coloriCartePolitica));
@@ -813,11 +813,12 @@ public class Controller implements Runnable, InterfacciaController {
                 case CARTE_POLITICA:
                     List<String> cartePolitica = (List<String>) vendibile.getOggetto();
                     HashMap<String, Integer> mappaCartePoliticaVendibili = Utility.listToHashMap(cartePolitica);
-                    List<String> manoColoriCartePolitica = new ArrayList<>();
-                    giocatoreCorrente.getManoCartePolitica().forEach((CartaPolitica carta) ->{
-                        manoColoriCartePolitica.add(carta.getColore().toString());
+                    List<ColoreCartaPolitica> manoColoriCartePolitica = giocatoreCorrente.getColoriCartePolitica();
+                    List<String> manoStringheColoriCartePolitica = new ArrayList<>();
+                    manoColoriCartePolitica.forEach((ColoreCartaPolitica colore) -> {
+                        manoStringheColoriCartePolitica.add(colore.toString());
                     });
-                    HashMap<String, Integer> mappaCartePoliticaGiocatore = Utility.listToHashMap(manoColoriCartePolitica);
+                    HashMap<String, Integer> mappaCartePoliticaGiocatore = Utility.listToHashMap(manoStringheColoriCartePolitica);
                     if (Utility.hashMapContainsAllWithDuplicates(mappaCartePoliticaGiocatore, mappaCartePoliticaVendibili)) {
                             vetrinaMarket.aggiungiVendibile(vendibile);
                     } else{
@@ -870,8 +871,8 @@ public class Controller implements Runnable, InterfacciaController {
                         vetrinaMarket.rimuoviVendibile(vendibile);
                         giocatore.guadagnaMonete(vendibile.getPrezzo());
                         List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
-                        cartePermesso.forEach((CartaPermessoCostruzione carta) -> {
-                            giocatore.getManoCartePermessoCostruzione().remove(carta);
+                        ArrayList<CartaPermessoCostruzione> carteScartate = giocatore.scartaCartePermessoCostruzione(cartePermesso);
+                        carteScartate.forEach((CartaPermessoCostruzione carta) -> {
                             giocatoreCorrente.addCarta(carta);
                         });
                         break;
@@ -879,10 +880,13 @@ public class Controller implements Runnable, InterfacciaController {
                         vetrinaMarket.rimuoviVendibile(vendibile);
                         giocatore.guadagnaMonete(vendibile.getPrezzo());
                         List<String> cartePolitica = (List<String>) vendibile.getOggetto();
+                        List<ColoreCartaPolitica> listaColori = new ArrayList<>();
                         cartePolitica.forEach((String colore) -> {
-                            CartaPolitica carta = new CartaPolitica(ColoreCartaPolitica.valueOf(colore));
-                            giocatore.getManoCartePolitica().remove(carta);
-                            giocatoreCorrente.addCarta(carta);
+                            listaColori.add(ColoreCartaPolitica.valueOf(colore));
+                        });
+                        List<CartaPolitica> cartePoliticaScartate = giocatore.scartaCartePolitica(listaColori);
+                        cartePoliticaScartate.forEach((CartaPolitica cartaPolitica) -> {
+                            giocatoreCorrente.addCarta(cartaPolitica);
                         });
                         break;
                     case AIUTANTI:
