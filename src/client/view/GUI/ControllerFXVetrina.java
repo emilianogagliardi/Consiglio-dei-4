@@ -118,13 +118,13 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
                 switch (oggettoInVendita.getIdVendibile()){
                     case CARTE_PERMESSO_COSTRUZIONE:
                         List<CartaPermessoCostruzione>  cartePermesso = (List<CartaPermessoCostruzione>) oggettoInVendita.getOggetto();
-                        StackPane stackPane = new StackPane();
                         cartePermesso.forEach((cartaPermesso) ->{
+                            StackPane stackPane = new StackPane();
                             utilityGUI.creaPermit(cartaPermesso, 80, 66, stackPane, false);
                             HBox boxPermit = permitIdGiocatore.get(oggettoInVendita.getIdGiocatore());
                             boxPermit.getChildren().add(stackPane);
                         });
-                        prezzoPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
+                        prezzoPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("Prezzo: %d", oggettoInVendita.getPrezzo()));
                         permitVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
                         btnAcquistaPermitIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
                         break;
@@ -132,15 +132,14 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
                         List<String> cartaPolitica = (List<String>) oggettoInVendita.getOggetto();
                         HBox boxPolitica = politicaIdGiocatore.get(oggettoInVendita.getIdGiocatore());
                         utilityGUI.addPoliticaInHBox(boxPolitica, cartaPolitica);
-                        prezzoPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
+                        prezzoPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("Prezzo: %d", oggettoInVendita.getPrezzo()));
                         politicaVenduteIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
                         btnAcquistaPoliticaIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
                         break;
                     case AIUTANTI:
                         Label aiutanti = aiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore());
-                        System.out.println(aiutanti);
                         aiutanti.setText(String.format("%d", (Integer) oggettoInVendita.getOggetto()));
-                        prezzoAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("%d", oggettoInVendita.getPrezzo()));
+                        prezzoAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setText(String.format("Prezzo: %d", oggettoInVendita.getPrezzo()));
                         aiutantiVendutiIdGiocatore.put(oggettoInVendita.getIdGiocatore(), oggettoInVendita);
                         btnAcquistaAiutantiIdGiocatore.get(oggettoInVendita.getIdGiocatore()).setDisable(false);
                         break;
@@ -165,22 +164,22 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
                 daComprare.add(aiutantiVendutiIdGiocatore.get(idAvversari.get(2)));
             }
             if(acquistaPermit1.isSelected()){
-                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(0)));
-            }
-            if (acquistaPermit2.isSelected()){
-                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(1)));
-            }
-            if (acquistaPermit3.isSelected()){
-                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(2)));
-            }
-            if(acquistaPolitica1.isSelected()){
                 daComprare.add(permitVenduteIdGiocatore.get(idAvversari.get(0)));
             }
-            if (acquistaPolitica2.isSelected()){
+            if (acquistaPermit2.isSelected()){
                 daComprare.add(permitVenduteIdGiocatore.get(idAvversari.get(1)));
             }
-            if (acquistaPolitica3.isSelected()){
+            if (acquistaPermit3.isSelected()){
                 daComprare.add(permitVenduteIdGiocatore.get(idAvversari.get(2)));
+            }
+            if(acquistaPolitica1.isSelected()){
+                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(0)));
+            }
+            if (acquistaPolitica2.isSelected()){
+                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(1)));
+            }
+            if (acquistaPolitica3.isSelected()){
+                daComprare.add(politicaVenduteIdGiocatore.get(idAvversari.get(2)));
             }
             try {
                 controller.compra(daComprare);
