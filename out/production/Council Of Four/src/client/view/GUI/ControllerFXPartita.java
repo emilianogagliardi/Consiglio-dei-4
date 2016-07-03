@@ -221,6 +221,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         popCambiareTessere = new PopOver(new Label("Clicca su un mazzo per \ncambiare le carte permesso"));
         popIngaggiareAiutante = new PopOver(new Label("Clicca per ingaggiare un aiutante\no usare tre aiutanti per compiere\nun'azione principale aggiuntiva"));
         popAcquistaPermesso.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+        popCostruisciEmporio.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
         popEleggiConsigliere.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
         popCambiareTessere.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
         popIngaggiareAiutante.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);

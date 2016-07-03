@@ -24,9 +24,9 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label fx:id="titolo" layoutX="-1.0" prefHeight="46.0" prefWidth="600.0" text="Acquista permesso costruzione" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+            <Label fx:id="titolo" layoutX="39.0" prefHeight="46.0" prefWidth="523.0" text="Acquista permesso costruzione" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="0.0">
                <font>
-                  <Font size="29.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
          </children>

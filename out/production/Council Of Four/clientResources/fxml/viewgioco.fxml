@@ -100,10 +100,10 @@
                                           <HBox fx:id="emporiGraden" layoutX="429.0" layoutY="335.0" prefHeight="25.0" prefWidth="100.0" />
                                           <HBox fx:id="emporiJuvelar" layoutX="586.0" layoutY="380.0" prefHeight="25.0" prefWidth="100.0" />
                                           <HBox fx:id="emporiHellar" layoutX="435.0" layoutY="462.0" prefHeight="25.0" prefWidth="100.0" />
-                                          <HBox fx:id="emporiMerkatim" layoutX="668.0" layoutY="490.0" prefHeight="25.0" prefWidth="100.0" />
-                                          <HBox fx:id="emporiLyram" layoutX="736.0" layoutY="339.0" prefHeight="25.0" prefWidth="100.0" />
-                                          <HBox fx:id="emporiOsium" layoutX="893.0" layoutY="444.0" prefHeight="25.0" prefWidth="100.0" />
-                                          <HBox fx:id="emporiNaris" layoutX="896.0" layoutY="271.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiMerkatim" layoutX="734.0" layoutY="493.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiLyram" layoutX="751.0" layoutY="341.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiOsium" layoutX="907.0" layoutY="433.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <HBox fx:id="emporiNaris" layoutX="893.0" layoutY="265.0" prefHeight="25.0" prefWidth="100.0" />
                                           <HBox fx:id="emporiKultos" layoutX="755.0" layoutY="178.0" prefHeight="25.0" prefWidth="100.0" />
                                           <StackPane fx:id="cartaCosta1" layoutX="158.0" layoutY="550.0" prefHeight="84.0" prefWidth="75.0" />
                                           <StackPane fx:id="cartaCosta2" layoutX="239.0" layoutY="549.0" prefHeight="86.0" prefWidth="75.0" />

@@ -20,9 +20,9 @@ public class CostantiModel {
     public final static int NUM_CONSIGLIERI_PER_COLORE = NUM_CONSIGLIERI / ColoreConsigliere.values().length;
     public static final int NUM_CONSIGLIERI_BALCONE = 4;
     public static final int NUM_CARTE_BONUS_COLORE_CITTA = 4;
-    public static final int MAX_NUM_SOTTOBONUS_PER_BONUS = 3;
+    public static final int MAX_NUM_SOTTOBONUS_PER_BONUS = 2;
     public static final int MIN_NUM_SOTTOBONUS_PER_BONUS = 1;
-    public static final int MAX_VALORE_SOTTOBONUS = 3;
+    public static final int MAX_VALORE_SOTTOBONUS = 2;
     public static final int MIN_VALORE_SOTTOBONUS = 1;
     public static final int PUNTI_VITTORIA_BONUS_REGIONE = 10;
     public static final String CITTÀ_RE = "JUVELAR";

@@ -169,6 +169,13 @@ public class FXApplication extends Application {
             controllerFXVendi.setController(controller);
             controllerFXVendi.setApplication(this);
             setUpFinestraSecondaria(root);
+            finestraSecodaria.setOnCloseRequest(event -> {
+                try {
+                    controller.passaTurno();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            });
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -183,6 +190,13 @@ public class FXApplication extends Application {
             controllerFXVetrina.setApplication(this);
             controllerFXVetrina.setVetrina(oggettiInVendita);
             setUpFinestraSecondaria(root);
+            finestraSecodaria.setOnCloseRequest(event -> {
+                try {
+                    controller.passaTurno();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            });
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -215,8 +229,6 @@ public class FXApplication extends Application {
     }
 
     boolean isSocketClient(){return isSocketClient;}
-
-    ControllerFXVetrina getControllerFXVetrina(){return controllerFXVetrina;}
 
     public static void main(String[] args) {
         launch(args);
