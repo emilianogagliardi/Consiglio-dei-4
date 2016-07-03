@@ -22,7 +22,7 @@ class EseguiTurno implements Runnable {
     private InterfacciaController controller;
     private CLIView cliView;
 
-    public EseguiTurno(InterfacciaController controller, CLIView cliView){
+    EseguiTurno(InterfacciaController controller, CLIView cliView){
         this.controller = controller;
         this.cliView = cliView;
         in = new Scanner(System.in);
