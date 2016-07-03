@@ -400,13 +400,13 @@ public class AvviatorePartita implements Runnable {
                 case "class classicondivise.bonus.BonusAiutanti":
                     bonus = new BonusAiutanti(valoreBonus, bonus);
                     break;
-                case "class classicondivise.bonus.BonudMonete":
+                case "class classicondivise.bonus.BonusMonete":
                     bonus = new BonusMonete(valoreBonus, bonus);
                     break;
                 case "class classicondivise.bonus.BonusPuntiVittoria":
                     bonus = new BonusPuntiVittoria(valoreBonus, bonus);
                     break;
-                case "class classicondivise.bonus.BonusAvanzaPercorsoNpbiltà":
+                case "class classicondivise.bonus.BonusAvanzaPercorsoNobiltà":
                     bonus = new BonusAvanzaPercorsoNobiltà(valoreBonus, bonus);
                     break;
                 case "class classicondivise.bonus.BonusPescaCartaPolitica":

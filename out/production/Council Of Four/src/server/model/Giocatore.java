@@ -167,6 +167,7 @@ public class Giocatore extends Observable {
             return false;
         } else {
             --emporiDisponibili;
+            updateViewEmporiDisponibili();
             return true;
         }
     }
