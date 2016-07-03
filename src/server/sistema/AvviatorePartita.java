@@ -123,7 +123,8 @@ public class AvviatorePartita implements Runnable {
             /*
             riempie l'hashset di nuove città, sfruttando le informazioni contenute nelle hashmap
              */
-            Arrays.stream(NomeCittà.values()).forEach((NomeCittà nomeCittà) -> tutteLeCittà.add(new Città(nomeCittàNomeRegioneHashMap.get(nomeCittà),nomeCittà, nomeCittàColoreCittàHashMap.get(nomeCittà), creaBonus(), proxyViews)));
+            Arrays.stream(NomeCittà.values()).forEach((NomeCittà nomeCittà) -> tutteLeCittà.add(new Città(nomeCittàNomeRegioneHashMap.get(nomeCittà),nomeCittà, nomeCittàColoreCittàHashMap.get(nomeCittà),
+                    creaBonus(BonusPescaCartaPolitica.class, BonusMonete.class, BonusAiutanti.class), proxyViews)));
             return tutteLeCittà;
         }catch(NullPointerException e) {
             System.out.println("impossibile creare le città da file");
@@ -186,7 +187,9 @@ public class AvviatorePartita implements Runnable {
         cittàs.forEach((Città città) -> {
             HashSet<NomeCittà> cittàCarta = new HashSet<>(1);
             cittàCarta.add(città.getNome());
-            mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(), cittàCarta));
+            mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(
+                    BonusAiutanti.class, BonusMonete.class, BonusPescaCartaPolitica.class, BonusAvanzaPercorsoNobiltà.class, BonusPuntiVittoria.class
+            ), cittàCarta));
         });
         //crea le restanti NUM_CARTE_PERMESSO_REGIONE -5 carte permesso, assegnando città randomiche
         Random rand = new Random();
@@ -200,49 +203,11 @@ public class AvviatorePartita implements Runnable {
                 cittàCarta.add(cittàPossibili.get(posizioneCittàDaAggiungere).getNome());
                 cittàPossibili.remove(posizioneCittàDaAggiungere); //permette di evitare di aggiungere due volte la stessa città
             }
-            mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(), cittàCarta));
+            mazzo.addCarta(new CartaPermessoCostruzione(creaBonus(
+                    BonusAiutanti.class, BonusMonete.class, BonusPescaCartaPolitica.class, BonusAvanzaPercorsoNobiltà.class, BonusPuntiVittoria.class
+            ), cittàCarta));
         }
         return mazzo;
-    }
-
-    private Bonus creaBonus() {
-        Random rand = new Random();
-        Bonus bonus = NullBonus.getInstance();
-        ArrayList<String> bonusNonUtilizzati = new ArrayList<>();
-        bonusNonUtilizzati.add("aiutanti");
-        bonusNonUtilizzati.add("monete");
-        bonusNonUtilizzati.add("ripeti");
-        bonusNonUtilizzati.add("nobilta");
-        bonusNonUtilizzati.add("carta");
-        bonusNonUtilizzati.add("punti");
-        int numeroSottobonus = CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(CostantiModel.MAX_NUM_SOTTOBONUS_PER_BONUS - CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
-        for (int i = 0; i < numeroSottobonus; i++) {
-            int valoreBonus = CostantiModel.MIN_VALORE_SOTTOBONUS + rand.nextInt(CostantiModel.MAX_VALORE_SOTTOBONUS - CostantiModel.MIN_VALORE_SOTTOBONUS) + 1;
-            int sceltaBonus = rand.nextInt(bonusNonUtilizzati.size());
-            switch (bonusNonUtilizzati.get(sceltaBonus)){
-                case "aiutanti":
-                    bonus = new BonusAiutanti(valoreBonus, bonus);
-                    break;
-                case "monete":
-                    bonus = new BonusMonete(valoreBonus, bonus);
-                    break;
-                case "punti":
-                    bonus = new BonusPuntiVittoria(valoreBonus, bonus);
-                    break;
-                case "nobilta":
-                    bonus = new BonusAvanzaPercorsoNobiltà(valoreBonus, bonus);
-                    break;
-                case "carta":
-                    bonus = new BonusPescaCartaPolitica(valoreBonus, bonus);
-                    break;
-                case "ripeti":
-                    bonus = new BonusRipetiAzionePrincipale(bonus);
-                default:
-                    break;
-            }
-            bonusNonUtilizzati.remove(sceltaBonus);
-        }
-        return bonus;
     }
 
     private BalconeDelConsiglio creaBalcone(IdBalcone id, ArrayList<Consigliere> riservaConsiglieri){
@@ -287,13 +252,15 @@ public class AvviatorePartita implements Runnable {
     private List<Bonus> creaPercorsoNobiltà () {
         List<Bonus> percorso = new ArrayList<>(CostantiModel.MAX_POS_NOBILTA);
         Random random = new Random();
-        for(int i = 0; i < CostantiModel.MAX_POS_NOBILTA - 1; i++){
+        for(int i = 0; i < CostantiModel.MAX_POS_NOBILTA; i++){
             if(random.nextDouble() < CostantiModel.PERCENTUALE_BONUS_PERCORSO_NOBILTA){
-                percorso.add(creaBonus());
+                percorso.add(creaBonus(
+                        BonusAiutanti.class, BonusMonete.class, BonusPescaCartaPolitica.class, BonusRipetiAzionePrincipale.class, BonusPuntiVittoria.class
+                ));
             }
             else percorso.add(NullBonus.getInstance());
         }
-        percorso.add(new BonusPuntiVittoria(20, NullBonus.getInstance()));
+        percorso.add(new BonusPuntiVittoria(CostantiModel.MAX_POS_NOBILTA, NullBonus.getInstance()));
         return percorso;
     }
 
@@ -416,6 +383,43 @@ public class AvviatorePartita implements Runnable {
         synchronized (this) {
             notify();
         }
+    }
+
+    private Bonus creaBonus(Class... tipiBonus) {
+        Random rand = new Random();
+        Bonus bonus = NullBonus.getInstance();
+        ArrayList<Class> bonusNonUtilizzati = new ArrayList<>();
+        for(Class c : tipiBonus){
+            bonusNonUtilizzati.add(c);
+        }
+        int numeroSottobonus = CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS + rand.nextInt(CostantiModel.MAX_NUM_SOTTOBONUS_PER_BONUS - CostantiModel.MIN_NUM_SOTTOBONUS_PER_BONUS) + 1;
+        for (int i = 0; i < numeroSottobonus; i++) {
+            int valoreBonus = CostantiModel.MIN_VALORE_SOTTOBONUS + rand.nextInt(CostantiModel.MAX_VALORE_SOTTOBONUS - CostantiModel.MIN_VALORE_SOTTOBONUS) + 1;
+            int sceltaBonus = rand.nextInt(bonusNonUtilizzati.size());
+            switch (bonusNonUtilizzati.get(sceltaBonus).toString()){
+                case "class classicondivise.bonus.BonusAiutanti":
+                    bonus = new BonusAiutanti(valoreBonus, bonus);
+                    break;
+                case "class classicondivise.bonus.BonusMonete":
+                    bonus = new BonusMonete(valoreBonus, bonus);
+                    break;
+                case "class classicondivise.bonus.BonusPuntiVittoria":
+                    bonus = new BonusPuntiVittoria(valoreBonus, bonus);
+                    break;
+                case "class classicondivise.bonus.BonusAvanzaPercorsoNobiltà":
+                    bonus = new BonusAvanzaPercorsoNobiltà(valoreBonus, bonus);
+                    break;
+                case "class classicondivise.bonus.BonusPescaCartaPolitica":
+                    bonus = new BonusPescaCartaPolitica(valoreBonus, bonus);
+                    break;
+                case "class classicondivise.bonus.BonusRipetiAzionePrincipale":
+                    bonus = new BonusRipetiAzionePrincipale(bonus);
+                default:
+                    break;
+            }
+            bonusNonUtilizzati.remove(sceltaBonus);
+        }
+        return bonus;
     }
 }
 
