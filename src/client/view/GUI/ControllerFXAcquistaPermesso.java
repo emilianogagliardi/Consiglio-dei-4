@@ -24,6 +24,8 @@ public class ControllerFXAcquistaPermesso extends GestoreFlussoFinestra implemen
     private IdBalcone regione;
     private InterfacciaController controller;
     @FXML
+    private Label titolo;
+    @FXML
     private HBox hBoxPolitica;
     @FXML
     private RadioButton radioSinistra, radioDestra;
@@ -38,6 +40,8 @@ public class ControllerFXAcquistaPermesso extends GestoreFlussoFinestra implemen
     public void setRegione(IdBalcone regione){
         if (regione==IdBalcone.RE) throw new IllegalArgumentException();
         this.regione = regione;
+        String nomeRegione = regione.toString().substring(0,1).toUpperCase()+regione.toString().substring(1, regione.toString().length()).toLowerCase();
+        titolo.setText(titolo.getText()+ " in "+ nomeRegione);
     }
 
     @Override

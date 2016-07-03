@@ -3,7 +3,6 @@ package interfaccecondivise;
 import classicondivise.Vendibile;
 import classicondivise.bonus.Bonus;
 import classicondivise.carte.CartaPermessoCostruzione;
-import server.model.Re;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
