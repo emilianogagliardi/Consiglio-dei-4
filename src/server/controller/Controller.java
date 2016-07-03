@@ -275,9 +275,14 @@ public class Controller implements Runnable, InterfacciaController {
         int num;
         while (!(bonus instanceof NullBonus)){
             if(bonus instanceof BonusAiutanti) {
-                num = ((BonusAiutanti) bonus).getNumeroAiutanti();
-                giocatoreCorrente.guadagnaAiutanti(num);
-                comunicaBonus(num + " aiutanti!");
+                try {
+                    num = ((BonusAiutanti) bonus).getNumeroAiutanti();
+                    partita.decrementaAiutanti(num);
+                    giocatoreCorrente.guadagnaAiutanti(num);
+                    comunicaBonus(num + " aiutanti!");
+                } catch (IllegalArgumentException exc) {
+                    comunicaAGiocatoreCorrente(exc.getMessage());
+                }
             }
             else if (bonus instanceof BonusAvanzaPercorsoNobiltà){
                 num = ((BonusAvanzaPercorsoNobiltà) bonus).getNumeroPosti();
