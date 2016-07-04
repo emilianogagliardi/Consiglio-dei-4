@@ -37,6 +37,7 @@ public class Controller implements Runnable, InterfacciaController {
     private boolean venduteCartePermesso;
     private boolean venduteCartePolitica;
     private boolean vendutiAiutanti;
+    private boolean viewCorrenteRimossa = false;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
@@ -93,12 +94,19 @@ public class Controller implements Runnable, InterfacciaController {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
-                        viewCorrente.fineTurno();
+                        if (views.size() == 0) {
+                            System.out.println("Partita terminata: tutti i giocatori sono andati offline");
+                            return;
+                        }
+                        if (!viewCorrenteRimossa) {
+                            viewCorrente.fineTurno();
+                        } else viewCorrenteRimossa = false;
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
                 } while (giocatoriOnline.haProssimo());
                 faseTurno = false;
+
 
                 vetrinaMarket = new VetrinaMarket();
                 faseVenditaMarket = true;
@@ -117,8 +125,13 @@ public class Controller implements Runnable, InterfacciaController {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
-                        viewCorrente.fineVendi();
-
+                        if (views.size() == 0) {
+                            System.out.println("Partita terminata: tutti i giocatori sono andati offline");
+                            return;
+                        }
+                        if (!viewCorrenteRimossa) {
+                            viewCorrente.fineVendi();
+                        } else viewCorrenteRimossa = false;
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
@@ -144,7 +157,13 @@ public class Controller implements Runnable, InterfacciaController {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
-                        viewCorrente.fineCompra();
+                        if (views.size() == 0) {
+                            System.out.println("Partita terminata: tutti i giocatori sono andati offline");
+                            return;
+                        }
+                        if (!viewCorrenteRimossa) {
+                            viewCorrente.fineCompra();
+                        } else viewCorrenteRimossa = false;
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
@@ -204,6 +223,7 @@ public class Controller implements Runnable, InterfacciaController {
         } catch (RemoteException exc){
             exc.printStackTrace();
         }
+        System.out.println("Partita terminata");
     }
 
     private void assegnaPuntiVittoria(int numPrimi, int puntiPrimo, int numSecondi, int puntiSecondo) {
@@ -981,6 +1001,7 @@ public class Controller implements Runnable, InterfacciaController {
         } else {
             comunicaAGiocatoreCorrente("Sei offline!");
             comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " è offline!");
+            viewCorrenteRimossa = true;
             getViewGiocatoreCorrente().logOut();
             giocatoriOnline.aggiungiGiocatoreDaEliminare(idGiocatoreOffline);
         }
@@ -1159,6 +1180,9 @@ public class Controller implements Runnable, InterfacciaController {
                 return giocatoriOnline.get(++posizione);
             } else {
                 eliminaGiocatoriOffline();
+                if (giocatoriOnline.size() == 0) {
+                    return null;
+                }
                 posizione = 0;
                 return giocatoriOnline.get(posizione);
             }

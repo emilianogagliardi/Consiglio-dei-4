@@ -32,18 +32,13 @@ class EseguiTurno implements Runnable {
         try{
             do {
                 System.out.println("\nChe cosa vuoi fare?");
-                System.out.println("1: Vedere informazioni partita");
-                System.out.println("2: Esegui azione");
-                System.out.println("3: Passa turno");
-                System.out.println("4: logout");
-
+                System.out.println("1: Esegui azione");
+                System.out.println("2: Passa turno");
+                System.out.println("3: logout");
 
                 inputLine = in.nextLine();
                 switch (inputLine) {
                     case "1":
-
-                        break;
-                    case "2":
                         System.out.println("Vuoi eseguire un'azione veloce o principale? (V) o (P)");
 
                         inputLine = in.nextLine();
@@ -58,13 +53,13 @@ class EseguiTurno implements Runnable {
                                 break;
                         }
                         break;
-                    case "3":
+                    case "2":
                         if (!fine) {
                             controller.passaTurno();
                         }
                         fine = true;
                         break;
-                    case "4":
+                    case "3":
                         in.close();
                         if (!fine) {
                             controller.logout(cliView.getIdGiocatore());

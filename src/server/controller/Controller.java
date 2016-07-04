@@ -37,6 +37,7 @@ public class Controller implements Runnable, InterfacciaController {
     private boolean venduteCartePermesso;
     private boolean venduteCartePolitica;
     private boolean vendutiAiutanti;
+    private boolean viewCorrenteRimossa = false;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
@@ -94,9 +95,12 @@ public class Controller implements Runnable, InterfacciaController {
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
                         if (views.size() == 0) {
+                            System.out.println("Partita terminata: tutti i giocatori sono andati offline");
                             return;
                         }
-                        viewCorrente.fineTurno();
+                        if (!viewCorrenteRimossa) {
+                            viewCorrente.fineTurno();
+                        } else viewCorrenteRimossa = false;
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
@@ -122,9 +126,12 @@ public class Controller implements Runnable, InterfacciaController {
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
                         if (views.size() == 0) {
+                            System.out.println("Partita terminata: tutti i giocatori sono andati offline");
                             return;
                         }
-                        viewCorrente.fineVendi();
+                        if (!viewCorrenteRimossa) {
+                            viewCorrente.fineVendi();
+                        } else viewCorrenteRimossa = false;
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
@@ -151,9 +158,12 @@ public class Controller implements Runnable, InterfacciaController {
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
                         if (views.size() == 0) {
+                            System.out.println("Partita terminata: tutti i giocatori sono andati offline");
                             return;
                         }
-                        viewCorrente.fineCompra();
+                        if (!viewCorrenteRimossa) {
+                            viewCorrente.fineCompra();
+                        } else viewCorrenteRimossa = false;
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
@@ -213,6 +223,7 @@ public class Controller implements Runnable, InterfacciaController {
         } catch (RemoteException exc){
             exc.printStackTrace();
         }
+        System.out.println("Partita terminata");
     }
 
     private void assegnaPuntiVittoria(int numPrimi, int puntiPrimo, int numSecondi, int puntiSecondo) {
@@ -990,6 +1001,7 @@ public class Controller implements Runnable, InterfacciaController {
         } else {
             comunicaAGiocatoreCorrente("Sei offline!");
             comunicaAdAltriGiocatori("Giocatore " + giocatoreCorrente.getId() + " è offline!");
+            viewCorrenteRimossa = true;
             getViewGiocatoreCorrente().logOut();
             giocatoriOnline.aggiungiGiocatoreDaEliminare(idGiocatoreOffline);
         }
