@@ -241,6 +241,7 @@ class CLIView implements InterfacciaView, Remote {
         lista.add(c2);
         mappaCartePermessoRegione.put(regione, lista);
         System.out.println("Carte permesso regione " + regione + ":");
+        //TODO: controllare che le carte non siano null
         System.out.print("Carta 1:");
         for (NomeCittà nomeCittà : c1.getCittà()) {
             System.out.print("  " + nomeCittà);

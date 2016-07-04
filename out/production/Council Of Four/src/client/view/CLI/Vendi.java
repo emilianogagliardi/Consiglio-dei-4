@@ -58,7 +58,6 @@ class Vendi implements Runnable {
                                     if (!fine) {
                                         controller.vendi(vendibili);
                                     }
-
                                 } else System.out.println("Hai già messo in vendita carte politica!");
                                 break;
                             case "A":
