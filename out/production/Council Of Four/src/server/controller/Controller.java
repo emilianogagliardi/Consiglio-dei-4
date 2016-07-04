@@ -34,6 +34,9 @@ public class Controller implements Runnable, InterfacciaController {
     private boolean faseTurno;
     private boolean faseVenditaMarket;
     private boolean faseAcquistoMarket;
+    private boolean venduteCartePermesso;
+    private boolean venduteCartePolitica;
+    private boolean vendutiAiutanti;
 
 
     public Controller(Partita partita, ArrayList<InterfacciaView> views) throws RemoteException {
@@ -122,6 +125,9 @@ public class Controller implements Runnable, InterfacciaController {
                 } while (giocatoriOnline.haProssimo());
                 faseVenditaMarket = false;
 
+                venduteCartePermesso = false;
+                venduteCartePolitica = false;
+                vendutiAiutanti = false;
                 faseAcquistoMarket = true;
                 //INIZIO FASE ACQUISTO MARKET
                 comunicaATutti("Inizia la fase di acquisto del market");
@@ -805,39 +811,54 @@ public class Controller implements Runnable, InterfacciaController {
         for (Vendibile vendibile : vendibili) {
             switch (vendibile.getIdVendibile()){
                 case CARTE_PERMESSO_COSTRUZIONE:
-                    List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
-                    HashMap<CartaPermessoCostruzione, Integer> mappaCartePermessoVendibili = Utility.listToHashMap(cartePermesso);
-                    HashMap<CartaPermessoCostruzione, Integer> mappaCartePermessoGiocatore = Utility.listToHashMap(giocatoreCorrente.getManoCartePermessoCostruzione());
-                    if (Utility.hashMapContainsAllWithDuplicates(mappaCartePermessoGiocatore, mappaCartePermessoVendibili)) {
+                    if (!venduteCartePermesso) {
+                        List<CartaPermessoCostruzione> cartePermesso = (List<CartaPermessoCostruzione>) vendibile.getOggetto();
+                        HashMap<CartaPermessoCostruzione, Integer> mappaCartePermessoVendibili = Utility.listToHashMap(cartePermesso);
+                        HashMap<CartaPermessoCostruzione, Integer> mappaCartePermessoGiocatore = Utility.listToHashMap(giocatoreCorrente.getManoCartePermessoCostruzione());
+                        if (Utility.hashMapContainsAllWithDuplicates(mappaCartePermessoGiocatore, mappaCartePermessoVendibili)) {
                             vetrinaMarket.aggiungiVendibile(vendibile);
-                    } else{
-                        comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
-                        return false;
+                        } else{
+                            comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
+                            return false;
+                        }
+                        venduteCartePermesso = true;
+                    } else {
+                        comunicaAGiocatoreCorrente("Hai già venduto carte permesso di costruzione!");
                     }
                     break;
                 case CARTE_POLITICA:
-                    List<String> cartePolitica = (List<String>) vendibile.getOggetto();
-                    HashMap<String, Integer> mappaCartePoliticaVendibili = Utility.listToHashMap(cartePolitica);
-                    List<ColoreCartaPolitica> manoColoriCartePolitica = giocatoreCorrente.getColoriCartePolitica();
-                    List<String> manoStringheColoriCartePolitica = new ArrayList<>();
-                    manoColoriCartePolitica.forEach((ColoreCartaPolitica colore) -> {
-                        manoStringheColoriCartePolitica.add(colore.toString());
-                    });
-                    HashMap<String, Integer> mappaCartePoliticaGiocatore = Utility.listToHashMap(manoStringheColoriCartePolitica);
-                    if (Utility.hashMapContainsAllWithDuplicates(mappaCartePoliticaGiocatore, mappaCartePoliticaVendibili)) {
+                    if (!venduteCartePolitica) {
+                        List<String> cartePolitica = (List<String>) vendibile.getOggetto();
+                        HashMap<String, Integer> mappaCartePoliticaVendibili = Utility.listToHashMap(cartePolitica);
+                        List<ColoreCartaPolitica> manoColoriCartePolitica = giocatoreCorrente.getColoriCartePolitica();
+                        List<String> manoStringheColoriCartePolitica = new ArrayList<>();
+                        manoColoriCartePolitica.forEach((ColoreCartaPolitica colore) -> {
+                            manoStringheColoriCartePolitica.add(colore.toString());
+                        });
+                        HashMap<String, Integer> mappaCartePoliticaGiocatore = Utility.listToHashMap(manoStringheColoriCartePolitica);
+                        if (Utility.hashMapContainsAllWithDuplicates(mappaCartePoliticaGiocatore, mappaCartePoliticaVendibili)) {
                             vetrinaMarket.aggiungiVendibile(vendibile);
-                    } else{
-                        comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
-                        return false;
+                        } else {
+                            comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
+                            return false;
+                        }
+                        venduteCartePolitica = true;
+                    } else {
+                        comunicaAGiocatoreCorrente("Hai già venduto carte politica");
                     }
                     break;
                 case AIUTANTI:
-                    int numeroAiutanti = (Integer) vendibile.getOggetto();
-                    if (giocatoreCorrente.getAiutanti() - numeroAiutanti < 0) {
-                        comunicaAGiocatoreCorrente("Non hai abbastanza aiutanti!");
-                        return false;
+                    if (!vendutiAiutanti) {
+                        int numeroAiutanti = (Integer) vendibile.getOggetto();
+                        if (giocatoreCorrente.getAiutanti() - numeroAiutanti < 0) {
+                            comunicaAGiocatoreCorrente("Non hai abbastanza aiutanti!");
+                            return false;
+                        } else {
+                            vetrinaMarket.aggiungiVendibile(vendibile);
+                        }
+                        vendutiAiutanti = true;
                     } else {
-                        vetrinaMarket.aggiungiVendibile(vendibile);
+                        comunicaAGiocatoreCorrente("Hai già venduto aiutanti!");
                     }
                     break;
                 default:
