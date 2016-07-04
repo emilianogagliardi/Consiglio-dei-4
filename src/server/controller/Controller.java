@@ -93,12 +93,16 @@ public class Controller implements Runnable, InterfacciaController {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
+                        if (views.size() == 0) {
+                            return;
+                        }
                         viewCorrente.fineTurno();
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
                 } while (giocatoriOnline.haProssimo());
                 faseTurno = false;
+
 
                 vetrinaMarket = new VetrinaMarket();
                 faseVenditaMarket = true;
@@ -117,8 +121,10 @@ public class Controller implements Runnable, InterfacciaController {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
                         }
+                        if (views.size() == 0) {
+                            return;
+                        }
                         viewCorrente.fineVendi();
-
                     } catch (InterruptedException exc) {
                         exc.printStackTrace();
                     }
@@ -143,6 +149,9 @@ public class Controller implements Runnable, InterfacciaController {
                     try {
                         synchronized (this){
                             wait(CostantiSistema.TIMEOUT_TURNO);
+                        }
+                        if (views.size() == 0) {
+                            return;
                         }
                         viewCorrente.fineCompra();
                     } catch (InterruptedException exc) {
@@ -1159,6 +1168,9 @@ public class Controller implements Runnable, InterfacciaController {
                 return giocatoriOnline.get(++posizione);
             } else {
                 eliminaGiocatoriOffline();
+                if (giocatoriOnline.size() == 0) {
+                    return null;
+                }
                 posizione = 0;
                 return giocatoriOnline.get(posizione);
             }
