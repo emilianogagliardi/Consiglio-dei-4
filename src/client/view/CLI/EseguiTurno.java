@@ -11,10 +11,7 @@ import server.model.Città;
 import server.model.NomeRegione;
 
 import java.rmi.RemoteException;
-import java.util.AbstractCollection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 class EseguiTurno implements Runnable {
     private Scanner in;
@@ -22,7 +19,7 @@ class EseguiTurno implements Runnable {
     private InterfacciaController controller;
     private CLIView cliView;
 
-    public EseguiTurno(InterfacciaController controller, CLIView cliView){
+    EseguiTurno(InterfacciaController controller, CLIView cliView){
         this.controller = controller;
         this.cliView = cliView;
         in = new Scanner(System.in);
@@ -35,18 +32,13 @@ class EseguiTurno implements Runnable {
         try{
             do {
                 System.out.println("\nChe cosa vuoi fare?");
-                System.out.println("1: Vedere informazioni partita");
-                System.out.println("2: Esegui azione");
-                System.out.println("3: Passa turno");
-                System.out.println("4: logout");
-
+                System.out.println("1: Esegui azione");
+                System.out.println("2: Passa turno");
+                System.out.println("3: logout");
 
                 inputLine = in.nextLine();
                 switch (inputLine) {
                     case "1":
-
-                        break;
-                    case "2":
                         System.out.println("Vuoi eseguire un'azione veloce o principale? (V) o (P)");
 
                         inputLine = in.nextLine();
@@ -61,13 +53,13 @@ class EseguiTurno implements Runnable {
                                 break;
                         }
                         break;
-                    case "3":
+                    case "2":
                         if (!fine) {
                             controller.passaTurno();
                         }
                         fine = true;
                         break;
-                    case "4":
+                    case "3":
                         in.close();
                         if (!fine) {
                             controller.logout(cliView.getIdGiocatore());
@@ -99,6 +91,7 @@ class EseguiTurno implements Runnable {
                         controller.ingaggiareAiutante();
                     break;
                 case "2":
+                    stampaCartePermessoCostruzione();
                     System.out.println("Inserisci il nome della regione di cui vuoi cambiare le carte permesso di costruzione: COSTA(CT) o COLLINA(CL) o MONTAGNA(M)");
                     inputLine = in.nextLine();
                     switch (inputLine) {
@@ -121,6 +114,8 @@ class EseguiTurno implements Runnable {
                     break;
                 case "3":
                     if (!fine) {
+                        stampaTuttiBalconi();
+                        stampaConsiglieriRiserva();
                         controller.mandareAiutanteEleggereConsigliere(inserimentoIdBalconeEleggereUnConsigliere(), inserimentoConsigliereRiserva());
                     }
                     break;
@@ -134,6 +129,39 @@ class EseguiTurno implements Runnable {
             }
         } catch (RemoteException exc) {
             exc.printStackTrace();
+        }
+    }
+
+    private void stampaConsiglieriRiserva(){
+        System.out.println("Riserva consiglieri:");
+        for (String colore : cliView.getRiservaConsiglieri()) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
+    }
+
+    private void stampaCartePermessoCostruzione(){
+        HashMap<String, List<CartaPermessoCostruzione>> mappa = cliView.getMappaCartePermessoRegione();
+        for(Map.Entry<String, List<CartaPermessoCostruzione>> entry : mappa.entrySet()) {
+            String key = entry.getKey();
+            List<CartaPermessoCostruzione> value = entry.getValue();
+            System.out.println(key + ":");
+            System.out.print("Carta 1:");
+            CartaPermessoCostruzione c1 = value.get(0);
+            if (c1 != null) {
+                for (NomeCittà città : c1.getCittà()) {
+                    System.out.print("  " + città);
+                }
+                System.out.println();
+            } else System.out.println("Carta 1 non disponibile!");
+            System.out.print("Carta 2:");
+            CartaPermessoCostruzione c2 = value.get(1);
+            if (c2 != null) {
+                for (NomeCittà città : c2.getCittà()) {
+                    System.out.print("  " + città);
+                }
+                System.out.println();
+            } else System.out.println("Carta 2 non disponibile!");
         }
     }
 
@@ -152,6 +180,8 @@ class EseguiTurno implements Runnable {
             inputLine = in.nextLine();
             switch (inputLine) {
                 case "1":
+                    stampaTuttiBalconi();
+                    stampaConsiglieriRiserva();
                     idBalcone = inserimentoIdBalconeEleggereUnConsigliere();
                     coloreConsigliereRiserva = inserimentoConsigliereRiserva();
                     if (!fine){
@@ -201,6 +231,35 @@ class EseguiTurno implements Runnable {
             exc.printStackTrace();
         }
     }
+
+    private void stampaTuttiBalconi(){
+        System.out.println("Balconi:");
+        System.out.print("COSTA:");
+        List<String> lista = cliView.getMappaBalconi().get(IdBalcone.COSTA.toString());
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
+        System.out.print("COLLINA:");
+        lista = cliView.getMappaBalconi().get(IdBalcone.COLLINA.toString());
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
+        System.out.print("MONTAGNA:");
+        lista = cliView.getMappaBalconi().get(IdBalcone.MONTAGNA.toString());
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
+        System.out.print("RE:");
+        lista = cliView.getMappaBalconi().get(IdBalcone.RE.toString());
+        for (String colore : lista) {
+            System.out.print("  " + colore);
+        }
+        System.out.println();
+    }
+
 
     private void stampaBalconiECartePermesso(){
         System.out.println("Balconi:");

@@ -76,11 +76,11 @@ class CLIView implements InterfacciaView, Remote {
         return mappaBalconi;
     }
 
-    public HashMap<Integer, Integer> getMappaMonete() {
+    HashMap<Integer, Integer> getMappaMonete() {
         return mappaMonete;
     }
 
-    public HashMap<Integer, Integer> getMappaCartePoliticaAvversari() {
+    HashMap<Integer, Integer> getMappaCartePoliticaAvversari() {
         return mappaCartePoliticaAvversari;
     }
 
@@ -88,7 +88,7 @@ class CLIView implements InterfacciaView, Remote {
         return manoCartePolitica;
     }
 
-    public HashMap<String, List<CartaPermessoCostruzione>> getMappaCartePermessoRegione() {
+    HashMap<String, List<CartaPermessoCostruzione>> getMappaCartePermessoRegione() {
         return mappaCartePermessoRegione;
     }
 
@@ -96,39 +96,39 @@ class CLIView implements InterfacciaView, Remote {
         return mappaCartePermessoCostruzioneGiocatori;
     }
 
-    public HashMap<Integer, Integer> getMappaAiutantiGiocatori() {
+    HashMap<Integer, Integer> getMappaAiutantiGiocatori() {
         return mappaAiutantiGiocatori;
     }
 
-    public int getRiservaAiutanti() {
+    int getRiservaAiutanti() {
         return riservaAiutanti;
     }
 
-    public List<String> getRiservaConsiglieri() {
+    List<String> getRiservaConsiglieri() {
         return riservaConsiglieri;
     }
 
-    public HashMap<Integer, Integer> getMappaPosizioniPercorsoNobiltà() {
+    HashMap<Integer, Integer> getMappaPosizioniPercorsoNobiltà() {
         return mappaPosizioniPercorsoNobiltà;
     }
 
-    public HashMap<String, List<Integer>> getMappaEmporiCittà() {
+    HashMap<String, List<Integer>> getMappaEmporiCittà() {
         return mappaEmporiCittà;
     }
 
-    public HashMap<String, Bonus> getMappaBonusCittà() {
+    HashMap<String, Bonus> getMappaBonusCittà() {
         return mappaBonusCittà;
     }
 
-    public HashMap<Integer, Integer> getMappaEmporiDisponibiliGiocatori() {
+    HashMap<Integer, Integer> getMappaEmporiDisponibiliGiocatori() {
         return mappaEmporiDisponibiliGiocatori;
     }
 
-    public String getPosizioneRe() {
+    String getPosizioneRe() {
         return posizioneRe;
     }
 
-    public List<Bonus> getPercorsoNobiltà() {
+    List<Bonus> getPercorsoNobiltà() {
         return percorsoNobiltà;
     }
 
@@ -188,7 +188,7 @@ class CLIView implements InterfacciaView, Remote {
         }
     }
 
-    public HashMap<Integer, Integer> getMappaPuntiVittoria() {
+    HashMap<Integer, Integer> getMappaPuntiVittoria() {
         return mappaPuntiVittoria;
     }
 
@@ -241,20 +241,20 @@ class CLIView implements InterfacciaView, Remote {
         lista.add(c2);
         mappaCartePermessoRegione.put(regione, lista);
         System.out.println("Carte permesso regione " + regione + ":");
-        System.out.print("Carta 1:");
-        for (NomeCittà nomeCittà : c1.getCittà()) {
-            System.out.print("  " + nomeCittà);
-        }
-        Bonus bonus = c1.getBonus();
-        //TODO: SCRITTURA BONUS
-        System.out.println();
-        System.out.print("Carta 2:");
-        for (NomeCittà nomeCittà : c2.getCittà()) {
-            System.out.print("  " + nomeCittà);
-        }
-        bonus = c2.getBonus();
-        //TODO: SCRITTURA BONUS
-        System.out.println();
+        if (c1 != null) {
+            System.out.print("Carta 1:");
+            for (NomeCittà nomeCittà : c1.getCittà()) {
+                System.out.print("  " + nomeCittà);
+            }
+            System.out.println();
+        } else System.out.println("Carta 1 non disponibile!");
+        if (c2 != null) {
+            System.out.print("Carta 2:");
+            for (NomeCittà nomeCittà : c2.getCittà()) {
+                System.out.print("  " + nomeCittà);
+            }
+            System.out.println();
+        } else System.out.println("Carta 2 non disponibile!");
     }
 
     @Override

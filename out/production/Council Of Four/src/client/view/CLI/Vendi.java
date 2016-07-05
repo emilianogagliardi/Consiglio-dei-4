@@ -29,7 +29,6 @@ class Vendi implements Runnable {
     public void run() {
         String inputLine;
         fine = false;
-        boolean cpc = false, cpo = false, a = false; //TODO: questi controlli vanno fatti nel Controller
         List<Vendibile> vendibili;
         try{
             do {
@@ -46,35 +45,26 @@ class Vendi implements Runnable {
                         inputLine = in.nextLine();
                         switch (inputLine) {
                             case "CPC":
-                                if (!cpc) {
-                                    vendibili = sceltaCartePermesso();
-                                    if (vendibili != null) {
-                                        if (!fine) {
-                                            controller.vendi(vendibili);
-                                            cpc = true;
-                                        }
+                                vendibili = sceltaCartePermesso();
+                                if (vendibili != null) {
+                                    if (!fine) {
+                                        controller.vendi(vendibili);
                                     }
                                 } else System.out.println("Hai già messo in vendita carte permesso di costruzione!");
                                 break;
                             case "CPO":
-                                if (!cpo) {
-                                    vendibili = sceltaCartePolitica();
-                                    if (vendibili != null) {
-                                        if (!fine) {
-                                            controller.vendi(vendibili);
-                                            cpo = true;
-                                        }
+                                vendibili = sceltaCartePolitica();
+                                if (vendibili != null) {
+                                    if (!fine) {
+                                        controller.vendi(vendibili);
                                     }
                                 } else System.out.println("Hai già messo in vendita carte politica!");
                                 break;
                             case "A":
-                                if (!a) {
-                                    vendibili = sceltaAiutanti();
-                                    if (vendibili != null) {
-                                        if (!fine) {
-                                            controller.vendi(vendibili);
-                                            a = true;
-                                        }
+                                vendibili = sceltaAiutanti();
+                                if (vendibili != null) {
+                                    if (!fine) {
+                                        controller.vendi(vendibili);
                                     }
                                 } else System.out.println("Hai già messo in vendita aiutanti!");
                                 break;

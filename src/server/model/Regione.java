@@ -136,31 +136,6 @@ public class Regione extends Observable{
         updateViewCartePermessoCostruzione();
     }
 
-    //update view
-   /* private void updateViewCarteBonusRegione() {
-        int puntiCarta = 0;
-        if (cartaBonusRegione != null) {
-            try {
-                BonusPuntiVittoria bonus = (BonusPuntiVittoria) cartaBonusRegione.getBonus();
-                puntiCarta = bonus.getPuntiVittoria();
-            }catch(ClassCastException e){
-                System.out.println("la carta bonus regione non ha un bonus punti vittoria");
-                puntiCarta = 0; // errore
-            }
-        }
-        else {
-            puntiCarta = -1; //-1 indica l'assenza della carta
-        }
-        int finalPuntiCarta = puntiCarta; //per utilizzarla nella lambda expression
-        super.notifyViews((InterfacciaView view) -> {
-            try {
-                view.updateCarteBonusRegioneTabellone(getNome().toString(), finalPuntiCarta);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
-
     private void updateViewCartePermessoCostruzione() {
         super.notifyViews((InterfacciaView view) -> {
             try {
