@@ -116,6 +116,9 @@ public class Controller implements Runnable, InterfacciaController {
                     //si passa al giocatore successivo
                     giocatoreCorrente = giocatoriOnline.prossimo();
                     viewCorrente = getViewGiocatoreCorrente();
+                    venduteCartePermesso = false;
+                    venduteCartePolitica = false;
+                    vendutiAiutanti = false;
                     viewCorrente.vendi();
 
                     comunicaAGiocatoreCorrente("E' il tuo turno di vendita");
@@ -138,9 +141,7 @@ public class Controller implements Runnable, InterfacciaController {
                 } while (giocatoriOnline.haProssimo());
                 faseVenditaMarket = false;
 
-                venduteCartePermesso = false;
-                venduteCartePolitica = false;
-                vendutiAiutanti = false;
+
                 faseAcquistoMarket = true;
                 //INIZIO FASE ACQUISTO MARKET
                 comunicaATutti("Inizia la fase di acquisto del market");
@@ -837,11 +838,11 @@ public class Controller implements Runnable, InterfacciaController {
                         HashMap<CartaPermessoCostruzione, Integer> mappaCartePermessoGiocatore = Utility.listToHashMap(giocatoreCorrente.getManoCartePermessoCostruzione());
                         if (Utility.hashMapContainsAllWithDuplicates(mappaCartePermessoGiocatore, mappaCartePermessoVendibili)) {
                             vetrinaMarket.aggiungiVendibile(vendibile);
+                            venduteCartePermesso = true;
                         } else{
                             comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
                             return false;
                         }
-                        venduteCartePermesso = true;
                     } else {
                         comunicaAGiocatoreCorrente("Hai già venduto carte permesso di costruzione!");
                     }
@@ -858,11 +859,11 @@ public class Controller implements Runnable, InterfacciaController {
                         HashMap<String, Integer> mappaCartePoliticaGiocatore = Utility.listToHashMap(manoStringheColoriCartePolitica);
                         if (Utility.hashMapContainsAllWithDuplicates(mappaCartePoliticaGiocatore, mappaCartePoliticaVendibili)) {
                             vetrinaMarket.aggiungiVendibile(vendibile);
+                            venduteCartePolitica = true;
                         } else {
                             comunicaAGiocatoreCorrente("Non puoi vendere le carte scelte!");
                             return false;
                         }
-                        venduteCartePolitica = true;
                     } else {
                         comunicaAGiocatoreCorrente("Hai già venduto carte politica");
                     }
@@ -875,8 +876,8 @@ public class Controller implements Runnable, InterfacciaController {
                             return false;
                         } else {
                             vetrinaMarket.aggiungiVendibile(vendibile);
+                            vendutiAiutanti = true;
                         }
-                        vendutiAiutanti = true;
                     } else {
                         comunicaAGiocatoreCorrente("Hai già venduto aiutanti!");
                     }
