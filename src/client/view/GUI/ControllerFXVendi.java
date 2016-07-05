@@ -119,6 +119,8 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
             if (prezzo < 0) prezzo = 0;
             try {
                 Vendibile<Integer> aiutantiInVendita = new Vendibile<>(numero, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.AIUTANTI);
+                //TODO togliere questa riga
+                System.out.println("il mio id è"+ GUIView.getInstance().getIdGiocatore());
                 oggettiInVendita.add(aiutantiInVendita);
             } catch (SingletonNonInizializzatoException e) {
                 e.printStackTrace();
@@ -138,6 +140,8 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
             if (prezzo < 0) prezzo = 0;
             try {
                 Vendibile<List<String>> politicaInVendita = new Vendibile<>(inVendita, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.CARTE_POLITICA);
+                //TODO togliere questa riga
+                System.out.println("il mio id è"+ GUIView.getInstance().getIdGiocatore());
                 oggettiInVendita.add(politicaInVendita);
             } catch (SingletonNonInizializzatoException e) {
                 e.printStackTrace();
@@ -157,6 +161,7 @@ public class ControllerFXVendi extends GestoreFlussoFinestra implements Initiali
             if (prezzo < 0) prezzo = 0;
             try {
                 Vendibile<List<CartaPermessoCostruzione>> permitInVendita = new Vendibile<>(inVendita, prezzo, GUIView.getInstance().getIdGiocatore(), IdVendibile.CARTE_PERMESSO_COSTRUZIONE);
+
                 oggettiInVendita.add(permitInVendita);
             } catch (SingletonNonInizializzatoException e) {
                 e.printStackTrace();

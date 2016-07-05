@@ -28,7 +28,6 @@ public class FXApplication extends Application {
         GUIView.initGUIView(this);
         initScenaPartita();
         finestraPrincipale = primaryStage;
-        finestraPrincipale.setOnCloseRequest(event -> System.exit(1));
         setFinestraDaFXML("login.fxml");
     }
 
@@ -45,6 +44,7 @@ public class FXApplication extends Application {
         finestraPrincipale.setTitle("Council Of Four");
         finestraPrincipale.setResizable(false);
         finestraPrincipale.setScene(new Scene(root));
+        finestraPrincipale.setOnCloseRequest(event -> System.exit(0));
         finestraPrincipale.show();
     }
 
@@ -71,12 +71,11 @@ public class FXApplication extends Application {
         finestraPrincipale.setOnCloseRequest(event -> {
             try {
                 controller.logout(GUIView.getInstance().getIdGiocatore());
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (SingletonNonInizializzatoException e) {
+            } catch (RemoteException | SingletonNonInizializzatoException e) {
                 e.printStackTrace();
             }
         });
+        finestraPrincipale.setOnCloseRequest(event -> System.exit(0));
         finestraPrincipale.show();
     }
 
