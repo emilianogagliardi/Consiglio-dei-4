@@ -50,7 +50,7 @@ class Vendi implements Runnable {
                                     if (!fine) {
                                         controller.vendi(vendibili);
                                     }
-                                } else System.out.println("Hai già messo in vendita carte permesso di costruzione!");
+                                } else System.out.println("Hai inserito dei valori scorretti!");
                                 break;
                             case "CPO":
                                 vendibili = sceltaCartePolitica();
@@ -58,7 +58,7 @@ class Vendi implements Runnable {
                                     if (!fine) {
                                         controller.vendi(vendibili);
                                     }
-                                } else System.out.println("Hai già messo in vendita carte politica!");
+                                } else System.out.println("Hai inserito dei valori scorretti!");
                                 break;
                             case "A":
                                 vendibili = sceltaAiutanti();
@@ -66,7 +66,7 @@ class Vendi implements Runnable {
                                     if (!fine) {
                                         controller.vendi(vendibili);
                                     }
-                                } else System.out.println("Hai già messo in vendita aiutanti!");
+                                } else System.out.println("Hai inserito dei valori scorretti!");
                                 break;
                             default:
                                 break;

@@ -114,8 +114,6 @@ public class ControllerFXVetrina extends GestoreFlussoFinestra implements Initia
         try {
             int id = GUIView.getInstance().getIdGiocatore();
             inVendita.stream().filter((Vendibile oggettoInVendita) -> oggettoInVendita.getIdGiocatore() != id).forEach((Vendibile oggettoInVendita) ->{
-                //TODO togliere questa riga
-                System.out.println("ricevuto oggetto vendibile da giocatore con id "+oggettoInVendita.getIdGiocatore());
                 UtilityGUI utilityGUI = new UtilityGUI();
                 switch (oggettoInVendita.getIdVendibile()){
                     case CARTE_PERMESSO_COSTRUZIONE:
