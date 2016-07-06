@@ -144,8 +144,8 @@ public class AvviatorePartita implements Runnable {
     }
 
     /*
-    leggendo dal file di configurazione i link tra le città, aggiunge all'insieme di città che prende in input
-    
+    leggendo dal file di configurazione i link tra le città, aggiunge all'insieme
+    di città che prende in input le città ada esse adiacentiadiacendi
      */
     private void creaSentieriCittàDaFile(Properties pro, HashSet<Città> tutteLeCittà){
         HashMap<String, Città> mapCittà = new HashMap<>(); //mappa conetente (nomecittà, città) utile per l'algoritmo
@@ -170,6 +170,11 @@ public class AvviatorePartita implements Runnable {
         }
     }
 
+    /*
+    crea le regioni leggendo dal file di configurazione della mappa quali sono le città che appartengono alla
+    regione in creazione. Le regioni contengono ognuna un mazzo carte permesso. Questi vengono creati chaimando un altro
+    metodo, ed aggiunti alla regione corrispindente
+     */
     private HashSet<Regione> creaRegioni(Properties pro, HashSet<Città> tutteLeCittà, ArrayList<Consigliere> riservaConsiglieri) {
         HashSet<Regione> regioni = new HashSet<>();
         Arrays.stream(NomeRegione.values()).forEach((NomeRegione nomeRegione) -> {
@@ -186,8 +191,10 @@ public class AvviatorePartita implements Runnable {
         return regioni;
     }
 
-    //crea un mazzo carte permesso aventi città possibili in cui costruire quelle contenute in città
-    //prende in input un arrayList di città che appartengono ad una determinata regione
+    /*
+    crea un mazzo carte permesso aventi città possibili in cui costruire quelle contenute in città
+    prende in input un arrayList di città che appartengono ad una determinata regione
+     */
     private Mazzo<CartaPermessoCostruzione> creaMazzoCartePermesso(ArrayList<Città> cittàs) {
         Mazzo<CartaPermessoCostruzione> mazzo = new Mazzo<>();
         //crea 5 carte con una sola città
@@ -217,6 +224,9 @@ public class AvviatorePartita implements Runnable {
         return mazzo;
     }
 
+    /*
+    rimuovendo i consiglieri dalla riserva già creata, li aggiunge al balcone
+     */
     private BalconeDelConsiglio creaBalcone(IdBalcone id, ArrayList<Consigliere> riservaConsiglieri){
         ArrayList<Consigliere> consiglieri = new ArrayList<>();
         for (int i = 0; i < CostantiModel.NUM_CONSIGLIERI_BALCONE; i++) {
@@ -307,6 +317,9 @@ public class AvviatorePartita implements Runnable {
         return carte;
     }
 
+    /*
+    crea i giocatori nel loro stato iniziale, che differisce per l'ordine di turno
+     */
     private ArrayList<Giocatore> creaGiocatori(Partita partita) {
         ArrayList<Giocatore> giocatori = new ArrayList<>();
         for (int i = 0; i < proxyViews.size(); i++) {
@@ -326,7 +339,10 @@ public class AvviatorePartita implements Runnable {
         }
         return giocatori;
     }
-
+    /*
+    effetta la comunicazione con il primo client loggato per la scelta della mappa, ed ottenuto l'id della mappa,
+    carica il file di properties che contiene la configurazione della mappa
+     */
     private Properties sceltaMappa(){
         if(proxyViews.get(0) instanceof SocketProxyView) { //il primo giocatore loggato sceglie la mappa
             SocketProxyView proxyView = (SocketProxyView) proxyViews.get(0);
@@ -392,6 +408,12 @@ public class AvviatorePartita implements Runnable {
         }
     }
 
+    /*
+    la creazione dei bonus (che sono composti da sottobonus) prende in input le classi
+    che corrispondono ai sottobonus componente il bonus che si vuole creare. In questo modo
+    è possibile differenziare i bonus in base a che siano bonus su carte permesso, città o
+    percorso della nobiltà
+     */
     private Bonus creaBonus(Class... tipiBonus) {
         Random rand = new Random();
         Bonus bonus = NullBonus.getInstance();

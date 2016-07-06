@@ -102,7 +102,10 @@ public class Giocatore extends Observable {
         updateViewPuntiVittoria();
     }
 
-
+    /*
+    prende in input un carta, aggiungendola alla mano del giocatore corrispindente al giusto gruppo di carte,
+    in base al tipo dinamico del parametro
+     */
     public void addCarta(Carta c) throws IllegalArgumentException{
         if (c instanceof CartaPolitica){
             manoCartePolitica.add((CartaPolitica) c);
@@ -124,6 +127,11 @@ public class Giocatore extends Observable {
         else throw new IllegalArgumentException();
     }
 
+    /*
+    presi in input i colori delle carte che devono essere scartate scorre nella mano carte
+    politica eliminando le carte corrispondenti. Non si preoccupa di riaggiungere le carte
+    al mazzo carte politica, deve essere effettuato esternamente.
+     */
     public ArrayList<CartaPolitica> scartaCartePolitica(List<ColoreCartaPolitica> colori){
         ArrayList<CartaPolitica> carteScartate = new ArrayList<>();
         for (ColoreCartaPolitica colore : colori) {
