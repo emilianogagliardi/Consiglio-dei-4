@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     @FXML
     private AnchorPane rootPane, anchorInScroll;
+    @FXML
+    private Tab tabGioco;
     @FXML
     private HBox hBoxPolitica, hBoxPermit;
     @FXML
@@ -127,6 +130,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaImmaginiCarte();
         //il giocatore non può scrivere in area notifiche
         areaNotifiche.setEditable(false);
+        tabGioco.setOnSelectionChanged(e -> nascondiPopOver());
         inizializzaImmaginiRisorseGiocatori();
         inizializzaImmaginiConsieglieriGioco();
         inizializzaImmaginiBalconiDiLegno();
