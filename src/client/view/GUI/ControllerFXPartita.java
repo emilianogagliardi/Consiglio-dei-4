@@ -238,7 +238,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                 } catch (SingletonNonInizializzatoException e) {
                     e.printStackTrace();
                 }
-                String nomeFile = "mappa"+idMappa+"_gioco.jpg";
+                String nomeFile = "mappa"+idMappa+".jpg";
                 Image immagine = new Image(getClass().getClassLoader().getResourceAsStream(nomeFile));
                 immagineMappa.setImage(immagine);
             }

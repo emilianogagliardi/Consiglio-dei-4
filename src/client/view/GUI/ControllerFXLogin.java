@@ -93,8 +93,6 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             super.getApplication().setIsSocketClient(true);
         }catch(IOException | SingletonNonInizializzatoException e) {
             e.printStackTrace();
-            //TODO
-            //super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 
@@ -112,8 +110,6 @@ public class ControllerFXLogin extends GestoreFlussoFinestra implements Initiali
             super.getApplication().setIsSocketClient(false);
         }catch( NotBoundException | IOException | SingletonNonInizializzatoException e){
             e.printStackTrace();
-            //TODO
-            //super.setNuovoStep("erroreconnessione.fxml");
         }
     }
 }
