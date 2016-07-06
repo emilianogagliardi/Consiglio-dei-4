@@ -21,6 +21,11 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+questa classe implementa la creazione della partita, ed il popolamento dell'intero model con la configurazione iniziale
+della partita definita dalle regole del gioco. Il flusso è eseguito in un thread separato, perchè esegue operazioni
+bloccanti, in particolare chiede ad un giocatore di scegliere la mappa.
+ */
 public class AvviatorePartita implements Runnable {
     private int numeroBindRegistry;
     private ArrayList<InterfacciaView> proxyViews;
@@ -47,8 +52,6 @@ public class AvviatorePartita implements Runnable {
                 socketPollingControllers.forEach((SocketPollingController runnable) -> {new Thread(runnable).start();});
                 Registry registry = LocateRegistry.getRegistry(CostantiSistema.RMI_PORT);
                 String chiaveController = PrefissiChiaviRMI.PREFISSO_CHIAVE_CONTROLLER + numeroBindRegistry ;
-                //todo togliere questa riga
-                System.out.println(chiaveController);
                 registry.bind(chiaveController, controller);
                 for(InterfacciaView view : proxyViews) { //non uso espressione lambda perchè dovrei innestare un try catch che è già fatto
                     view.iniziaAGiocare(idMappa);
@@ -140,6 +143,10 @@ public class AvviatorePartita implements Runnable {
         }
     }
 
+    /*
+    leggendo dal file di configurazione i link tra le città, aggiunge all'insieme di città che prende in input
+    
+     */
     private void creaSentieriCittàDaFile(Properties pro, HashSet<Città> tutteLeCittà){
         HashMap<String, Città> mapCittà = new HashMap<>(); //mappa conetente (nomecittà, città) utile per l'algoritmo
         tutteLeCittà.forEach((Città città) -> mapCittà.put(città.getNome().toString(), città));
