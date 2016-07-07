@@ -107,7 +107,6 @@ public class Partita extends Observable {
             this.percorsoDellaNobiltà = percorsoDellaNobiltà;
             updateViewBonusPercorsoNobiltà();
         }
-
     }
 
     public void addCartePoliticaScartate(ArrayList<CartaPolitica> nuoveCarteScartate){

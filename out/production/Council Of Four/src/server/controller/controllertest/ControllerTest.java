@@ -30,6 +30,7 @@ public class ControllerTest {
     private Field azioniPrincipaliDisponibili;
     private Field azioneVeloceEseguita;
     private Field giocatoreCorrente;
+    private Field faseTurno;
     private AvviatorePartita avviatorePartita;
 
     //attributi di partita
@@ -518,6 +519,10 @@ public class ControllerTest {
             azioneVeloceEseguita.set(controller, false);
             giocatoreCorrente = Controller.class.getDeclaredField("giocatoreCorrente");
             giocatoreCorrente.setAccessible(true);
+            giocatoreCorrente.set(controller, partita.getGiocatori().get(0));
+            faseTurno = Controller.class.getDeclaredField("faseTurno");
+            faseTurno.setAccessible(true);
+            faseTurno.set(controller, true);
         } catch (NoSuchFieldException exc){
             exc.printStackTrace();
         } catch (IllegalAccessException exc){
@@ -570,7 +575,7 @@ public class ControllerTest {
         resetGiocatore();
         assertTrue(controller.eleggereConsigliere("COSTA", "BIANCO"));
         resetGiocatore();
-        assertFalse(controller.eleggereConsigliere("COSTA", "BIANCO"));
+        assertFalse(controller.eleggereConsigliere("COSTA", ColoreConsigliere.AZZURRO.toString()));
     }
 
     @Test
@@ -628,11 +633,12 @@ public class ControllerTest {
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.ARANCIONE));
             giocatore.addCarta(new CartaPolitica(ColoreCartaPolitica.JOLLY));
-            assertTrue(controller.costruireEmporioConAiutoRe(nomiColoriCartePolitica,  NomeCittà.ESTI.toString()));
+            assertTrue(controller.costruireEmporioConAiutoRe(nomiColoriCartePolitica,  NomeCittà.LYRAM.toString()));
         } catch (IllegalAccessException exc){
             exc.printStackTrace();
         }
     }
+
 
 
     private void resetGiocatore(){

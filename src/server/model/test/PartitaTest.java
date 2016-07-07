@@ -1,3 +1,4 @@
+import classicondivise.Colore;
 import classicondivise.bonus.*;
 import classicondivise.carte.CartaPermessoCostruzione;
 import classicondivise.IdBalcone;
@@ -6,8 +7,12 @@ import server.model.*;
 import server.model.carte.*;
 import org.junit.Test;
 import interfaccecondivise.InterfacciaView;
+import server.model.eccezioni.NumeroMassimoGiocatoriRaggiuntoException;
+import server.sistema.CostantiSistema;
 
 import java.util.*;
+
+import static org.junit.Assert.assertTrue;
 
 public class PartitaTest {
     private Partita partita1;
@@ -123,10 +128,53 @@ public class PartitaTest {
         partita1.setRiservaConsiglieri(riservaConsiglieri);
     }
 
-    @Test
-    public void test(){
+    @Test(expected = IllegalArgumentException.class)
+    public void testDecrementaAiutanti(){
+        int prima = partita1.getRiservaAiutanti();
+        partita1.decrementaAiutanti(1);
+        assertTrue(prima == partita1.getRiservaAiutanti() -1);
+        for (int i = 0; i < CostantiModel.NUM_AIUTANTI; i++){
+            partita1.decrementaAiutanti(1);
+        }
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testAggiungiAiutanti(){
+        int prima = partita1.getRiservaAiutanti();
+        partita1.decrementaAiutanti(1);
+        assertTrue(prima == partita1.getRiservaAiutanti() -1);
+        prima = partita1.getRiservaAiutanti();
+        partita1.aggiungiAiutanti(1);
+        assertTrue(prima +1 == partita1.getRiservaAiutanti());
+        for (int i = 0; i < CostantiModel.NUM_AIUTANTI; i++){
+            partita1.aggiungiAiutanti(1);
+        }
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testOttieniConsigliereDaRiserva(){
+        assertTrue(partita1.ottieniConsigliereDaRiserva(ColoreConsigliere.AZZURRO).getColore().toColore().equals(Colore.AZZURRO));
+        partita1.ottieniConsigliereDaRiserva(ColoreConsigliere.ARANCIONE);
     }
 
 
+    @Test
+    public void addConsigliereARiserva(){
+        partita1.addConsigliereARiserva(new Consigliere(ColoreConsigliere.NERO));
+        assertTrue(partita1.ottieniConsigliereDaRiserva(ColoreConsigliere.NERO).getColore().equals(ColoreConsigliere.NERO));
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAggiungiGiocatoreNull(){
+        partita1.addGiocatore(null);
+    }
+
+
+    @Test(expected = NumeroMassimoGiocatoriRaggiuntoException.class)
+    public void testAggiungiGiocatori(){
+        for (int i = 0; i < CostantiSistema.NUM_GOCATORI_MAX + 1; i ++) {
+            partita1.addGiocatore(new Giocatore(0, 0, 0, new ArrayList<InterfacciaView>()));
+        }
+    }
 }

@@ -416,6 +416,7 @@ public class Controller implements Runnable, InterfacciaController {
         if (controlliEleggereConsigliere(idBalcone, coloreConsigliereDaRiserva)) {
             if (!inserisciConsigliereRiservaInBalcone(idBalcone, coloreConsigliereDaRiserva)) {
                 comunicaAGiocatoreCorrente("Non è stato possibile inserire il consigliere nel balcone!");
+                return false;
             }
             giocatoreCorrente.guadagnaMonete(CostantiModel.MONETE_GUADAGNATE_ELEGGERE_CONSIGLIERE);
             decrementaAzioniPrincipaliDisponibili();
