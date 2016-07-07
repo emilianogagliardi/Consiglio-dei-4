@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
 public class ControllerFXPartita extends GestoreFlussoFinestra implements Initializable{
     @FXML
     private AnchorPane rootPane, anchorInScroll;
+    @FXML
+    private Tab tabGioco;
     @FXML
     private HBox hBoxPolitica, hBoxPermit;
     @FXML
@@ -127,6 +130,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         inizializzaImmaginiCarte();
         //il giocatore non può scrivere in area notifiche
         areaNotifiche.setEditable(false);
+        tabGioco.setOnSelectionChanged(e -> nascondiPopOver());
         inizializzaImmaginiRisorseGiocatori();
         inizializzaImmaginiConsieglieriGioco();
         inizializzaImmaginiBalconiDiLegno();
@@ -221,6 +225,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
         popCambiareTessere = new PopOver(new Label("Clicca su un mazzo per \ncambiare le carte permesso"));
         popIngaggiareAiutante = new PopOver(new Label("Clicca per ingaggiare un aiutante\no usare tre aiutanti per compiere\nun'azione principale aggiuntiva"));
         popAcquistaPermesso.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+        popCostruisciEmporio.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
         popEleggiConsigliere.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
         popCambiareTessere.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
         popIngaggiareAiutante.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
@@ -237,7 +242,7 @@ public class ControllerFXPartita extends GestoreFlussoFinestra implements Initia
                 } catch (SingletonNonInizializzatoException e) {
                     e.printStackTrace();
                 }
-                String nomeFile = "mappa"+idMappa+"_gioco.jpg";
+                String nomeFile = "mappa"+idMappa+".jpg";
                 Image immagine = new Image(getClass().getClassLoader().getResourceAsStream(nomeFile));
                 immagineMappa.setImage(immagine);
             }

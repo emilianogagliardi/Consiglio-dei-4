@@ -43,7 +43,8 @@ public class ControllerFXGallery extends GestoreFlussoFinestra implements Initia
 
     private void inizializzaListaCircolareImmagini(){
         immagini = new ListaCircolare<>(
-                new Image(getClass().getClassLoader().getResourceAsStream("mappa1_gallery.jpg"))
+                new Image(getClass().getClassLoader().getResourceAsStream("mappa1.jpg")),
+                new Image(getClass().getClassLoader().getResourceAsStream("mappa2.jpg"))
         );
     }
 

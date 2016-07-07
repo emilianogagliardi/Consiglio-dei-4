@@ -37,7 +37,7 @@
          <children>
             <ImageView fx:id="imgAiutanti" fitHeight="96.0" fitWidth="96.0" layoutX="13.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
             <Button fx:id="btnMenoAiutanti" layoutX="165.0" layoutY="36.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="-" />
-            <Label fx:id="numeroAiutanti" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="14.0" text="0">
+            <Label fx:id="numeroAiutanti" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="28.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -53,8 +53,8 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
          <children>
             <Label layoutX="14.0" layoutY="42.0" text="Prezzo carte permesso" />
-            <Button fx:id="btnMenoPrezzoPermit" layoutX="165.0" layoutY="36.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="-" />
-            <Label fx:id="prezzoPermit" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="14.0" text="0">
+            <Button fx:id="btnMenoPrezzoPermit" layoutX="170.0" layoutY="36.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="-" />
+            <Label fx:id="prezzoPermit" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="28.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -65,8 +65,8 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Label layoutX="14.0" layoutY="42.0" text="Presso carte politica" />
-            <Button fx:id="btnMenoPrezzoPolitica" layoutX="165.0" layoutY="36.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="-" />
-            <Label fx:id="prezzoPolitica" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="14.0" text="0">
+            <Button fx:id="btnMenoPrezzoPolitica" layoutX="170.0" layoutY="36.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="-" />
+            <Label fx:id="prezzoPolitica" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="28.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -77,8 +77,8 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label layoutX="58.0" layoutY="42.0" text="Prezzo aiutanti" />
-            <Button fx:id="btnMenoPrezzoAiutanti" layoutX="165.0" layoutY="36.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="-" />
-            <Label fx:id="prezzoAiutanti" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="14.0" text="0">
+            <Button fx:id="btnMenoPrezzoAiutanti" layoutX="170.0" layoutY="36.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="-" />
+            <Label fx:id="prezzoAiutanti" layoutX="205.0" layoutY="40.0" prefHeight="18.0" prefWidth="28.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>

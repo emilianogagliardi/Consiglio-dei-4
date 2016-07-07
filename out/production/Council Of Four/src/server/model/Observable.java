@@ -13,8 +13,11 @@ public abstract class Observable {
 
     protected ArrayList<InterfacciaView> getViews(){return views;}
 
-    //it is a lambda expression
-    //it take a lambda expression
+    /*
+    chiama il metodo update su ognuno degli osservatori. Chiamand questo
+    metodo dai sottotipi non è necessario preoccuparsi di chi siano e di quanti
+    siano gli observer, è solo necessario definire l'implementazione del metodo update
+     */
     protected void notifyViews(ViewUpdater updater) {
         getViews().forEach((InterfacciaView view) -> updater.update(view));
     }

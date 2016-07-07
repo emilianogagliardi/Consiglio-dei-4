@@ -93,6 +93,8 @@ public class Città extends Observable {
 
     public Bonus getBonus() {return bonus;}
 
+    //update view
+    
     private void updateViewEmpori(){
         ArrayList<Integer> idGiocatori = new ArrayList<>();
         empori.stream().forEach((Emporio e) -> idGiocatori.add(e.getIdGiocatore()));
