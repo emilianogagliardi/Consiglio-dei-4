@@ -117,7 +117,7 @@ class Vendi implements Runnable {
                    System.out.println();
                }
                inputLine = in.nextLine();
-               while (!inputLine.equals("fine")) {
+               while (!inputLine.equalsIgnoreCase("fine")) {
                    try{
                        input =  Integer.parseInt(inputLine) - 1;
                    } catch (NumberFormatException exc){
@@ -163,7 +163,7 @@ class Vendi implements Runnable {
                 System.out.println(i + ": " + cartaPolitica);
             }
             inputLine = in.nextLine();
-            while (!inputLine.equals("fine")) {
+            while (!inputLine.equalsIgnoreCase("fine")) {
                 try{
                     input =  Integer.parseInt(inputLine) - 1;
                 } catch (NumberFormatException exc){

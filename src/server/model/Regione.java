@@ -38,7 +38,6 @@ public class Regione extends Observable{
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
         cartaPermessoCostruzione2.setVisibile(true);
         updateViewCartePermessoCostruzione();
-        //updateViewCarteBonusRegione();
     }
 
     public BalconeDelConsiglio getBalconeDelConsiglio(){
@@ -47,6 +46,7 @@ public class Regione extends Observable{
 
     public NomeRegione getNome() { return nomeRegione; }
 
+    //restituisce la carta bonus regione e mette a null il proprio attributo. Lancia una NoSuchElementException se non è disponibile una carta bonus regione
     public CartaBonusRegione ottieniCartaBonusRegione() throws NoSuchElementException {
         CartaBonusRegione cartaBonusRegioneDaRitornare = this.cartaBonusRegione;
         this.cartaBonusRegione = null;
@@ -56,6 +56,7 @@ public class Regione extends Observable{
         return cartaBonusRegioneDaRitornare;
     }
 
+    //restituisce la carta permesso numero 1 e la sostituisce con una nuova carta pescata dal mazzo di carte permesso costruzione. Se la carta non è disponibile lancia una NoSuchElementExcpetion
     public CartaPermessoCostruzione ottieniCartaPermessoCostruzione1() throws NoSuchElementException {
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione1;
         cartaPermessoCostruzione1 = mazzoCartePermessoCostruzione.ottieniCarta();
@@ -78,6 +79,7 @@ public class Regione extends Observable{
         return cartaPermessoCostruzione1 == null;
     }
 
+    //restituisce la carta permesso numero 2 e la sostituisce con una nuova carta pescata dal mazzo di carte permesso costruzione. Se la carta non è disponibile lancia una NoSuchElementExcpetion
     public CartaPermessoCostruzione ottieniCartaPermessoCostruzione2() throws NoSuchElementException{
         CartaPermessoCostruzione cartaDaRitornare = cartaPermessoCostruzione2;
         cartaPermessoCostruzione2 = mazzoCartePermessoCostruzione.ottieniCarta();
@@ -108,9 +110,7 @@ public class Regione extends Observable{
 
     public void addCittà(HashSet<Città> città) throws IllegalArgumentException {
         for (Città cittàSingola : città)
-            if (!cittàSingola.getNomeRegione().equals(this.getNome()))
-                throw new IllegalArgumentException("La città non appartiene a questa regione");
-            else this.città.add(cittàSingola);
+            addCittà(cittàSingola);
     }
 
     public HashSet<Città> getCittà(){
@@ -124,6 +124,7 @@ public class Regione extends Observable{
         return nomiCittà;
     }
 
+    //sostituisce le carte permesso 1 e 2 con due nuove carte pescate dal mazzo
     public void cambiaCartePermessoCostruzione(){
         cartaPermessoCostruzione1.setVisibile(false);
         mazzoCartePermessoCostruzione.addCarta(cartaPermessoCostruzione1);

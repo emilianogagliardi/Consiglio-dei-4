@@ -50,7 +50,7 @@ class Vendi implements Runnable {
                                     if (!fine) {
                                         controller.vendi(vendibili);
                                     }
-                                } else System.out.println("Hai già messo in vendita carte permesso di costruzione!");
+                                } else System.out.println("Hai inserito dei valori scorretti!");
                                 break;
                             case "CPO":
                                 vendibili = sceltaCartePolitica();
@@ -58,7 +58,7 @@ class Vendi implements Runnable {
                                     if (!fine) {
                                         controller.vendi(vendibili);
                                     }
-                                } else System.out.println("Hai già messo in vendita carte politica!");
+                                } else System.out.println("Hai inserito dei valori scorretti!");
                                 break;
                             case "A":
                                 vendibili = sceltaAiutanti();
@@ -66,7 +66,7 @@ class Vendi implements Runnable {
                                     if (!fine) {
                                         controller.vendi(vendibili);
                                     }
-                                } else System.out.println("Hai già messo in vendita aiutanti!");
+                                } else System.out.println("Hai inserito dei valori scorretti!");
                                 break;
                             default:
                                 break;
@@ -117,7 +117,7 @@ class Vendi implements Runnable {
                    System.out.println();
                }
                inputLine = in.nextLine();
-               while (!inputLine.equals("fine")) {
+               while (!inputLine.equalsIgnoreCase("fine")) {
                    try{
                        input =  Integer.parseInt(inputLine) - 1;
                    } catch (NumberFormatException exc){
@@ -163,7 +163,7 @@ class Vendi implements Runnable {
                 System.out.println(i + ": " + cartaPolitica);
             }
             inputLine = in.nextLine();
-            while (!inputLine.equals("fine")) {
+            while (!inputLine.equalsIgnoreCase("fine")) {
                 try{
                     input =  Integer.parseInt(inputLine) - 1;
                 } catch (NumberFormatException exc){

@@ -5,7 +5,6 @@ import java.io.Serializable;
 public abstract class Carta implements Serializable{
     private boolean visibile = true; //una carta con visibile = true significa che è scoperta
 
-
     public Carta(){
         //do nothing
     } //per la serializzazione di carta permesso

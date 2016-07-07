@@ -23,20 +23,20 @@ public class CLIApplication {
 
         System.out.println("Specifica il tipo di connessione che vuoi utilizzare. Socket (S) o RMI (R)");
         input = in.nextLine();
-        if (input.equals("S")){
+        if (input.equalsIgnoreCase("S")){
             try {
                 socket = new Socket(CostantiClient.IP_SERVER, CostantiSistema.SOCKET_PORT);
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 CLIView cliView = new CLIView("S");
                 cliView.setObjectStream(oos);
-                SocketPollingView socketPollingView = new SocketPollingView(cliView, ois);
+                SocketPollingView socketPollingView = new SocketPollingView(cliView, ois); //crea SocketPollingView che riceverà richieste da SocketProxyView nel server
                 new Thread(socketPollingView).start(); //necessario alla comunicazione server -> client
 
             } catch (IOException exc) {
                 exc.printStackTrace();
             }
-        } else if (input.equals("R")) {
+        } else if (input.equalsIgnoreCase("R")) {
             try {
                 Registry registry = LocateRegistry.getRegistry(CostantiClient.IP_SERVER, CostantiClient.REGISTRY_PORT);
                 InterfacciaLoggerRMI loggerRMI = (InterfacciaLoggerRMI) registry.lookup(CostantiClient.CHIAVE_LOGGER);

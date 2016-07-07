@@ -14,7 +14,8 @@ public class CartaPremioDelRe extends CartaConBonus {
         super(new BonusPuntiVittoria(puntiVittoria, NullBonus.getInstance()));
         numeroOrdine = contatore;
         contatore++;
-        if(contatore == (NUM_CARTE_PREMIO_RE + 1))
+        if(contatore == (NUM_CARTE_PREMIO_RE + 1)) //le carte premio del re sono contraddistinte da un numero ordine che viene incrementato di uno ogni nuova carta creata
+        //e resettato quando raggiunge un certo valore soglia
             contatore = 1;
     }
 

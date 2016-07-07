@@ -13,13 +13,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static server.model.CostantiModel.NUM_CONSIGLIERI_BALCONE;
 
 public class BalconeDelConsiglio extends Observable {
-    private classicondivise.IdBalcone IdBalcone;
-    private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è opportuno
+    private classicondivise.IdBalcone idBalcone;
+    private Queue<Consigliere> balcone = new LinkedBlockingQueue<>(NUM_CONSIGLIERI_BALCONE); //viene fissata una capacità massima della FIFO. Essendo una FIFO bloccante è necessario
     //prima rimuovere il consigliere in cima (a destra nel balcone) e poi inserire un nuovo consigliere in coda (a sinistra nel balcone)
 
     public BalconeDelConsiglio(IdBalcone IdBalcone, ArrayList<InterfacciaView> views, ArrayList<Consigliere> consiglieri) throws NullPointerException, IllegalArgumentException {
             super(views);
-            this.IdBalcone = IdBalcone;
+            this.idBalcone = IdBalcone;
             if (consiglieri.size() != NUM_CONSIGLIERI_BALCONE) {
                 throw new IllegalArgumentException("Il numero di consiglieri per balcone deve essere " + NUM_CONSIGLIERI_BALCONE);
             }
@@ -28,11 +28,10 @@ public class BalconeDelConsiglio extends Observable {
         }
 
     public IdBalcone getIdBalcone(){
-        return IdBalcone;
+        return idBalcone;
     }
 
-    public Consigliere addConsigliere(Consigliere consigliere) throws NullPointerException { //viene lanciata una IllegalStateException se non c'è spazio
-        //nella coda per aggiungere un nuovo elemento; NullPointerException se consigliere è null. Viene ritornato il consigliere "caduto" dal balcone
+    public Consigliere addConsigliere(Consigliere consigliere) throws NullPointerException { //viene lanciata una NullPointerException se consigliere è null. Viene ritornato il consigliere "caduto" dal balcone
         Consigliere consigliereCaduto = balcone.element();
         balcone.remove(consigliereCaduto);
         balcone.add(consigliere);
@@ -48,6 +47,8 @@ public class BalconeDelConsiglio extends Observable {
         return colori;
     }
 
+
+    //permette di capire se è possibile soddisfare il consiglio con le carte politica fornite in input. Il balcone si può soddisfare se i colori delle carte politica sono contenuti nei colori dei consiglieri del balcone (duplicati compresi)
     public boolean soddisfaConsiglio(List<ColoreCartaPolitica> coloriCartePolitica) throws IllegalArgumentException {
         if (coloriCartePolitica.size() <= 0 || coloriCartePolitica.size() > NUM_CONSIGLIERI_BALCONE) {
             throw new IllegalArgumentException("Il numero di carte politica scartate è negativo o nullo oppure maggiore di " + NUM_CONSIGLIERI_BALCONE);
@@ -68,7 +69,7 @@ public class BalconeDelConsiglio extends Observable {
     private void updateView(){
         super.notifyViews((InterfacciaView view) -> {
             try {
-                view.updateBalcone(   IdBalcone.toString(),
+                view.updateBalcone(idBalcone.toString(),
                         getColoriConsiglieri().get(0).toString(),
                         getColoriConsiglieri().get(1).toString(),
                         getColoriConsiglieri().get(2).toString(),

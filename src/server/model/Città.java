@@ -20,7 +20,7 @@ public class Città extends Observable {
     private NomeRegione nomeRegione;
     //attributi per gli algoritmi sui grafi
     private boolean flag; //il flag è true quando il nodo è stato scoperto e poi è stato tolto dalla coda dei nodi scoperti perchè scoperti tutti i suoi nodi adiacenti
-    private Integer distanza; //distanza del nodo dalla sorgente (dipende su dal nodo sul quale è stato chiamato l'algoritmo)
+    private Integer distanza; //distanza del nodo dalla sorgente (dipende dal nodo sul quale è stato chiamato l'algoritmo)
 
     public Città (NomeRegione nomeRegione, NomeCittà n, ColoreCittà c, Bonus b, ArrayList<InterfacciaView> views){
         super (views);

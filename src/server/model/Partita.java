@@ -56,11 +56,10 @@ public class Partita extends Observable {
         return regioni;
     }
 
-    public void decrementaAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanz aiutanti
+    public void decrementaAiutanti(int numAiutanti) throws IllegalArgumentException { //prende dalla riserva un numero di aiutanti pari a numAiutanti. Lancia un'eccezione se non ci sono abbastanza aiutanti
         if ((this.riservaAiutanti - numAiutanti) < 0)
            throw new IllegalArgumentException("Non ci sono abbastanza aiutanti in riserva");
         this.riservaAiutanti -= numAiutanti;
-        //update views
         updateViewRiservaAiutanti();
     }
 
@@ -69,7 +68,6 @@ public class Partita extends Observable {
         if((this.riservaAiutanti + numAiutanti) > NUM_AIUTANTI)
             throw new IllegalArgumentException("Numero massimo di aiutanti in riserva superato");
         this.riservaAiutanti += numAiutanti;
-        //update views
         updateViewRiservaAiutanti();
     }
 
@@ -121,6 +119,7 @@ public class Partita extends Observable {
             this.mazzoCartePolitica = mazzoCartePolitica;
     }
 
+    //pesca una carta politica dal mazzo
     public CartaPolitica ottieniCartaPolitica() {
         if (mazzoCartePolitica.isEmpty()) {
             mazzoCartePolitica = cartePoliticaScartate;
@@ -132,7 +131,6 @@ public class Partita extends Observable {
     public void setMazzoCartePremioRe(Mazzo<CartaPremioDelRe> mazzoCartePremioRe){
         if(this.mazzoCartePremioRe == null)
             this.mazzoCartePremioRe = mazzoCartePremioRe;
-        //updateViewCartePremioRe();
     }
 
     public CartaPremioDelRe ottieniCartaPremioRe(){
@@ -142,7 +140,6 @@ public class Partita extends Observable {
         } catch (NoSuchElementException exc){
             cartaPremioDelRe = null;
         }
-        //updateViewCartePremioRe();
         return cartaPremioDelRe;
     }
 
@@ -152,7 +149,6 @@ public class Partita extends Observable {
         }
         else if(this.carteBonusColoreCittà == null)
             this.carteBonusColoreCittà = carteBonusColoreCittà;
-        //updateViewCarteBonusColoreCittà();
     }
 
 
@@ -172,13 +168,13 @@ public class Partita extends Observable {
         updateViewRiservaConsiglieri();
     }
 
+    //restituisce un consigiere del colore scelto preso dalla riserva se disponibile. Altrimenti lancia l'eccezione NoSuchElementException
     public Consigliere ottieniConsigliereDaRiserva(ColoreConsigliere coloreConsigliereDaRestituire) throws NoSuchElementException{
         Consigliere consigliereDaRestituire;
         for(Consigliere consigliere : riservaConsiglieri)
             if(consigliere.getColore().equals(coloreConsigliereDaRestituire)){
                 consigliereDaRestituire = consigliere;
                 riservaConsiglieri.remove(consigliere);
-                //update views
                 updateViewRiservaConsiglieri();
                 return consigliereDaRestituire;
             }
@@ -203,7 +199,7 @@ public class Partita extends Observable {
         return giocatori;
     }
 
-    //update view
+
     private void updateViewRiservaAiutanti(){
         super.notifyViews((InterfacciaView view) -> {
             try {
@@ -236,47 +232,4 @@ public class Partita extends Observable {
             }
         });
     }
-
-    /*private void updateViewCarteBonusColoreCittà (){
-        HashMap<String, Integer> mapCarte = new HashMap<>();
-        carteBonusColoreCittà.forEach((CartaBonusColoreCittà carta) -> {
-            Bonus bonus = carta.getBonus();
-            int punti;
-            try{
-                BonusPuntiVittoria bonusPuntiVittoria = (BonusPuntiVittoria) bonus;
-                punti = bonusPuntiVittoria.getPuntiVittoria();
-            }catch (ClassCastException e) {
-                System.out.println("la carta bonus colore città non ha bonus punti vittoria, impossibile eseguire cast");
-                punti = 0;
-            }
-            mapCarte.put(carta.getColore().toString(), punti);
-        });
-        super.notifyViews((InterfacciaView v) -> {
-            try {
-                v.updateCarteBonusColoreCittàTabellone(mapCarte);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
-
-    /*private void updateViewCartePremioRe(){ //deve essere mostrata solo la carta in cima al mazzo
-        CartaPremioDelRe cartaDaMostrare = mazzoCartePremioRe.getCarta();
-        int punti = 0;
-        try {
-            BonusPuntiVittoria bonusPunti = (BonusPuntiVittoria) cartaDaMostrare.getBonus();
-            punti = bonusPunti.getPuntiVittoria();
-        }catch (ClassCastException e) {
-            System.out.println("la carta premio del re non ha bonus punti vittoria, impossibile eseguire cast");
-            punti = 0; //errore
-        }
-        int finalPunti = punti; // solo per utilizzare in lambda expression
-        super.notifyViews((InterfacciaView view) -> {
-            try {
-                view.updateCarteBonusReTabellone(finalPunti);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
 }
