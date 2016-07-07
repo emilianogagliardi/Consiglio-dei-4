@@ -98,7 +98,7 @@ public class Controller implements Runnable, InterfacciaController {
                             System.out.println("Partita terminata: tutti i giocatori sono andati offline");
                             return;
                         }
-                        if (!viewCorrenteRimossa) {
+                        if (!viewCorrenteRimossa) { //se view corrente fosse offline la chiamata di fine turno causerebbe una NullPointerException
                             viewCorrente.fineTurno();
                         } else viewCorrenteRimossa = false;
                     } catch (InterruptedException exc) {
@@ -116,6 +116,7 @@ public class Controller implements Runnable, InterfacciaController {
                     //si passa al giocatore successivo
                     giocatoreCorrente = giocatoriOnline.prossimo();
                     viewCorrente = getViewGiocatoreCorrente();
+                    //questi flag servono per evitare che il giocatore venda più volte oggetti dello stesso tipo
                     venduteCartePermesso = false;
                     venduteCartePolitica = false;
                     vendutiAiutanti = false;
@@ -147,7 +148,7 @@ public class Controller implements Runnable, InterfacciaController {
                 comunicaATutti("Inizia la fase di acquisto del market");
                 ScatolaIdGiocatori scatolaIdGiocatori = new ScatolaIdGiocatori();
                 do {
-                    giocatoreCorrente = giocatoreDaPartita(scatolaIdGiocatori.pescaNumero());
+                    giocatoreCorrente = giocatoreDaPartita(scatolaIdGiocatori.pescaNumero()); //scelgo un giocatore a caso per la fase di acquisto
                     viewCorrente = getViewGiocatoreCorrente();
                     viewCorrente.compra(vetrinaMarket.getVendibili());
 
@@ -172,26 +173,27 @@ public class Controller implements Runnable, InterfacciaController {
                 } while (!scatolaIdGiocatori.èVuota());
                 faseAcquistoMarket = false;
             }
+            //dopo che la partita è terminata procedo al conteggio dei punti vittoria
             ArrayList<Integer> puntiVittoriaGiocatori = new ArrayList<>();
             ArrayList<Giocatore> giocatori = partita.getGiocatori();
             for (Giocatore giocatore : giocatori){
                 puntiVittoriaGiocatori.add(giocatore.getPuntiVittoria());
             }
-            int primo = Collections.max(puntiVittoriaGiocatori);
-            int contatorePrimi = 0;
+            int primo = Collections.max(puntiVittoriaGiocatori); //calcolo il massimo dei punti vittoria guadagnati da tutti i giocatori
+            int contatorePrimi = 0;    //conto quanti giocatori hanno guadagnato punti vittoria pari al massimo
             for (Giocatore giocatore : giocatori) {
                 if (giocatore.getPuntiVittoria() == primo) {
                     contatorePrimi++;
                 }
             }
             for (int i = 0; i < contatorePrimi; i++) {
-                puntiVittoriaGiocatori.remove(primo);
+                puntiVittoriaGiocatori.remove(primo); //tolgo tutte le occorrenze di punteggio massimo
             }
-            if (puntiVittoriaGiocatori.size() == 0) {
+            if (puntiVittoriaGiocatori.size() == 0) { //controllo se ci sono oppure no altri punteggi
                 assegnaPuntiVittoria(contatorePrimi, primo, 0, 0);
             } else{
-                int secondo = Collections.max(puntiVittoriaGiocatori);
-                int contatoreSecondi = 0;
+                int secondo = Collections.max(puntiVittoriaGiocatori);  //se ci sono altri punteggi allora calcolo il massimo del nuovo ArrayList puntiVittoria privato dei punteggi massimi
+                int contatoreSecondi = 0; //conto quanti punteggi secondi ci sono
                 for (Giocatore giocatore : giocatori) {
                     if (giocatore.getPuntiVittoria() == secondo) {
                         contatoreSecondi++;
@@ -199,7 +201,7 @@ public class Controller implements Runnable, InterfacciaController {
                 }
                 assegnaPuntiVittoria(contatorePrimi, primo, contatoreSecondi, secondo);
             }
-
+            //assegno punti vittoria al giocatore con più carte permesso
             ArrayList<Integer> numeroCartePermesso = new ArrayList<>();
             for (Giocatore giocatore : giocatori){
                 numeroCartePermesso.add(giocatore.getManoCartePermessoCostruzione().size());
@@ -215,7 +217,7 @@ public class Controller implements Runnable, InterfacciaController {
             for (Giocatore giocatore : giocatori) {
                 puntiVittoriaGiocatoriFinali.add(giocatore.getPuntiVittoria());
             }
-            int puntiVittoriaMax = Collections.max(puntiVittoriaGiocatoriFinali);
+            int puntiVittoriaMax = Collections.max(puntiVittoriaGiocatoriFinali); //calcolo il massimo di tutti i punti vittoria aggiornati
             for (Giocatore giocatore : giocatori){
                 if (giocatore.getPuntiVittoria() == puntiVittoriaMax) {
                     comunicaATutti("!!!!!!!!!!!!!!!Ha vinto giocatore " + giocatore.getId() + "!!!!!!!!!!!!!!!");
@@ -227,15 +229,15 @@ public class Controller implements Runnable, InterfacciaController {
         System.out.println("Partita terminata");
     }
 
-    private void assegnaPuntiVittoria(int numPrimi, int puntiPrimo, int numSecondi, int puntiSecondo) {
+    private void assegnaPuntiVittoria(int numPrimi, int puntiPrimo, int numSecondi, int puntiSecondo) { //assegno i punti vittoria in base a quanti sono arrivati primi e quanti sono arrivati secondi
         ArrayList<Giocatore> giocatori = partita.getGiocatori();
-        if (numPrimi > 1) {
+        if (numPrimi > 1) { //se più giocatore hanno punti vittoria pari al massimo allora assegno 5 punti vittoria a questi giovatori e 0 a tutti gli altri
             for (Giocatore giocatore : giocatori) {
                 if (giocatore.getPuntiVittoria() == puntiPrimo) {
                     giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_PRIMO_PERCORSO_NOBILTA);
                 }
             }
-        } else {
+        } else { //altrimenti controllo quanti giocatori sono arrivati pari merito al secondo posto
             if (numSecondi != 0) {
                 for (Giocatore giocatore : giocatori) {
                     if (giocatore.getPuntiVittoria() == puntiSecondo) {
@@ -244,7 +246,7 @@ public class Controller implements Runnable, InterfacciaController {
                         giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_PRIMO_PERCORSO_NOBILTA);
                     }
                 }
-            } else {
+            } else { //se c'è solo un giocatore arrivato primo e nessuno arrivato secondo assegno 5 punti al primo giocatore
                 for (Giocatore giocatore : giocatori) {
                    if (giocatore.getPuntiVittoria() == puntiPrimo) {
                         giocatore.guadagnaPuntiVittoria(CostantiModel.PUNTI_VITTORIA_GUADAGNATI_PRIMO_PERCORSO_NOBILTA);
@@ -290,7 +292,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
     @Override
-    public boolean passaTurno() throws RemoteException { //verifica che il giocatore possa finire il turno
+    public boolean passaTurno() throws RemoteException {
         synchronized (this) {
             notify();
         }
@@ -346,6 +348,7 @@ public class Controller implements Runnable, InterfacciaController {
         }
     }
 
+    //comunica al giocatore corrente il bonus guadagnato
     private void comunicaBonus(String messaggio){
         views.forEach((InterfacciaView view) -> {
             try {
@@ -393,6 +396,7 @@ public class Controller implements Runnable, InterfacciaController {
         });
     }
 
+    //controllo che il giocatore abbia azioni principali disponibili e che sia la fase di turno gioco
     private boolean controlliGeneraliTurnoAzionePrincipale(){
         if (!faseTurno){
             comunicaAGiocatoreCorrente("Non puoi eseguire mosse in questo momento!");
@@ -405,6 +409,8 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+
+    //la mossa eleggere un consigliere inserisce in un balcone un consigliere preso dalla riserva
     @Override
     public boolean eleggereConsigliere(String idBalcone, String coloreConsigliereDaRiserva)  throws RemoteException{
         if (controlliEleggereConsigliere(idBalcone, coloreConsigliereDaRiserva)) {
@@ -453,6 +459,8 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+    //la mossa acquistare permesso di costruzione richiede la scelta di un balcone e della carte politica con cui soddisfare quel balcone. Se è possibile soddisfare il balcone
+    //allora si ottiene una carta permesso a scelta tra le due visibili
     @Override
     public boolean acquistareTesseraPermessoCostruzione(String idBalconeRegione, List<String> nomiColoriCartePolitica, int numeroCarta)  throws RemoteException{
         if (controlliAcquistareTesseraPermessoCostruzione(idBalconeRegione, nomiColoriCartePolitica, numeroCarta)) {
@@ -546,6 +554,11 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+
+    //questo è un metodo utilizzato sia dalla mossa acquistare tessera permesso di costruzione che dalla mossa costruire emporio con l'aiuto del re
+    //prende in input un supplier che determina a runtime quale caratteristica assumere in base al metodo chiamante
+    //nel caso di acquistare tessera permesso costruzione il supplier assegna al giocatore la carta voluta
+    //nel caso di costruire emporio con l'aiuto del re il supplier non fa nulla e ritorna true
     private boolean acquistareTesseraPermesso(String idBalcone, List<String> nomiColoriCartePolitica, Supplier<Boolean> supplier){
         BalconeDelConsiglio balconeDelConsiglio = mappaBalconi.get(IdBalcone.valueOf(idBalcone));
         //creo una mano di colori carte  politica come struttura di supporto
@@ -561,6 +574,7 @@ public class Controller implements Runnable, InterfacciaController {
         return supplier.get();
     }
 
+    //la mossa costruire emporio con tessera permesso costruzione mi permette di costruire un emporio nella città scelta a patto che sia indicata sulla tessera permesso scelta
     @Override
     public boolean costruireEmporioConTesseraPermessoCostruzione(CartaPermessoCostruzione cartaPermessoCostruzione, String stringaNomeCittà)  throws RemoteException{
         if (controlliCostruireEmporioConTesseraPermessoCostruzione(cartaPermessoCostruzione, stringaNomeCittà)) {
@@ -619,6 +633,8 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+    //costruire emporio con l'aiuto del re utilizza il metodo acquistare tessera permesso per soddisfare il balcone del consiglio del re
+    //poi viene costruito un emporio nella città indicata e spostato il re in quella città
     @Override
     public boolean costruireEmporioConAiutoRe(List<String> nomiColoriCartePolitica, String nomeCittàCostruzione)  throws RemoteException{
         if (controlliCostruireEmporioConAiutoRe(nomiColoriCartePolitica, nomeCittàCostruzione)) {
@@ -717,6 +733,7 @@ public class Controller implements Runnable, InterfacciaController {
     }
 
 
+    //la mossa veloce ingaggiare un aiutante permette di guadagnare un aiutante pagando delle monete
     @Override
     public boolean ingaggiareAiutante()  throws RemoteException{
         if (!faseTurno){
@@ -754,7 +771,7 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
-
+    //la mossa cambiare tessere permesso costruzione permette di sostituire le due carte permesso visibili con due carte nuove pescate dal mazzo pagando degli aiutanti
     @Override
     public boolean cambiareTesserePermessoCostruzione(String regione)  throws RemoteException{
         if (!faseTurno){
@@ -775,6 +792,7 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+    //con questa mossa veloce si va ad inserire un consigliere del colore voluto preso da riserva pagando degli aiutanti
     @Override
     public boolean mandareAiutanteEleggereConsigliere(String idBalcone, String coloreConsigliere)  throws RemoteException{
         if (!faseTurno){
@@ -822,7 +840,8 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
-
+    //questo metodo permette al giocatore di mettere in vendita degli oggetti, una sola volta per ogni tipo
+    //gli oggetti possono essere venduti se il giocatore li possiede veramente ed effettuati gli oppportuni controlli vengono inseriti nella vetrna market
     @Override
     public boolean vendi(List<Vendibile> vendibili){
         if (!faseVenditaMarket){
@@ -889,6 +908,8 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
+    //questo metodo permette di comprare oggetti esposti in vetrina market
+    //viene controllato se il giocatore che desidera acquistare abbia un numero sufficiente di monete per procedere all'acquisto
     @Override
     public boolean compra(List<Vendibile> vendibili) throws RemoteException {
         if (!faseAcquistoMarket){
@@ -973,6 +994,7 @@ public class Controller implements Runnable, InterfacciaController {
         throw new IllegalArgumentException("Non esiste un giocatore con questo Id!");
     }
 
+    //questo metodo effettua il logout del giocatore con l'id passato in input chiudendo tutte le connessioni socket e fermando i thread per la comunicazione socket, se presenti
     @Override
     public void logout(int idGiocatoreOffline) throws RemoteException {
         if (idGiocatoreOffline < giocatoreCorrente.getId()) {
@@ -1029,7 +1051,7 @@ public class Controller implements Runnable, InterfacciaController {
         return true;
     }
 
-
+    //questo metodo calcola quante monete sono da pagare per soddisfare un consiglio con le carte indicate
     private int moneteDaPagareSoddisfaConsiglio(List<ColoreCartaPolitica> coloriCartePolitica){
         int numeroCarteJolly = 0;
         int monete;
@@ -1073,6 +1095,10 @@ public class Controller implements Runnable, InterfacciaController {
             partita.addCartePoliticaScartate(cartePoliticaScartate);
     }
 
+    //il metodo costruisci emporio, effettuati alcuni controlli, aggiunge un emporio del giocatore corrente alla città richiesta
+    //vengono assegnati i bonus della città dove si è costruito e tutti i bonus delle città collegate (se è presente un emporio dello stesso giocatore) tramite l'algoritmo bfs
+    //a cui è passato un consumer che gli darà la caratteristica di fermare l'esplorazione del grafo quando incontra una città in cui non è presente un emporio del giocatore corrrente
+    //poi viene controllato tramite l'algoritmo di dfs se il giocatore ha costruito oppure no in tutte le città di uno stesso colore o in tutte le città di una regione
     private boolean costruisciEmporio(NomeCittà nomeCittàCostruzione){
         Città cittàCostruzione = getCittàDaNome(nomeCittàCostruzione);
         Regione regione = getRegioneDaNomeCittà(nomeCittàCostruzione);
@@ -1161,6 +1187,7 @@ public class Controller implements Runnable, InterfacciaController {
             throw new IllegalArgumentException("Non esiste una città con questo nome!");
     }
 
+    //GiocatoriOnLine è una classe innestata che mi permette di gestire i turni e il logout
     private class GiocatoriOnline {
         private ArrayList<Giocatore> giocatoriOnline;
         private int posizione;
@@ -1232,6 +1259,7 @@ public class Controller implements Runnable, InterfacciaController {
 
     }
 
+    //ScatolaIdGiocatori è una classe innestata che mi permette di pescare degli idGiocatore casuali
     private class ScatolaIdGiocatori{
         private ArrayList<Integer> numeri;
         private Random random = new Random();

@@ -32,7 +32,7 @@ public class TestCittà {
         Città c2 = new Città(NomeRegione.COLLINA, NomeCittà.BURGEN, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
         Città c3 = new Città(NomeRegione.MONTAGNA, NomeCittà.INDUR, ColoreCittà.FERRO, NullBonus.getInstance(), new ArrayList<InterfacciaView>());
         assertFalse(c1.equals(c3));
-        assertTrue(c1.equals(c2));
+        assertFalse(c1.equals(c2));
     }
 
     @Test (expected = CittàAdiacenteSeStessaException.class)
@@ -45,11 +45,11 @@ public class TestCittà {
     public void collegamentiCittàTest() {
         città1.addCittàAdiacenti(città2);
         assertTrue(città1.getCittàAdiacenti().contains(città2));
-        assertTrue(città2.getCittàAdiacenti().contains(città1));
+        assertFalse(città2.getCittàAdiacenti().contains(città1));
         città3.addCittàAdiacenti(città1);
         città3.addCittàAdiacenti(città2);
         assertTrue(città3.getCittàAdiacenti().contains(città1) && città3.getCittàAdiacenti().contains(città2));
-        assertTrue(città1.getCittàAdiacenti().contains(città3) && città2.getCittàAdiacenti().contains(città3));
+        assertFalse(città1.getCittàAdiacenti().contains(città3) && città2.getCittàAdiacenti().contains(città3));
         assertFalse(città4.getCittàAdiacenti().contains(città3));
         assertFalse(città1.getCittàAdiacenti().contains(città4));
         assertFalse(città2.getCittàAdiacenti().contains(città4));
@@ -68,10 +68,4 @@ public class TestCittà {
         assertTrue(città1.giàCostruito(g3));
     }
 
-    @Test (expected = EmporioGiàEsistenteException.class)
-    public void costruisciDueVolteTest() throws EmporioGiàEsistenteException{
-        Giocatore g = new Giocatore(0, 0, 0, new ArrayList<InterfacciaView>());
-        città1.costruisciEmporio(new Emporio(g.getId()));
-        città1.costruisciEmporio(new Emporio(g.getId()));
-    }
 }

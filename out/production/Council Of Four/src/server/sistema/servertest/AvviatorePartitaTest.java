@@ -319,18 +319,20 @@ public class AvviatorePartitaTest {
                         break;
                     case KULTOS:
                         nomiCittàAdiacentiHardCoded.add(NomeCittà.INDUR);
-                        nomiCittàAdiacentiHardCoded.add(NomeCittà.LYRAM);
+                        nomiCittàAdiacentiHardCoded.add(NomeCittà.NARIS);
                         break;
                     case NARIS:
-                        nomiCittàAdiacentiHardCoded.add(NomeCittà.LYRAM);
+                        nomiCittàAdiacentiHardCoded.add(NomeCittà.KULTOS);
+                        nomiCittàAdiacentiHardCoded.add(NomeCittà.OSIUM);
                         break;
                     case LYRAM:
-                        nomiCittàAdiacentiHardCoded.add(NomeCittà.NARIS);
-                        nomiCittàAdiacentiHardCoded.add(NomeCittà.KULTOS);
+                        nomiCittàAdiacentiHardCoded.add(NomeCittà.OSIUM);
                         nomiCittàAdiacentiHardCoded.add(NomeCittà.JUVELAR);
                         break;
                     case OSIUM:
                         nomiCittàAdiacentiHardCoded.add(NomeCittà.MERKATIM);
+                        nomiCittàAdiacentiHardCoded.add(NomeCittà.NARIS);
+                        nomiCittàAdiacentiHardCoded.add(NomeCittà.LYRAM);
                         break;
                     case MERKATIM:
                         nomiCittàAdiacentiHardCoded.add(NomeCittà.OSIUM);

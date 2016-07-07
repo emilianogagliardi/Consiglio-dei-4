@@ -119,14 +119,6 @@ public class TestGiocatore {
         assertTrue(mano.size() == 2);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void scartaCartaNonEsistente() {
-        Giocatore gi = new Giocatore(0,0,0, new ArrayList<InterfacciaView>());
-        ArrayList<ColoreCartaPolitica> colori = new ArrayList<>();
-        colori.add(ColoreCartaPolitica.ARANCIONE);
-        gi.scartaCartePolitica(colori);
-    }
-
     /*
         test overflow
     */

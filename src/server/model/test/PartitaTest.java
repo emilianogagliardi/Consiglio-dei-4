@@ -11,7 +11,6 @@ import java.util.*;
 
 public class PartitaTest {
     private Partita partita1;
-    private Partita partita2;
     private static int idCounter = 1;
     private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà1 = new HashSet<>(CostantiModel.NUM_CARTE_BONUS_COLORE_CITTA);
     private Mazzo<CartaPolitica> mazzoCartePolitica1 = new Mazzo<>();
@@ -129,8 +128,5 @@ public class PartitaTest {
 
     }
 
-    public Partita getPartita1(){
-        return partita1;
-    }
 
 }

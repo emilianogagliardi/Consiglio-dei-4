@@ -34,7 +34,6 @@ public class ControllerTest {
 
     //attributi di partita
     private Partita partita;
-    private static int idCounter = 1;
     private HashSet<CartaBonusColoreCittà> carteBonusColoreCittà1 = new HashSet<>(CostantiModel.NUM_CARTE_BONUS_COLORE_CITTA);
     private Mazzo<CartaPolitica> mazzoCartePolitica1 = new Mazzo<>();
     private Mazzo<CartaPremioDelRe> mazzoCartaPremioRe1 =  new Mazzo<>();
@@ -141,7 +140,6 @@ public class ControllerTest {
         partita.setRegioni(regioni1);
         partita.setRe(new Re(new Città(NomeRegione.COLLINA, NomeCittà.JUVELAR, ColoreCittà.ARGENTO, new BonusRipetiAzionePrincipale(NullBonus.getInstance()),new ArrayList<InterfacciaView>()), new ArrayList<InterfacciaView>()));
         ArrayList<Consigliere> riservaConsiglieri = new ArrayList<>();
-        Consigliere consigliereRiserva;
         riservaConsiglieri.add( new Consigliere(ColoreConsigliere.ARANCIONE));
         riservaConsiglieri.add(new Consigliere(ColoreConsigliere.BIANCO));
         riservaConsiglieri.add(new Consigliere(ColoreConsigliere.NERO));
@@ -151,7 +149,7 @@ public class ControllerTest {
         partita.setRiservaConsiglieri(riservaConsiglieri);
 
         proxyViews = new ArrayList<>();
-        boolean add = proxyViews.add(new InterfacciaView() {
+        proxyViews.add(new InterfacciaView() {
             @Override
             public void setIdGiocatore(int idGiocatore) {
 
